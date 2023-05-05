@@ -1,10 +1,10 @@
-% \documentclass[draft]{ua-thesis}
 \documentclass[final]{ua-thesis}
+
+% \documentclass[draft]{ua-thesis}
 % \documentclass[conference,compsoc]{IEEEtran}
 % \documentclass[3p,,preprint,12pt]{elsarticle}
 
-\input{preample}
-% \include{Thalamus/preample}
+\input{other_required/preample.tex}
 
 \author{Artin Majdi}
 \title{DATA AND DOMAIN UNCERTAINTY IN MACHINE LEARNING}
@@ -19,24 +19,22 @@
 
 \maketitle
 
-\input{Other_Chapters/Dedication}
-\input{Other_Chapters/Akcnowledgement}
+\input{Chapters/Dedication}
+\input{Chapters/Akcnowledgement}
 
 \tableofcontents
 \listoffigures
-
 \newpage
 \listoftables
-
 \newpage
-\input{Other_Chapters/Abstract}
 
-\input{Drive-Net/Drive-Net}
-% \input{Thalamus/thalamus.tex}
-
+\include{Chapters/Abstract}
+\include{Chapters/Drive-Net/Drive-Net}
+% \include{Chapters/Thalamus/thalamus}
+\include{Chapters/crowd/crowd_for_thesis}
 
 \printindex
-% \input{Bibliography.tex}
+% \input{Chapters/Bibliography.tex}
 
 %% ================================================================
 \end{document}
