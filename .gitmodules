@@ -1,8 +1,8 @@
 [submodule "taxonomy"]
-	path = Other_Chapters/taxonomy
+	path = Chapters/taxonomy
 	url = https://github.com/artinmajdi/taxonomy-paper.git
 [submodule "crowd"]
-	path = Other_Chapters/crowd
+	path = Chapters/crowd
 	url = https://github.com/artinmajdi/crowd-paper.git
 [submodule "code"]
 	path = code
