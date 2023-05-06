@@ -1,10 +1,47 @@
 \documentclass[final]{ua-thesis}
-
+% \documentclass[School=Harvard]{Harvard_Princeton_NYU}
+% \documentclass{SPhdThesis}
 % \documentclass[draft]{ua-thesis}
 % \documentclass[conference,compsoc]{IEEEtran}
 % \documentclass[3p,,preprint,12pt]{elsarticle}
 
-\input{other_required/preample.tex}
+% \input{other_required/preample.tex}
+\usepackage{subfiles}
+\usepackage{verbatim, amssymb, amsmath, amsthm, graphicx, psfrag, afterpage, subfigure, hyperref}
+\usepackage[mathscr]{eucal}
+\usepackage{makeidx}
+\numberwithin{equation}{section}
+\input{other_required/isomath.tex}
+\input{other_required/mathenv.tex}
+\input{other_required/syms.tex}
+\usepackage{graphicx, amsmath, url, multirow, morefloats, floatflt, cancel, tfrupee, colortbl, xcolor, pifont, wasysym}
+\usepackage[cmintegrals]{newtxmath}
+\usepackage[nocompress]{cite}
+\usepackage{tabulary}
+\makeatletter
+\let\citep\cite
+\let\citet\cite
+\makeatother
+
+\usepackage{float}
+\usepackage{lipsum}
+\usepackage[Lenny]{fncychap}
+\usepackage{amsfonts,amsmath,amssymb}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{url,multirow,morefloats,floatflt,cancel,tfrupee}
+\usepackage{textcomp}
+\usepackage{mathrsfs}
+\usepackage[title]{appendix}
+\usepackage{manyfoot}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{setspace}
+\usepackage{fancyhdr,amsbsy,latexsym}
+\usepackage{siunitx}
+\usepackage{tabularx, booktabs}
+
 
 \author{Artin Majdi}
 \title{DATA AND DOMAIN UNCERTAINTY IN MACHINE LEARNING}
@@ -29,9 +66,11 @@
 \newpage
 
 \include{Chapters/Abstract}
-\include{Chapters/Drive-Net/Drive-Net}
+% \include{Chapters/Drive-Net/Drive-Net}
+\subfile{Chapters/Drive-Net/Drive-Net.tex}
+\subfile{Chapters/crowd/main.tex}
 % \include{Chapters/Thalamus/thalamus}
-\include{Chapters/crowd/crowd_for_thesis}
+% \include{Chapters/crowd/crowd_for_thesis}
 
 \printindex
 % \input{Chapters/Bibliography.tex}

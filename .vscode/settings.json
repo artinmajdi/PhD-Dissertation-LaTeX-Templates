@@ -8,8 +8,8 @@
         "**/Thumbs.db": true
     },
     "hide-files.files": [],
-    "editor.fontFamily": "Arial Narrow, Menlo, Monaco, 'Courier New', monospace",
-    "editor.fontSize": 16,
+    "editor.fontFamily": "Menlo, Monaco, 'Courier New', monospace",
+    "editor.fontSize": 14,
     "latex-workshop.intellisense.citation.format": [
         "author",
         "title",
@@ -20,5 +20,9 @@
         "doi"
     ],
     "latex-workshop.latex.autoBuild.run": "never",
-    "latex-workshop.latex.autoClean.run": "onSucceeded"
+    "latex-workshop.latex.autoClean.run": "onSucceeded",
+    "chatgpt-helper.model": "gpt-4",
+    "genieai.enableConversationHistory": true,
+    "genieai.openai.model": "gpt-4",
+    "genieai.openai.organization": "org-VGuowL8K7cZU0L7YEcFgaeg3"
 }

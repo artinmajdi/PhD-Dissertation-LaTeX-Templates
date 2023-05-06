@@ -1,4 +1,9 @@
+\documentclass{confproc}
+
+\begin{document}
+
 \chapter{Drive-Net: Convolutional Network for Driver Distraction Detection}
+
 
 To help prevent motor vehicle accidents, there has been significant interest in finding an automated method to recognize signs of driver distraction, such as talking to passengers, fixing hair and makeup, eating and drinking, and using a cell phone. In this paper, we present an automated supervised learning method called Drive-Net for driver distraction detection. Drive-Net uses a combination of a convolutional neural network (CNN) and a random decision forest to classify images of a driver. We compare the performance of our proposed Drive-Net to two other popular machine learning approaches: a recurrent neural network (RNN) and a multilayer perceptron (MLP). We tested the methods on a publicly available database of images acquired in a controlled environment that contained about 22425 images manually annotated by an expert. The results show that Drive-Net achieves a detection accuracy of 95\%, which is 2\% more than the best results obtained in the same database using other methods.
 
@@ -94,18 +99,13 @@ Here $E\left(\cdot\right) $\ensuremath{_{}}is the entropy of the set and $\left\
 
 Suppose that $T $ is the set of all trees, $C $ is the set of all classes, and $L $ is the set of all leaves for a given tree. During training, posterior probabilities $P_{t,l}\left(Y\left(I\right)=c\:\right) $ for each class $c\in C $ are found at each leaf node $l\in L $ for each tree $t\in T $. These probabilities are calculated as the ratio of the number of images $I $ of class $c $ that reach a leaf node $l $ to the total number of images that reach that leaf node $l $. $Y\left(I\right) $ is the class label of image $I $. During test time, we pass a new image through every decision tree until it reaches a prediction (or leaf) node, average all the posterior probabilities, and classify the image as
 
-\let\saveeqnno\theequation
-\let\savefrac\frac
-\def\dispfrac{\displaystyle\savefrac}
+
 \begin{eqnarray}
-\let\frac\dispfrac
 \gdef\theequation{3}
-\let\theHequation\theequation
 \label{disp-formula-group-032e1395024b44bca0feeb46474c0adc}
-\begin{array}{@{}l}\widehat Y\left(I\right)=\underset c{\text{argmax}}\left\{\frac1{\left\vert T\right\vert}\sum_{t=1}^{\left\vert T\right\vert}P_{t,l}\left(Y\left(I\right)=c\right)\right\}\end{array}
+\widehat Y\left(I\right)=\underset c{\text{argmax}}\left\{\frac1{\left\vert T\right\vert}\sum_{t=1}^{\left\vert T\right\vert}P_{t,l}\left(Y\left(I\right)=c\right)\right\}
 \end{eqnarray}
-\global\let\theequation\saveeqnno
-\addtocounter{equation}{-1}\ignorespaces
+
 
 where $l $ is the leaf node reached by the image $I $ in the tree $t $. A graphical representation of the proposed random forest classifier is shown in Figure~\ref{Drive-Net/figure2}  (see the right side).
 
@@ -253,3 +253,6 @@ Distracted driving is one of the main causes of motor vehicle accidents. Therefo
 % references section
 \bibliographystyle{ieeetr}
 \bibliography{Chapters/Drive-Net/Drive-Net}
+
+
+\end{document}
