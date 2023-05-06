@@ -7,5 +7,18 @@
         "**/.DS_Store": true,
         "**/Thumbs.db": true
     },
-    "hide-files.files": []
+    "hide-files.files": [],
+    "editor.fontFamily": "Arial Narrow, Menlo, Monaco, 'Courier New', monospace",
+    "editor.fontSize": 16,
+    "latex-workshop.intellisense.citation.format": [
+        "author",
+        "title",
+        "journal",
+        "publisher",
+        "booktitle",
+        "year",
+        "doi"
+    ],
+    "latex-workshop.latex.autoBuild.run": "never",
+    "latex-workshop.latex.autoClean.run": "onSucceeded"
 }
