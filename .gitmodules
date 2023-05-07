@@ -10,3 +10,6 @@
 [submodule "drive_net"]
 	path = Chapters/Drive-Net
 	url = https://github.com/artinmajdi/Drive-Net.git
+[submodule "thalamus"]
+	path = Chapters/thalamus
+	url = https://github.com/artinmajdi/thalamus-paper.git
