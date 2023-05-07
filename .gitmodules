@@ -8,7 +8,7 @@
 	path = code
 	url = https://github.com/artinmajdi/chest.git
 [submodule "drive_net"]
-	path = Chapters/Drive-Net
+	path = Chapters/drive_net
 	url = https://github.com/artinmajdi/Drive-Net.git
 [submodule "thalamus"]
 	path = Chapters/thalamus
