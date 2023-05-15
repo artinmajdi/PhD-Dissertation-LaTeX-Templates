@@ -5,9 +5,16 @@
         "**/.hg": true,
         "**/CVS": true,
         "**/.DS_Store": true,
-        "**/Thumbs.db": true
+        "**/Thumbs.db": true,
+        "Chapters/thalamus/overleaf": true,
+        "Chapters/thalamus/.gitignore": true,
+        "Chapters/thalamus/.gitmodules": true
     },
-    "hide-files.files": [],
+    "hide-files.files": [
+        "Chapters/thalamus/overleaf",
+        "Chapters/thalamus/.gitignore",
+        "Chapters/thalamus/.gitmodules"
+    ],
     "editor.fontFamily": "Menlo, Monaco, 'Courier New', monospace",
     "editor.fontSize": 14,
     "latex-workshop.intellisense.citation.format": [
@@ -25,5 +32,6 @@
     "genieai.enableConversationHistory": true,
     "genieai.openai.model": "gpt-4",
     "genieai.openai.organization": "org-VGuowL8K7cZU0L7YEcFgaeg3",
-    "latex-workshop.latex.autoBuild.cleanAndRetry.enabled": false
+    "latex-workshop.latex.autoBuild.cleanAndRetry.enabled": false,
+    "explorer.excludeGitIgnore": true
 }
