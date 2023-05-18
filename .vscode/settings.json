@@ -1,16 +1,16 @@
 {
     "files.exclude": {
-        "**/.git": true,
-        "**/.svn": true,
-        "**/.hg": true,
-        "**/CVS": true,
+        ".gitignore": true,
+        ".gitmodules": true,
+        ".vscode": true,
         "**/.DS_Store": true,
-        "**/Thumbs.db": true,
-        ".vscode": true
+        "**/.git": true,
+        "**/.hg": true,
+        "**/.svn": true,
+        "**/CVS": true,
+        "**/Thumbs.db": true
     },
-    "hide-files.files": [
-        ".vscode"
-    ],
+    "hide-files.files": [],
     "editor.fontFamily": "Menlo, Monaco, 'Courier New', monospace",
     "editor.fontSize": 14,
     "latex-workshop.intellisense.citation.format": [
@@ -31,5 +31,6 @@
     "latex-workshop.latex.autoBuild.cleanAndRetry.enabled": false,
     "explorer.excludeGitIgnore": true,
     "gitdoc.enabled": true,
-    "gaac.disableOptionalMessages": true
+    "gaac.disableOptionalMessages": true,
+    "explorer.fileNesting.enabled": true
 }
