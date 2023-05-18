@@ -33,5 +33,7 @@
     "genieai.openai.model": "gpt-4",
     "genieai.openai.organization": "org-VGuowL8K7cZU0L7YEcFgaeg3",
     "latex-workshop.latex.autoBuild.cleanAndRetry.enabled": false,
-    "explorer.excludeGitIgnore": true
+    "explorer.excludeGitIgnore": true,
+    "gitdoc.enabled": true,
+    "gaac.disableOptionalMessages": true
 }
