@@ -6,14 +6,10 @@
         "**/CVS": true,
         "**/.DS_Store": true,
         "**/Thumbs.db": true,
-        "Chapters/thalamus/overleaf": true,
-        "Chapters/thalamus/.gitignore": true,
-        "Chapters/thalamus/.gitmodules": true
+        ".vscode": true
     },
     "hide-files.files": [
-        "Chapters/thalamus/overleaf",
-        "Chapters/thalamus/.gitignore",
-        "Chapters/thalamus/.gitmodules"
+        ".vscode"
     ],
     "editor.fontFamily": "Menlo, Monaco, 'Courier New', monospace",
     "editor.fontSize": 14,
