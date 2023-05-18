@@ -11,5 +11,5 @@
 	path = Chapters/thalamus
 	url = https://github.com/artinmajdi/thalamus-paper.git
 [submodule "main_code"]
-	path = other/main_code
+	path = other/code
 	url = https://github.com/artinmajdi/chest.git
