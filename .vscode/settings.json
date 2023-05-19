@@ -1,14 +1,14 @@
 {
     "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
         ".gitignore": true,
         ".gitmodules": true,
-        ".vscode": true,
-        "**/.DS_Store": true,
-        "**/.git": true,
-        "**/.hg": true,
-        "**/.svn": true,
-        "**/CVS": true,
-        "**/Thumbs.db": true
+        ".vscode": true
     },
     "hide-files.files": [],
     "editor.fontFamily": "Menlo, Monaco, 'Courier New', monospace",
