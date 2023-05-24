@@ -16,6 +16,3 @@
 [submodule "overleaf"]
 	path = overleaf_thesis
 	url = ./overleaf
-[submodule "overleaf_thesis"]
-	path = overleaf_thesis
-	url = https://git.overleaf.com/646e84f7c5159063a039ad01
