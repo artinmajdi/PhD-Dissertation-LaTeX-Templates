@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  mymaincode:
+    image: mymaincode
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: ["sh", "-c", "pip install debugpy -t /tmp && python /tmp/debugpy --wait-for-client --listen 0.0.0.0:5678 aims/aim1_1_taxonomy/xrv/taxonomy.py "]
+    ports:
+      - 5678:5678

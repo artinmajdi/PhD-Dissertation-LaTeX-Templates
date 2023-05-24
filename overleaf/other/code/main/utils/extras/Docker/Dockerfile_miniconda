@@ -1,0 +1,95 @@
+#  -------------   Getting Miniconda image   -------------
+FROM continuumio/miniconda3:latest AS miniconda
+
+
+
+#  -------------   Getting the base os   -------------
+FROM ubuntu:latest
+
+
+# Copy the Miniconda3 files from the miniconda stage to the base stage
+COPY --from=miniconda /opt/conda /opt/conda
+
+# Update the PATH environment variable to include the Miniconda3 binary directory
+ENV PATH /opt/conda/bin:$PATH
+
+
+
+#  -------------   mounting the datasets volume   -------------
+
+ENV DATASETS_PATH /datasets
+
+# This makes sure that the directory is created in the Dockerfile, in case it doesn't exist in the container.
+RUN mkdir -p ${DATASETS_PATH}
+
+# This tells Docker that the specified directory should be treated as a mount point for external volumes, and it 
+# will also be used as the default location for the volume when it is created. When the container is created, 
+# Docker will look for a volume at the host path specified in the docker-compose.yml file, and if it doesn't exist, 
+# it will create a new volume at that location. This allows the user to specify a different host path for the datasets 
+# volume when they run the docker-compose up command.
+VOLUME ${DATASETS_PATH}
+VOLUME "/root/.ssh"
+
+
+#  -------------   Creating the conda environment   -------------
+
+# Create a new conda environment and install required packages
+ENV CONDA_ENV_NAME main
+RUN conda create --name $CONDA_ENV_NAME python=3.10
+
+# The command below acts similar to "source activate main"
+ENV PATH /opt/conda/envs/$CONDA_ENV_NAME/bin:$PATH
+
+
+
+#  -------------   Installing the package dependencies   -------------
+
+# # Installing PyTorch dependencies
+# RUN conda install -c pytorch pytorch torchvision
+
+# # Installing Tensorflow dependencies
+# RUN conda install -c conda-forge tensorflow tensorflow-hub tensorflow-datasets keras
+
+# # Installing Other dependencies
+# RUN conda install -c conda-forge gitpython scikit-learn scikit-image seaborn matplotlib numpy pandas tqdm wget
+
+# # Installing Jupyter dependencies
+# RUN conda install -c conda-forge ipywidgets notebook 
+
+# # Installing MLFlow dependencies
+# RUN conda install -c conda-forge mlflow pysftp psycopg2
+
+# # Installing CrowdKit & TorchXRayVision Packages
+# RUN pip install crowd-kit torchxrayvision
+
+
+
+#  -------------   Cloning the repository   -------------
+
+# Below isn't safe. Instead I should mount my ssh folder to the container either using docker-compose or by running "docker run -v ~/.ssh:/root/.ssh myimage"
+# Copy your SSH private key to the container
+# COPY ssh/id_rsa /root/.ssh/id_rsa
+# COPY ssh/id_ed25519 /root/.ssh/id_ed25519
+
+# Add your GitHub repository as a known host
+# RUN ssh-keyscan -t ed25519 github.com >> /root/.ssh/known_hosts
+
+# Change the permissions of the private key
+RUN ls /*
+# RUN chmod 600 /root/.ssh/
+
+# # Clone your private GitHub repository
+# RUN git clone git@github.com:artinmajdi/chest_xray_private_main.git --depth 1
+
+
+
+#  ------   Exposing the ports   ------
+
+# Exposing ports
+# EXPOSE 5432
+# EXPOSE 22
+# EXPOSE 443
+
+
+CMD [ "bash" ]
+

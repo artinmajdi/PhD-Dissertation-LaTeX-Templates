@@ -1,0 +1,9 @@
+[submodule "taxonomy"]
+	path = Chapters/taxonomy
+	url = https://github.com/artinmajdi/taxonomy-paper.git
+[submodule "crowd"]
+	path = Chapters/crowd
+	url = https://github.com/artinmajdi/crowd-paper.git
+[submodule "code"]
+	path = code
+	url = https://github.com/artinmajdi/chest.git

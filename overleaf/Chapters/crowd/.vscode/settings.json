@@ -1,0 +1,26 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true
+    },
+    "hide-files.files": [],
+    "editor.lineHeight": 2,
+    "interactiveSession.editor.lineHeight": 2,
+    "terminal.integrated.lineHeight": 2,
+    "editor.fontFamily": "Arial Narrow, Menlo, Monaco, 'Courier New', monospace",
+    "editor.fontSize": 18,
+    "debug.console.lineHeight": 2,
+    "notebook.output.lineHeight": 2,
+    "notebook.output.textLineLimit": 40,
+    "editor.renderLineHighlight": "all",
+    "editor.renderLineHighlightOnlyWhenFocus": true,
+    "editor.unfoldOnClickAfterEndOfLine": true,
+    "search.showLineNumbers": true,
+    "html.format.wrapLineLength": 160,
+    "markdown.preview.lineHeight": 2,
+    "yaml.format.printWidth": 100
+}
