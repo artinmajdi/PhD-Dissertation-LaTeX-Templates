@@ -1,7 +1,30 @@
-% \include{Thalamus/preample}
-\chapter{Automated Thalamic Nuclei Segmentation Using Multiplanar Cascaded Convolutional Neural Networks}
+% \documentclass{confproc}
+\documentclass[3p,,final,12pt]{elsarticle}
 
+\usepackage{tabulary,xcolor}
+\usepackage{amsfonts,amsmath,amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{ifluatex}
+\ifluatex
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+\usepackage[]{unicode-math}
+\unimathsetup{math-style=TeX}
+\else 
+\usepackage[utf8]{inputenc}
+\usepackage{url,multirow,morefloats,floatflt,cancel,tfrupee}
+\usepackage{textcomp}
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{pifont}
+\usepackage[nointegrals]{wasysym}
+% \input{Chapters/Thalamus/preample}
 
+\begin{document}
+
+\title{Automated Thalamic Nuclei Segmentation Using Multiplanar Cascaded Convolutional Neural Networks}
+
+\begin{abstract}
 \textbf{Purpose:} To develop a fast and accurate convolutional neural network based method for segmentation of thalamic nuclei.
 
 \textbf{Conclusion:} The proposed segmentation method is fast, accurate, performs well across disease types and field strengths, and shows great potential to improve our understanding of the role of thalamic nuclei in neurological diseases. 
@@ -10,9 +33,10 @@
 
 \textbf{Results:} Segmentation of each thalamus into 12 nuclei was achieved in less than a minute. For 7T WMn-MPRAGE, the proposed method outperforms the current state of the art in patients with ET with statistically significant improvements in Dice for five nuclei (increase in the range of 0.05-0.18) and VSI for four nuclei (increase in the range of 0.05-0.19), while performing comparably for healthy subjects and MS subjects. Dice and VSI achieved using 7T WMn-MPRAGE data are comparable to those using 3T WMn-MPRAGE data. For conventional MPRAGE, the proposed method shows a statistically significant Dice improvement in the range of 0.14-0.63 over FreeSurfer for all nuclei and disease types. The effect of noise on network performance shows robustness to images with SNR as low as half the baseline SNR. Atrophy of four thalamic nuclei and the entire thalamus was observed in MS patients compared to healthy control subjects, after controlling for the effect of parallel imaging, intracranial volume, gender, and age (p{\textless}0.004).
 
+\textbf{KEYWORDS:} Convolutional neural network, Thalamic nuclei segmentation, Clinical analysis, White-matter-nulled MPRAGE
+\end{abstract}
 
-\textbf{\textit{KEYWORDS: }} Convolutional neural network, Thalamic nuclei segmentation, Clinical analysis, White-matter-nulled MPRAGE
-
+\maketitle
 
     
 \section{Introduction}
@@ -950,6 +974,6 @@ MPRAGE Magnetization-Prepared Rapid Gradient Echo
 % \section*{APPENDIX}
 
 \bibliographystyle{ieeetr}
-\bibliography{Thalamus/thalamus}
+\bibliography{Chapters/Thalamus/thalamus}
 
-% \end{document}
+\end{document}
