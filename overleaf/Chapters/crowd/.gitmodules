@@ -1,0 +1,6 @@
+[submodule "overleaf_repo"]
+	path = overlead_repo
+	url = https://git.overleaf.com/645a2e1c74f2f8e7cf2a48a1
+[submodule "overleaf"]
+	path = overleaf
+	url = https://git.overleaf.com/645a2e1c74f2f8e7cf2a48a1

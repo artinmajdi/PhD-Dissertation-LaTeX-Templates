@@ -1,0 +1,47 @@
+version: "1"
+services:
+  base:
+    image: ubuntu:latest
+  miniconda:
+    # image: continuumio/miniconda3:latest
+    image: mlflow
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - /opt/conda:/opt/conda
+    environment:
+      - PATH=/opt/conda/bin:$PATH
+    command:
+      - conda install -y pandas matplotlib
+    ports: 
+      - "5000:5000"
+      - "6789:6789"
+      - "22:22"
+
+
+
+version: '3.4'
+
+services:
+
+  db:
+    image: mlflow:latest
+    container_name: con_mlflow
+    volumes: 
+      - .:/home/project
+    restart: always
+    environment: 
+      user: artinmajdi
+
+
+  code:
+    image: mlflow
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports: 
+      - "5000:5000"
+      - "6789:6789"
+      - "22:22"
+    

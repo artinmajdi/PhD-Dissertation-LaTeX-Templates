@@ -1,0 +1,51 @@
+{
+  "dataset_path"     : "./datasets",
+  "dataset_name"     : "CheX"                         ,
+  "dataset_data_mode" : "train"                      ,
+  "views"            : ["AP", "PA"]                        ,
+  "max_samples"      : 1000                          ,
+  "NotNull_Samples"  : true                          ,
+  "train_test_ratio" : 0.7                           ,
+
+  "num_workers" : 1    ,
+  "shuffle"     : false,
+
+  "model_name"   : "ALL_224"       ,
+  "architecture" : "DenseNet121",
+  "path_baseline_CheX_weights": "./pre_trained_models/chestxray/chexpert_baseline_model_weight.zip",
+  "batch_size"     : 1000    ,
+  "n_batches_to_process": 10 ,
+  "n_epochs"       : 3      ,
+  "learning_rate"  : 0.0001 ,
+  "n_augmentation" : 1      ,
+
+  "local_path"                 : "./main/aims/aim1_1_taxonomy/outputs",
+  "artifact_path"              : "",
+  "silent"                     : true,
+  "__comment__findings1"       : "ALLOWED OPTIONS FOR BELOW ARE: [calculate, load_local, load_MLFlow]",
+  "do_findings_original"       : "load_local",
+
+  "__comment__hyperparameters": "ALLOWED OPTIONS FOR BELOW ARE: [default, calculate, load_local, load_MLFlow]",
+  "do_hyperparameters"        : "load_local",
+
+  "__comment__findings2"       : "ALLOWED OPTIONS FOR BELOW ARE: [calculate, load_local, load_MLFlow]",
+  "do_findings_new"            : "load_local",
+
+  "optimization_metric"        : "AUC",
+  "parent_condition_mode"     : "truth",
+  "max_evals"                 : 20 ,
+  "a"                         : 0.0 ,
+  "b"                         : 1.0 ,
+  "parallelization_technique" : 0 ,
+
+  "RUN_MLFlow"             : false ,
+  "KILL_MLFlow_at_END"     : false ,
+  "SSH_USER"               : "artinmajdi" ,
+  "SSH_HOST"               : "data7-db1.cyverse.org",
+  "SSH_PORT"               : "5432" ,
+  "DATABASE"               : "chest_db_v2" ,
+  "DATABASE_USER_PASSWORD" : "1234" ,
+  "experiment_name"        : "label_inter_dependence",
+  "MLFlow_run_name"        : "",
+  "approach"               : "loss"
+}
