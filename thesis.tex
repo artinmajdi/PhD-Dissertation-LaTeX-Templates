@@ -56,8 +56,8 @@
 
 \maketitle
 
-\input{Chapters/Dedication}
-\input{Chapters/Akcnowledgement}
+\include{other_required/Dedication.tex}
+\include{other_required/Akcnowledgement}
 
 \tableofcontents
 \listoffigures
@@ -66,11 +66,11 @@
 \newpage
 
 \include{Chapters/Abstract}
-% \include{Chapters/Drive-Net/Drive-Net}
+
+\subfile{Chapters/crowd/crowd}
 % \subfile{Chapters/Drive-Net/Drive-Net.tex}
-\subfile{Chapters/crowd/main.tex}
-\subfile{Chapters/thalamus/thalamus}
-% \include{Chapters/crowd/crowd_for_thesis}
+% % \subfile{Chapters/crowd/main.tex}
+% \subfile{Chapters/thalamus/thalamus}
 
 \printindex
 % \input{Chapters/Bibliography.tex}
