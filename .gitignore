@@ -12,7 +12,8 @@
 *.cb2
 .*.lb
 
-**/.DS_Store
+**/.DS_Store/
+.vscode/
 
 ## Intermediate documents:
 *.dvi
@@ -303,3 +304,4 @@ TSWLatexianTemp*
 #*Notes.bib
 Chapters/.DS_Store
 .DS_Store
+.vscode/settings.json
