@@ -1,80 +1,36 @@
-\documentclass[final]{ua-thesis}
-% \documentclass[School=Harvard]{Harvard_Princeton_NYU}
-% \documentclass{SPhdThesis}
+% \documentclass[final]{ua-thesis}
+% \documentclass[School=Harvard]{other/Templates/Harvard_Princeton_NYU/Harvard_Princeton_NYU}
+\documentclass{SPhdThesis}
 % \documentclass[draft]{ua-thesis}
-% \documentclass[conference,compsoc]{IEEEtran}
-% \documentclass[3p,,preprint,12pt]{elsarticle}
 
-% \input{other_required/preample.tex}
-\usepackage{subfiles}
-\usepackage{verbatim, amssymb, amsmath, amsthm, graphicx, psfrag, afterpage, subfigure, hyperref}
-\usepackage[mathscr]{eucal}
-\usepackage{makeidx}
-\numberwithin{equation}{section}
-\input{other_required/isomath.tex}
-\input{other_required/mathenv.tex}
-\input{other_required/syms.tex}
-\usepackage{graphicx, amsmath, url, multirow, morefloats, floatflt, cancel, tfrupee, colortbl, xcolor, pifont, wasysym}
-\usepackage[cmintegrals]{newtxmath}
-\usepackage[nocompress]{cite}
-\usepackage{tabulary}
-\makeatletter
-\let\citep\cite
-\let\citet\cite
-\makeatother
-
-\usepackage{float}
-\usepackage{lipsum}
-\usepackage[Lenny]{fncychap}
-\usepackage{amsfonts,amsmath,amssymb}
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
-\usepackage{url,multirow,morefloats,floatflt,cancel,tfrupee}
-\usepackage{textcomp}
-\usepackage{mathrsfs}
-\usepackage[title]{appendix}
-\usepackage{manyfoot}
-\usepackage{algorithmicx}
-\usepackage{algpseudocode}
-\usepackage{listings}
-\usepackage{setspace}
-\usepackage{fancyhdr,amsbsy,latexsym}
-\usepackage{siunitx}
-\usepackage{tabularx, booktabs}
-
-
+\input{preamples.tex}
 \author{Artin Majdi}
 \title{DATA AND DOMAIN UNCERTAINTY IN MACHINE LEARNING}
 % \date{2023}
-
 \makeindex
 
-
-%% ================================================================
 \begin{document}
 
-
 \maketitle
-
 \include{other_required/Dedication.tex}
 \include{other_required/Akcnowledgement}
-
 \tableofcontents
 \listoffigures
 \newpage
 \listoftables
 \newpage
-
 \include{other_required/Abstract}
+% \subfile{Chapters/crowd/crowd.tex}
 
-\subfile{Chapters/crowd/crowd.tex}
+\include{Chapters_nogit/taxonomy/taxonomy_thesis}
 
-% \subfile{Chapters/Drive-Net/Drive-Net.tex}
-% % \subfile{Chapters/crowd/main.tex}
+% \subfile{Chapters/Drive-Net/Drive-Net.tex}chapterpath
 % \subfile{Chapters/thalamus/thalamus}
-
 \printindex
 % \input{Chapters/Bibliography.tex}
+
+\bibliographystyle{apalike}
+\bibliography{other_required/Better_BibTeX_Zotero} % Chapters/taxonomy_nogit/references/references,
 
 %% ================================================================
 \end{document}

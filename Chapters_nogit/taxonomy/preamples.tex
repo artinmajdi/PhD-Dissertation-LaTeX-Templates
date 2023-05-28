@@ -1,0 +1,50 @@
+% Use the options 1p,twocolumn; 3p; 3p,twocolumn; 5p; or 5p,twocolumn
+% for a journal layout:
+\documentclass[preprint,3p,times, review]{elsarticle}
+% \documentclass[preprint,12pt]{elsarticle}
+% \documentclass[final,3p,times, review]{elsarticle}
+% \documentclass[final,5p,times,twocolumn]{elsarticle}
+% \documentclass[preprint,review,12pt]{elsarticle}
+% \documentclass[pdflatex,temp/sn-basic]{temp/sn-jnl}
+% \documentclass[10pt, a4paper]{article}
+
+
+\usepackage{url}
+\usepackage{amssymb}
+\usepackage{tabulary,xcolor}
+\usepackage{amsfonts,amsmath,amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{endfloat}
+\usepackage{caption}
+\usepackage[utf8]{inputenc}
+\usepackage{stmaryrd}
+\usepackage{multirow,morefloats,floatflt,cancel,tfrupee}
+\makeatletter \usepackage{textcomp} \makeatother
+\usepackage{graphicx}
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{pifont}
+\usepackage[nointegrals]{wasysym}
+\usepackage{dblfloatfix}
+\usepackage{paratype}
+\usepackage{pdfpages}
+\usepackage{standalone}
+
+
+% Set default font to sans-serif
+\renewcommand{\familydefault}{\sfdefault}
+
+% Change the captions fonts to PT Sans Narrow. This is important to be able to fit some of larger tables in the page.
+\newcommand{\ptsansnarrow}{\fontfamily{PTSansNarrow-TLF}\selectfont}
+\let\origcaption\caption\renewcommand{\caption}[1]{\ptsansnarrow\origcaption{#1}}
+
+% Adding space after each paragraph
+\setlength{\parskip}{1.2em}
+
+% Removing the indentation in the begininig of each paragraph
+\setlength{\parindent}{0pt}
+
+% Increase the line spacing to 1.5
+\linespread{1.5}
+
+\journal{Neurocomputing}
