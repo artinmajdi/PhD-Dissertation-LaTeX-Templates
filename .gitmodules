@@ -13,3 +13,6 @@
 [submodule "main_code"]
 	path = other/code
 	url = https://github.com/artinmajdi/chest.git
+[submodule "overleaf"]
+	path = overleaf_thesis
+	url = ./overleaf
