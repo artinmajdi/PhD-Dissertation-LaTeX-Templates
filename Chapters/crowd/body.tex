@@ -52,15 +52,15 @@ Let us denote the following parameters:
 
     \item  ${\Pi}_\alpha=\left\{\pi_{\alpha,1},\;\pi_{\alpha,2},\;\dots,\;\pi_{\alpha,K}\right\} $: set of $K $ reliability scores for annotator $\alpha $.
 
-    \item  $\mathbb{X}=\left\{X^{(i)}\right\}_{i=1}^{N} $: Set of all instances.
+    \item  $\mathbb{X} = {\left\{X^{(i)}\right\}}_{i=1}^{N} $: Set of all instances.
 
-    \item  $\mathbb{Y}=\left\{Y^{(i)}\right\}_{i=1}^{N} $: Set of all true labels.
+    \item  $\mathbb{Y} = {\left\{Y^{(i)}\right\}}_{i=1}^{N} $: Set of all true labels.
 
-    \item  $\mathbb{Z}_\alpha=\left\{Z_\alpha^{(i)}\right\}_{i=1}^{N} $: Set of all labels for the annotator $\alpha $.
+    \item  $\mathbb{Z}_\alpha = {\left\{Z_\alpha^{(i)}\right\}}_{i=1}^{N} $: Set of all labels for the annotator $\alpha $.
 
-    \item  $\widehat{\mathbb{Y}}= \left\{\widehat{Y}^{(i)}\right\}_{i=1}^{N} $: Set of all aggregated labels.
+    \item  $\widehat{\mathbb{Y}} = {\left\{\widehat{Y}^{(i)}\right\}}_{i=1}^{N} $: Set of all aggregated labels.
 
-    \item  $\mathbb{P}=\left\{\rho^{(i)}\right\}_{i=1}^{N} $: Set of $N $ randomly generated numbers.
+    \item  $\mathbb{P} = {\left\{\rho^{(i)}\right\}}_{i=1}^{N} $: Set of $N $ randomly generated numbers.
 
     \item  $\mathbb{D}=\left\{\mathbb{X},\mathbb{Y}\right\} $: Dataset containing all instances and all true labels.
 
@@ -70,7 +70,7 @@ Let us denote the following parameters:
 
     \item  $F_{\alpha}^{(g)}(\cdot)$: Classifier $g $ trained on dataset $\mathbb{D}_{\alpha}^{\mathrm{train}} $ with random seed number $g $ (which is also the classifier index)
 
-    \item  $P_{\alpha}^{(i,g)} = \left\{ p_{\alpha,k}^{(i,g)} \right\}_{k=1}^{K} $: Predicted probability set obtained in the output of the classifier $F_{\alpha}^{(g)}(\cdot) $ representing the probability that each class $k $ is present in the sample.
+    \item  $P_{\alpha}^{(i,g)} = {\left\{ p_{\alpha,k}^{(i,g)} \right\}}_{k=1}^{K} $: Predicted probability set obtained in the output of the classifier $F_{\alpha}^{(g)}(\cdot) $ representing the probability that each class $k $ is present in the sample.
 
     \item  $\theta_{\alpha,k}^{(g)} $: Binarization threshold. To obtain this, we can utilize any existing thresholding technique (for example, in one technique, we analyze the ROC curve and find the corresponding threshold where the difference between the true positive rate (sensitivity) and false positive rate (1-specificity) is maximum; Alternatively, we could simply use $0.5 $).
 
@@ -114,7 +114,7 @@ Risk measurement enables us to assess the aggregation model's performance in ter
 Assume that the aggregation model $h (\cdot) $ is a function that takes a set of $M $ label sets $Z^{(i)} $ for each instance $i $ in the training data and calculates an aggregated label set $\widehat{Y}^{(i)} $ as an estimate of the true label set $Y^{(i)} $. Our goal is to find an aggregation model $h(\cdot) $ that minimizes risk as follows:
 
 \begin{equation}
-R(h) = \frac{1}{N} \sum_{i=1}^{N} \mathcal{L} \left( Y^{(i)}, h\left(\left\{Z_{\alpha}^{(i)}\right\}_{\alpha=1}^{M}\right)\right)
+R(h) = \frac{1}{N} \sum_{i=1}^{N} \mathcal{L} \left( Y^{(i)}, h\left( {\left\{Z_{\alpha}^{(i)}\right\}}_{\alpha=1}^{M}\right)\right)
 \label{crowd.Eq.2.risk.emp}
 \end{equation}
 
@@ -150,8 +150,8 @@ To evaluate the proposed techniques over all data instances, a k-fold cross-vali
 A common approach to measure uncertainty is to increase the number of data instances $X $ in the test dataset $\mathbb{D}_\alpha^{\mathrm{test}} $ to create multiple variations of each sample data $X^{(i)} $~\cite{ayhan_TestTime_2018}. In this approach, for each instance $i $, we apply randomly generated spatial transformations and additive noise to the input data $X^{(i)} $ to obtain a transformed sample and repeat this process $G $ times to obtain a set of $G $ transformed samples.
 However, this approach is mostly suitable for cases where the input data is images or volume slices. Since the datasets used in this study consist of feature vectors instead of images or volume slices, this approach cannot be used. To address this problem, we introduced a modified uncertainty measurement approach, in which instead of augmenting the data instances $X^{(i)} $, we feed the same sample data to different classifiers.
 For the choice of classifier, we can either use a probability-based classifier such as random forest and train it under $G $ different random states or train various classifiers and address the problem in a manner similar to ensemble learning (using a set of $G $ different classification techniques such as random forest, SVM, CNN, Adaboost, etc.). In either case, we obtain a set of $G $ classifiers ${\left\{F_{\alpha}^{(g)}( \cdot)\right\}}_{g=1}^G $ for each annotator $\alpha $. The classifier $F_{\alpha}^{(g)}( \cdot) $ is a pre-trained or pre-designed model that has been trained on a labeled training dataset $\mathbb{D}_\alpha^{\mathrm{train}} $. This training process enables $F_{\alpha}^{(g)}(\cdot) $ to learn the underlying patterns in the data and make predictions on unseen instances.
-After training, we feed the test samples $X^{(i)}\in \mathbb{X}^{\text{test}} $ to the $g $-th classifier $F_{\alpha}^{(g)}(\cdot) $ as test cases. The classifier $F_{\alpha}^{(g)}(\cdot) $ then outputs a set of predicted probabilities $\left\{p_{\alpha,k}^{(i,g)}\right\}_{k=1}^{K} $ representing the probability that class $k $ is present in the sample. Consequently, we obtain a collection of $G $ predicted probability sets $\left\{ \left\{ p_{\alpha,k}^{(i,g)}\right\}_{k=1}^K \right\}_{g=1}^G $ for each annotator $\alpha $ and instance $i $. The set $\left\{p_{\alpha,k}^{(i,g)}\right\}_{g=1}^G $ contains the predicted probabilities for class $k $, annotator $\alpha $, and instance $i $. Disagreements between predicted probabilities $\left\{p_{\alpha,k}^{(i,g)}\right\}_{g=1}^G $ can be used to estimate uncertainty.
-The reason for using classifiers rather than using the crowdsourced labels directly is two-fold. Using a probabilistic classifier helps us calculate uncertainty based on each annotator's labeling patterns that the classifier learns. Furthermore, this approach provides us with a set of pre-trained classifiers $\left\{ \left\{ F_{\alpha}^{(g)}(\cdot) \right\}_{g=1}^G  \right\}_{a=1}^{M} $ that can be readily utilized on any new data instances without the need for those samples to be labeled by the original annotators.
+After training, we feed the test samples $X^{(i)}\in \mathbb{X}^{\text{test}} $ to the $g $-th classifier $F_{\alpha}^{(g)}(\cdot) $ as test cases. The classifier $F_{\alpha}^{(g)}(\cdot) $ then outputs a set of predicted probabilities ${\left\{p_{\alpha,k}^{(i,g)}\right\}}_{k=1}^{K} $ representing the probability that class $k $ is present in the sample. Consequently, we obtain a collection of $G $ predicted probability sets $ {\left\{ {\left\{ p_{\alpha,k}^{(i,g)}\right\}}_{k=1}^K \right\}}_{g=1}^G $ for each annotator $\alpha $ and instance $i $. The set ${\left\{p_{\alpha,k}^{(i,g)}\right\}}_{g=1}^G $ contains the predicted probabilities for class $k $, annotator $\alpha $, and instance $i $. Disagreements between predicted probabilities ${\left\{p_{\alpha,k}^{(i,g)}\right\}}_{g=1}^G $ can be used to estimate uncertainty.
+The reason for using classifiers rather than using the crowdsourced labels directly is two-fold. Using a probabilistic classifier helps us calculate uncertainty based on each annotator's labeling patterns that the classifier learns. Furthermore, this approach provides us with a set of pre-trained classifiers ${\left\{ {\left\{ F_{\alpha}^{(g)}(\cdot) \right\}}_{g=1}^G  \right\}}_{a=1}^{M} $ that can be readily utilized on any new data instances without the need for those samples to be labeled by the original annotators.
 The index value $g  \in \{1,2,\dots,G\} $ is used as the random seed value during training of the $g$\-th classifier for all annotators.
 Define $t_{\alpha,k}^{(i,g)} $ as the predicted label obtained by binarizing the predicted probabilities $p_{\alpha,k}^{ (i,g)} $ using the threshold $\theta_{\alpha,k}^{(g)} $ as shown in the Glossary of Symbols section.
 Uncertainty measures are used to quantify the level of uncertainty or confidence associated with the predictions of a model. In this work, we need to measure the uncertainty $u_{\alpha,k}^{(i)}$ associated with the model predictions. Some common uncertainty measurement measures are as follows.
@@ -160,16 +160,16 @@ Uncertainty measures are used to quantify the level of uncertainty or confidence
 Entropy is a widely used measure of uncertainty in classification problems. In an ensemble of classifiers, entropy serves as a quantitative measure of the uncertainty or disorder present in the probability distribution of the predicted class labels. A higher entropy value indicates a greater degree of uncertainty in the predictions, as the predictions of the individual classifiers in the ensemble are significantly different. In contrast, a lower entropy value denotes reduced uncertainty as the ensemble assigns very similar probabilities to a particular class, indicating strong agreement among the classifiers and increased confidence in their collective prediction. The formula for calculating entropy is as follows:
 
 \begin{equation}
-u_{\alpha,k}^{(i)}=H\left(\left\{p_{\alpha,k}^{(i,g)}\right\}_{g=1}^{G}\right)=-\sum_{g}{p_{\alpha,k}^{(i,g)} \log\left(p_{\alpha,k}^{(i,g)}\right)}
+u_{\alpha,k}^{(i)}=H\left( {\left\{p_{\alpha,k}^{(i,g)}\right\}}_{g=1}^{G}\right)=-\sum_{g}{p_{\alpha,k}^{(i,g)} \log\left(p_{\alpha,k}^{(i,g)}\right)}
 \label{crowd.Eq.5.uncertainty}
 \end{equation}
 
 
 \subsubsection{Standard Deviation}
-In regression problems, standard deviation is often used to quantify uncertainty. It measures the dispersion of predicted values around the mean. A greater standard deviation indicates greater uncertainty of the prediction. For a set of predicted values $ \{t_{\alpha,k}^{(i,g)} \}_{g=1}^G $ with mean value $\mu $, the standard deviation is defined as
+In regression problems, standard deviation is often used to quantify uncertainty. It measures the dispersion of predicted values around the mean. A greater standard deviation indicates greater uncertainty of the prediction. For a set of predicted values $ {\{t_{\alpha,k}^{(i,g)} \}}_{g=1}^G $ with mean value $\mu $, the standard deviation is defined as
 
 \begin{equation}
-    u_{\alpha,k}^{(i)}=\text{SD}\left(\left\{t_{\alpha,k}^{(i,g)}\right\}_{g=1}^G\right)=\sqrt {\frac{1}{G-1 }\sum_{g=1}^G\left(t_{\alpha,k}^{(i,g)}-\mu\right)^{2}},\quad\mu=\frac{1}{G}\sum_{g=1}^{G}{t_{\alpha,k}^{(i,g)}}
+    u_{\alpha,k}^{(i)}=\text{SD}\left( {\left\{t_{\alpha,k}^{(i,g)}\right\}}_{g=1}^G\right)=\sqrt {\frac{1}{G-1} \sum_{g=1}^G {\left(t_{\alpha,k}^{(i,g)}-\mu\right)}^2},\quad\mu=\frac{1}{G}\sum_{g=1}^{G}{t_{\alpha,k}^{(i,g)}}
     \label{crowd.Eq.6.uncertainty.sd}
 \end{equation}
 

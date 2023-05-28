@@ -1,0 +1,9 @@
+\renewcommand{\chapterpath}[1]{Chapters/thalamus/#1}
+\renewcommand{\figurepath}[1]{\chapterpath{figures}/#1}
+\input{\chapterpath{commands.tex}}
+
+\chapter{\addtitle}
+\addabstract%
+
+\textbf{KEYWORDS:\;}\addkeyword%
+\input{\chapterpath{body.tex}}
