@@ -1,0 +1,3 @@
+[submodule "Chapters/crowd"]
+	path = Chapters/crowd
+	url = https://github.com/artinmajdi/crowd-paper.git
