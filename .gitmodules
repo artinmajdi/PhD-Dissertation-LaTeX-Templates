@@ -1,3 +1,12 @@
 [submodule "Chapters/crowd"]
 	path = Chapters/crowd
 	url = https://github.com/artinmajdi/crowd-paper.git
+[submodule "Chapters/drive_net"]
+	path = Chapters/drive_net
+	url = https://github.com/artinmajdi/Drive-Net.git
+[submodule "Chapters/taxonomy"]
+	path = Chapters/taxonomy
+	url = https://github.com/artinmajdi/taxonomy-paper.git
+[submodule "Chapters/thalamus"]
+	path = Chapters/thalamus
+	url = https://github.com/artinmajdi/thalamus-paper.git
