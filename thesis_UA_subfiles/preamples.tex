@@ -35,3 +35,27 @@
 \usepackage{fancyhdr,amsbsy,latexsym}
 \usepackage{siunitx}
 \usepackage{tabularx, booktabs}
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{pifont}
+% \usepackage[nointegrals]{wasysym}
+% \usepackage{dblfloatfix}
+\usepackage{paratype}
+\usepackage{pdfpages}
+
+
+% Set default font to sans-serif
+\renewcommand{\familydefault}{\sfdefault}
+
+% Change the captions fonts to PT Sans Narrow. This is important to be able to fit some of larger tables in the page.
+\newcommand{\ptsansnarrow}{\fontfamily{PTSansNarrow-TLF}\selectfont}
+\let\origcaption\caption\renewcommand{\caption}[1]{\ptsansnarrow\origcaption{#1}}
+
+% Adding space after each paragraph
+\setlength{\parskip}{1.2em}
+
+% Removing the indentation in the begininig of each paragraph
+\setlength{\parindent}{0pt}
+
+% Increase the line spacing to 1.5
+\linespread{1.15}

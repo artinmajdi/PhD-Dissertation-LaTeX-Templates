@@ -1,0 +1,28 @@
+\documentclass{SPhdThesis}
+
+% PDF and title properties.
+\SgSetTitle{DATA AND DOMAIN UNCERTAINTY IN MACHINE LEARNING}
+\SgSetAuthor{Artin Majdi}
+\SgSetAuthorDegrees{M.Sc.}
+\SgSetYear{2023}
+\SgSetDegree{Doctor of Philosophy}
+\SgSetDepartment{Department of Electrical and Computer Engineering}
+\SgSetUniversity{The University of Arizona}
+\SgSetDeclarationDate{June 2023}
+
+% The document.
+\begin{document}
+	\begin{frontmatter}
+		\SgAddTitle%
+		\SgAddDeclaration%
+		\input{thesis_SPhd_subfiles/acknowledgments.tex}%
+		\input{Chapters/Abstract.tex}%
+		\SgAddToc%  Table of contents.
+		\SgAddLof%  List of figures.
+		\SgAddLot%  List of tables.
+		\SgAddLoa%  List of algorithms.
+	\end{frontmatter}
+
+	\input{Chapters/taxonomy/taxonomy_thesis.tex}
+	\SgIncludeBib{Better_BibTeX_Zotero}
+\end{document}
