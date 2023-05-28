@@ -225,11 +225,9 @@ Conformal prediction~\cite{angelopoulos_Gentle_2021} is a method of constructing
 Steps  to calculate the nonconformity score:
 
 \begin{enumerate}[1.]
-    \item For each classifier $g $ and each class $k $, calculate the nonconformity score. Here, $\mathrm{score\_function}$ measures the conformity of the prediction with the true label. In the context of this study, the true label can be replaced by $\eta_{\alpha,k}^{(i)} $. A common choice for $\mathrm{score\_function}$ is the absolute difference between the predicted probability and the true label, but other options can be used depending on the specific problem and requirements. Define the nonconformity score as  $ \zeta_{k}^{g} = \mathrm{score\_function} \left(p_{\alpha,k}^{(i,g)}, y_k^{(i)}\right) $
-
-    \item Calculate the p-value $\mathrm{pv}_k $ for each class $k $ as the proportion of classifiers with nonconformity scores greater than or equal to a predefined threshold $\text{T}_k: \text{p-values}(k) = \frac{ \left\vert \{g: \;\zeta_{k}^{g} \geq T_k \} \right\vert} {G} $
-
-    \item The p-values calculated for each class $k $ represent the uncertainty associated with that class. A higher p-value indicates a higher level of agreement among the classifiers for a given class, whereas a lower p-value suggests greater uncertainty or disagreement.
+\item For each classifier $g $ and each class $k $, calculate the nonconformity score. Here, $\mathrm{score\_function}$ measures the conformity of the prediction with the true label. In the context of this study, the true label can be replaced by $\eta_{\alpha,k}^{(i)} $. A common choice for $\mathrm{score\_function}$ is the absolute difference between the predicted probability and the true label, but other options can be used depending on the specific problem and requirements. Define the nonconformity score as  $ \zeta_{k}^{g} = \mathrm{score\_function} \left(p_{\alpha,k}^{(i,g)}, y_k^{(i)}\right) $
+\item Calculate the p-value $\mathrm{pv}_k $ for each class $k $ as the proportion of classifiers with nonconformity scores greater than or equal to a predefined threshold $\text{T}_k: \text{p-values}(k) = \frac{ \left\vert \{g: \;\zeta_{k}^{g} \geq T_k \} \right\vert} {G} $
+\item The p-values calculated for each class $k $ represent the uncertainty associated with that class. A higher p-value indicates a higher level of agreement among the classifiers for a given class, whereas a lower p-value suggests greater uncertainty or disagreement.
 \end{enumerate}
 
 The uncertainty measures discussed above are only some of the available options. Selecting an appropriate measure depends on factors such as the problem domain, the chosen model, and the specific requirements of a given application. For this study, we use the variance technique shown in Equation~(\ref{crowd.Eq.6.uncertainty.sd}) as our uncertainty measurement due to its simplicity. However, other measures could also be employed as suitable alternatives.
