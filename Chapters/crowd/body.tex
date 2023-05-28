@@ -223,8 +223,7 @@ Committee-based method~\cite{wang_Wisdom_2020} involves training multiple models
 Conformal prediction~\cite{angelopoulos_Gentle_2021} is a method of constructing prediction regions that maintain a predefined level of confidence. These regions can be used to quantify the uncertainty associated with the prediction of a model.
 
 Steps  to calculate the nonconformity score:
-
-\begin{enumerate}[1.]
+\begin{enumerate}
 \item For each classifier $g $ and each class $k $, calculate the nonconformity score. Here, $\mathrm{score\_function}$ measures the conformity of the prediction with the true label. In the context of this study, the true label can be replaced by $\eta_{\alpha,k}^{(i)} $. A common choice for $\mathrm{score\_function}$ is the absolute difference between the predicted probability and the true label, but other options can be used depending on the specific problem and requirements. Define the nonconformity score as  $ \zeta_{k}^{g} = \mathrm{score\_function} \left(p_{\alpha,k}^{(i,g)}, y_k^{(i)}\right) $
 \item Calculate the p-value $\mathrm{pv}_k $ for each class $k $ as the proportion of classifiers with nonconformity scores greater than or equal to a predefined threshold $\text{T}_k: \text{p-values}(k) = \frac{ \left\vert \{g: \;\zeta_{k}^{g} \geq T_k \} \right\vert} {G} $
 \item The p-values calculated for each class $k $ represent the uncertainty associated with that class. A higher p-value indicates a higher level of agreement among the classifiers for a given class, whereas a lower p-value suggests greater uncertainty or disagreement.
@@ -239,7 +238,7 @@ The uncertainty measures discussed above are only some of the available options.
 
 Define $c_{\alpha,k}^{(i)} $ as the consistency score for annotator $\alpha $, class $k $ and instance $i $. We calculate this consistency score using the uncertainty score $u_{\alpha,k}^{(i)} $ explained in the previous section. We use two approaches to calculate $c_{\alpha,k}^{(i)} $ from $u_{\alpha,k}^{(i)} $.
 
-\begin{enumerate}[1.]
+\begin{enumerate}
     \item The first approach is to simply subtract the uncertainty from $1 $ as follows:
 
     \begin{equation}
@@ -289,7 +288,7 @@ In previous section we showed how to calculate the aggregated label $v_k^{(i)} $
 
 To calculate this confidence score, we modify the two techniques used by Sheng~\cite{sheng_Majority_2019} and Tao~\cite{tao_Label_2020} to incorporate our calculated weight $\omega_{\alpha,k} $ shown in Equation~(\ref{crowd.Eq.11.weights})  for each worker $\alpha $.
 
-\begin{enumerate}[1.]
+\begin{enumerate}
     \item \textbf{uwMV-Freq:} In this approach, the confidence score $F^{(i)} $ is defined as the weighted sum of labels belonging to annotators whose label is the same as the final aggregated label. It is calculated as
 
     \begin{equation}
