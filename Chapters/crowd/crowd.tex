@@ -1,83 +1,22 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%                                                                 %%
-%% Please do not use \input{...} to include other tex files.       %%
-%% Submit your LaTeX manuscript as one.tex document.              %%
-%%                                                                 %%
-%% All additional figures and files should be attached             %%
-%% separately and not embedded in the \TeX\ document itself.       %%
-%%                                                                 %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%\documentclass[referee,sn-basic]{sn-jnl}% referee option is meant for double line spacing
-
-%%=======================================================%%
-%% to print line numbers in the margin use lineno option %%
-%%=======================================================%%
-
-%%\documentclass[lineno,sn-basic]{bst/sn-jnl}% Basic Springer Nature Reference Style/Chemistry Reference Style
-
-%%======================================================%%
-%% to compile with pdflatex/xelatex use pdflatex option %%
-%%======================================================%%
-
-\documentclass[pdflatex,bst/sn-basic]{bst/sn-jnl}% Basic Springer Nature Reference Style/Chemistry Reference Style
-
-
-%%Note: the following reference styles support Namedate and Numbered referencing. By default the style follows the most common style. To switch between the options you can add or remove Numbered in the optional parenthesis.
-%%The option is available for: sn-basic.bst, sn-vancouver.bst, sn-chicago.bst, sn-mathphys.bst. %
-
-% \documentclass[sn-nature]{bst/sn-jnl}% Style for submissions to Nature Portfolio journals
-% \documentclass[bst/sn-basic]{bst/sn-jnl}% Basic Springer Nature Reference Style/Chemistry Reference Style
-% \documentclass[bst/sn-mathphys,Numbered]{bst/sn-jnl}% Math and Physical Sciences Reference Style
-% \documentclass[bst/sn-aps]{bst/sn-jnl}% American Physical Society (APS) Reference Style
-% \documentclass[bst/sn-vancouver,Numbered]{sn-jnl}% Vancouver Reference Style
-% \documentclass[bst/sn-apa]{bst/sn-jnl}% APA Reference Style
-% \documentclass[bst/sn-chicago]{bst/sn-jnl}% Chicago-based Humanities Reference Style
-% \documentclass[default]{bst/sn-jnl}% Default
-% \documentclass[default,iicol]{bst/sn-jnl}% Default with double column layout
-
-%%%% Standard Packages
-\usepackage{graphicx}
-\usepackage{multirow}
-\usepackage{amsmath,amssymb,amsfonts}
-\usepackage{amsthm}
-\usepackage{mathrsfs}
-\usepackage[title]{appendix}
-\usepackage{xcolor}
-\usepackage{textcomp}
-\usepackage{manyfoot}
-\usepackage{algorithm}
-\usepackage{algorithmicx}
-\usepackage{algpseudocode}
-\usepackage{listings}
-
-\jyear{2023}
-
-% Typeset.io %%%
-\usepackage{setspace}
-\usepackage{tabulary,fancyhdr,amsbsy,latexsym}
-\usepackage{url,morefloats,floatflt,cancel,tfrupee}
-\usepackage{colortbl}
-\usepackage{pifont}
-\usepackage[nointegrals]{wasysym}
-\usepackage{float}
-\usepackage{siunitx}
-\usepackage{tabularx, booktabs}
-\usepackage{lipsum}
-% \usepackage{lasy}
-\usepackage{fix-cm}
-
-
-
+\input{preamples.tex}
+\newcommand{\figurepath}[1]{figures/#1}
+\input{commands.tex}
 
 \begin{document}
 
-
-\title[Article Title]{Crowd-Certain: Uncertainty-Based Weighted Soft Majority Voting with Applications in Crowdsourcing and Ensemble Learning}
+\title[Article Title]{\addtitle}
 \author[1]{\fnm{Mohammad S.} \sur{Majdi}}
 \author[1]{\fnm{Jeffrey J.} \sur{Rodriguez}}
 \affil[1]{\orgdiv{Dept of Electrical \& Computer Engineering}, \orgname{The University of Arizona}, \orgaddress{\city{Tucson}, \postcode{86719}, \state{AZ}, \country{USA}}}
 
-\include{body}
+\abstract{\addabstract}
+\keywords{\addkeyword}
+\maketitle
+
+\input{body.tex}
+
+% \bibliographystyle{bst/sn-aps}
+\bibliographystyle{apalike}
+\bibliography{other/Better_BibTeX_Zotero}
 
 \end{document}

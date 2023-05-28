@@ -1,13 +1,3 @@
-
-% \abstract{Crowdsourcing systems have been used to accumulate massive amounts of labeled data for applications such as computer vision and natural language processing. However, because crowdsourced labeling is inherently dynamic and uncertain, developing a technique that can work in most situations is extremely challenging. In this paper, we propose a novel method called ``crowd-certain'', which provides a more accurate and reliable aggregation of labels, ultimately leading to improved overall performance in both crowdsourcing and ensemble learning scenarios. The proposed method uses the consistency and accuracy of the annotators as a measure of their reliability relative to other annotators. The experimental results show that the proposed technique generates a weight that closely follows the annotator's degree of reliability. Moreover, the proposed method uses the consistency and accuracy of annotators as a measure of their reliability relative to other annotators. Experiments performed on a variety of crowdsourcing datasets indicate that the proposed method outperforms prior methods in terms of accuracy, with significant improvement over all investigated benchmarks (Gold Majority Vote, MV, MMSR, Wawa, Zero-Based Skill, GLAD, and Dawid Skene), particularly when few annotators are available.}
-
-% \keywords{Supervised learning, crowdsourcing, confidence score, soft weighted majority voting, label aggregation, annotator quality, error rate estimation, multi-class classification, ensemble learning, uncertainty measurement}
-
-% \maketitle
-
-
-
-
 \section{Introduction}
 
 Supervised learning techniques require a large amount of labeled data to train models to classify new data~\cite{jiang_wrapper_2019,jiang_class_2019}. Traditionally, data labeling has been assigned to experts in the domain or well-trained annotators~\cite{tian_MaxMargin_2019}. Although this method produces high-quality labels, it is inefficient and costly~\cite{li_noise_2016,li_noise_2019}.  Social networking provides an innovative solution to the labeling problem by allowing data to be labeled by online crowd annotators. This has become feasible, as crowdsourcing services such as Amazon Mechanical Turk (formerly CrowdFlower) have grown in popularity. Crowdsourcing systems have been used to accumulate large amounts of labeled data for applications such as computer vision~\cite{deng_imagenet_2009,liu_Variational_2012} and natural language processing~\cite{karger_Budget_2014}. However, because of individual differences in preferences and cognitive abilities, the quality of labels acquired by a single crowd annotator is typically low, thus jeopardizing applications that rely on these data. This is because crowd annotators are not necessarily domain experts and may lack the necessary training or expertise to produce high-quality labels.
@@ -224,7 +214,7 @@ Bayesian methods offer a probabilistic framework to estimate the parameters of t
 Committee-based method~\cite{wang_Wisdom_2020} involves training multiple models (a committee) and aggregating their predictions. The disagreement between committee members' predictions can be used as a measure of uncertainty. Examples include bagging and boosting ensemble methods and models, such as random forests.
 
 \begin{equation}
-    u_{\alpha,k}^{(i)} = \mathrm{VarCommittee}\left(P_{\alpha,k}^{(i)}\right) = \frac{1}{G}\sum_{g=1}^G \left( p_{\alpha,k}^{(i,g)}-\mu \right)^{2},\quad\mu= \frac{1}{G-1} \sum_{g=1}^G p_{\alpha,k}^{(i,g)}
+    u_{\alpha,k}^{(i)} = \mathrm{VarCommittee}\left(P_{\alpha,k}^{(i)}\right) = \frac{1}{G}\sum_{g=1}^G {\left( p_{\alpha,k}^{(i,g)} - \mu \right)}^2 , \quad\mu= \frac{1}{G-1} \sum_{g=1}^G p_{\alpha,k}^{(i,g)}
     \label{crowd.Eq.8.uncertainty.committee_based}
 \end{equation}
 
@@ -406,7 +396,7 @@ Figure~\ref{crowd.Fig.1.weight} depicts the relationship between the randomly as
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=\textwidth]{figures/image1.png}\label{crowd.Fig.1.weight}
+    \includegraphics[width=\textwidth]{\figurepath{image1.png}}\label{crowd.Fig.1.weight}
     \caption{{Comparison of estimated weight with respect to annotators' degree of reliability for the proposed aggregation technique ``proposed-penalized'' and Tao~\cite{tao_Label_2020} for 10 different datasets.}}
 \end{figure}
 
@@ -419,14 +409,14 @@ Figure~\ref{crowd.Fig.4.confidence_score.freq} displays the average accuracy usi
 
 \begin{figure*}[!htbp]
 \centering
-\includegraphics[width=0.8\textwidth]{figures/image2.png}\label{crowd.Fig.2.confidence_scores}
+\includegraphics[width=0.8\textwidth]{\figurepath{image2.png}}\label{crowd.Fig.2.confidence_scores}
 \caption{Comparison of the measured average accuracy for the two confidence-score measurement techniques in ten different datasets (using the proposed crowd-certain technique with penalization) in different numbers of annotators (from 3 up to 10).}
 
 \end{figure*}
 
 \begin{figure*}[!htbp]
     \centering
-    \includegraphics[width=0.9\textwidth]{figures/image4.png}\label{crowd.Fig.4.confidence_score.freq}
+    \includegraphics[width=0.9\textwidth]{\figurepath{image4.png}}\label{crowd.Fig.4.confidence_score.freq}
     \caption{Comparison of the measured average accuracy for the proposed crowd-certain technique with and without penalization and using the `freq' confidence-score strategy on ten different datasets with different numbers of annotators (starting from 3 to 10).}
 \end{figure*}
 
@@ -434,7 +424,7 @@ Figure~\ref{crowd.Fig.5.confidencescore-beta} shows the average accuracy distrib
 
 \begin{figure*}[!htbp]
     \centering
-    \includegraphics[width=\textwidth]{figures/image7.png}\label{crowd.Fig.5.confidencescore-beta}
+    \includegraphics[width=\textwidth]{\figurepath{image7.png}}\label{crowd.Fig.5.confidencescore-beta}
     \caption{{Measured accuracy distribution of the proposed-penalized aggregation technique uwMV-Freq, compared to wMV-Freq (Tao \unskip~\protect\cite{tao_Label_2020}), and MV-Freq (Sheng \unskip~\protect\cite{sheng_Majority_2019}) for different numbers of annotators, using the kernel density estimation technique}}
 \end{figure*}
 
@@ -472,7 +462,7 @@ Figure~\ref{crowd.Fig.6.accuracy} shows the average accuracy distribution (``Bet
 
 \begin{figure*}[!htbp]
     \centering
-    \includegraphics[width=\textwidth]{figures/image8.png}\label{crowd.Fig.6.accuracy}
+    \includegraphics[width=\textwidth]{\figurepath{image8.png}}\label{crowd.Fig.6.accuracy}
     \caption{{Measured accuracy distribution of the proposed-penalized aggregation technique uwMV-Beta, compared to wMV-Beta (Tao \unskip~\protect\cite{tao_Label_2020}), and MV- Beta (Sheng \unskip~\protect\cite{sheng_Majority_2019}) for different numbers of annotators, using the kernel density estimation technique.}}
 \end{figure*}
 
@@ -509,12 +499,12 @@ Figure~\ref{Fig.6-accuracy-different-n-annotators} shows the average accuracy fo
 
 \begin{figure*}[!htbp]
     \centering
-    \includegraphics[width=\textwidth]{figures/image9.png}\label{Fig.6-accuracy-different-n-annotators}
+    \includegraphics[width=\textwidth]{\figurepath{image9.png}}\label{Fig.6-accuracy-different-n-annotators}
     \caption{{Average accuracy for the proposed aggregation techniques compared to the benchmarks for different numbers of annotators (horizontal axis) in the ionosphere dataset.}}
 \end{figure*}
 
 \begin{figure*}[!htbp]
-    \centering \includegraphics[width=\textwidth]{figures/image10.png}\label{Fig.7-accuracy-different-datasets}
+    \centering \includegraphics[width=\textwidth]{\figurepath{image10.png}}\label{Fig.7-accuracy-different-datasets}
     \caption{Average accuracy of the proposed aggregation techniques compared to the benchmarks for different datasets using three annotators.}
 \end{figure*}
 
@@ -536,7 +526,4 @@ The code can be found in \href{http://github.com/artinmajdi/crowdcertain}{crowd-
 \section*{Competing interests}
 \section*{Acknowledgements}
 
-% \bibliographystyle{bst/sn-aps}
-\bibliographystyle{apalike}
-% \bibliography{other/references, other/Better_BibLaTeX_Zotero}
-\bibliography{other/Better_BibTeX_Zotero}
+
