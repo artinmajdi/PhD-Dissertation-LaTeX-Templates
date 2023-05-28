@@ -1,5 +1,8 @@
 \documentclass{SPhdThesis}
 
+\input{preamples.tex}
+\input{commands_initialization.tex}
+
 % PDF and title properties.
 \SgSetTitle{DATA AND DOMAIN UNCERTAINTY IN MACHINE LEARNING}
 \SgSetAuthor{Artin Majdi}
@@ -23,6 +26,9 @@
 		\SgAddLoa%  List of algorithms.
 	\end{frontmatter}
 
-	\input{Chapters/taxonomy/taxonomy_thesis.tex}
+	\include{Chapters/taxonomy/taxonomy_thesis}
+	\include{Chapters/crowd/crowd_thesis}
+	\include{Chapters/thalamus/thalamus_thesis}
+
 	\SgIncludeBib{Better_BibTeX_Zotero}
 \end{document}
