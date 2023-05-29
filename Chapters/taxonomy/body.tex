@@ -398,7 +398,7 @@ The input chest radiographs were pre-processed to ensure consistency across the 
 
 \subsubsection{Model Architecture and Training Details}
 
-The pre-trained model provided by Cohen~\cite{cohen_TorchXRayVision_2022} was used as the base model. The model was fine-tuned using the DenseNet121~\cite{1902693:27875848} architecture on a subset of CheXpert~\cite{irvin_CheXpert_2019}, NIH~\cite{wang_ChestXRay8_2017}, PadChest~\cite{bustos_Padchest_2020} for 18 toracic diseases. A series of transformations were applied to all train images, including rotation of up to 45 degrees, translation of up to 15\%, and scaling up to 10\%. Binary cross entropy losses and Adam optimizer were used.
+The pre-trained model provided by Cohen~\cite{cohen_TorchXRayVision_2022} was used as the base model. The model was fine-tuned using the DenseNet121~\cite{huang_Densely_2017} architecture on a subset of CheXpert~\cite{irvin_CheXpert_2019}, NIH~\cite{wang_ChestXRay8_2017}, PadChest~\cite{bustos_Padchest_2020} for 18 toracic diseases. A series of transformations were applied to all train images, including rotation of up to 45 degrees, translation of up to 15\%, and scaling up to 10\%. Binary cross entropy losses and Adam optimizer were used.
 
 
 \textbf{Parallelization for multiple CPU cores}
@@ -458,7 +458,7 @@ In the original label sets, the total number of samples across the datasets were
 % Please add the following required packages to your document preamble:
 % \usepackage{graphicx}
 \begin{table}[]
-\caption{Comparison of the number of samples for different chest radiograph public datasets (CheX, NIH, and PC) per pathology, considering both original and updated label sets. The original counts represent the raw number of samples in the datasets, while the updated counts show the number of samples after updating the label set for parent pathologies when a dataset does not contain labels for that parent class. In the updated label set, a parent pathology is considered true if at least one of its child pathologies is present for that sample; otherwise, it is set to false. }
+\caption{Comparison of the number of samples for different chest radiograph public datasets (CheX, NIH, and PC) per pathology, considering both original and updated label sets. The original counts represent the raw number of samples in the datasets, while the updated counts show the number of samples after updating the label set for parent pathologies when a dataset does not contain labels for that parent class. In the updated label set, a parent pathology is considered true if at least one of its child pathologies is present for that sample; otherwise, it is set to false.}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lcccccc}
 & \multicolumn{3}{c}{\textbf{original}}      & \multicolumn{3}{c}{\textbf{updated}}       \\
