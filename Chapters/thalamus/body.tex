@@ -97,7 +97,7 @@ Dice loss function is defined as follows:
 \text{Dice}\left(A_i,B_i\right) = \frac{2\left\vert A_i\cap B_i\right\vert}{\left\vert A_i\cup\;B_i\right\vert}
 \end{equation}
 
-where $A_i $ and $B_i $ are the automated and manual segmentations for nucleus $i $ and $\vert\;.\;\vert $ is the cardinality of a set (i.e., number of pixels). Note that the different classes are implicitly weighted when using a Dice-based loss function~\cite{1921968:27964315,1921968:27964354}.A weighted cross entropy was used to mitigate the effect of class imbalance, where the weight for each class is defined as the ratio of the number of foreground to background voxels in the manual segmentation mask. The weighted cross-entropy loss is defined as
+where $A_i $ and $B_i $ are the automated and manual segmentations for nucleus $i $ and $\vert\;.\;\vert $ is the cardinality of a set (i.e., number of pixels). Note that the different classes are implicitly weighted when using a Dice-based loss function~\cite{crum_Generalized_2006,drozdzal_Importance_2016}.A weighted cross entropy was used to mitigate the effect of class imbalance, where the weight for each class is defined as the ratio of the number of foreground to background voxels in the manual segmentation mask. The weighted cross-entropy loss is defined as
 
 \begin{equation}
 \label{Thalamus.Eq.3.Loss}
@@ -107,7 +107,7 @@ where $A_i $ and $B_i $ are the automated and manual segmentations for nucleus $
 where $C $ is the number of classes including the background (2 for the whole-thalamus network or 13 for the subsequent thalamic nuclei segmentation network for 12 nuclei), $p_i=\frac{\exp{({\widehat y}_i)}}{\sum_{k=0}^{C-1}\exp{({\widehat y}_k)}\;} $is the posterior probability for class $i $ obtained by applying the sigmoid function to the network's final feature maps ${\widehat y}_i $, $w_i $ represents the weight for class $i $, and $q_i $ is the ground truth for class $i $.
 
 \subsection{Performance Evaluation Measures}
-The automated segmentation performance was evaluated with respect to the manual delineations using Dice similarity coefficient~\cite{1921968:27964357}, and volume similarity index (VSI)~\cite{su_Thalamus_2019}. The Dice similarity coefficient (shortened as Dice) shown in Equation~(\ref{Thalamus.Eq.2.Dice})  measures overlap between the manual segmentation and the automated segmentation computed by the network. The volume similarity index is defined as
+The automated segmentation performance was evaluated with respect to the manual delineations using Dice similarity coefficient~\cite{dice_Measures_1945}, and volume similarity index (VSI)~\cite{su_Thalamus_2019}. The Dice similarity coefficient (shortened as Dice) shown in Equation~(\ref{Thalamus.Eq.2.Dice})  measures overlap between the manual segmentation and the automated segmentation computed by the network. The volume similarity index is defined as
 
 \begin{equation}
 \label{Thalamus.Eq.4.VSI}
@@ -154,7 +154,7 @@ The WMn network initialized using weights from a 3T initialization network showe
 
 \begin{table}[]
 \centering
-\caption{Effect of loss function on Dice and VSI. Average Dice and VSI shown for 11 subjects.}
+\caption{Effect of loss function on Dice and VSI\@. Average Dice and VSI shown for 11 subjects.}
 \begin{tabular}{lcccc}
 & \multicolumn{2}{c}{\textbf{Dice}}      & \multicolumn{2}{c}{\textbf{VSI}}       \\
 \multicolumn{1}{c}{\textbf{Nuclei}} & \textbf{Dice Loss} & \textbf{BCE Loss} & \textbf{Dice Loss} & \textbf{BCE Loss} \\
@@ -297,19 +297,20 @@ Figure 4 shows segmentation results from a patient with ET scanned on a 7T (top 
 \end{table}
 
 \emph{CSFn-MPRAGE Data}
-Table~\ref{Thalamus.Table.4.Comparison.FreeSurfer}  shows the average Dice and VSI for the proposed method and FreeSurfer on CSFn-MPRAGE data separately for 6 healthy control subjects, 15 patients with MS and 12 patients with ET. The proposed method significantly outperformed FreeSurfer on all nuclei and disease types with an average improvement in Dice of 0.33, 0.26, and 0.30 for control, MS, and ET subjects, respectively. VSI showed improvements over 3, 6, and 4 nuclei with an average improvement of 0.39, 0.37, and 0.23 over control, MS, and ET subjects, respectively.
+Table~\ref{Thalamus.Table.4.Comparison.FreeSurfer}  shows the average Dice and VSI for the proposed method and FreeSurfer on CSFn-MPRAGE data separately for 6 healthy control subjects, 15 patients with MS and 12 patients with ET\@. The proposed method significantly outperformed FreeSurfer on all nuclei and disease types with an average improvement in Dice of 0.33, 0.26, and 0.30 for control, MS, and ET subjects, respectively. VSI showed improvements over 3, 6, and 4 nuclei with an average improvement of 0.39, 0.37, and 0.23 over control, MS, and ET subjects, respectively.
 
 
 Images from a representative MS patient acquired using two different contrasts (WMn-MPRAGE and CSFn-MPRAGE) along with their overlaid segmentations are shown in Figure~\ref{Thalamus.Fig.3.MS}. We can clearly see that the network segmented the thalamic nuclei fairly accurately in the CSFn-MPRAGE image, despite its seemingly poor intra-thalamic contrast. For the larger nuclei, Dice values for these two subjects ranged from $0.69-0.86$ and $0.66-0.89$ for WMn-MPRAGE and CSFn-MPRAGE, respectively, and for the smaller nuclei, Dice values ranged from $0.73-0.82$ and $0.61-0.81$, respectively. Note also that the presence of MS lesions (arrows) has not affected the network performance, attesting to the robustness of the training process which included healthy and MS patients.
 
 \begin{figure*}[!htbp]
-\centering \includegraphics[width=\textwidth]{\figurepath{pdf/slide5.pdf}}\label{Thalamus.Fig.3.MS}
-\caption{WMn-MPRAGE (top left) and CSFn-MPRAGE (bottom left) images from a patient with MS acquired at 7T. The zoomed inset images on the right show representative axial and coronal sections with and without automated segmentation overlays with manual segmentation shown for the left thalamus in outlines. Note the comparable thalamic nuclei segmentations for both cases, despite the poor intra-thalamic nuclear contrast in the CSFn-MPRAGE image. MS lesions are shown as white arrows in the top inset image.}
+\centering \includegraphics[width=\textwidth]{\figurepath{pdf/slide5.pdf}}
+\caption{WMn-MPRAGE (top left) and CSFn-MPRAGE (bottom left) images from a patient with MS acquired at 7T. The zoomed inset images on the right show representative axial and coronal sections with and without automated segmentation overlays with manual segmentation shown for the left thalamus in outlines. Note the comparable thalamic nuclei segmentations for both cases, despite the poor intra-thalamic nuclear contrast in the CSFn-MPRAGE image. MS lesions are shown as white arrows in the top inset image.}%
+\label{Thalamus.Fig.3.MS}
 \end{figure*}
 
 
 \subsection{Network Robustness to Noise}
-Figure~\ref{Thalamus.Fig.6.NoiseAddition}  shows the effect of noise addition on the performance of the proposed method. It can be seen that even though there is a gradual decline in Dice for whole thalamus and all nuclei (except for VPL and LGN), there is no significant reduction in accuracy until SNR = 11.4 (i.e. reduced 2x from the baseline), showing that further acquisition speed-up (which usually comes at the cost of SNR) can be achieved. From SNR of 11.4 to SNR of 8 (3x reduction from baseline), two nuclei (MTT and LGN) and the whole thalamus show significant decline whilst the remaining show a more modest decline.
+Figure~\ref{Thalamus.Fig.6.NoiseAddition}  shows the effect of noise addition on the performance of the proposed method. It can be seen that even though there is a gradual decline in Dice for whole thalamus and all nuclei (except for VPL and LGN), there is no significant reduction in accuracy until SNR = 11.4 (i.e.\ reduced 2x from the baseline), showing that further acquisition speed-up (which usually comes at the cost of SNR) can be achieved. From SNR of 11.4 to SNR of 8 (3x reduction from baseline), two nuclei (MTT and LGN) and the whole thalamus show significant decline whilst the remaining show a more modest decline.
 
 \begin{figure*}[!htbp]
 \centering\includegraphics[width=\textwidth]{\figurepath{pdf/slide6.pdf}}
