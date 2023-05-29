@@ -15,12 +15,13 @@ In this work, we propose the use of a modified residual U-Net in a cascaded mult
 
 \section{METHODS}
 \subsection{Network Architecture}
-The proposed method uses a modified residual U-Net architecture (mRU-Net) for 2D thalamic nuclei segmentation as shown in Figure~\ref{Thalamus.Fig.1.Architecture}  (top panel). The conventional U-Net~\cite{ronneberger_UNet_2015} uses a contracting (encoder) layer and an expanding (decoder) layer for multi-resolution feature extraction and synthesis. To improve the convergence performance and reduce overfitting, we incorporated batch normalization~\cite{ioffe_Batch_2015} and dropout~\cite{srivastava_Dropout_2014} layers into the network. Residual convolutional blocks~\cite{he_Deep_2015} were included to mitigate the problem of vanishing and exploding loss function gradients. Each convolutional block consists of 2D convolution units followed by a batch normalization and a leaky rectified linear unit~\cite{maas_Rectifier_2013} (leakage factor 0.1). A 1$\times$1 convolution with a sigmoid activation function maps the final feature maps into the desired number of classes, generating a probability map for each class.
+The proposed method uses a modified residual U-Net architecture (mRU-Net) for 2D thalamic nuclei segmentation as shown in Figure~\ref{Thalamus.Fig.1.Architecture}  (top panel). The conventional U-Net~\cite{ronneberger_UNet_2015} uses a contracting (encoder) layer and an expanding (decoder) layer for multi-resolution feature extraction and synthesis. To improve the convergence performance and reduce overfitting, we incorporated batch normalization~\cite{ioffe_Batch_2015} and dropout~\cite{srivastava_Dropout_2014} layers into the network. Residual convolutional blocks~\cite{he_Deep_2016} were included to mitigate the problem of vanishing and exploding loss function gradients. Each convolutional block consists of 2D convolution units followed by a batch normalization and a leaky rectified linear unit~\cite{maas_Rectifier_2013} (leakage factor 0.1). A 1$\times$1 convolution with a sigmoid activation function maps the final feature maps into the desired number of classes, generating a probability map for each class.
 
 
 \begin{figure*}[!htbp]
-\centering\includegraphics[width=\textwidth]{\figurepath{pdf/slide1.pdf}}\label{Thalamus.Fig.1.Architecture}
-\caption{Top panel shows the mRU-Net architecture, where normalization and residual blocks are added to a standard U-Net. Bottom panel shows the proposed cascaded network for thalamic nuclei segmentation. Following pre-processing, mRU-Net1 is trained to segment the whole thalamus. The output of this network is used to find a bounding box (red square) that encompasses the left thalamus. The cropped inputs are used to train a second network (mRU-Net2) to segment the thalamic nuclei.}
+\centering\includegraphics[width=\textwidth]{\figurepath{pdf/slide1.pdf}}
+\caption{Top panel shows the mRU-Net architecture, where normalization and residual blocks are added to a standard U-Net. Bottom panel shows the proposed cascaded network for thalamic nuclei segmentation. Following pre-processing, mRU-Net1 is trained to segment the whole thalamus. The output of this network is used to find a bounding box (red square) that encompasses the left thalamus. The cropped inputs are used to train a second network (mRU-Net2) to segment the thalamic nuclei.}%
+\label{Thalamus.Fig.1.Architecture}
 \end{figure*}
 
 For thalamic segmentation, we use a two-step cascaded approach~\cite{jia_Prostate_2017}, as shown in Figure~\ref{Thalamus.Fig.1.Architecture}  (bottom panel). A first mRU-Net initially segments the whole thalamus, and this guides a second mRU-Net, which segments the different thalamic nuclei. Pre-processed 2D images (see section 2.3 for details) along with their manual segmentation masks are used to train the first network to segment the whole thalamus. A bounding box encompassing the whole thalamus is used to crop the input image (and its corresponding manual segmentation masks) before it is input to the second network to perform thalamic nuclei segmentation. Note that an optional pre-processing cropping step (``Cropping 1'' in Figure~\ref{Thalamus.Fig.1.Architecture}) is also added prior to inputting images to the first network.
@@ -29,8 +30,9 @@ Due to the limitation in the number of labeled datasets available, training a ge
 
 
 \begin{figure*}[!htbp]
-\centering \includegraphics[width=\textwidth]{\figurepath{pdf/slide2.pdf}}\label{Thalamus.Fig.2.MultiPlanar}
-\caption{{Schematic of the multi-planar scheme, based on the cascaded network of Figure~\ref{Thalamus.Fig.1.Architecture}. The 3D input image is reformatted to the sagittal, coronal and axial planes and fed as 2D input to three separate cascaded networks. Segmentations from the three 2D networks are fused using majority voting to generate the final 3D thalamic nuclei segmentation.}}
+\centering \includegraphics[width=\textwidth]{\figurepath{pdf/slide2.pdf}}
+\caption{{Schematic of the multi-planar scheme, based on the cascaded network of Figure~\ref{Thalamus.Fig.1.Architecture}. The 3D input image is reformatted to the sagittal, coronal and axial planes and fed as 2D input to three separate cascaded networks. Segmentations from the three 2D networks are fused using majority voting to generate the final 3D thalamic nuclei segmentation.}}%
+\label{Thalamus.Fig.2.MultiPlanar}
 \end{figure*}
 
 
@@ -74,7 +76,7 @@ Very small nuclei such as ventral posteromedial, centrolateral, and intralaminar
 
 \subsection{Network Training}
 
-All networks were implemented in Python and Keras~\cite{keras_2023} with a TensorFlow backend using an NVIDIA P100 GPU with 16 GB GDDR5 RAM (source code available at \UrlBreaks{https://github.com/artinmajdi/Thalamic-Nuclei-Segmentation}). The WMn network was trained using combined 3T and 7T data. The CSFn network was initialized using this WMn network and then fine-tuned (i.e.\ re-trained using WMn labels registered to CSFn data) to adapt to CSFn-MPRAGE contrast. The networks were trained using Adam optimizer~\cite{kingma_Adam_2014} with 300 epochs and a batch size of 100. Network performance was evaluated for both weighted cross-entropy and Dice loss functions. The number of layers, number of convolutional feature maps, and learning rates were chosen based on hyper-parameter tuning. Further, a scheduler was used to set the learning rate in each epoch, starting from an initial value of 0.001 that reduces by a factor of 0.5 if the validation Dice plateaus for 15 epochs. In the multi-planar approach, after a series of hyperparameter tuning, the number of feature maps in the first layer was set to 40, 30, and 20 for the sagittal, coronal and axial networks, respectively. The number of feature maps in each succeeding layer was increased by a factor of two as proposed in the conventional U-Net~\cite{ronneberger_UNet_2015}. For the WMn and CSFn networks, 20\% and 25\% of data were randomly selected for validation, while the remaining 80\% and 75\% were used for training, respectively.
+All networks were implemented in Python and Keras~\cite{keras_2023} with a TensorFlow backend using an NVIDIA P100 GPU with 16 GB GDDR5 RAM (source code available at \url{github.com/artinmajdi/Thalamic-Nuclei-Segmentation}). The WMn network was trained using combined 3T and 7T data. The CSFn network was initialized using this WMn network and then fine-tuned (i.e.\ re-trained using WMn labels registered to CSFn data) to adapt to CSFn-MPRAGE contrast. The networks were trained using Adam optimizer~\cite{kingma_Adam_2014} with 300 epochs and a batch size of 100. Network performance was evaluated for both weighted cross-entropy and Dice loss functions. The number of layers, number of convolutional feature maps, and learning rates were chosen based on hyper-parameter tuning. Further, a scheduler was used to set the learning rate in each epoch, starting from an initial value of 0.001 that reduces by a factor of 0.5 if the validation Dice plateaus for 15 epochs. In the multi-planar approach, after a series of hyperparameter tuning, the number of feature maps in the first layer was set to 40, 30, and 20 for the sagittal, coronal and axial networks, respectively. The number of feature maps in each succeeding layer was increased by a factor of two as proposed in the conventional U-Net~\cite{ronneberger_UNet_2015}. For the WMn and CSFn networks, 20\% and 25\% of data were randomly selected for validation, while the remaining 80\% and 75\% were used for training, respectively.
 
 \subsection{Pre- and Post-Processing}
 All input images were pre-processed by performing N4 bias-field correction and zero mean unit standard deviation normalization. They were then reformatted to a standard imaging plane and resolution (axial with 0.7 $\times$ 0.5 $\times$ 0.7 $mm^3$. To ensure enough variability, the training data were augmented using random in-plane rotations of up to $\pm7^\circ $ in three different planes, creating six new images in each orientation and a net increase in the number of training data by a factor of 18. To reduce the memory and computation power requirements, a cropping step was added to the pre-processing as an extra option. To automate this cropping step, we employed a WMn-MPRAGE template created from mutual registration and averaging of 20 prior WMn-MPRAGE datasets as described in Su~\cite{su_Thalamus_2019}. A bounding box covering both thalami was manually drawn once, on this template and warped into the input image space by affine registering the template with the input image. The pre-processing steps are shown in Figure~\ref{Thalamus.Fig.1.Architecture}  (bottom panel). Typical input sizes for the original, pre-processed (input to the first whole thalamus network), and cropped images (input to the second nuclei segmentation network) were 256$\times$373$\times$256, 97$\times$94$\times$63, and 52$\times$84$\times$48, respectively.
@@ -185,8 +187,9 @@ The WMn network initialized using weights from a 3T initialization network showe
 Figure~\ref{Thalamus.Fig.1.Dice} shows Dice for (a) WMn-MPRAGE data segmented using the proposed method (blue) and THOMAS (red) and (b) CSFn-MPRAGE data segmented using the proposed method (blue) and FreeSurfer (red). Note that this aggregates the Dice over control, MS, and ET cases (WMn: n=40 and CSFn: n=33). Our proposed CNN-based method shows improved Dice over THOMAS and FreeSurfer for seven and ten nuclei, respectively.
 
 \begin{figure*}[!htbp]
-\includegraphics[width=\textwidth]{\figurepath{pdf/slide3.pdf}}\label{Thalamus.Fig.1.Dice}
-\caption{{Comparison of average Dice for (a) WMn-MPRAGE and (b) CSFn-MPRAGE for the proposed method (blue) and THOMAS/FreeSurfer (red), aggregated over all cases. Dice values segregated by disease type is shown in Tables~\ref{Thalamus.Table.3.Comparison.THOMAS} and~\ref{Thalamus.Table.4.Comparison.FreeSurfer}.}}
+\includegraphics[width=\textwidth]{\figurepath{pdf/slide3.pdf}}
+\caption{{Comparison of average Dice for (a) WMn-MPRAGE and (b) CSFn-MPRAGE for the proposed method (blue) and THOMAS/FreeSurfer (red), aggregated over all cases. Dice values segregated by disease type is shown in Tables~\ref{Thalamus.Table.3.Comparison.THOMAS} and~\ref{Thalamus.Table.4.Comparison.FreeSurfer}.}}%
+\label{Thalamus.Fig.1.Dice}
 \end{figure*}
 
 
@@ -309,8 +312,9 @@ Images from a representative MS patient acquired using two different contrasts (
 Figure~\ref{Thalamus.Fig.6.NoiseAddition}  shows the effect of noise addition on the performance of the proposed method. It can be seen that even though there is a gradual decline in Dice for whole thalamus and all nuclei (except for VPL and LGN), there is no significant reduction in accuracy until SNR = 11.4 (i.e. reduced 2x from the baseline), showing that further acquisition speed-up (which usually comes at the cost of SNR) can be achieved. From SNR of 11.4 to SNR of 8 (3x reduction from baseline), two nuclei (MTT and LGN) and the whole thalamus show significant decline whilst the remaining show a more modest decline.
 
 \begin{figure*}[!htbp]
-\centering\includegraphics[width=\textwidth]{\figurepath{pdf/slide6.pdf}}\label{Thalamus.Fig.6.NoiseAddition}
-\caption{{Effect of noise addition on the performance of the proposed method. Note the excellent performance on most nuclei for 2X lower SNR (SNR = 11.4) compared to baseline (SNR = 23).}}
+\centering\includegraphics[width=\textwidth]{\figurepath{pdf/slide6.pdf}}
+\caption{{Effect of noise addition on the performance of the proposed method. Note the excellent performance on most nuclei for 2X lower SNR (SNR = 11.4) compared to baseline (SNR = 23).}}%
+\label{Thalamus.Fig.6.NoiseAddition}
 \end{figure*}
 
 
@@ -319,8 +323,9 @@ Two-tailed t-test analyses showed no statistically significant difference betwee
 
 
 \begin{figure*}[!htbp]
-\centering\includegraphics[width=\textwidth]{\figurepath{pdf/SupportingFigure1.pdf}}\label{Thalamus.Fig.5.ConvergenceRate}
-\caption{Effect of initialization on final accuracy and convergence curves. The validation accuracy (Dice) and training loss for a network with random initialization versus initialization froma network trained on a 3T dataset is shown. The segmentation results indicate a statistically significant improvement over two nuclei (VA and Hb) when initialized from the 3T network.}
+\centering\includegraphics[width=\textwidth]{\figurepath{pdf/SupportingFigure1.pdf}}
+\caption{Effect of initialization on final accuracy and convergence curves. The validation accuracy (Dice) and training loss for a network with random initialization versus initialization froma network trained on a 3T dataset is shown. The segmentation results indicate a statistically significant improvement over two nuclei (VA and Hb) when initialized from the 3T network.}%
+\label{Thalamus.Fig.5.ConvergenceRate}
 \end{figure*}
 
 

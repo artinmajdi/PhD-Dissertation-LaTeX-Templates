@@ -320,7 +320,7 @@ To calculate this confidence score, we modify the two techniques used by Sheng~\
 
 \section{Results}
 
-In this section, we assess the efficacy of our proposed strategy. To evaluate our proposed technique, we conducted a series of experiments comparing the proposed technique with existing state-of-the-art techniques such as MV, Tao~\cite{tao_Label_2020}, and Sheng~\cite{sheng_Majority_2019}, as well as with other crowdsourcing methodologies reported in the crowd-kit package~\cite{ustalov_learningcrowdscrowdkit_2021} including Gold Majority Voting, MMSR~\cite{ma_Adversarial_2020}, Wawa, Zero-Based Skill, GLAD~\cite{whitehill_Whose_2009}, and Dawid Skene~\cite{dawid_Maximum_1979}.
+In this section, we assess the efficacy of our proposed strategy. To evaluate our proposed technique, we conducted a series of experiments comparing the proposed technique with existing state-of-the-art techniques such as MV, Tao~\cite{tao_Label_2020}, and Sheng~\cite{sheng_Majority_2019}, as well as with other crowdsourcing methodologies reported in the crowd-kit package~\cite{ustalov_learning_2021} including Gold Majority Voting, MMSR~\cite{ma_Adversarial_2020}, Wawa, Zero-Based Skill, GLAD~\cite{whitehill_Whose_2009}, and Dawid Skene~\cite{dawid_Maximum_1979}.
 
 \subsection{Datasets:}
 
@@ -373,7 +373,7 @@ In this study, we generated multiple fictitious label sets for each dataset to s
 
 \subsection{Benchmarks:}
 
-Tao~\cite{tao_Label_2020} and Sheng~\cite{sheng_Majority_2019} techniques were implemented in Python to evaluate their performance. Furthermore, the crowd-kit package (A General-Purpose Crowdsourcing Computational Quality Control Toolkit for Python)~\cite{ustalov_learningcrowdscrowdkit_2021} was used to implement the remaining benchmark techniques, including Gold Majority Voting, MMSR~\cite{ma_Adversarial_2020}, Wawa, Zero-Based Skill, GLAD~\cite{whitehill_Whose_2009}, and Dawid Skene~\cite{dawid_Maximum_1979}.
+Tao~\cite{tao_Label_2020} and Sheng~\cite{sheng_Majority_2019} techniques were implemented in Python to evaluate their performance. Furthermore, the crowd-kit package (A General-Purpose Crowdsourcing Computational Quality Control Toolkit for Python)~\cite{ustalov_learning_2021} was used to implement the remaining benchmark techniques, including Gold Majority Voting, MMSR~\cite{ma_Adversarial_2020}, Wawa, Zero-Based Skill, GLAD~\cite{whitehill_Whose_2009}, and Dawid Skene~\cite{dawid_Maximum_1979}.
 
 \begin{itemize}
     \item \textbf{Golden majority voting} estimates the probability that each annotator possesses the correct label and then calculates the probability of each label per occurrence based on the weight assigned to each label. Assume that 10,000 jobs are performed by 3,000 annotators as well as 100 instances of ground truth. First, the percentage of correct labels for each annotator is calculated. The remaining labels were then estimated based on the weights.
@@ -393,8 +393,9 @@ Figure~\ref{crowd.Fig.1.weight} depicts the relationship between the randomly as
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=\textwidth]{\figurepath{image1.png}}\label{crowd.Fig.1.weight}
+    \includegraphics[width=\textwidth]{\figurepath{image1.png}}
     \caption{{Comparison of estimated weight with respect to annotators' degree of reliability for the proposed aggregation technique ``proposed-penalized'' and Tao~\cite{tao_Label_2020} for 10 different datasets.}}
+    \label{crowd.Fig.1.weight}
 \end{figure}
 
 \subsection{Confidence-score}
@@ -406,23 +407,25 @@ Figure~\ref{crowd.Fig.4.confidence_score.freq} displays the average accuracy usi
 
 \begin{figure*}[!htbp]
 \centering
-\includegraphics[width=0.8\textwidth]{\figurepath{image2.png}}\label{crowd.Fig.2.confidence_scores}
+\includegraphics[width=0.8\textwidth]{\figurepath{image2.png}}
 \caption{Comparison of the measured average accuracy for the two confidence-score measurement techniques in ten different datasets (using the proposed crowd-certain technique with penalization) in different numbers of annotators (from 3 up to 10).}
-
+\label{crowd.Fig.2.confidence_scores}
 \end{figure*}
 
 \begin{figure*}[!htbp]
     \centering
-    \includegraphics[width=0.9\textwidth]{\figurepath{image4.png}}\label{crowd.Fig.4.confidence_score.freq}
-    \caption{Comparison of the measured average accuracy for the proposed crowd-certain technique with and without penalization and using the `freq' confidence-score strategy on ten different datasets with different numbers of annotators (starting from 3 to 10).}
+    \includegraphics[width=0.9\textwidth]{\figurepath{image4.png}}
+    \caption{Comparison of the measured average accuracy for the proposed crowd-certain technique with and without penalization and using the `freq' confidence-score strategy on ten different datasets with different numbers of annotators (starting from 3 to 10).}%
+    \label{crowd.Fig.4.confidence_score.freq}
 \end{figure*}
 
 Figure~\ref{crowd.Fig.5.confidencescore-beta} shows the average accuracy distribution (``freq'' strategy) of the proposed penalized versus Tao and Sheng for a different number of annotators using the kernel density estimation technique. This demonstrates that the proposed technique outperforms both Tao and Sheng on nine of the ten datasets, with higher average accuracy and less fluctuation over different annotator counts. Table~\ref{crowd.Table.2.crowdcertain_vs_Tao.freq}  shows the statistical data measured between the proposed penalized technique and Tao's method. As can be seen from these results, the proposed technique has a significant improvement over the seven datasets, while delivering similar results for the other three datasets (p-value < 0.05).
 
 \begin{figure*}[!htbp]
     \centering
-    \includegraphics[width=\textwidth]{\figurepath{image7.png}}\label{crowd.Fig.5.confidencescore-beta}
-    \caption{{Measured accuracy distribution of the proposed-penalized aggregation technique uwMV-Freq, compared to wMV-Freq (Tao \unskip~\protect\cite{tao_Label_2020}), and MV-Freq (Sheng \unskip~\protect\cite{sheng_Majority_2019}) for different numbers of annotators, using the kernel density estimation technique}}
+    \includegraphics[width=\textwidth]{\figurepath{image7.png}}
+    \caption{{Measured accuracy distribution of the proposed-penalized aggregation technique uwMV-Freq, compared to wMV-Freq (Tao \unskip~\protect\cite{tao_Label_2020}), and MV-Freq (Sheng \unskip~\protect\cite{sheng_Majority_2019}) for different numbers of annotators, using the kernel density estimation technique}}%
+    \label{crowd.Fig.5.confidencescore-beta}
 \end{figure*}
 
 \begin{table}[]
@@ -459,12 +462,13 @@ Figure~\ref{crowd.Fig.6.accuracy} shows the average accuracy distribution (``Bet
 
 \begin{figure*}[!htbp]
     \centering
-    \includegraphics[width=\textwidth]{\figurepath{image8.png}}\label{crowd.Fig.6.accuracy}
-    \caption{{Measured accuracy distribution of the proposed-penalized aggregation technique uwMV-Beta, compared to wMV-Beta (Tao \unskip~\protect\cite{tao_Label_2020}), and MV- Beta (Sheng \unskip~\protect\cite{sheng_Majority_2019}) for different numbers of annotators, using the kernel density estimation technique.}}
+    \includegraphics[width=\textwidth]{\figurepath{image8.png}}
+    \caption{{Measured accuracy distribution of the proposed-penalized aggregation technique uwMV-Beta, compared to wMV-Beta (Tao \unskip~\protect\cite{tao_Label_2020}), and MV- Beta (Sheng \unskip~\protect\cite{sheng_Majority_2019}) for different numbers of annotators, using the kernel density estimation technique.}}%
+    \label{crowd.Fig.6.accuracy}
 \end{figure*}
 
 \begin{table}[]
-    \caption{Statistical tests between the proposed-penalized and Tao\unskip~\protect\cite{tao_Label_2020} technique for the ``Beta'' confidence measurement strategy.}
+    \caption{Statistical tests between the proposed-penalized and Tao~\cite{tao_Label_2020} technique for the ``Beta'' confidence measurement strategy.}
     \resizebox{\textwidth}{!}{
     \begin{tabular}{lccclllccrc}
         \hline
@@ -496,13 +500,15 @@ Figure~\ref{Fig.6-accuracy-different-n-annotators} shows the average accuracy fo
 
 \begin{figure*}[!htbp]
     \centering
-    \includegraphics[width=\textwidth]{\figurepath{image9.png}}\label{Fig.6-accuracy-different-n-annotators}
-    \caption{{Average accuracy for the proposed aggregation techniques compared to the benchmarks for different numbers of annotators (horizontal axis) in the ionosphere dataset.}}
+    \includegraphics[width=\textwidth]{\figurepath{image9.png}}
+    \caption{{Average accuracy for the proposed aggregation techniques compared to the benchmarks for different numbers of annotators (horizontal axis) in the ionosphere dataset.}}%
+    \label{Fig.6-accuracy-different-n-annotators}
 \end{figure*}
 
 \begin{figure*}[!htbp]
-    \centering \includegraphics[width=\textwidth]{\figurepath{image10.png}}\label{Fig.7-accuracy-different-datasets}
-    \caption{Average accuracy of the proposed aggregation techniques compared to the benchmarks for different datasets using three annotators.}
+    \centering \includegraphics[width=\textwidth]{\figurepath{image10.png}}
+    \caption{Average accuracy of the proposed aggregation techniques compared to the benchmarks for different datasets using three annotators.}%
+    \label{Fig.7-accuracy-different-datasets}
 \end{figure*}
 
 

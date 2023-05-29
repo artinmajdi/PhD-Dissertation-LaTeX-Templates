@@ -19,8 +19,8 @@ Therefore, there is interest in using dashboard camera image analysis to automat
 \begin{figure}[!htbp]
     \centering
     \includegraphics[width=\textwidth]{\figurepath{image1.jpeg}}%
+    \caption{Representative dashboard camera images of drivers being distracted. From left to right: drinking while driving; safe driving; reaching behind while driving; talking on the phone (left hand) while driving~\cite{montoya_State_2016}.}%
     \label{Drive-Net/figure1}
-    \caption{Representative dashboard camera images of drivers being distracted. From left to right: drinking while driving; safe driving; reaching behind while driving; talking on the phone (left hand) while driving~\cite{montoya_State_2016}.}
 \end{figure}
 
 Object detection and human behavior detection are well-researched topics in the computer vision literature~\cite{borji_Salient_2019}. Machine learning (esp. Deep Learning) techniques can often learn complex models and achieve high accuracy, so many researchers have started to apply such techniques to solve computer vision problems, including object detection and human behavior detection. For example, the Inception-v4 model proposed by Szegedy~\cite{szegedy_InceptionV4_2017} is a supervised learning model made up of deep convolutional residual networks (ResNet) that have more than 75 trainable layers, and achieves 96.92\% accuracy in the ImageNet data set. Girshick~\cite{girshick_RegionBased_2016} introduced a very powerful method for object detection and segmentation using a region-based convolutional neural network (CNN). This method divides the human behavior detection problem into two problems. First, they apply an object detection algorithm to detect the regions of interest (ROIs) where people are present within an image. Next, each ROI is fed to a CNN to identify the type of behavior exhibited in the given ROI\@. Adding other traditional machine learning methods, such as ensemble learning (i.e.\ bagging) and K nearest neighbors (KNN), to the CNN model is a way to improve the accuracy of the already existing model~\cite{kim_Vehicle_2017}.
@@ -81,6 +81,7 @@ The Kaggle competition~\cite{montoya_State_2016} for driver distraction has prov
 Ten classes are provided, related to the ones listed in Section I \@. Each class includes almost tens of the data, so that we have a uniform distribution of sample data.
 
 \begin{multicols}{2}
+\centering
 \begin{itemize}
 \item c0: safe driving
 \item c1: texting (right hand)
