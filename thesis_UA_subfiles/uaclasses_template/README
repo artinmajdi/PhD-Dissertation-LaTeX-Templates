@@ -1,0 +1,65 @@
+Except where otherwise indicated this code was originally written
+by, and continues to be maintained by, Marcel Oliver. It is released
+into the public domain. 
+Where otherwise indicated, code is covered by the licensing terms of
+the original packages.
+The above statement was added 2009/01/05 by Clea F. Rees on behalf 
+of the author.
+
+Readme file for the package "ua-classes".  Date: 1997/03/08
+-----------------------------------------------------------
+
+This package provides a LaTeX2e document class named 'ua-thesis' for
+typesetting theses and dissertations in the official format required by the
+University of Arizona.  Moreover, there is a fully compatible alternative
+document class 'my-thesis' for private "nice" copies of the dissertation,
+and the respective title pages are available as separate packages to work
+with "any" document class.
+
+
+The distribution contains the following files:
+
+README          This file.
+
+ua-classes.dtx  User guide and documented source code.
+                Run 'latex ua-classes.dtx' to obtain user documentation.
+
+ua-classes.ins  Installation file.
+                Run 'latex ua-classes.ins' to install the package.
+                Generates the following files:
+                ua-thesis.cls, my-thesis.cls, ua-title.sty, my-title.sty
+
+ua-example.tex  An example dissertation generated from the University
+                of Arizona Manual for Theses and Dissertations.
+
+ua-example.dvi  Example output formatted with ua-thesis.cls
+                and the draft option (from 'ua-example.tex')
+
+my-example.dvi  Example output formatted with my-thesis.cls
+
+
+The following software needs to be installed on the user's system:
+
+LaTeX           version 2e, December 1994 or later
+AMS-LaTeX       version 1.2, October 1996 or later
+AMSFonts        version 2.0, January 1995 or later
+
+
+Changes from release 1996/12/05:
+
+                Fixed placement and fonts of captions in my-thesis.cls
+                Fixed required release date of AMS macros
+                
+
+Send comments to:
+
+Marcel Oliver   oliver@member.ams.org
+
+
+Changes added April 2005 by George Pearson:
+
+- Fixed two typos in ua-classes.dtx where \gedf was used instead of \gdef.
+  No other changes (including version number) were made.
+
+- Updated this README file to change Marcel's email per his request (and
+  added the comments about the April 2005 changes).
