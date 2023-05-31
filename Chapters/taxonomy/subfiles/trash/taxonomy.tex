@@ -1,0 +1,30 @@
+\documentclass[preprint,3p,times, review]{elsarticle}
+% \documentclass[preprint,12pt]{elsarticle}
+% \documentclass[final,3p,times, review]{elsarticle}
+% \documentclass[final,5p,times,twocolumn]{elsarticle}
+% \documentclass[preprint,review,12pt]{elsarticle}
+% \documentclass[pdflatex,temp/sn-basic]{temp/sn-jnl}
+% \documentclass[10pt, a4paper]{article}
+
+
+\include{subfiles/premaples}
+
+\begin{document}
+
+\begin{frontmatter}
+\title{\addtitle}
+\author[label1]{Mohammad S. Majdi}
+\author[label1]{Jeff J. Rodriguez}
+\affiliation[label1]{organization={Dept.\ of Electrical and Computer Engineering, The University of Arizona}, city={Tucson}, state={AZ}, country={USA}}
+
+\begin{abstract}\addabstract\end{abstract}
+\begin{keyword}\addkeyword\end{keyword}
+\end{frontmatter}
+
+\input{body.tex}
+
+% \bibliographystyle{elsarticle-num}
+\bibliographystyle{apalike}
+\bibliography{references/references, references/Better_BibTeX_Zotero}
+
+\end{document}

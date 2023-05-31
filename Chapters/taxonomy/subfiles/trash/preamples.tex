@@ -1,0 +1,49 @@
+\usepackage{url}
+\usepackage{amssymb}
+\usepackage{tabulary,xcolor}
+\usepackage{amsfonts,amsmath,amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{endfloat}
+\usepackage{caption}
+\usepackage[utf8]{inputenc}
+\usepackage{stmaryrd}
+\usepackage{multirow,morefloats,floatflt,cancel,tfrupee}
+\makeatletter \usepackage{textcomp} \makeatother
+\usepackage{graphicx}
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{pifont}
+\usepackage[nointegrals]{wasysym}
+\usepackage{dblfloatfix}
+\usepackage{paratype}
+\usepackage{pdfpages}
+\usepackage{standalone}
+
+
+% Set default font to sans-serif
+\renewcommand{\familydefault}{\sfdefault}
+
+% Change the captions fonts to PT Sans Narrow. This is important to be able to fit some of larger tables in the page.
+\newcommand{\ptsansnarrow}{\fontfamily{PTSansNarrow-TLF}\selectfont}
+\let\origcaption\caption\renewcommand{\caption}[1]{\ptsansnarrow\origcaption{#1}}
+
+% Adding space after each paragraph
+\setlength{\parskip}{1.2em}
+
+% Removing the indentation in the begininig of each paragraph
+\setlength{\parindent}{0pt}
+
+% Increase the line spacing to 1.5
+\linespread{1.5}
+
+\journal{Neurocomputing}
+
+
+\usepackage{etoolbox}
+\pretocmd{\addtitle}{A Hierarchical multi-label Classification Technique for an Improved Diagnosis of Thoracic Disease in Chest Radiography}{}{}
+
+\pretocmd{\addabstract}{The accurate diagnosis of chest diseases based on chest radiographs is a difficult undertaking that can result in diagnostic errors that negatively impact patient outcomes. In this study, we propose a novel hierarchical multi-label classification method that employs a conditional loss function to enhance the identification of common thoracic diseases in chest radiographic images. Using a predefined disease taxonomy to account for interrelationships between diseases, the proposed method improves the classification performance of machine learning models. Our method can be seamlessly integrated into existing pre-trained models without requiring re-optimization, ensuring efficiency and extensive applicability. To determine the efficacy of the proposed method, experiments were conducted on a variety of publicly accessible datasets, including CheXpert, PadChest, and NIH Chest-Xray14. The results indicate that the proposed method substantially improves the precision and interpretability of machine learning models for thoracic disease on chest radiographs. This approach has the potential to improve patient outcomes by providing radiologists with an additional layer of decision support, thereby facilitating a more accurate and efficient diagnosis.}{}{}
+
+\pretocmd{\addkeyword}{Chest radiography, hierarchical classification, disease taxonomy, multi-label classification, conditional loss function, diagnostic error, machine learning, medical imaging}{}{}
+
+\newcommand{\figurepath}[1]{figures/#1}

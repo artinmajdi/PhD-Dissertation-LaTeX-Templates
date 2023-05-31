@@ -1,23 +1,89 @@
-\input{preamples.tex}
+\input{subfiles/preample.tex}
 \newcommand{\figurepath}[1]{figures/#1}
-\input{commands.tex}
 
 \begin{document}
 
 \begin{frontmatter}
-    \title{\addtitle}
-    \author[label1]{Mohammad S. Majdi}
-    \author[label1]{Jeff J. Rodriguez}
-    \affiliation[label1]{organization={Dept.\ of Electrical and Computer Engineering, The University of Arizona}, city={Tucson}, state={AZ}, country={USA}}
 
-    \begin{abstract}\addabstract\end{abstract}
-    \begin{keyword}\addkeyword\end{keyword}
+%% Title, authors and addresses
+
+%% use the tnoteref command within \title for footnotes;
+%% use the tnotetext command for theassociated footnote;
+%% use the fnref command within \author or \affiliation for footnotes;
+%% use the fntext command for theassociated footnote;
+%% use the corref command within \author for corresponding author footnotes;
+%% use the cortext command for theassociated footnote;
+%% use the ead command for the email address,
+%% and the form \ead[url] for the home page:
+%% \title{Title\tnoteref{label1}}
+%% \tnotetext[label1]{}
+%% \author{Name\corref{cor1}\fnref{label2}}
+%% \ead{email address}
+%% \ead[url]{home page}
+%% \fntext[label2]{}
+%% \cortext[cor1]{}
+%% \affiliation{organization={},
+%%            addressline={},
+%%            city={},
+%%            postcode={},
+%%            state={},
+%%            country={}}
+%% \fntext[label3]{}
+
+\title{A Hierarchical Multilabel Classification Method for Enhanced Thoracic Disease Diagnosis in Chest Radiography}
+
+\author[label]{Mohammad S. Majdi}
+\author[label]{Jeffrey J. Rodriguez}
+\affiliation[label]{organization={Dept.\ of Electrical and Computer Engineering, University of Arizona},Department and Organization city={Tucson}, postcode={85721}, state={AZ}, country={USA}}
+
+\begin{abstract}
+\input{subfiles/abstract.tex}
+\end{abstract}
+
+%%Graphical abstract
+\begin{graphicalabstract}
+%\includegraphics{grabs}
+\end{graphicalabstract}
+
+%%Research highlights
+\begin{highlights}
+\item Research highlight 1
+\item Research highlight 2
+\end{highlights}
+
+\begin{keyword}
+\input{subfiles/keywords.tex}
+\end{keyword}
+
 \end{frontmatter}
 
-\input{body.tex}
+%% \linenumbers
 
-% \bibliographystyle{elsarticle-num}
+%% main text
+\input{subfiles/body.tex}
+
+%% The Appendices part is started with the command \appendix;
+%% appendix sections are then done as normal sections
+%% \appendix
+
+%% \section{}
+%% \label{}
+
+%% If you have bibdatabase file and want bibtex to generate the
+%% bibitems, please use
+%%
+%%  \bibliographystyle{elsarticle-harv}
+%%  \bibliography{<your bibdatabase>}
+
+%% else use the following coding to input the bibitems directly in the
+%% TeX file.
+
 \bibliographystyle{apalike}
-\bibliography{references/references, references/Better_BibTeX_Zotero}
+%\bibliographystyle{subfiles/bst/elsarticle-num}
+\bibliography{subfiles/Better_BibTeX_Zotero}
 
 \end{document}
+
+\endinput
+%%
+%% End of file `elsarticle-template-harv.tex'.
