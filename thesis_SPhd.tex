@@ -1,31 +1,17 @@
-% \documentclass{SPhdThesis}
-\documentclass[copyright]{thesis_SPhd_subfiles/SPhdThesis_myversion}
-
-
+\documentclass[]{bst/SPhdThesis_myversion}
 \input{preamples.tex}
+
 \input{commands_initialization.tex}
 
 % The document.
 \begin{document}
 
-    % \include{Chapters/preface}
+\include{Chapters/preface}%
+\include{Chapters/Abstract}%
+\include{Chapters/taxonomy/taxonomy_thesis}
+\include{Chapters/crowd/crowd_thesis}
+% \include{Chapters/thalamus/thalamus_thesis}
+% \include{Chapters/drive_net/drive_net_thesis}
 
-	% \begin{frontmatter}
-		% \SgAddTitle%
-         % \SgAddApproval%
-		% \SgAddDeclaration%
-		% \input{thesis_SPhd_subfiles/acknowledgments.tex}%
-		% \input{Chapters/Abstract.tex}%
-		% \SgAddToc%  Table of contents.
-		% \SgAddLof%  List of figures.
-		% \SgAddLot%  List of tables.
-		% \SgAddLoa%  List of algorithms.
-	% \end{frontmatter}
-
-    \include{Chapters/taxonomy/taxonomy_thesis}
-    \include{Chapters/crowd/crowd_thesis}
-    % \include{Chapters/thalamus/thalamus_thesis}
-    % \include{Chapters/drive_net/drive_net_thesis}i
-
-	\SgIncludeBib{Better_BibTeX_Zotero}
+\SgIncludeBib{Better_BibTeX_Zotero}
 \end{document}

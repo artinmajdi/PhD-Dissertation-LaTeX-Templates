@@ -8,8 +8,6 @@
 
 \RequirePackage{xkeyval}
 
-% \DeclareOption{copyright}{\@copyrighttrue}
-
 % -----------------------------------------------------------------------------
 % Define option for formatting for [screen] and print.
 % When formatting for screen colors are used for links, tables, and algorithms.
@@ -46,7 +44,7 @@
 
 % -----------------------------------------------------------------------------
 % Define open. The valid values are right and [any].
-% Right makes chapters and entries in frontmatter begin  only on right hand pages
+% Right makes chapters and entries in frontmatter begin  only on right hand pages 
 % or on the next page available. Any puts them on the next available page.
 \define@choicekey*[Sg]{PhDThesis}{open}[\val\nr]{right,any}[any]{%
 	\ifcase\nr\relax
@@ -99,8 +97,8 @@
 
 % -----------------------------------------------------------------------------
 % C A P T I O N S
-%
-% Nicer captions for figures and tables.
+% 
+% Nicer captions for figures and tables. 
 % caption package must be included before subfig and hyperref.
 
 % Change the font of the caption to sans serif and make label bold.
@@ -110,7 +108,7 @@
 
 % -----------------------------------------------------------------------
 % P A C K A G E S
-%
+% 
 % Include important packages.
 
 \RequirePackage{graphicx, subfig}                     % Figures.
@@ -126,15 +124,14 @@
 
 % Use geometry package to set up margins.
 % A4 paper is 8.27 x 11.69 inch.
-% \RequirePackage[a4paper, left=1.25in, right=1in, top=1in, bottom=1in, includehead, \SgIntPageSide]{geometry}
-\RequirePackage[letterpaper, left=1in, right=1in, top=1in, bottom=1in, includehead, \SgIntPageSide]{geometry}
+\RequirePackage[a4paper, left=1.25in, right=1in, top=1in, bottom=1in, includehead, \SgIntPageSide]{geometry}
 
 \ifthenelse{\equal{\SgIntOpen}{openright}}
 {
 	% For adding extra blank page, if necessary, after chapter.
 	\RequirePackage{emptypage}
-
-	% Define a command to leave a blank page. This is used in frontmatter to add
+	
+	% Define a command to leave a blank page. This is used in frontmatter to add 
 	% an empty page between ack, abstract, toc, lof and lot.
 	\newcommand{\SgIntClearDoublePage}{\clearpage{\pagestyle{empty}\cleardoublepage}}
 }
@@ -174,7 +171,7 @@
 
 % -----------------------------------------------------------------------
 % T A B L E
-%
+% 
 % Set table layout and design.
 
 \RequirePackage{booktabs, colortbl} % Tables.
@@ -224,14 +221,14 @@
 % Rename bibliography to references.
 \renewcommand{\bibname}{References}
 
-% Define a new command to include the bibliography file and
+% Define a new command to include the bibliography file and 
 % set the formatting options.
 \newcommand{\SgIncludeBib}[1]
 {%
 	\clearpage                                 % Fix the page number in TOC.
 	\phantomsection                            % Fix the link in PDF.
 	\addcontentsline{toc}{chapter}{References} % Add the bibliography to TOC.
-	\bibliographystyle{ieeetr}                  % Set the bibliography style.
+	\bibliographystyle{alpha}                  % Set the bibliography style.
 	\bibliography{#1}                          % Include the bibliography file.
 }
 
@@ -249,10 +246,10 @@
 % so restore the chapter casing.
 \renewcommand{\chaptermark}[1]{\markboth{\chaptername\ \thechapter.\ #1}{}}
 
-% Define header consisting of Chapter #. Chapter_Name on left side and
+% Define header consisting of Chapter #. Chapter_Name on left side and 
 % page number on right side.
 % \nouppercase is used on left header to force bibliography in lowercase.
-\fancyhead{}
+\fancyhead{} 
 \fancyhead[L]{\nouppercase{\SgIntHeaderFormat\leftmark}}
 \fancyhead[R]{\SgIntPageNumFormat\thepage}
 \renewcommand{\headrulewidth}{1pt}
@@ -268,7 +265,7 @@
     % Disable header.
     \fancyhead{}
     \renewcommand{\headrulewidth}{0pt}
-
+    
     % Footer contains the page number on right side.
     \fancyfoot{}
     \fancyfoot[R]{\SgIntPageNumFormat\thepage}
@@ -279,7 +276,7 @@
 
 % -----------------------------------------------------------------------
 % T O C    L O F    L O T    L O A
-%
+% 
 % Change the appearance of toc, lof, lot, etc.
 
 % Using tocloft, the toc can be formatted easily.
@@ -328,7 +325,7 @@
 
 % -------------------------------------------------------------------------------------
 % C H A P T E R   H E A D I N G
-%
+% 
 % Change the appearance of chapter headers and section titles.
 
 % Change the fonts for chapter heading.
@@ -348,7 +345,7 @@
 	% Reduce the space between chapter title and text.
 	\patchcmd{\DOTI}{\vskip 40\p@}{\vskip 20\p@}{}{}
 	\patchcmd{\DOTIS}{\vskip 40\p@}{\vskip 20\p@}{}{}% for unnumbered chapters
-
+	
 	% http://tex.stackexchange.com/questions/13357/fncychap-package-reduce-vertical-gap-space-between-header-and-chapter-heading
 	% Reduce the spacing between top margin and chapter title.
 	\renewcommand*{\@makechapterhead}[1]
@@ -360,22 +357,22 @@
 				\if@mainmatter % Fix for frontmatter, mainmatter, and backmatter 040920
 					\DOCH
 				\fi
-			\fi
-			\interlinepenalty\@M
+			\fi    
+			\interlinepenalty\@M    
 			\if@mainmatter     % Fix for frontmatter, mainmatter, and backmatter 060424
 				\DOTI{#1}%
-			\else%
+			\else%      
 				\DOTIS{#1}%
 			\fi
 		}
 	}
-
+	
 	% For the case \chapter*:
 	\renewcommand*{\@makeschapterhead}[1]
 	{%
 		\vspace*{10\p@}%
 		{%
-			\parindent \z@ \raggedright \normalfont
+			\parindent \z@ \raggedright \normalfont 
 			\interlinepenalty\@M \DOTIS{#1} \vskip 10\p@
 		}
 	}
@@ -385,7 +382,7 @@
 
 % -----------------------------------------------------------------------
 % H Y P E R E F
-%
+% 
 % Set hyperlink settings.
 
 \RequirePackage[hyphens]{url} % Embedding URL's in document.
@@ -398,7 +395,7 @@
 {%
 	\definecolor{webgreen}{rgb}{0,.5,0} % previously used magenta.
 	\definecolor{webblue}{rgb}{0,0,1}   % previously used orange.
-
+	
 	\hypersetup
 	{%
 		colorlinks = true,
@@ -417,20 +414,19 @@
 {%
 	\hypersetup
 	{%
-		pdfauthor   = \SgIntAuthor,
-		pdftitle    = \SgIntTitle,
-		pdfsubject  = \SgIntSubject,
+		pdfauthor   = \SgIntAuthor, 
+		pdftitle    = \SgIntTitle, 
+		pdfsubject  = \SgIntSubject, 
 		pdfkeywords = \SgIntKeywords
 	}
 }
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% -----------------------------------------------------------------------
 % D O C U M E N T   P R O P E R T I E S
-
-% DEFINITIONS NEEDED FOR PREFACE PAGES
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+% Important variables used for creating PDF properties and the title page.
 
 % Define empty variables for creating title and setting PDF properties.
 \newcommand{\SgIntTitle}{}
@@ -443,13 +439,6 @@
 \newcommand{\SgIntDepartment}{}
 \newcommand{\SgIntUniversity}{}
 \newcommand{\SgIntDeclarationDate}{}
-\newcommand{\SgIntSupervisor}{}
-\newcommand{\SgIntSuperTitle}{}
-\newcommand{\SgIntSuperDept}{}
-\newcommand{\SgIntSecondMember}{}
-\newcommand{\SgIntThirdMember}{}
-\newcommand{\SgIntForthMember}{}
-
 
 % Define commands for setting  the above variables.
 \newcommand{\SgSetTitle}[1]{\renewcommand{\SgIntTitle}{#1}\SgIntSetupPdfProps}
@@ -462,17 +451,12 @@
 \newcommand{\SgSetDepartment}[1]{\renewcommand{\SgIntDepartment}{#1}}
 \newcommand{\SgSetUniversity}[1]{\renewcommand{\SgIntUniversity}{#1}}
 \newcommand{\SgSetDeclarationDate}[1]{\renewcommand{\SgIntDeclarationDate}{#1}}
-\newcommand{\SgSetSupervisor}[1]{\renewcommand{\SgIntSupervisor}{#1}}
-\newcommand{\SgSetSuperTitle}[1]{\renewcommand{\SgIntSuperTitle}{#1}}
-\newcommand{\SgSetSuperDept}[1]{\renewcommand{\SgIntSuperDept}{#1}}
-\newcommand{\SgSetSecondMember}[1]{\renewcommand{\SgIntSecondMember}{#1}}
-\newcommand{\SgSetThirdMember}[1]{\renewcommand{\SgIntThirdMember}{#1}}
-\newcommand{\SgSetForthMember}[1]{\renewcommand{\SgIntForthMember}{#1}}
+
 
 
 % -----------------------------------------------------------------------
 % C L E V E R E F
-%
+% 
 % Must come as late as possible, especially after hyperref.
 \RequirePackage[capitalize]{cleveref}
 
@@ -497,301 +481,111 @@
 
 
 
-
-
-
 % -----------------------------------------------------------------------
 % T I T L E  P A G E
 \ifthenelse{\equal{\SgIntTitleCase}{upper}}
-{ \newcommand{\SgIntMakeUpperCase}[1]{\MakeUppercase{#1}} }
-{ \newcommand{\SgIntMakeUpperCase}[1]{#1} }
-
-% made based on ua-thesis.cls
+{
+	\newcommand{\SgIntMakeUpperCase}[1]{\MakeUppercase{#1}}
+}
+{
+	\newcommand{\SgIntMakeUpperCase}[1]{#1}
+}
 \newcommand{\SgAddTitle}{%
-  \thispagestyle{empty}
-  \begin{center}
-    \vspace*{0.5in}	
-    {\Large\uppercase\expandafter{\SgIntTitle}}
-    \bigskip\smallskip\\
-    by
-    \bigskip\smallskip\\
-    {\large{\SgIntAuthor}}
-    % \vfill
-    % \parbox{2in}{\hrulefill}
-    \bigskip
-    \bigskip
-    \bigskip
-    
-    
-    \begin{tabular}{ll}
-        \multicolumn{2}{l}{\textbf{A Dissertation Submitted to the Faculty of the}} \\
-        Dept. of  & {\uppercase\expandafter{\SgIntDepartment}} \\
-        \multicolumn{2}{l}{} \\
-        \multicolumn{2}{l}{\textbf{In Partial Fulfillment of the Requirements for the}} \\
-        Degree of  & DOCTOR OF PHILOSOPHY \\
-        Graduate College & \uppercase\expandafter{\SgIntUniversity} \\
-    \end{tabular}
-    
-  \vfill 
-  \SgIntDeclarationDate
-  
-   \parbox{2in}{\hrulefill}\\
-  {\footnotesize Copyright~~\copyright~~{\SgIntAuthor}~~\SgIntYear}
-  \end{center}
-  \vspace*{0.3in}	
+	\thispagestyle{empty}
+	\begin{center}
+		\vspace*{0.5in}
+		\Large{\bf{\SgIntMakeUpperCase{\SgIntTitle}}}
+		\\
+		\vspace{2.5in}
 
-  \SgIntClearDoublePage
+		\large{\SgIntMakeUpperCase{\SgIntAuthor}} \\
+		\large{\emph{\SgIntAuthorDegrees}} \\
+		\vspace{2.5in}
+
+		\large{\SgIntMakeUpperCase{A Thesis Submitted for the Degree of \SgIntDegree}}
+		\vspace{0.2in}
+
+		\large{\SgIntMakeUpperCase{\SgIntDepartment}} \\
+		\large{\SgIntMakeUpperCase{\SgIntUniversity}} \\
+		\vspace{0.2in} 
+
+		\large{\SgIntYear}
+	\end{center}
+	\SgIntClearDoublePage
 }
 
 
 
 % -----------------------------------------------------------------------
-% APPROVAL 
-%
-% The acknowledgments environment puts a large, bold, centered
+% D E C L A R A T I O N  P A G E
+\newcommand{\SgAddDeclaration}[1][nosignimage]{%
+	\newpage
+	\thispagestyle{plain}
+	\begin{center}
+	\vspace*{1.5cm}
+	{
+		\Large \bfseries Declaration
+	}
+	\end{center}
+
+	\vspace{0.5cm}
+
+	\begin{quote}
+	I hereby declare that this thesis is my original work and it has been written by me in its entirety. I have duly acknowledged all the sources of information which have been used in the thesis. \newline
+
+	This thesis has also not been submitted for any degree in any university previously.
+	\end{quote}
+
+	\ifthenelse{\equal{#1}{nosignimage}}
+	{
+	    \vspace{2.0cm}
+	}
+	{
+		\vspace{0.5cm}
+	}
+
+	\begin{center}
+		\ifthenelse{\equal{#1}{nosignimage}}
+		{}{\includegraphics{#1}\\[-0.5cm]}
+		\rule{5cm}{0.2mm} \\
+		\SgIntAuthor \\
+		\SgIntDeclarationDate
+	\end{center}
+
+	\SgIntClearDoublePage
+}
+
+
+
+% -----------------------------------------------------------------------
+% A C K N O W L E D G M E N T S
+% 
+% The acknowledgments environment puts a large, bold, centered 
 % "Acknowledgments" label at the top of the page. The acknowledgments
-% themselves appear in a quote environment, i.e. tabbed in at both
+% themselves appear in a quote environment, i.e. tabbed in at both 
 % sides, and on its own page.
-% \newcommand{\SgAddApproval}[1][nosignimage]{%
-% 	\thispagestyle{plain}
-% 	\begin{center}
-% 		\vspace*{1.5cm}
-% 		{\Large Get the official approval page from the Graduate College before your final defense.}
-% 	\end{center}
-% 	\vspace{0.5cm}
-% 	\begin{quote}
-% }
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% APPROVAL PAGE
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newcommand{\SgAddApproval}[1]
-    {%
-        \begin{center}
-        THE UNIVERSITY OF ARIZONA\\
-        GRADUATE COLLEGE
-        \end{center}
-        \bigskip
-        As members of the Dissertation Committee, we certify that we have
-	read the dissertation prepared by {\@author}, titled
-	\textit{\@title}, and recommend that it be accepted as
-	fulfilling the dissertation requirement for the Degree of
-	Doctor of Philosophy.
-	\bigskip\bigskip\medskip\\
-	\parbox[t]{\signwidth}{\centering\hrulefillthick\\{\@supervisor}}
-	\hfill
-	\parbox[t]{\datewidth}{\centering\hrulefillthick\\Date}
-        \if \@secondmember ""
-	\else
-	    \bigskip\bigskip\bigskip\medskip\\
-	    \parbox[t]{\signwidth}{\centering\hrulefillthick\\{\@secondmember}}
-	    \hfill
-	    \parbox[t]{\datewidth}{\centering\hrulefillthick\\Date}
-	    \bigskip\bigskip\bigskip\medskip\\
-        \fi
-        \if \@thirdmember ""
-	\else
-	    \parbox[t]{\signwidth}{\centering\hrulefillthick\\{\@thirdmember}}
-	    \hfill
-	    \parbox[t]{\datewidth}{\centering\hrulefillthick\\Date}
-	    \bigskip\bigskip\bigskip\medskip\\
-        \fi
-        \if \@fourthmember ""
-	\else
-	    \parbox[t]{\signwidth}{\centering\hrulefillthick\\{\@fourthmember}}
-	    \hfill
-	    \parbox[t]{\datewidth}{\centering\hrulefillthick\\Date}
-	    \bigskip\bigskip\bigskip\medskip\\
-        \fi
-        \if \@fifthmember ""
-	\else
-	    \parbox[t]{\signwidth}{\centering\hrulefillthick\\{\@fifthmember}}
-	    \hfill
-	    \parbox[t]{\datewidth}{\centering\hrulefillthick\\Date}
-        \fi
-	\bigskip
-	\vfill
-	\noindent
-        Final approval and acceptance of this dissertation is contingent upon
-        the candidate's submission of the final copies of the dissertation to
-	the Graduate College.
-        \bigskip\medskip\\
-        I hereby certify that I have read this dissertation prepared under my
-        direction and recommend that it be accepted as fulfilling the
-        dissertation requirement.
-	\bigskip\bigskip\medskip\\
-        \parbox[t]{\signwidth}{
-	    \centering\hrulefillthick\\{\@supervisor}\\Dissertation Director}
-        \hfill
-        \parbox[t]{\datewidth}{\centering\hrulefillthick\\Date}
-        \newpage
-	\@normalspacing}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% STATEMENT BY AUTHOR
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newcommand{\SgAddStatement}[1]
-    {%
-    \begin{center}
-    {\large\bfseries STATEMENT BY AUTHOR}
-    \end{center}
-    \bigskip
-    \hspace*{\parindent}
-    This
-    \if@PhD dissertation \else thesis \fi
-    \textit{\@title}
-    prepared by
-    \@author
-    has been submitted in partial fulfillment of
-    requirements for a
-    \if@PhD doctoral \else master's \fi
-    degree at The University of Arizona
-    and is deposited in the University Library to be made available to
-    borrowers under the rules of the Library.
-    \bigskip\\
-    \hspace*{\parindent}
-    Brief quotations from this
-    \if@PhD dissertation \else thesis \fi
-    are allowable without special
-    permission, provided that accurate acknowledgment of the source is
-    made. Requests for permission for extended quotation from or
-    reproduction of this manuscript in whole or in part may be granted by
-    \if@copyright
-	the copyright holder.
-	\bigskip
-	\bigskip
-    \else
-        the head of the major department or the Dean of the Graduate
-        College when in his or her judgement the proposed use of the
-        material is in the interests of scholarship. In all other instances,
-        however, permission must be obtained from the author.
-    \fi
-    \bigskip\smallskip\\
-    \mbox{}\hfill SIGNED:\ \ \parbox[t]{\signwidth}{\hrulefillthick}
-    \if@PhD
-    \else
-	\vfill
-        \begin{center}
-        {\large\bfseries APPROVAL BY THESIS DIRECTOR}
-        \end{center}
-        \bigskip
-        \hspace*{\parindent}
-        This thesis has been approved on the date shown below:
-        \bigskip\bigskip\medskip\\
-	\parbox[t]{\signwidth}{
-	    \centering
-	    \hrulefillthick\\
-	    {\@supervisor}\\
-	    {\@supertitle} of\\
-	    {\@superdept}}
-        \hfill
-	\parbox[t]{\datewidth}{
-	    \centering
-	    \hrulefillthick\\
-	    Date}
-    \fi
-    \vspace*{0.5in}
-    \newpage
-    \@normalspacing}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% ACKNOWLEDGMENTS
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newenvironment{acknowledgments}
-    {\begin{center}
-    {\large\bfseries ACKNOWLEDGMENTS}
-    \end{center}
-    \bigskip
-    \hspace*{\parindent}}
-    {\newpage}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% DEDICATION
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newenvironment{dedication}
-    {\@dspacing\begin{center}}
-    {\end{center}
-    \@normalspacing
-    \newpage}
-
-% % -----------------------------------------------------------------------
-% % STATEMENT by OTHER
-% \newcommand{\SgAddAuthorStatement}[1][signimage]{%
-% 	\newpage
-% 	\thispagestyle{plain}
-% 	\begin{center}
-% 	\vspace*{1.5cm}
-% 	{ \Large \bfseries STATEMENT by AUTHOR }
-% 	\end{center}
-
-% 	\vspace{0.5cm}
-
-% 	\begin{quote}
-% 	I hereby declare that this thesis is my original work and it has been written by me in its entirety. I have duly acknowledged all the sources of information which have been used in the thesis. \newline
-
-% 	This thesis has also not been submitted for any degree in any university previously.
-% 	\end{quote}
-
-% 	\ifthenelse{\equal{#1}{nosignimage}}
-% 	{ \vspace{2.0cm} }
-% 	{ \vspace{0.5cm} }
-
-% 	\begin{center}
-% 		\ifthenelse{\equal{#1}{nosignimage}}
-% 		{}{\includegraphics{#1}\\[-0.5cm]}
-% 		\rule{5cm}{0.2mm} \\
-% 		\SgIntAuthor \\
-% 		\SgIntDeclarationDate
-% 	\end{center}
-
-% 	\SgIntClearDoublePage
-% }
-
-
-% % -----------------------------------------------------------------------
-% % D E C L A R A T I O N  P A G E
-% \newcommand{\SgAddDeclaration}[1][nosignimage]{%
-% 	\newpage
-% 	\thispagestyle{plain}
-% 	\begin{center}
-% 	\vspace*{1.5cm}
-% 	{ \Large \bfseries Declaration }
-% 	\end{center}
-
-% 	\vspace{0.5cm}
-
-% 	\begin{quote}
-% 	I hereby declare that this thesis is my original work and it has been written by me in its entirety. I have duly acknowledged all the sources of information which have been used in the thesis. \newline
-
-% 	This thesis has also not been submitted for any degree in any university previously.
-% 	\end{quote}
-
-% 	\ifthenelse{\equal{#1}{nosignimage}}
-% 	{ \vspace{2.0cm} }
-% 	{ \vspace{0.5cm} }
-
-% 	\begin{center}
-% 		\ifthenelse{\equal{#1}{nosignimage}}
-% 		{}{\includegraphics{#1}\\[-0.5cm]}
-% 		\rule{5cm}{0.2mm} \\
-% 		\SgIntAuthor \\
-% 		\SgIntDeclarationDate
-% 	\end{center}
-
-% 	\SgIntClearDoublePage
-% }
-
+\newenvironment{acknowledgments}%
+{%
+	\thispagestyle{plain}
+	\begin{center}
+		\vspace*{1.5cm}
+		{%
+			\Large \bfseries Acknowledgments
+		}
+	\end{center}
+	\vspace{0.5cm}
+	\begin{quote}
+}
+{%
+    \end{quote}
+	\SgIntClearDoublePage
+}
 
 
 
 % -----------------------------------------------------------------------
 % A B S T R A C T
-%
+% 
 % The abstract environment puts a large, bold, centered "Abstract" label at
 % the top of the page. The abstract itself appears in a quote environment,
 % i.e. tabbed in at both sides, and on its own page.
@@ -814,9 +608,9 @@
 
 % -----------------------------------------------------------------------
 % F R O N T M A T T E R
-%
-% The frontmatter environment set the page numbering to lowercase roman for
-% ack, abstract, toc, lof, lot, loa, etc. It also resets page numbering for the
+% 
+% The frontmatter environment set the page numbering to lowercase roman for 
+% ack, abstract, toc, lof, lot, loa, etc. It also resets page numbering for the 
 % remainder of thesis (arabic, starting at 1).
 \newenvironment{frontmatter}
 {%

@@ -1,6 +1,5 @@
-\input{preamples.tex}
+\input{subfiles/preample.tex}
 \newcommand{\figurepath}[1]{figures/#1}
-\input{commands.tex}
 
 \begin{document}
 
@@ -9,14 +8,16 @@
 \author[1]{\fnm{Jeffrey J.} \sur{Rodriguez}}
 \affil[1]{\orgdiv{Dept of Electrical \& Computer Engineering}, \orgname{The University of Arizona}, \orgaddress{\city{Tucson}, \postcode{86719}, \state{AZ}, \country{USA}}}
 
-\abstract{\addabstract}
-\keywords{\addkeyword}
+\abstract{\input{subfiles/abstract.tex}}
+\keywords{\input{subfiles/keywords.tex}}
 \maketitle
 
-\input{body.tex}
+\input{subfiles/body.tex}
 
 % \bibliographystyle{bst/sn-aps}
 \bibliographystyle{apalike}
-\bibliography{other/Better_BibTeX_Zotero}
+\bibliography{subfiles/Better_BibTeX_Zotero}
 
 \end{document}
+
+% \endinput
