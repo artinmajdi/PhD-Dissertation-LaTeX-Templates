@@ -1,15 +1,28 @@
-\input{preamples.tex}
+%% \documentclass{confproc}
+\documentclass[conference,compsoc]{IEEEtran}
+
+\input{subfiles/preamples.tex}
+\newcommand{\figurepath}[1]{figures/#1}
 
 \begin{document}
 
-\title{\addtitle}
-\begin{abstract}\addabstract\end{abstract}
-\begin{keyword}\addkeyword\end{keyword}
-% \textbf{KEYWORDS:} \addkeword
+\title{Drive-Net: Convolutional Network for Driver Distraction Detection}
+\author{Mohammad S. Majdi}
 
-\input{body.tex}
+\maketitle
+
+\begin{abstract}
+\input{subfiles/abstract.tex}
+
+\textbf{KEYWORDS:}
+\input{subfiles/keywords.tex}
+\end{abstract}
+
+
+
+\input{subfiles/body.tex}
 
 \bibliographystyle{ieeetr}
-\bibliography{references/Better_BibTeX_Zotero}
+\bibliography{subfiles/Better_BibTeX_Zotero}
 
 \end{document}
