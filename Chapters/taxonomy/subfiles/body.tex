@@ -587,7 +587,6 @@ The accuracy of the three methods (baseline, ``logit'', and ``loss'') was evalua
 In some cases, the ``logit'' and ``loss'' methods achieved comparable performance, while in others, one method outperformed the other. For example, in the PC dataset, the accuracy for Pneumonia improved from 0.862 in the baseline to 0.806 and 0.887 in the ``logit'' and ``loss'' methods, respectively, with the ``loss'' method yielding higher accuracy. These results demonstrate the effectiveness of the proposed modifications in improving the performance of the models across various chest radiograph pathologies.
 
 
-
 \begin{table}[]
 \caption{Accuracy performance of the three methods (baseline, ``logit'', and ``loss'') on the CheX, NIH, and PC chest radiograph datasets for various pathologies.}
 \resizebox{\textwidth}{!}{%
@@ -618,7 +617,6 @@ In some cases, the ``logit'' and ``loss'' methods achieved comparable performanc
 \end{table}
 
 
-
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{\figurepath{roc_curve/default_NIH_logit/roc_curve_NIH_logit_default.pdf}}%
@@ -640,19 +638,19 @@ Figure~\ref{Taxonomy.Fig.2.roc_curve_NIH_logit_default} illustrates a comparison
 Figure~\ref{Taxonomy.Fig.3.roc_curve_NIH_loss_default} illustrates a comparison between the performance of the baseline technique and the proposed loss based method (Approach 2 discussed in the Method section) in detecting eight thoracic pathologies. These eight pathologies includes the pathologies with child classes and their respective child classes as was shown in Figure~\ref{Taxonomy.Fig.1.taxonomy_structure}. The individual subplots exhibit overlaid ROC curves, each of which corresponds to a specific pathology. The present analysis employed a model that was derived through the application of the test dataset from the NIH dataset to a pretrained model. The latter had undergone training on various publicly available thoracic datasets, with the aim of enabling the identification of 18 different pathologies pertaining to the thorax. The last two subplots showcased with a darker background showcases the roc curves for parent classes diseases. As these parent class diseases were not influenced by the proposed technique, their ROC curves and corresponding AUC values remain consistent with the baseline technique. The ROC curve and its corresponding AUC for the six child classes demonstrate a significant improvement for the proposed technique in comparison to the baseline technique.
 
 \section{Discussion and Conclusion}
+The study presented two Hierarchical Multilabel Classification Methods for Enhanced Thoracic Disease Diagnosis in Chest Radiography. One method refered to as "loss" udpates the value of loss for pathologies according to their parent pathologies. this method is purticularly useful for both fine tuning the existing pre-trained models and trainign from scratch. A second method refered to as "logit" is also proposed where the logit values of each pathology is updated based on the logit value of their parent pathologies. This technique is purticulalry useful when the ground truth labels aren't available. This method improves the performance of existing pre-trained models solely based on the taxonomical relationshiop of pathologies in the model without any need for availalbility of ground truth labels.  
 
-\subsection{Potential Applications}
+The results, as indicated in Tables 2 and 3, show the F1-score and AUC performance of two methods (“logit”, and “loss”) with respect to baseline on the CheX, NIH, and PC chest radiograph datasets for various pathologies. The hierarchical multilabel classification approaches demonstrated a significant improvement in the accuracy and efficiency of thoracic disease diagnosis. This was particularly evident in the AUC performance, where the "loss" and "logit" methods consistently outperformed the "baseline" across most pathologies in the CheX, NIH, and PC datasets.
 
-    The proposed hierarchical multi-label classification method has several potential applications within the medical imaging domain:
+Modifying logits provides a simple yet effective means of incorporating label hierarchy without substantially changing existing model architectures. However, this approach can obscure the effects of optimization and learning. In contrast, modifying loss values more directly aligns with the model optimization process and allows fine-tuning of the hierarchical influence through weighting factors. This approach also promotes consistency with established hierarchical relationships and robustness to label noise.
 
-    \begin{enumerate}
-        \item \textbf{Assisting radiologists}: The method can be used as a decision support tool for radiologists, providing them with additional insights and reducing the likelihood of diagnostic errors.
+Overall, both techniques were effective in utilizing the disease taxonomy to enhance classification performance, indicating the value of leveraging label relationships in medical image classification. The loss-based technique generally showed higher performance gains, suggesting it may more accurately capture hierarchical dependencies during model training.
 
-        \item \textbf{Automated triage}: The method can be used in emergency departments to prioritize patients according to the severity of their thoracic diseases, ensuring that the most urgent cases are attended to promptly.
+The improvement in interpretability offered by these hierarchical techniques can potentially aid clinicians by providing insights into the models' predictions. The capability to explore predictions at different levels of granularity based on the taxonomy may facilitate personalized diagnoses based on specific clinical needs.
 
-        \item \textbf{Population health management}: The method could be used for the population-level screening of thoracic diseases, helping healthcare organizations identify and manage outbreaks of diseases such as pneumonia or tuberculosis.
-    \end{enumerate}
+However, limitations remain. The techniques require predefined label hierarchies, which can be challenging to construct for complex diseases. Further refinement of the hyperparameter tuning procedures may yield even higher performance. Future work could explore integrating label hierarchies directly into model architectures to achieve end-to-end learning of hierarchical relationships.
 
+In summary, incorporating hierarchical label relationships through modifying either logits or loss functions presents an effective strategy for improving the multi-label classification tasks. 
 
 \section*{Appendices}
 \section*{Acknowledgements}
