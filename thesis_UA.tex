@@ -1,33 +1,32 @@
-\documentclass[final]{ua-thesis}
-% \documentclass[draft]{ua-thesis}
+\documentclass[final]{bst/uathesis}
+% \documentclass[PhD,copyright]{bst/uathesis}
+\input{Chapters/preamples.tex}
+% \newcommand{\figurepath}[1]{\chapterpath{figures}/#1}
+\input{Chapters/commands_initialization.tex}
 
-\input{preamples.tex}
-\input{commands_initialization.tex}
-
-\author{Artin Majdi}
-\title{DATA AND DOMAIN UNCERTAINTY IN MACHINE LEARNING}
+%\author{Artin Majdi}
+%\title{DATA AND DOMAIN UNCERTAINTY IN MACHINE LEARNING}
 % \date{2023}
-\makeindex
-\thema
+%\makeindex
+
 \begin{document}
 
 \maketitle
-\include{thesis_UA_subfiles/Dedication}
-\include{thesis_UA_subfiles/Akcnowledgement}
+%\include{thesis_UA_subfiles/Dedication}
+%\include{thesis_UA_subfiles/Akcnowledgement}
 \tableofcontents
 \listoffigures
 \newpage
 \listoftables
 \newpage
+% \include{Chapters/preface_UA}
 \include{Chapters/Abstract}
-
 \include{Chapters/taxonomy/taxonomy_thesis}
 \include{Chapters/crowd/crowd_thesis}
-\include{Chapters/thalamus/thalamus_thesis}
+ \include{Chapters/thalamus/thalamus_thesis}
 \include{Chapters/drive_net/drive_net_thesis}
 
 \printindex
-% \bibliographystyle{apalike}
 \bibliographystyle{ieeetr}
-\bibliography{Better_BibTeX_Zotero}
+\bibliography{Chapters/Better_BibTeX_Zotero}
 \end{document}

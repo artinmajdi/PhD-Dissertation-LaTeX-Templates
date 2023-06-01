@@ -1,26 +1,26 @@
-\input{preamples.tex}
+\input{subfiles/preample.tex}
 \newcommand{\figurepath}[1]{figures/#1}
-\input{commands.tex}
 
 \begin{document}
 
-\title{\addtitle}
+\title{Automated Thalamic Nuclei Segmentation Using Multi-Planar Cascaded Convolutional Neural Networks}
 % \includepdf[pages=-1]{first_page.pdf}
 % \includepdf[pages={1}]{first_page.pdf}
+\author{Mohammad S. Majdi}
 
 \begin{abstract}
-\addabstract%
+\input{subfiles/abstract.tex}
 
 \textbf{KEYWORDS:}
-\addkeyword%
+\input{subfiles/keywords.tex}
 \end{abstract}
 
 \maketitle
 
-\input{body.tex}
+\input{subfiles/body.tex}
 
 \bibliographystyle{acm}
-\bibliography{references/Better_BibLaTex_Zotero}
+\bibliography{subfiles/Better_BibTeX_Zotero}
 
 \end{document}
 
