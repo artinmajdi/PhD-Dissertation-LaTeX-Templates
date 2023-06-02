@@ -131,7 +131,7 @@ To develop a comprehensive label taxonomy for lung diseases, we integrated the t
 
 \begin{equation}
     \widehat{p}_k^{(i)} = \frac{1}{ 1 + \exp \left(-\left(q_k^{(i)} + \alpha_{k,j} q_j^{(i)} \right)\right) }
-    \label{Taxonomy.Eq.Taxonomy.Eq.1.pred.approach1}
+    \label{Taxonomy.Eq.1.pred.approach1}
 \end{equation}
 
 where $j $ is defined so that $c_j=\Lambda(c_k) $, and $\alpha_{k,j} $ is the hyperparameter controlling the influence of different parent class logits on child class logits. When $\alpha_{k,j}=0 $, there is no influence from the parent classes, and when $\alpha_{k,j}>0 $, it introduces a degree of dependency between the child and parent classes in terms of their predicted probabilities.
@@ -199,12 +199,12 @@ For instance, in the case of cross-entropy loss, we have:
 
 \begin{equation}
     l_k = -\left(y_k^{(i)}\log(p_k^{(i)}) + (1 - y_k^{(i)})\log(1 - p_k^{(i)})\right)
-    \label{Taxonomy.Eq.Loss}
+    \label{Taxonomy.Eq.2.Loss}
 \end{equation}
 
 \begin{equation}
     \text{Loss}(\theta) = \sum_{i=1}^{N}\sum_{k=1}^{K}l_k
-    \label{Taxonomy.Eq.TotalLoss}
+    \label{Taxonomy.Eq.3.TotalLoss}
 \end{equation}
 
 In this formulation, the objective is to minimize the loss function with respect to the model parameters $\theta $, resulting in an optimal set of parameters that produce accurate predictions for multi-label classification tasks. However, class independence and equal importance between different classes cannot always be assumed (e.g., classification of thoracic diseases). In this study, we demonstrate how to incorporate the interdependence between different classes (i.e., thoracic diseases) into our loss measurement, thus improving the overall classification accuracy. We introduce multiple approaches in which this can be achieved using either the parent class loss value or its predicted probability value.
@@ -237,22 +237,20 @@ In both Equations~(\ref{Taxonomy.Eq.4.hierarchical_penalty1}) and~(\ref{Taxonomy
 To address this problem, we can modify the loss measurements presented in Equations~(\ref{Taxonomy.Eq.4.hierarchical_penalty1}) and~(\ref{Taxonomy.Eq.5.hierarchical_penalty2})  to be based on the multiplication of losses rather than their addition. Multiplying losses allows for a more flexible relationship between the child and parent losses, as it can model both linear and nonlinear relationships. Furthermore, the parent's loss can have a more significant impact on the total loss, since it is multiplied by the child's loss, ensuring that the hierarchical relationships are better captured. To achieve this, we can define the new loss as follows.
 
 \begin{equation}
-    \label{Taxonomy.Eq.newloss}
-    \widehat{l}_k^{(i)}=l_k^{(i)}\;H\left(\;k\;\vert\;j\;\right)
+    \label{Taxonomy.Eq.7.newloss}
+    \widehat{l}_k^{(i)} = l_k^{(i)} H \left( k \vert j \right)
 \end{equation}
 
 where the hierarchical penalty term is defined as follows.
 
 \begin{equation}
     \label{Taxonomy.Eq.8.hierarchical_penalty.loss}
-    H(k\vert j)=\left\{\begin{array}{lc}1&\text{if} \; \Lambda(c_k)=\varnothing\\a_k\;l_j^{(i)}\;+\;\beta_k&\text{otherwise.}\end{array}\right.
+    H(k \vert j) = \left\{ \begin{array}{lc}1 & \text{if} \; \Lambda(c_k) = \varnothing \\ a_k l_j^{(i)} + \beta_k & \text{otherwise.} \end{array} \right.
 \end{equation}
 
 where $c_j $ is the parent class of $c_k $ class, and $l_j $ is the parent's loss value for instance $i $.
 
-The modified loss function in Equation~(\ref{Taxonomy.Eq.newloss})  aims to ensure that predictions adhere to hierarchical relationships between labels by penalizing deviations from these established relationships. Adjusting the weighting parameters $\alpha_k $ and $\beta_k $, we can regulate the extent to which hierarchical information influences the learning process.
-
-
+The modified loss function in Equation~(\ref{Taxonomy.Eq.7.newloss})  aims to ensure that predictions adhere to hierarchical relationships between labels by penalizing deviations from these established relationships. Adjusting the weighting parameters $\alpha_k $ and $\beta_k $, we can regulate the extent to which hierarchical information influences the learning process.
 
 \subsection{Updating Loss Values and Predicted Probabilities}
 
@@ -262,7 +260,7 @@ In this section, we illustrate how our proposed taxonomy-based transfer learning
 
 To calculate the predicted probability based on the loss, we must first define a loss function that quantifies the difference between the predicted probability and the true label. Once the loss function has been defined, during a training phase of a classifier (e.g., DenseNet121), an optimization algorithm such as gradient descent can be used to determine the predicted probabilities that minimize the loss across the entire dataset. However, this approach is only valid during the training phase and only shows the predicted probability with respect to the original loss values measured by the classifier.
 
-In this section, we demonstrate how we can directly calculate the new predicted probabilities from their new loss values obtained in Equation~(\ref{Taxonomy.Eq.newloss}). Let us assume that binary cross entropy is used for the choice of the loss function $\mathcal{L}(\cdot) $. Furthermore, let us denote $\widehat{q}_k^{(i)} , \widehat{p}_k^{(i)} $ as the updated values we are looking for showing the logit and predicted probability of class $k $ and instance $i $ after applying the proposed technique. As discussed above, to calculate the predicted probabilities, we need to pass the logits ${\widehat q}_k^{(i)} $ into a sigmoid function as shown below:
+In this section, we demonstrate how we can directly calculate the new predicted probabilities from their new loss values obtained in Equation~(\ref{Taxonomy.Eq.7.newloss}). Let us assume that binary cross entropy is used for the choice of the loss function $\mathcal{L}(\cdot) $. Furthermore, let us denote $\widehat{q}_k^{(i)} , \widehat{p}_k^{(i)} $ as the updated values we are looking for showing the logit and predicted probability of class $k $ and instance $i $ after applying the proposed technique. As discussed above, to calculate the predicted probabilities, we need to pass the logits ${\widehat q}_k^{(i)} $ into a sigmoid function as shown below:
 
 \begin{equation}
     \label{Taxonomy.Eq.9.sigmoid}
@@ -337,7 +335,7 @@ Finally, the Equation~(\ref{Taxonomy.Eq.15.NewPred}) can be simplified as follow
 
 where, ${\widehat l}_k^{(i)} $ is the updated loss for class $k $ and instance $i $.
 
-The following demonstrates the Equation~(\ref{Taxonomy.Eq.16.NewPred})  based on predicted probability syntax to demonstrate its similarity to Equation~(\ref{Taxonomy.Eq.Taxonomy.Eq.1.pred.approach1})  in Approach 1. From Equation~(\ref{Taxonomy.Eq.8.hierarchical_penalty.loss}) we have $l_k^{(i)}=l_k^{(i)}\left(\alpha_k\;l_j^{(i)}+\beta_k\right) $. By substituting that into $\exp{\left(-\widehat{l}_{k}^{(i)}\right)}, y_{k}^{(i)}=1 $ we would have the following equation.
+The following demonstrates the Equation~(\ref{Taxonomy.Eq.16.NewPred})  based on predicted probability syntax to demonstrate its similarity to Equation~(\ref{Taxonomy.Eq.1.pred.approach1})  in Approach 1. From Equation~(\ref{Taxonomy.Eq.8.hierarchical_penalty.loss}) we have $l_k^{(i)}=l_k^{(i)}\left(\alpha_k\;l_j^{(i)}+\beta_k\right) $. By substituting that into $\exp{\left(-\widehat{l}_{k}^{(i)}\right)}, y_{k}^{(i)}=1 $ we would have the following equation.
 
 
 \begin{equation}
@@ -486,7 +484,7 @@ Table 2: Labels available for each dataset, the total number of positive samples
 \subsection{Model Performance on Public Chest Radiograph Datasets}
 
 \subsubsection*{AUC}
-In this section, we present the performance of the three methods—baseline, ``logit'', and ``loss''; on the three public chest radiograph datasets (CheX, NIH, and PC) in terms of AUC metrics for various pathologies. The baseline represents the original model's performance, while ``logit'' and ``loss'' refer to the proposed modified logits and modified loss approaches, respectively. A single model was trained on all three datasets and evaluated on the test cases from each dataset~\ref{Taxonomy.Table.AUC_default}.
+In this section, we present the performance of the three methods—baseline, ``logit'', and ``loss''; on the three public chest radiograph datasets (CheX, NIH, and PC) in terms of AUC metrics for various pathologies. The baseline represents the original model's performance, while ``logit'' and ``loss'' refer to the proposed modified logits and modified loss approaches, respectively. A single model was trained on all three datasets and evaluated on the test cases from each dataset~\ref{Taxonomy.Table.2.AUC_default}.
 
 The results demonstrate varying performance across the pathologies and datasets. In general, the proposed ``logit'' and ``loss'' approaches show improved performance compared to the baseline, with several pathologies, such as Atelectasis, Consolidation, Edema, and Pneumonia, exhibiting significant improvements in AUC metrics. For instance, in the CheX dataset, the AUC for Atelectasis increased from $0.811$ in the baseline to $0.960$ and $1.000$ in the ``logit'' and ``loss'' methods, respectively.
 
@@ -519,11 +517,11 @@ However, for some pathologies like Pneumothorax, Emphysema, and Pleural\_Thicken
 \textbf{Lung Opacity}                 & 0.804     & 0.804     & 0.804     & 0.742     & 0.742     & 0.742    & 0.782     & 0.782    & 0.782    \\
 \textbf{Enlarged   Cardiomediastinum} & 0.852     & 0.852     & 0.852     & 0.717     & 0.717     & 0.717    & 0.665     & 0.665    & 0.665
 \end{tabular}%
-}\label{Taxonomy.Table.AUC_default}
+}\label{Taxonomy.Table.2.AUC_default}
 \end{table}
 
 \subsubsection*{F1-score}
-In this section, we discuss the F1-score performance of the three methods---baseline, ``logit'', and ``loss''---on the three public chest radiograph datasets (CheX, NIH, and PC) for various pathologies~\ref{Taxonomy.Table.F1}. The baseline represents the original model's performance, while ``logit'' and ``loss'' refer to the proposed modified logits and loss approaches, respectively. As before, a single model was trained on all three datasets and evaluated on the test cases from each dataset.
+In this section, we discuss the F1-score performance of the three methods---baseline, ``logit'', and ``loss''---on the three public chest radiograph datasets (CheX, NIH, and PC) for various pathologies~\ref{Taxonomy.Table.3.F1}. The baseline represents the original model's performance, while ``logit'' and ``loss'' refer to the proposed modified logits and loss approaches, respectively. As before, a single model was trained on all three datasets and evaluated on the test cases from each dataset.
 
 The F1-scores reveal that the proposed ``logit'' and ``loss'' approaches generally show improved performance compared to the baseline method. For example, in the CheX dataset, the F1-score for Atelectasis increased from 0.201 in the baseline to 0.353 and 0.927 in the ``logit'' and ``loss'' methods, respectively. Similarly, the F1-score for Edema increased from 0.352 in the baseline to 0.733 and 0.829 in the ``logit'' and ``loss'' methods, respectively.
 
@@ -559,11 +557,11 @@ However, for some pathologies such as Pneumothorax, Emphysema, and Pleural\_Thic
 \textbf{Lung Opacity}                 & 0.345 & 0.345 & 0.345 & 0.446 & 0.446 & 0.446 & 0.537 & 0.537 & 0.537 \\
 \textbf{Enlarged   Cardiomediastinum} & 0.425 & 0.425 & 0.425 & 0     & 0     & 0     & 0.025 & 0.025 & 0.025
 \end{tabular}%
-}\label{Taxonomy.Table.F1}
+}\label{Taxonomy.Table.3.F1}
 \end{table}
 
 
-The accuracy of the three methods (baseline, ``logit'', and ``loss'') was evaluated for the CheX, NIH, and PC datasets for different pathologies, as presented in Table~\ref{Taxonomy.Table.ACC_default}. Comparing the baseline method to the ``logit'' and ``loss'' methods, we observed improvements in accuracy across most pathologies in all three datasets. For instance, in the CheX dataset, the accuracy for Atelectasis increased from 0.593 in the baseline method to 0.796 and 0.992 in the ``logit'' and ``loss'' methods, respectively. Similarly, in the NIH dataset, the accuracy for Edema improved from 0.972 in the baseline method to 0.971 and 0.972 for the ``logit'' and ``loss'' methods, respectively.
+The accuracy of the three methods (baseline, ``logit'', and ``loss'') was evaluated for the CheX, NIH, and PC datasets for different pathologies, as presented in Table~\ref{Taxonomy.Table.4.ACC_default}. Comparing the baseline method to the ``logit'' and ``loss'' methods, we observed improvements in accuracy across most pathologies in all three datasets. For instance, in the CheX dataset, the accuracy for Atelectasis increased from 0.593 in the baseline method to 0.796 and 0.992 in the ``logit'' and ``loss'' methods, respectively. Similarly, in the NIH dataset, the accuracy for Edema improved from 0.972 in the baseline method to 0.971 and 0.972 for the ``logit'' and ``loss'' methods, respectively.
 
 In some cases, the ``logit'' and ``loss'' methods achieved comparable performance, while in others, one method outperformed the other. For example, in the PC dataset, the accuracy for Pneumonia improved from 0.862 in the baseline to 0.806 and 0.887 in the ``logit'' and ``loss'' methods, respectively, with the ``loss'' method yielding higher accuracy. These results demonstrate the effectiveness of the proposed modifications in improving the performance of the models across various chest radiograph pathologies.
 
@@ -594,7 +592,7 @@ In some cases, the ``logit'' and ``loss'' methods achieved comparable performanc
 \textbf{Lung Opacity}        & 0.564 & 0.564 & 0.564 & 0.74  & 0.74  & 0.74  & 0.72  & 0.72  & 0.72  \\
 \textbf{Enlarged   Cardiomediastinum} & 0.838 & 0.838 & 0.838 & 0.975 & 0.975 & 0.975 & 0.895 & 0.895 & 0.895
 \end{tabular}%
-}\label{Taxonomy.Table.ACC_default}
+}\label{Taxonomy.Table.4.ACC_default}
 \end{table}
 
 
@@ -619,9 +617,9 @@ Figure~\ref{Taxonomy.Fig.2.roc_curve_NIH_logit_default} illustrates a comparison
 Figure~\ref{Taxonomy.Fig.3.roc_curve_NIH_loss_default} illustrates a comparison between the performance of the baseline technique and the proposed loss-based method (Approach 2 discussed in the Methods section) in detecting eight thoracic pathologies. These eight pathologies include the pathologies with child classes and their respective child classes, as shown in Figure~\ref{Taxonomy.Fig.1.taxonomy_structure}. The individual subplots exhibit overlaid ROC curves, each of which corresponds to a specific pathology. The present analysis employed a model that was derived through the application of the test dataset from the NIH dataset to a pre-trained model. The latter had undergone training on various publicly available thoracic datasets, with the aim of allowing the identification of 18 different pathologies related to the thorax. The last two subplots, showcased with a darker background, showcase the roc curves for parent classes diseases. As these parent class diseases were not influenced by the proposed technique, their ROC curves and corresponding AUC values remain consistent with the baseline technique. The ROC curve and its corresponding AUC for the six child classes demonstrate a significant improvement for the proposed technique in comparison to the baseline technique.
 
 \section{Discussion and Conclusion}
-The study presented two Hierarchical Multilabel Classification Methods for Enhanced Thoracic Disease Diagnosis in Chest Radiography. One method refered to as "loss" udpates the value of loss for pathologies according to their parent pathologies. This method is purticularly useful for both fine-tuning the existing pre-trained models and training from scratch. A second method refered to as "logit" is also proposed where the logit values of each pathology is updated based on the logit value of their parent pathologies. This technique is particularly useful when the ground truth labels are not available. This method improves the performance of existing pre-trained models solely based on the taxonomical relationship of pathologies in the model without any need for availablility of ground truth labels.  
+The study presented two Hierarchical Multilabel Classification Methods for Enhanced Thoracic Disease Diagnosis in Chest Radiography. One method refered to as ``loss'' udpates the value of loss for pathologies according to their parent pathologies. This method is purticularly useful for both fine-tuning the existing pre-trained models and training from scratch. A second method refered to as ``logit'' is also proposed where the logit values of each pathology is updated based on the logit value of their parent pathologies. This technique is particularly useful when the ground truth labels are not available. This method improves the performance of existing pre-trained models solely based on the taxonomical relationship of pathologies in the model without any need for availablility of ground truth labels.
 
-The results, as indicated in Tables 2 and 3, show the F1 score and AUC performance of two methods (“logit”, and “loss”) with respect to baseline on the CheX, NIH, and PC chest radiograph datasets for various pathologies. Hierarchical multi-label classification approaches demonstrated a significant improvement in the accuracy and efficiency of thoracic disease diagnosis. This was particularly evident in the AUC performance, where the "loss" and "logit" methods consistently outperformed the "baseline" across most pathologies in the CheX, NIH, and PC datasets.
+The results, as indicated in Tables~\ref{Taxonomy.Table.2} and 3, show the F1 score and AUC performance of two methods (``logit'', and ``loss'') with respect to baseline on the CheX, NIH, and PC chest radiograph datasets for various pathologies. Hierarchical multi-label classification approaches demonstrated a significant improvement in the accuracy and efficiency of thoracic disease diagnosis. This was particularly evident in the AUC performance, where the ``loss'' and ``logit'' methods consistently outperformed the ``baseline'' across most pathologies in the CheX, NIH, and PC datasets.
 
 Modifying logits provides a simple yet effective means of incorporating the label hierarchy without substantially changing existing model architectures. However, this approach can obscure the effects of optimization and learning. On the contrary, modifying loss values more directly aligns with the model optimization process and allows fine-tuning of the hierarchical influence through weighting factors. This approach also promotes consistency with established hierarchical relationships and robustness to label noise.
 
@@ -631,7 +629,7 @@ The improvement in interpretability offered by these hierarchical techniques can
 
 However, limitations remain. Techniques require predefined label hierarchies, which can be challenging to construct for complex diseases. Further refinement of the hyperparameter tuning procedures may yield even higher performance. Future work could explore the integration of label hierarchies directly into model architectures to achieve end-to-end learning of hierarchical relationships.
 
-In summary, incorporating hierarchical label relationships through modifying either logits or loss functions presents an effective strategy for improving the multi-label classification tasks. 
+In summary, incorporating hierarchical label relationships through modifying either logits or loss functions presents an effective strategy for improving the multi-label classification tasks.
 
 \section*{Appendices}
 \section*{Acknowledgements}
