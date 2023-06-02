@@ -417,33 +417,16 @@ By plotting the ROC curve and calculating the area under the curve (AUC), we can
 
 \textbf{Model Evaluation and Comparison}
 
-After training, we evaluated the performance of our proposed method using the test set and compared it with other state-of-the-art methods for the multi-label classification of chest radiograph data. We use standard evaluation metrics, such as precision, recall, F1 score, and area under the receiver operating characteristic curve (AUROC), to assess the performance of our method. By incorporating the hierarchical relationship between different classes, our method aims to improve the performance of multi-label classification of chest radiograph data, leading to more accurate and efficient detection of thoracic abnormalities. This could improve the diagnosis and treatment of these diseases in clinical practice. To demonstrate the effectiveness of our proposed hierarchical multi-label classification technique, we compare its performance to the baseline model trained without the proposed hierarchical scheme.
-
-\textbf{Evaluation Metrics}
-
-To assess the performance of the proposed techniques, we employ several evaluation metrics that capture different aspects of the classification problem. These metrics include precision, recall, F1 score, and the area under the receiver operating characteristic curve (AUC-ROC). By analyzing the performance of the method across these metrics, we can gain insights into the effectiveness of the technique in capturing inter-class relationships and improving classification accuracy. Additionally, the comparison of the proposed method with baseline approaches and other state-of-the-art techniques will provide a comprehensive understanding of the method's practical applicability and potential for real-world implementation. The following metrics were used to evaluate the effectiveness of the proposed method.
+The performance of proposed methods were tested by training a Desenet121 architecture on all three public datasets (CheXpert, NIH, PADCHEST). To assess the performance of the proposed techniques, we employ several evaluation metrics that capture different aspects of the classification problem. These metrics include precision, recall, F1 score, and the area under the receiver operating characteristic curve (AUC-ROC). By analyzing the performance of the proposed methods across these metrics, we can gain insights into the effectiveness of the methods in capturing inter-class relationships and improving classification accuracy. Additionally, the comparison of the proposed method with baseline approaches provide a comprehensive understanding of the method's improvements and potential for real-world implementation. The following metrics were used to evaluate the effectiveness of the proposed method.
 
 \begin{itemize}
     \item \textbf{Accuracy}: Proportion of correctly classified samples to the total number of samples.
-
-    \item \textbf{Precision}: Proportion of true positive predictions to the total number of positive predictions.
-
-    \item \textbf{Recall}: Proportion of true positive predictions over the total number of actual positive instances.
 
     \item \textbf{F1-score}: The Harmonic mean of precision and recall, providing a balanced assessment of the method's performance.
 
     \item \textbf{Area Under the Receiver Operating Characteristic Curve (AUROC)}: a summary measure of the true positive rate versus the false positive rate at different classification thresholds.
 \end{itemize}
 
-
-\textbf{Dataset splits}
-
-The datasets were divided into four disjoint subsets:
-
-\begin{itemize}
-    \item \textbf{Subset 1} used for model optimization consisting of training and validation. The training set was used to optimize the model parameters.
-    \item \textbf{Subset2} used for applying the proposed label dependent technique comprised of training and testing. The training set was used for hyperparameter tuning. Test dataset was used to report the final findings.
-\end{itemize}
 
 
 \section{Results}
@@ -455,8 +438,6 @@ In this section, we present the distribution of different pathologies across thr
 In the original label sets, the total number of samples across the datasets were 20,543 for CheX, 28,868 for NIH, and 61,692 for PC\@. After updating the label sets, the total number of samples remained unchanged for CheX and NIH, while for PC, it increased to 61,692. The distribution of pathologies in the datasets varies, with some pathologies such as Atelectasis, Effusion, and Lung Opacity having a higher prevalence, while others like Hernia and Fibrosis showing a lower prevalence across the datasets.
 
 
-% Please add the following required packages to your document preamble:
-% \usepackage{graphicx}
 \begin{table}[]
 \caption{Comparison of the number of samples for different chest radiograph public datasets (CheX, NIH, and PC) per pathology, considering both original and updated label sets. The original counts represent the raw number of samples in the datasets, while the updated counts show the number of samples after updating the label set for parent pathologies when a dataset does not contain labels for that parent class. In the updated label set, a parent pathology is considered true if at least one of its child pathologies is present for that sample; otherwise, it is set to false.}
 \resizebox{\textwidth}{!}{%
