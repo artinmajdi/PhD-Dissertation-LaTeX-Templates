@@ -1,0 +1,142 @@
+\section{Introduction}
+
+Primary cilia are curvilinear non-motile sensory organelles protruding from the surface of many eukaryotic cells that are involved in many cell development and physiological processes. Recent research~\cite{miyoshi_Lithium_2009} has shown that primary cilia length in mammalian cells may change due to extracellular environment stimuli, such as renal injury~\cite{verghese_Renal_2009} or external signaling modules. It has also been reported that renal primary cilia are involved in modulation of the mechanistic target of rapamycin (mTOR) pathway. Furthermore, it has been demonstrated that lithium treatment activates the mTOR pathway in renal collecting duct cells expressing aquaporin 2 (AQP2)~\cite{gao_Rapamycin_2013}. The collecting duct cells in the kidney express primary cilia, as shown in Fig.~\ref{Cilia.Fig.1} \(a\). There is a significant interest developing an automated classifier to accurately and rapidly distinguish between primary cilia located in the AQP2 expressed region and primary cilia located elsewhere.
+
+Manual detection and classification of primary cilia within tissues usually involves a large amount of time, especially for large-scale data processing, and is prone to multiple errors caused by background clutter, non-uniform illumination, imaging noise, and subjective bias. This serves as a motivation to develop an automatic algorithm capable of classifying the primary cilia of interest within the fluorescently labeled microscopy images. In order to classify the primary cilia, we need to first find all the cilia locations within the microscopy images. There are a number of curvilinear-structure detection methods such as the top-hat transform-based detector, ridge detector, steerable detector and the multi-scale variance stabilizing transform (MS-VST) detector that are capable of detecting all the cilia locations within the microscopy image~\cite{ram_dissertation_2017, ram_Vehicle_2016, ram_Three_2018}. Nevertheless, in this paper we analyze the already detected primary cilia, and we focus on classifying them as belonging to an AQP2 expressed region or elsewhere in the microscopy images.
+%----------------------------------------------- FIGURE 1------------------------------------------------------%
+\begin{figure}[!htbp]
+	\centering
+    \includegraphics[width= 0.7\textwidth]{\figurepath{fig1}}
+	\caption{Microscopy image showing primary cilia which are in red color. (a) Cilia (red color) near AQP2-expressing renal collecting duct (white color). (b) Primary cilium within an AQP2 expressed region that we are interested in. (c) Primary cilium elsewhere in the image.}%
+	\vspace{-6mm}%
+	\label{Cilia.Fig.1}
+\end{figure}
+%-------------------------------------------------------------------------------------------------------------------%
+
+Recently, the availability of large amounts of data and significant computational power have rapidly increased the popularity of machine learning (esp.\ deep learning) approaches. Convolutional neural networks (CNNs)~\cite{lecun_deeplearning_2015} have outperformed the state-of-the-art in many computer vision applications~\cite{krizhevsky_Imagenet_2017}. Similarly, the applicability of CNNs has also been investigated for medical image analysis~\cite{gupta_Convolutional_2017}. In particular, their capability to learn discriminative features when trained in a supervised fashion makes them useful for automated detection of structures in, e.g., microscopy images~\cite{gupta_Convolutional_2017}.
+%----------------------------------------------- FIGURE 2------------------------------------------------------%
+\begin{figure*}[!htbp]
+	\centering
+    \includegraphics[width=\textwidth]{\figurepath{fig2n.png}}
+	\caption{An overview of the proposed convolutional neural random forest classifier. Our proposed CNN model where the feature mapping happens (shown on the left side) consists of two convolutional layers each followed by a maxpooling layer and a final ReLU activation layer, following which a dropout regularization is used to obtain the fully connected layer. The learned features are fed to our random forests classifier (shown on the right side), which have trees with decision nodes (d) (in red color) and leaf nodes (\emph{l}) (in green color). At each leaf node we compute posterior probabilities belonging to each class.}
+	\vspace{-4mm}%
+	\label{Cilia.Fig.2}
+\end{figure*}
+%-------------------------------------------------------------------------------------------------------------------%
+
+We propose a convolutional neural random forest classifier -- a novel approach that unifies the appealing representation-learning properties of CNNs with the divide-and-conquer principle of decision trees to classify the primary cilia of interest in fluorescence microscopy images of mouse kidney tissues labeled with AQP2 fluorescent antibodies. Our method differs from the conventional CNNs because we use a random decision forest to provide the final predictions. Our method also differs from traditional random forests as the inputs to these are the features from the CNN, which helps in reducing the uncertainty of the routing decisions of a sample taken at the split nodes of the decision trees. We describe our method in detail and present quantitative results comparing it to an unsupervised \emph{k}-means classifier and a supervised multi-layer perceptron (MLP) classifier for cilia classification.
+
+\section{Methods}
+
+\subsection{Preprocessing}
+
+For classification of primary cilia of interest within our images, we first need to identify all potential primary cilia. In this work, we use the MS-VST algorithm~\cite{bozhang_Wavelets_2008} to extract all potential locations of the primary cilia in the microscopy images. Once we obtain all the candidate primary cilia, for each primary cilium, we extract gray scale image patches of $32 \times 32$ pixels centered at the candidate primary cilium centroid. Such a patch size is chosen to contain the primary cilia ($\sim20-25$ pixels in length), and some background around the cilium ($\sim7$ pixels) to include the context information. These image patches are then fed to a convolutional neural random forest classifier in order to classify whether the primary cilia are located within the AQP2 expressed region or elsewhere within the microscopy images.
+
+\subsection{Convolutional Neural Random Forest}
+
+The convolutional neural random forest classifier consists of two stages: a CNN in the first stage whose output is cascaded and fed in as the input to a random decision forest to predict the final class label. We define in detail each stage below.
+
+\subsubsection{\textbf{CNN Configuration}}
+
+We adopt the U-Net architecture~\cite{ronneberger_UNet_2015} as the basis of our CNN\@. The motivation behind this architecture is that the contracting path captures the context around the objects in order to provide a better representation of the object as compared to architectures such as VGGnet~\cite{simonyan_Very_2014}. Networks like VGGnet are very large networks that require learning a massive number of parameters and are very hard to train in general, needing significant computational time. Thus, we empirically modify the U-Net architecture to suit our application.
+
+To construct our CNN, we discard U-Net's layers of up-convolution and the last two layers of down-sampling and replace them with a $1 \times 1$ convolution instead to obtain a fully connected layer. We use the rectified linear units (ReLU)~\cite{ronneberger_UNet_2015} as the activation function for our CNN as the constant gradient of ReLUs results in faster learning and reduces the problem of vanishing gradient compared to hyperbolic tangent (tanh). We implement the maxpooling layer instead of the average pooling as sub-sampling layer~\cite{krizhevsky_Imagenet_2017}. We observed that the performance is better when ReLU was configured with the maxpooling layer, resulting in higher classification accuracy after 50 epochs. We used the $1 \times 1$ convolutional filters (as suggested in~\cite{gupta_Convolutional_2017}) for the Adam~\cite{kingma_Variational_2015} optimizer. All the other parameters such as number of layers, convolutional kernel size, training algorithm, and the number of neurons in the final dense layer were all experimentally determined for our application.
+
+The inputs to our CNN are the $32 \times 32$ image patches of primary cilia, extracted from both within AQP2 expressed regions and elsewhere within the microscopy images. We do not zero-pad the image patches, as we already select patch sizes that are much larger than a typical cilia length and thereby avoiding the additional computational cost. Next, two consecutive convolutional layers are used in the network. The first convolutional layer consists of 32 kernels of size $5 \times 5 \times 1$. The second convolutional layer consists of 64 kernels of size $5 \times 5 \times 32$. The sub-sampling layer is set as the maximum values in non-overlapping windows of size $2 \times 2$ (stride of 2). This reduces the size of the output of each convolutional layer by half. After the two convolutional and sub-sampling layers, we use a ReLU, where the activation $y$ for a given input $x$ is obtained as
+\begin{equation}
+y = f(x) = \text{max}(0,x)
+\label{Cilia.Eq.1}
+\end{equation}
+A graphical representation of the architecture of the proposed CNN model is shown in Fig~\ref{Cilia.Fig.2} (see the left side).
+% $y = f(x) = \text{max}(0,x)$.
+
+\subsubsection{\textbf{Random Decision Forests}}
+
+A random forest classifier consists of a collection of decision tree classifiers combined together to predict the class label, where each tree is grown in some randomized fashion. Each decision tree classifier consists of decision (or split) nodes and prediction (or leaf) nodes. The prediction node of each tree in the random forest classifier are labeled by the posterior distribution over the image classes~\cite{bosch_Image_2007}. Each decision node contains a test that splits best the space of data to be classified. An image is classified by sending it down the decision tree and aggregating the reached leaf posterior distributions. Randomness is usually injected at two points during training: in sub-sampling the training data and in selecting node tests. Each tree within the random forest classifier is binary and grown in a top-down manner. We choose the binary test at each node by maximizing the information gain,
+\begin{equation}
+\Delta E = -\sum_{i}\frac{\mid Q_{i}\mid}{\mid Q\mid}E(Q_{i})
+\label{Cilia.Eq.2}
+\end{equation}
+obtained by partitioning the training set $Q$ of image patches into two sets $Q_{i}$ according to a given test. Here $E(q)$ is the entropy of the set $q$ and $\mid \cdot\mid$ is the size of the set. We repeat this selection process for each decision node until it reaches a certain depth.
+
+Suppose $T$ is the set of all trees, $C$ is the set of all classes, and $L$ is the set of all leaves for a give tree. During training the posterior probabilities $\left(P_{t,l}(Y(I) = c)\right)$ for each class $c \in C$ at each leaf node $l \in L$, are found for each tree $t \in T$. These probabilities are calculated as the ratio of the number of images $I$ of class $c$ that reach a leaf node $l$ to the total number of images that reach that leaf node $l$. $Y(I)$ is the class label $c$ for image $I$. During test time, we pass a new image through every decision tree until it reaches a prediction (or leaf) node, average all the posterior probabilities and classify the image as
+\begin{equation}
+\hat{Y}(I) = \underset{c}{\arg \max}\left\{\frac{1}{\mid T\mid}\sum_{t=1}^{\mid T\mid} P_{t,l}(Y(I) = c)\right\}
+\label{Cilia.Eq.3}
+\end{equation}
+where $l$ is the leaf node reached by the image $I$ in tree $t$. A graphical representation of the proposed random forest classifier is shown in Fig.~\ref{Cilia.Fig.2} (see the right side).
+
+\section{Experiments and Results}
+
+The Leica TCS SP5 II laser scanning confocal microscope (Leica Microsystems, Buffalo Grove, IL, USA) was used in this work to capture the images. A Plan-Neofluar lens with a magnification of 4$\textsf{x}$, numerical aperture = 0.9, and a pixel size of 0.4 $\mu$m in the x- and y-directions with automatic focusing was used to acquire the images. The size of each image in our dataset is $2048 \times 2048$. We used a total of 8 images consisting of a total of 2357 primary cilia, with 406 primary cilia within AQP2 expressed regions in the images and 1951 primary cilia elsewhere within the image. A careful manual detection and classification of all the 2357 primary cilia was performed by an expert and considered as ground truth for subsequent analysis. We compared our proposed classifier with an unsupervised \emph{k}-means classifier~\cite{dundar_Simplicity_2015} and a supervised multilayer perceptron (MLP) classifier~\cite{haykin_Neural_2009}.
+
+\subsection{Algorithm Parameters}
+
+The convolutional neural random forest classifier is implemented using TensorFlow~\cite{abadi_tensorflowlarge_2016}, and runs on an NVIDIA GeForce GTX TITAN X GPU with 8GB of memory. We used 70\% of the data for training and 30\% of the data for testing. A total of 284 primary cilia from AQP2 expressed regions and 1365 cilia from elsewhere within the images were used for training the algorithm. The classifier was trained using the stochastic gradient descent (SCD) algorithm, Adam~\cite{kingma_Adam_2014}, to efficiently optimize the weights of the CNN\@. The weights were normalized using initialization as proposed in~\cite{gupta_Convolutional_2017} and updated in a mini-batch scheme of 128 candidates. The biases were initialized with zero, and the learning rate was set to $\alpha = 0.001$. The exponential decay rates for the first and second moment estimates were set as $\beta_{1} = 0.9$ and $\beta_{2} = 0.999$, respectively. We used an $\epsilon = 10^{-8}$ to prevent division by zero. A dropout rate of 0.2 was implemented as regularization, applied to the output of the last convolutional layer and the dense layer to avoid overfitting. Finally, we used an epoch size of 50. The softmax loss (cross-entropy error loss) was utilized to measure the error loss. We used 100 estimators and a keep rate of $\gamma = 10^{-4}$ for the random forests algorithm. A 5-fold cross-validation was used during training.%
+
+\subsection{Performance Evaluation}
+
+The \emph{k}-means, MLP, and the proposed convolutional neural random forest classifier were tested on 30\% of the whole data consisting of 122 primary cilia in AQP2 expressed regions and 586 cilia elsewhere within the images. We evaluated all the algorithms using the conventional metrics that have been used for evaluation of classification algorithms, namely precision $P$, recall $R$, receiver operating characteristic (ROC) curves, area under the curve (AUC), and coverage measure ($F_{\beta}$-score).
+
+Precision $P$ and recall $R$ are given by
+\begin{equation}
+P = \frac{\text{TP}}{\text{TP} + \text{FP}}, \quad R = \frac{\text{TP}}{\text{TP} + \text{FN}}
+\label{Cilia.Eq.4}
+\end{equation}
+where TP is the number of true positive classifications, FP is the number of false positive classifications, and FN is the number of false negative classifications.
+
+An ROC curve is a plot between the true positive rate (a.k.a.\ sensitivity or recall ($R$)), which is defined by~(\ref{Cilia.Eq.4}), and the false positive rate (a.k.a.\ complement of specificity), which is defined as $\text{FP}/(\text{FP} + \text{FN})$.
+
+The coverage measure, also commonly known as the $F_{\beta}$-score is defined by
+\begin{equation}
+F_{\beta} = \left(1 + \beta^{2}\right)\frac{PR}{\left(\beta^{2}P\right) + R}
+\label{Cilia.Eq.5}
+\end{equation}
+We use $F_{1}$ (i.e., $\beta = 1$) as this is the most common choice for this type of evaluation.
+
+The AUC is the average of precision $P(R)$ over the interval ($0 \leq R \leq 1$), where $P(R)$ is a function of recall $R$. It is given by
+\begin{equation}
+\text{AUC} = \int_{0}^{1} P(R)dR.
+\label{Cilia.Eq.6}
+\end{equation}
+The best classification algorithm among several alternatives is commonly defined as the one that maximizes either the AUC  or the $F_{\beta}$-score.
+%----------------------------------------------- TABLE 1------------------------------------------------------%
+\begin{table}[!t]
+\caption{Performance of the Classification Algorithms}
+\label{Cilia.Table.1}
+  \begin{center}
+	\renewcommand{\arraystretch}{1.7}
+	\begin{tabular}{>{\centering} m{1.4cm} >{\centering} m{1.7cm}  >{\centering}m{1.35cm} >{\centering} m{0.9cm} >{\centering}m{1.25cm}}
+	\hline
+	\rowcolor[gray] {0.8}\textbf{Methods} & \textbf{Precision ($P$)} & \textbf{Recall ($R$)} & \textbf{AUC} & \textbf{$F_{\beta}$-score} \tabularnewline \hline
+	Our Method &  0.9143 & 0.9062 & 0.8514 & 0.9102 \tabularnewline
+	MLP & 0.8234 & 0.8239 & 0.8102 & 0.8237 \tabularnewline
+	\emph{k}-means & 0.7961 & 0.8112 & 0.7891 & 0.8035 \tabularnewline
+	\hline
+	\end{tabular}
+   \end{center}
+\vspace{-4mm}
+\end{table}
+%-------------------------------------------------------------------------------------------------------------------%
+
+Table\,\ref{Cilia.Table.1} shows the average precision ($P$), recall ($R$), AUC, and $F_{\beta}$-score values for all the classification algorithms on the test data. From Table\,\ref{Cilia.Table.1} we observe that the $F_{\beta}$-score of the proposed method is 10.67 percentage points greater than the \emph{k}-means classifier, and is 8.65 percentage points greater than the MLP classifier. Table\,\ref{Cilia.Table.1} also shows that the proposed classifier has the largest AUC among all the evaluated methods. Fig.~\ref{Cilia.Fig.3} shows the ROC curves for all the methods under comparison. From Fig.~\ref{Cilia.Fig.3}, we observe that the proposed method has better classification accuracy compared to the other automated methods at all points along the curve.
+
+\section{Conclusion}
+
+Accurate detection and classification of primary cilia in microscopy images is a challenging task. We propose a convolutional neural random forest classifier to classify primary cilia to determine whether they lie within an AQP2 expressed region or elsewhere within the microscopy images. We have shown how to model and train random forests, usable as alternative classifiers for batch learning in (deep) convolutional neural networks. Our approach combines the representation learning power of CNNs along with the divide-and-conquer principle of decision trees. We applied the proposed classifier to the problem of primary cilia classification in microscopy images and compared it with two methods, an unsupervised k-means classifier and a supervised MLP classifier. The results show that the proposed algorithm achieves better classification accuracy compared to the other two classifiers in terms of various figures of merit such as AUC, and $F_{\beta}$-score.
+%
+%For future we plan to incorporate an end-to-end learning framework for the convolutional neural random forests by introducing stochastic differentiable decision trees, enabling the split node parameters to be learned via back-propagation. Doing so will lead to further improvements in the classifier.
+%
+%\section*{Acknowledgment}
+%
+%The authors would like to thank Jonathan T. Gill for the numerous fruthfull discussions and insights about using TensorFlow. We would also like to thank Jianbo Shao for helping in manual segmentation of the primary cilia images used for ground truth evaluation.
+%----------------------------------------------- FIGURE 3------------------------------------------------------%
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width= 3.5in, height=2.5in]{\figurepath{fig3}}
+	\caption{ROC curves for all the classification methods.}
+	\label{Cilia.Fig.3}
+	\vspace{-4mm}
+\end{figure}
+%-----------------------------------------------------------------------------------------------------------------%
+
