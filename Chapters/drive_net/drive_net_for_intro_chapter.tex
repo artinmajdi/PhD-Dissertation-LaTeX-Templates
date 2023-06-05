@@ -1,0 +1,43 @@
+\chapter{Drive-Net: Convolutional Network for Driver Distraction Detection}
+
+\begin{abstract}
+To help prevent motor vehicle accidents, there has been significant interest in finding an automated method to recognize signs of driver distraction, such as talking to passengers, fixing hair and makeup, eating and drinking, and using a cell phone. In this paper, we present an automated supervised learning method called Drive-Net for driver distraction detection. Drive-Net uses a combination of a convolutional neural network (CNN) and a random decision forest to classify images of a driver. We compare the performance of our proposed Drive-Net to two other popular machine learning approaches: a recurrent neural network (RNN) and a multilayer perceptron (MLP). We tested the methods on a publicly available database of images acquired in a controlled environment that contained about 22425 images manually annotated by an expert. The results show that Drive-Net achieves a detection accuracy of 95\%, which is 2\% more than the best results obtained in the same database using other methods.
+
+\textbf{KEYWORDS:\ } Image classification, convolutional neural networks, random forest, driver distraction
+\end{abstract}
+
+\section{Introduction}
+Distracted driving is a major cause of motor vehicle accidents. Each day in the United States, approximately 9 people are killed and more than 1000 are injured in crashes that involve a distracted driver~\cite{schroeder_National_2018}. It is estimated that about 25\% of fatalities in motor vehicle accidents are due to distracted driving~\cite{website_insurer_2013}. A study of American motor vehicle fatalities~\cite{schroeder_National_2018} reveals the top 10 causes of distracted driving:
+
+\begin{enumerate}
+\item Generally distracted or ``lost in thought'' -{\textendash} 62\%
+\item Cell phone use {\textemdash} 12\%
+\item Outside person, object, or event {\textendash} 7\%.
+\item Other occupants -{\textendash} 5\%.
+\item Using or reaching for a device brought into the car (e.g., phone) {\textendash} 2\%.
+\item Eating or drinking -{\textendash} 2\%.
+\item Adjusting audio or climate controls {\textemdash} 2\%.
+\item Using devices to operate the vehicle (e.g., adjusting mirrors or seatbelts) {\textemdash} 1\%.
+\item Moving objects (e.g., insects or pets) -{\textendash} 1\%
+\item Smoking related {\textemdash} 1\%.
+\end{enumerate}
+
+Therefore, there is interest in using dashboard camera image analysis to automatically detect drivers engaged in distracting behavior. A dataset of such dashboard camera images, observing various activities of drivers, has been compiled and used for the Kaggle competition regarding automated detection of driver distraction~\cite{montoya_State_2016}. Figure~\ref{Drive-Net/figure1} shows examples of some images from the dashboard camera manually annotated as different activities while driving.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{\figurepath{image1.jpeg}}%
+    \caption{Representative dashboard camera images of drivers being distracted. From left to right: drinking while driving; safe driving; reaching behind while driving; talking on the phone (left hand) while driving~\cite{montoya_State_2016}.}%
+    \label{Drive-Net/figure1}
+\end{figure}
+
+Object detection and human behavior detection are well-researched topics in the computer vision literature~\cite{borji_Salient_2019}. Machine learning (esp. Deep Learning) techniques can often learn complex models and achieve high accuracy, so many researchers have started to apply such techniques to solve computer vision problems, including object detection and human behavior detection. For example, the Inception-v4 model proposed by Szegedy~\cite{szegedy_InceptionV4_2017} is a supervised learning model made up of deep convolutional residual networks (ResNet) that have more than 75 trainable layers, and achieves 96.92\% accuracy in the ImageNet data set. Girshick~\cite{girshick_RegionBased_2016} introduced a very powerful method for object detection and segmentation using a region-based convolutional neural network (CNN). This method divides the human behavior detection problem into two problems. First, they apply an object detection algorithm to detect the regions of interest (ROIs) where people are present within an image. Next, each ROI is fed to a CNN to identify the type of behavior exhibited in the given ROI\@. Adding other traditional machine learning methods, such as ensemble learning (i.e.\ bagging) and K nearest neighbors (KNN), to the CNN model is a way to improve the accuracy of the already existing model~\cite{kim_Vehicle_2017}.
+
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{\figurepath{image2.jpeg}}
+    \caption{An overview of the proposed Drive-Net. Our proposed CNN architecture (shown on the left side) consists of two convolution layers (conv), each followed by a maxpooling layer (pool), and a final ReLU layer, the output of which is regularized using dropouts to obtain a fully connected layer (FC). The FC layer is fed as input to the random forest classifier (on the right side), which predicts the final class label.}%
+    \label{Drive-Net/figure2}
+\end{figure*}
+
+One of the main drawbacks of CNN is that training the network using a large data set can lead to overfitting the model. To avoid this, ensemble methods such as random decision forests can be effective. With this in mind, we propose a new supervised learning algorithm called Drive-Net that combines a CNN and a random forest in a cascading fashion for application to the problem of driver distraction detection using dashboard camera images. We compare our proposed Drive-Net to two other neural network methods: a residual neural network (RNN) and a multilayer perceptron (MLP). We show that Drive-Net achieves better classification accuracy than the driver distraction detection algorithms that were proposed in the Kaggle competition~\cite{montoya_State_2016}.

@@ -591,7 +591,7 @@
 	\vspace{0.5cm}
 
 	\begin{quote}
-    This dissertation \textit{\SgIntTitle} prepared by \SgIntAuthor has been submitted in partial fulfillment of requirements for a doctoral degree at The University of Arizona
+    This dissertation \textit{\SgIntTitle} prepared by {\SgIntAuthor} has been submitted in partial fulfillment of requirements for a doctoral degree at The University of Arizona
     and is deposited in the University Library to be made available to borrowers under the rules of the Library.
     \bigskip\\
 
