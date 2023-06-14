@@ -23,20 +23,28 @@ Hierarchical multi-label classification methods have been successfully implement
 We propose a method that takes advantage of hierarchical relationships between labels without imposing computational requirements. Our proposed method is adaptable to the computational capacity of the user. If sufficient computational resources are available, it can be used as a standalone loss function during the optimization process, or it can be applied to test samples without the need to fine-tune the pre-trained ML model. 
 
 \section{Methods}\label{sec:methods}
-We propose a novel method which improves the accuracy and interpretability of multi-label classification with applications such as chest radiograph (CXR). Two different approaches are proposed.  In the first approach which requires access to ground truth labels, the hierarchical relationships between different classes are embedded into the loss function. In a second approach the hierarchical relationships are used to update the value of logits prior to the calculation of predicted probabilities for each class.  As a transfer learning approach, these two techniques facilitates the adoption and/or fine-tuning of pre-trained models, thereby augmenting their generalizability to novel tasks. This ultimately contributes to the improvement of disease diagnosis and treatment through increased accuracy within applications where there are hierarchical relationship between abnormalities.
+We propose a novel method that improves the accuracy and interpretability of multi-label classification with applications such as chest radiograph (CXR). Two different approaches are proposed.  In the first approach which requires access to ground truth labels, the hierarchical relationships between different classes are embedded into the loss function. In a second approach, the hierarchical relationships are used to update the value of logits prior to the calculation of predicted probabilities for each class.  As a transfer learning approach, these two techniques facilitate the adoption and/or fine-tuning of pre-trained models, thereby augmenting their generalizability to novel tasks. This ultimately contributes to the improvement of disease diagnosis and treatment through increased accuracy within applications where there is hierarchical relationship between abnormalities.
+
+One of the key benefits of the proposed techniques is the enhancement of interpretability. By organizing diseases into a hierarchical structure and leveraging their relationships, the model not only improves classification performance, but also provides insights into the relationships among predicted diseases. This additional layer of interpretability can help radiologists understand the rationale behind the model predictions, build trust in the model output, and facilitate its integration into clinical workflows. Furthermore, the hierarchical nature of the taxonomy allows radiologists to explore predictions at various levels of granularity, depending on the level of detail required for a specific case.
 
 \subsection{Glossary of Symbols}\label{subsec:notations}
 
 Let us denote the following parameters:
 \begin{itemize}
     \item  $\mathcal{C} = {\{c_k\}}_{k=1}^{K} , c_k \in \{0,1\} $: the set of classes (categories) in the multi-label dataset, where $c_k $ is the name of the $k $-th class.
+
     \item  $\mathcal{E} $: set of directed edges representing parent-child relationships between classes.
+
     \item  $\mathcal{G}=\left\{\mathcal{C},\mathcal{E}\right\} $: Directed acyclic graph (DAG) $\mathcal{G} $ representing the taxonomy of thoracic diseases.
+
     \item  $c_j=\Lambda (c_k) \in \mathcal{C}$: parent class of class $c_k $ in DAG $\mathcal{G} $.
+
     \item  $\mathcal{J}(c_j) \subset \mathcal{C}$: set of child classes of class $c_j$ in DAG $\mathcal{G} $
 
     \item  $y_k^{(i)} \in \{0,1\} $: true label for the $k $-th class of instance $i $.
+
     \item  $q_k^{(i)} \in \left( -\infty,0 \right) $: logits obtained in the last layer of the neural network model before the sigmoid layer.
+
     \item  $p_k^{(i)} = \text{sigmoid}\left(q_k^{(i)}\right) = \frac{1}{1+\exp{\left(-q_k^{(i)}\right)}} $: predicted probability for the $k $-th class ($c_k) $ of instance $i $ with a value between 0 and 1. $p_k^{(i)} $ represents the likelihood that class $k $ is present in instance $i $ and is obtained by passing logits $q_k^{(i)} $ through a sigmoid function.
 
     \item  $\theta_k $: Binarization threshold for class $k $.  To obtain this, we can utilize any existing thresholding technique (for example, in one technique, we analyze the ROC curve and find the corresponding threshold where the difference between the true positive rate (sensitivity) and false positive rate (1-specificity) is maximum; Alternatively, we could simply use $0.5 $).
@@ -95,7 +103,7 @@ In medical imaging, labels are frequently organized as trees or directed acyclic
 
 A comprehensive label taxonomy for lung diseases was developed based on the taxonomies presented by Irvin~\cite{irvin_CheXpert_2019} for the CheXpert dataset and Chen~\cite{chen_Deep_2020} for the PadChest and PLCO datasets. This unified taxonomical structure is designed to be applied to various chest radiography datasets. The developed taxonomy structure is depicted in Figure~\ref{fig:taxonomy.fig.1.taxonomy_structure}.
 
-\subsection{Approach 1: Conditional Predicted Probability}\label{subsec:method.approach1}
+\subsection{Approach 1: Conditional Predicted Probability}\label{subsec:taxonomy.method.approach1}
 When computational resources are limited, this technique can be applied to test samples without the need to fine-tune the pre-trained, multi-label classification model. This adaptability ensures that the benefits of considering hierarchical relationships between labels can be realized in a wide range of practical scenarios, without imposing excessive computational requirements.
 
 Directly updating the predicted probabilities presents potential benefits, including the following:
@@ -118,7 +126,7 @@ When $\alpha_{k,j}=0 $, there is no influence from the parent class $c_j$ on the
 \subsubsection{Parameter Selection and Tuning}
 The selection of appropriate hyperparameters is crucial for the effectiveness of the proposed transfer learning-based technique. In this study, we employ a systematic approach to tune the hyperparameters $\alpha_{k,j} $, which control the dependency between the predicted probabilities of the child and parent classes. We utilize a grid search method along with cross-validation to determine the optimal values for these hyperparameters. The search space for both hyperparameters is defined based on preliminary experiments and domain knowledge, ensuring a balance between model complexity and predictive performance.
 
-\subsection{Approach 2: Conditional Loss}
+\subsection{Approach 2: Conditional Loss}\label{subsec:taxonomy.method.approach2}
 In a second approach, we propose a similar concept to the approach discussed in section ~\ref{subsec:method.approach1}, however, rather than directly updating the predicted probability of each class, we instead update the loss value of each class based on the loss values of its parent classes. In the previous approach, we directly updated the predicted probability so that it could be applied unsupervised to existing pre-trained models. Although this method is highly useful during inference time, it presents some challenges if we use it during the optimization phase of our classifier model. Among these disadvantages are the following.
 \begin{itemize}
     \item \textbf{Inconsistency with the optimization process: } Direct updating of predicted probabilities can misalign with the optimization procedure, which typically minimizes the loss function, potentially resulting in learning inconsistencies.
@@ -144,7 +152,7 @@ In multi-label classification problems, where each sample may belong to multiple
     \text{Loss}(\theta) = \sum_{i=1}^{N}\sum_{k=1}^{K}l_k
     \label{eq:taxonomy.eq.3.totalloss}
 \end{equation}
-In this formulation, the objective is to minimize the loss function with respect to the model parameters $\theta $, resulting in an optimal set of parameters that produce accurate predictions for multi-label classification tasks. However, class independence and equal importance between different classes cannot always be assumed. Inclusion of a hierarchical penalty or regularization term in the loss function is one way to push the loss function to take the taxonomy into account when optimizing the model hyperparameters (weights and biases). We use a regularization term $\beta_k$  to penalize the loss for class $c_k$ for each instance $i $ in which the probability that its parent class $c_j$ exists in that instance is low. This can be represented mathematically by adding a hierarchical penalty term $H(c_k \vert c_j)$ for class $c_k$ with respect to its corresponding parent class $c_j$ as follows.
+In this formulation, the objective is to minimize the loss function with respect to the model parameters $\theta $, resulting in an optimal set of parameters that produce accurate predictions for multi-label classification tasks. However, class independence and equal importance between different classes cannot always be assumed. Inclusion of a hierarchical penalty or regularization term in the loss function is one way to push the loss function to take the taxonomy into account when optimizing the model hyperparameters (weights and biases). We use a regularization term $\beta_k$  to penalize the loss for class $c_k$ for each instance $i $ in which the probability that its parent class $c_j$ exists in that instance is low. This can be represented mathematically by adding a hierarchical penalty term $H(c_k \vert c_j)$ for the class $c_k$ with respect to its corresponding parent class $c_j$ as follows.
 \begin{equation}
     \widehat{l}_{k}^{(i)} = l_{k}^{(i)}+\beta_k H \left(c_k \vert c_j \right)
     \label{eq:taxonomy.eq.3.newloss}
@@ -165,36 +173,32 @@ In both Equations~(\ref{eq:taxonomy.eq.4.hierarchical_penalty1}) and~(\ref{eq:ta
 
 To address this problem, we can modify the loss measurements presented in Equations~(\ref{eq:taxonomy.eq.4.hierarchical_penalty1}) and~(\ref{eq:taxonomy.eq.5.hierarchical_penalty2})  to be based on the multiplication of losses rather than their addition. 
 
-< Reviewed Until Here >
-
-Multiplying losses allows for a more flexible relationship between the child and parent losses, as it can model both linear and nonlinear relationships. Furthermore, the parent's loss can have a more significant impact on the total loss, since it is multiplied by the child's loss, ensuring that the hierarchical relationships are better captured. To achieve this, we can define the new loss as follows.
+Multiplying losses allows for a more flexible relationship between the child and parent classes, as it can model both linear and nonlinear relationships. Furthermore, the parent's loss can have a more significant impact on the total loss, since it is multiplied by the child's loss, ensuring that the hierarchical relationships are better captured. To achieve this, we can define the new loss as follows.
 \begin{equation}
     \label{eq:taxonomy.eq.7.newloss}
-    \widehat{l}_k^{(i)} = l_k^{(i)} H \left( k \vert j \right)
+    \widehat{l}_k^{(i)} = l_k^{(i)} H \left( c_k \vert c_j \right)
 \end{equation}
 where the hierarchical penalty term is defined as follows.
 \begin{equation}
     \label{eq:taxonomy.eq.8.hierarchical_penalty.loss}
-    H(k \vert j) = \left\{ \begin{array}{lc}1 & \text{if} \; \Lambda(c_k) = \varnothing \\ a_k l_j^{(i)} + \beta_k & \text{otherwise.} \end{array} \right.
+    H(k \vert j) = \left\{ \begin{array}{lc}1 & \text{otherwise.} \\ a_k l_j^{(i)} + \beta_k & c_j \text{ has a parent} \end{array} \right.
 \end{equation}
-where $c_j $ is the parent class of $c_k $ class, and $l_j $ is the parent's loss value for instance $i $.
+where $c_j $ is the parent class of the $c_k $ class, and $l_j $ is the parent loss value, for instance $i $.
 
-The modified loss function in Equation~(\ref{eq:taxonomy.eq.7.newloss})  aims to ensure that predictions adhere to hierarchical relationships between labels by penalizing deviations from these established relationships. Adjusting the weighting parameters $\alpha_k $ and $\beta_k $, we can regulate the extent to which hierarchical information influences the learning process.
+The modified loss function in Equation~(\ref{eq:taxonomy.eq.7.newloss})  aims to ensure that predictions adhere to hierarchical relationships between classes by penalizing deviations from these established relationships. By adjusting the parameters $\alpha_k $ and $\beta_k $, we can regulate the degree to which hierarchical information influences the learning process.
 
 \subsection{Updating Loss Values and Predicted Probabilities}\label{subsec:updating-loss-values-and-predicted-probabilities}
 
-In the previous section, we showed how a taxonomy-based loss function can be used to improve the classification accuracy of multi-class problems. However, one of the main advantages of our proposed technique is that it enables efficient utilization of pre-trained models and leverages the existing knowledge, thus reducing the computational cost and training time associated with re-optimization.
+In the previous section, we introduced a taxonomy-based loss function with the goal of improving the classification accuracy of multi-class problems. However, one of the main advantages of our proposed technique is that it enables efficient utilization of pre-trained models and leverages the existing knowledge, thus reducing the computational cost and training time associated with re-optimization. In this section, we illustrate how both of our proposed approaches can be seamlessly integrated into the existing classification framework without the necessity to re-run the optimization phase of our classifier (e.g., DenseNet121). This can be achieved by focusing on updating the loss values (approach 2 shown in section~\ref{subsec:taxonomy.method.approach2}) and predicted probabilities (approach 1 shown in section~\ref{subsec:taxonomy.method.approach1}) to incorporate the hierarchical relationships present in the taxonomy structure. 
 
-In this section, we illustrate how our proposed taxonomy-based transfer learning approach can be seamlessly integrated into the existing classification framework without the necessity to re-run the optimization phase of our classifier (e.g., DenseNet121). This can be achieved by focusing on updating the loss values and predicted probabilities to incorporate the hierarchical relationships present in the taxonomy. We demonstrate how the interdependence between different classes, as represented by the hierarchical taxonomy, can be effectively captured through the adjustment of loss values and predicted probabilities. This ensures that the classifier's performance is enhanced while respecting the inherent structure of the disease taxonomy, ultimately leading to improved diagnosis and better patient outcomes.
+During a training phase of a classifier (e.g., DenseNet121), an optimization algorithm such as gradient descent is used to determine the predicted probabilities that minimize the loss across the entire dataset. However, this approach is only valid during the training phase and only shows the predicted probability with respect to the original loss values measured by the classifier.
 
-To calculate the predicted probability based on the loss, we must first define a loss function that quantifies the difference between the predicted probability and the true label. Once the loss function has been defined, during a training phase of a classifier (e.g., DenseNet121), an optimization algorithm such as gradient descent can be used to determine the predicted probabilities that minimize the loss across the entire dataset. However, this approach is only valid during the training phase and only shows the predicted probability with respect to the original loss values measured by the classifier.
-
-In this section, we demonstrate how we can directly calculate the new predicted probabilities from their new loss values obtained in Equation~(\ref{eq:taxonomy.eq.7.newloss}). Let us assume that binary cross entropy is used for the choice of the loss function $\mathcal{L}(\cdot) $. Furthermore, let us denote $\widehat{q}_k^{(i)} , \widehat{p}_k^{(i)} $ as the updated values we are looking for showing the logit and predicted probability of class $k $ and instance $i $ after applying the proposed technique. As discussed above, to calculate the predicted probabilities, we need to pass the logits ${\widehat q}_k^{(i)} $ into a sigmoid function as shown below:
+In the following, we show how to calculate the updated predicted probabilities from their updated loss values obtained from Equation~(\ref{eq:taxonomy.eq.7.newloss}) without re-doing the optimization process. Let us assume that binary cross entropy is used for the choice of the loss function $\mathcal{L}(\cdot) $. Let us denote $\widehat{q}_k^{(i)} , \widehat{p}_k^{(i)} $ as the updated values for logit and predicted probability of class $k $ and instance $i $ after applying the proposed technique. As previously discussed, to calculate the predicted probabilities, we need to pass the logits ${\widehat q}_k^{(i)} $ into a sigmoid function as shown below:
 \begin{equation}
     \label{eq:taxonomy.eq.9.sigmoid}
     \widehat{p}_k^{(i)}=\text{sigmoid}\left(\widehat{q}_k^{(i)}\right)=\frac1{1+\exp\left(-\widehat{q}_k^{(i)}\right)}
 \end{equation}
-The sigmoid activation function maps any value to a number between zero and one. The sigmoid function is defined as follows. The gradient of the sigmoid function provides the direction in which the predicted probability must be updated.
+The sigmoid activation function maps any value to a number between zero and one. The gradient of the sigmoid function (shown below) provides the direction in which the predicted probability must be updated.
 \begin{equation}
     \label{eq:taxonomy.eq.10.sigmoidprime}
     \text{sigmoid}'\left(\widehat{q}_k^{(i)}\right)=\frac{\partial{\text{sigmoid}}}{\partial{q}}=\text{sigmoid}\left(\widehat{q}_k^{(i)}\right)\left(1-\text{sigmoid}\left(\widehat{q}_k^{(i)}\right)\right)=\widehat{p}_k^{(i)}\left(1-\widehat{p}_k^{(i)}\right)
@@ -212,22 +216,16 @@ In the following equations, we show how we can use the predicted probability, th
 \frac{\partial \mathcal{L}\left(p_k^{(i)},\; y_k^{(i)}\right)}{\partial p}\;\text{sigmoid}^{'}\left(\widehat{q}_k^{(i)}\right)=\left(\frac{y_k^{(i)}}{\widehat{p}_k^{(i)}}-\frac{1-y_k^{(i)}}{1-\widehat{p}_k^{(i)}}\right)\widehat{p}_k^{(i)}\left(1-\widehat{p}_k^{(i)}\right)=y_k^{(i)}-\widehat{p}_k^{(i)}
 \end{equation}
 Hence, we can conclude the following.
-
 \begin{equation}
     \label{eq:taxonomy.eq.13.newpred}
     \begin{array}{@{}l}\hat{p}_{k}^{(i)} = \left\{\begin{array}{lc}-\frac{\partial \mathcal{L}\left(p_k^{(i)},\;y_k^{(i)}\right)}{\partial p}\;\text{sigmoid}^{'}\left(\widehat{q}_k^{(i)}\right)\text{+1}&y=1\\-\frac{\partial \mathcal{L}\left(p_k^{(i)},\;y_k^{(i)}\right)}{\partial p}\;\text{sigmoid}^{'}\left(\widehat{q}_k^{(i)}\right) & \text{otherwise.} \end{array}\right.\end{array}
 \end{equation}
-
 We would like to modify this equation so that it does not directly depend on the true value and instead rely on the gradient loss. If we simplify the loss gradient shown in Equation~(\ref{eq:taxonomy.eq.11.lossgradient})  we will have the following:
-
 \begin{equation}
     \label{eq:taxonomy.eq.14.newlossgradient}
     \frac{\partial \mathcal{L}(\widehat{p}_k^{(i)}, y_k^{(i)})}{\partial \widehat{p}} = \frac{y_k^{(i)}}{\widehat{p}_k^{(i)}} - \frac{1 - y_k^{(i)}}{1 - \widehat{p}_k^{(i)}} = \frac{y_k^{(i)} - \widehat{p}_k^{(i)}}{\widehat{p}_k^{(i)}(1 - \widehat{p}_k^{(i)})}
 \end{equation}
-
-
 In this equation, we can see that when the true label is positive $\left(y_k^{(i)}=1\right) $, the loss gradient can only be 0 or a positive number. Similarly, when $\left(y_k^{(i)}=0\right) $, the loss gradient can only take the value 0 or a negative number. Thus, we can modify the Equation~(\ref{eq:taxonomy.eq.13.newpred})  to look as follows.
-
 \begin{equation}
     \label{eq:taxonomy.eq.15.newpred}
     \widehat{p}_k^{(i)} =
@@ -238,9 +236,6 @@ In this equation, we can see that when the true label is positive $\left(y_k^{(i
 \end{equation}
 
 Finally, the Equation~(\ref{eq:taxonomy.eq.15.newpred}) can be simplified as follows.
-
-
-
 \begin{equation}
     \label{eq:taxonomy.eq.16.newpred}
     \widehat{p}_k^{(i)} =
@@ -249,105 +244,57 @@ Finally, the Equation~(\ref{eq:taxonomy.eq.15.newpred}) can be simplified as fol
         1 - \exp(-\widehat{l}_k^{(i)}) & \text{otherwise}
     \end{cases}
 \end{equation}
-
 where, ${\widehat l}_k^{(i)} $ is the updated loss for class $k $ and instance $i $.
 
-The following demonstrates the Equation~(\ref{eq:taxonomy.eq.16.newpred})  based on predicted probability syntax to demonstrate its similarity to Equation~(\ref{eq:taxonomy.eq.1.pred.approach1})  in Approach 1. From Equation~(\ref{eq:taxonomy.eq.8.hierarchical_penalty.loss}) we have $l_k^{(i)}=l_k^{(i)}\left(\alpha_k\;l_j^{(i)}+\beta_k\right) $. By substituting that into $\exp{\left(-\widehat{l}_{k}^{(i)}\right)}, y_{k}^{(i)}=1 $ we would have the following equation.
-
-
+The following demonstrates the Equation~(\ref{eq:taxonomy.eq.16.newpred})  based on predicted probability to demonstrate its similarity to Equation~(\ref{eq:taxonomy.eq.1.pred.approach1})  in Approach 1 (section~\ref{subsec:taxonomy.method.approach1}). From Equation~(\ref{eq:taxonomy.eq.8.hierarchical_penalty.loss}) we have $\hat{l}_k^{(i)}=l_k^{(i)}\left(\alpha_k\;l_j^{(i)}+\beta_k\right) $. By substituting that into $\exp{\left(-\widehat{l}_{k}^{(i)}\right)}, \text{for } y_{k}^{(i)}=1 $ we would have the following equation.
 \begin{equation}
     \label{eq:taxonomy.eq.17}
     \exp{\left(-{\widehat l}_k^{(i)}\right)}=\exp{\left(-l_k^{(i)}\left(\alpha_k\;l_j^{(i)}+\beta_k\right)\right)}={\left(p_k^{(i)}\right)}^{-\alpha_k{\log{\left(p_j^{(i)}\right)}}+\beta_k}
 \end{equation}
-
-
-Furthermore, $1-\exp{\left(-{\widehat l}_k^{(i)}\right)},\;y_k^{(i)}=0 $ will be as follows.
-
+Furthermore, $1-\exp{\left(-{\widehat l}_k^{(i)}\right)},\text{for } y_k^{(i)}=0 $ will be as follows.
 \begin{equation}
     \label{eq:taxonomy.eq.18}
     1-\exp{\left(-{\widehat l}_k^{(i)}\right)}=1-\exp{\left(-l_k^{(i)}\left(\alpha_k\;l_j^{(i)}+\beta_k\right)\right)}={1-\left(1-p_k^{(i)}\right)}^{-\alpha_k{\log{\left(1-p_j^{(i)}\right)}}+\beta_k}
 \end{equation}
-
-
 By substituting the Equations~(\ref{eq:taxonomy.eq.17}) and~(\ref{eq:taxonomy.eq.18})  into Equation~(\ref{eq:taxonomy.eq.16.newpred})  we will have the following.
-
-
 \begin{equation}
     \label{eq:taxonomy.eq.19.newpred}
     \widehat{p}_k^{(i)} =
     \begin{cases}
         {\left( p_k^{(i)} \right)}^{-\alpha_k \log(p_j^{(i)}) + \beta_k} & \text{if} \quad y_k^{(i)} = 1 \\
-        1 - {\left( 1 - p_k^{(i)} \right)}^{-\alpha_k \log{\left( 1 - p_j^{(i)} \right)} + \beta_k} & \text{otherwise}
+        1 - {\left( 1 - p_k^{(i)} \right)}^{-\alpha_k \log{\left( 1 - p_j^{(i)} \right)} + \beta_k} & \text{otherwise.}
     \end{cases}
 \end{equation}
 
-
-\subsection{Interpretability Enhancement}
-
-One of the key benefits of our proposed method is the enhancement of interpretability. By organizing diseases into a hierarchical structure and leveraging their relationships, the model not only improves classification performance, but also provides insights into the relationships among predicted diseases. This additional layer of interpretability can help radiologists understand the rationale behind the model's predictions, building trust in the model output, and facilitating its integration into clinical workflows. Furthermore, the hierarchical nature of the taxonomy allows radiologists to explore predictions at various levels of granularity, depending on the level of detail required for a specific case.
-
-
-
 \subsection{Experimental Setup}
-
-
 \subsubsection{Datasets}
-
-We utilized three diverse and publicly available datasets for the evaluation of our proposed hierarchical multi-label classification technique: CheXpert~\cite{irvin_CheXpert_2019}, PadChest~\cite{bustos_Padchest_2020}, and VinDr-CXR~\cite{nguyen_VinDrCXR_2022}. These datasets contain a diverse range of chest radiographic images covering various thoracic diseases, providing a comprehensive evaluation of the effectiveness of our method.
-
-\textbf{Dataset Description}
-
+Three diverse and publicly available datasets are used  to evaluate the proposed hierarchical multi-label classification techniques: CheXpert~\cite{irvin_CheXpert_2019}, PadChest~\cite{bustos_Padchest_2020}, and VinDr-CXR~\cite{nguyen_VinDrCXR_2022}. These datasets contain a diverse range of chest radiographic images covering various thoracic diseases, providing a comprehensive evaluation of the effectiveness of our method. The description of the three datasets are as follows.
 \begin{itemize}
     \item  \textbf{CheXpert}~\cite{irvin_CheXpert_2019} is a large-scale dataset containing 224,316 chest radiographs of 65,240 patients, labeled with 14 radiographic findings.
-
     \item \textbf{PadChest}~\cite{bustos_Padchest_2020} consists of 160,000 chest radiographs of 67,000 patients, annotated with 174 radiographic findings. This dataset is highly diverse and includes a wide variety of thoracic diseases.
-
     \item \textbf{NIH }~\cite{wang_ChestXRay8_2017} includes 112,120 chest radiographs of 30,805 patients labeled with 14 categories of thoracic diseases.
 \end{itemize}
 
-\textbf{Preprocessing}
+\textbf{Preprocessing} - The chest radiographs were pre-processed to ensure consistency across the datasets. The images were resized to a resolution of $224 \times 224$ pixels, with the pixel intensities normalized to a range of 0 and 1. Data augmentation techniques, such as rotation, translation, and horizontal flipping, were applied to increase the dataset's size and diversity, consequently enhancing the model's generalization capability.
 
-The input chest radiographs were pre-processed to ensure consistency across the datasets. The images were resized to a resolution of $224 \times 224$ pixels, with the pixel intensities normalized to a range of [0, 1]. Data augmentation techniques, such as rotation, translation, and horizontal flipping, were applied to increase the dataset's size and diversity, consequently enhancing the model's generalization capability.
+\subsubsection{Model Optimization}
+The DenseNet121~\cite{huang_Densely_2017} architecture and the pre-trained weights provided by Cohen~\cite{cohen_TorchXRayVision_2022} was used as the baseline model. The model was fine-tuned on a subset of CheXpert~\cite{irvin_CheXpert_2019}, NIH~\cite{wang_ChestXRay8_2017}, PadChest~\cite{bustos_Padchest_2020} for 18 toracic diseases. A series of transformations were applied to all train images, including rotation of up to 45 degrees, translation of up to 15\%, and scaling up to 10\%. Binary cross entropy losses and Adam optimizer were used.
 
+\textbf{Parallelization for multiple CPU cores} - To effectively optimize the hyperparameters of our proposed taxonomy-based transfer learning methods, we utilize parallelization techniques that distribute the computational load across multiple CPU cores. By leveraging the power of parallel processing, we can drastically reduce the overall computation time and accelerate the optimization procedure, making the method more applicable to large-scale and high-dimensional datasets. Different parallelization libraries, such as joblib and Python multiprocessing, were employed to facilitate the implementation of parallelism, ensuring seamless integration with existing frameworks and offering a scalable and hardware-adaptable solution.
 
+\textbf{Optimum Threshold Determination} - Determining the optimal threshold is a crucial aspect of evaluating the performance of the proposed method, as it determines the point at which the predictions for multi-label classification tasks are translated into binary class labels. To determine the optimal threshold value, we used receiver operating characteristic (ROC) analysis, a common method for evaluating the performance of classification models. ROC analysis provides a comprehensive view of the model's performance at various threshold values, allowing us to determine the optimal point for balancing the true positive rate (sensitivity) and the false positive rate (specificity) (1-specificity). By plotting the ROC curve and calculating the area under the curve (AUC), we can quantitatively evaluate the discriminatory ability of the model and compare its performance at various threshold values. The optimal threshold is determined by locating the point on the ROC curve closest to the upper left corner, which represents the highest true positive rate and the lowest false positive rate. By incorporating ROC analysis and optimal threshold determination into our experimental design, we ensure that our results not only accurately reflect the performance of the model but also provide valuable insight into the practical applicability of our approach in real-world settings.
 
-\subsubsection{Model Architecture and Training Details}
-
-The pre-trained model provided by Cohen~\cite{cohen_TorchXRayVision_2022} was used as the base model. The model was fine-tuned using DenseNet121~\cite{huang_Densely_2017} architecture on a subset of CheXpert~\cite{irvin_CheXpert_2019}, NIH~\cite{wang_ChestXRay8_2017}, PadChest~\cite{bustos_Padchest_2020} for 18 toracic diseases. A series of transformations were applied to all train images, including rotation of up to 45 degrees, translation of up to 15\%, and scaling up to 10\%. Binary cross entropy losses and Adam optimizer were used.
-
-
-\textbf{Parallelization for multiple CPU cores}
-
-To effectively optimize the hyperparameters of our proposed taxonomy-based transfer learning method, we utilized parallelization techniques that distribute the computational load across multiple CPU cores. By leveraging the power of parallel processing, we can drastically reduce the overall computation time and accelerate the optimization procedure, making the method more applicable to large-scale and high-dimensional datasets. In this investigation, we employed parallelization libraries, such as joblib and Python multiprocessing, which enable the concurrent execution of multiple tasks while sharing available resources. These libraries facilitate the implementation of parallelism in our optimization process, ensuring seamless integration with the existing framework and offering a scalable and hardware-adaptable solution.
-
-
-\textbf{Optimum Threshold Determination}
-
-Determining the optimal threshold is a crucial aspect of evaluating the performance of our proposed method, as it determines the point at which the predictions for multi-label classification tasks are translated into binary class labels. To determine the optimal threshold value, we used receiver operating characteristic (ROC) analysis, a common method for evaluating the performance of classification models. ROC analysis provides a comprehensive view of the model's performance at various threshold values, allowing us to determine the optimal point for balancing the true positive rate (sensitivity) and the false positive rate (specificity) (1-specificity).
-
-By plotting the ROC curve and calculating the area under the curve (AUC), we can quantitatively evaluate the discriminatory ability of the model and compare its performance at various threshold values. The optimal threshold is determined by locating the point on the ROC curve closest to the upper left corner, which represents the highest true positive rate and lowest false positive rate. By incorporating ROC analysis and optimal threshold determination into our experimental design, we ensure that our results not only accurately reflect the performance of the model but also provide valuable insight into the practical applicability of our approach in real-world settings.
-
-
-\subsubsection{Evaluation}
-
-\textbf{Model Evaluation and Comparison}
-
-The performance of proposed methods were tested by training a Desenet121 architecture on all three public datasets (CheXpert, NIH, PADCHEST). To assess the performance of the proposed techniques, we employ several evaluation metrics that capture different aspects of the classification problem. These metrics include precision, recall, F1 score, and the area under the receiver operating characteristic curve (AUC-ROC). By analyzing the performance of the proposed methods across these metrics, we can gain insights into the effectiveness of the methods in capturing inter-class relationships and improving classification accuracy. Additionally, the comparison of the proposed method with baseline approaches provides a comprehensive understanding of the method's improvements and potential for real-world implementation. The following metrics were used to evaluate the effectiveness of the proposed method.
-
+\textbf{Evaluation} - To assess the performance of the proposed techniques, several evaluation metrics were used to analyze the performance of the model compared to a baseline model. The metrics utilized are as follows.
 \begin{itemize}
     \item \textbf{Accuracy}: Proportion of correctly classified samples to the total number of samples.
-
     \item \textbf{F1-score}: Harmonic mean of precision and recall, providing a balanced assessment of the method's performance.
-
     \item \textbf{Area Under the Receiver Operating Characteristic Curve (AUROC)}: a summary measure of the true positive rate versus the false positive rate at different classification thresholds.
 \end{itemize}
 
-
+< Reviewed Until Here >
 
 \section{Results}
-
 \subsection{Distribution of Pathologies in Public Chest Radiograph Datasets}
-
 In this section, we present the distribution of different pathologies across three major public chest radiograph datasets: CheX, NIH, and PC\@. Table~\ref*{tab:taxonomy.table.1.dataset} compares the original and updated label sets for each dataset. The original counts represent the raw number of samples in the datasets, while the updated counts account for the absence of parent pathology labels in some datasets by considering a parent pathology as true if at least one of its child pathologies is present for that sample.
 
 In the original label sets, the total number of samples across the datasets were 20,543 for CheX, 28,868 for NIH and 61,692 for PC\@. After updating the label sets, the total number of samples remained unchanged for CheX and NIH, while for PC, it increased to 61,692. The distribution of pathologies in the datasets varies, with some pathologies such as Atelectasis, Effusion and Lung Opacity having a higher prevalence, while others such as Hernia and Fibrosis showing a lower prevalence across the datasets.
