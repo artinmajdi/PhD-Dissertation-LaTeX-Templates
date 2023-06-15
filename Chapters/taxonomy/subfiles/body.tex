@@ -370,140 +370,140 @@ Table~\ref*{tab:taxonomy.table.2.datasets.ninstances} shows the number of instan
 
 < Reviewed Until Here >
 
-\subsection{Model Performance on Public Chest Radiograph Datasets}
+% \subsection{Model Performance on Public Chest Radiograph Datasets}
 
-\subsubsection*{AUC}
-In this section, we present the performance of the three methods—baseline, ``logit'', and ``loss''; on the three public chest radiograph datasets (CheX, NIH, and PC) in terms of AUC metrics for various pathologies. The baseline represents the original model's performance, while ``logit'' and ``loss'' refer to the proposed modified logits and modified loss approaches, respectively. A single model was trained on all three datasets and evaluated on the test cases from each dataset~\ref{tab:taxonomy.table.2.auc_default}.
+% \subsubsection*{AUC}
+% In this section, we present the performance of the three methods—baseline, ``logit'', and ``loss''; on the three public chest radiograph datasets (CheX, NIH, and PC) in terms of AUC metrics for various pathologies. The baseline represents the original model's performance, while ``logit'' and ``loss'' refer to the proposed modified logits and modified loss approaches, respectively. A single model was trained on all three datasets and evaluated on the test cases from each dataset~\ref{tab:taxonomy.table.2.auc_default}.
 
-The results demonstrate varying performance across the pathologies and datasets. In general, the proposed ``logit'' and ``loss'' approaches show improved performance compared to the baseline, with several pathologies, such as Atelectasis, Consolidation, Edema, and Pneumonia, exhibiting significant improvements in AUC metrics. For instance, in the CheX dataset, the AUC for Atelectasis increased from $0.811$ in the baseline to $0.960$ and $1.000$ in the ``logit'' and ``loss'' methods, respectively.
+% The results demonstrate varying performance across the pathologies and datasets. In general, the proposed ``logit'' and ``loss'' approaches show improved performance compared to the baseline, with several pathologies, such as Atelectasis, Consolidation, Edema, and Pneumonia, exhibiting significant improvements in AUC metrics. For instance, in the CheX dataset, the AUC for Atelectasis increased from $0.811$ in the baseline to $0.960$ and $1.000$ in the ``logit'' and ``loss'' methods, respectively.
 
-However, for some pathologies like Pneumothorax, Emphysema, and Pleural\_Thickening, the performance remained consistent across all three approaches. In some cases, such as Mass and Nodule in the PC dataset, the performance was notably lower than in the other datasets.
-
-
-\begin{table}[]
-\caption{AUC performance of the three methods (baseline, ``logit'', and ``loss'') on the CheX, NIH, and PC chest radiograph datasets for various pathologies.}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lccccccccc}
-& \multicolumn{3}{c}{\textbf{CheX}} & \multicolumn{3}{c}{\textbf{NIH}} & \multicolumn{3}{c}{\textbf{PC}} \\
-\multicolumn{1}{r}{pathologies\textbackslash{}approach} &
-\textbf{baseline} & \textbf{on\_logit} & \textbf{on\_loss} & \textbf{baseline} & \textbf{on\_logit} & \textbf{on\_loss} & \textbf{baseline} & \textbf{on\_logit} & \textbf{on\_loss} \\
-\textbf{Atelectasis}                  & 0.811     & 0.96      & 1         & 0.759     & 0.89      & 0.908    & 0.747     & 0.867    & 0.905    \\
-\textbf{Consolidation}                & 0.895     & 0.982     & 0.86      & 0.75      & 0.846     & 0.913    & 0.597     & 0.721    & 0.803    \\
-\textbf{Infiltration}                 &           &           &           & 0.723     & 0.903     & 0.946    & 0.758     & 0.897    & 0.945    \\
-\textbf{Pneumothorax}                 & 0.774     & 0.774     & 0.774     & 0.739     & 0.739     & 0.739    & 0.4       & 0.4      & 0.4      \\
-\textbf{Edema}                        & 0.853     & 0.969     & 0.995     & 0.81      & 0.883     & 0.901    & 0.81      & 0.861    & 0.906    \\
-\textbf{Emphysema}                    &           &           &           & 0.749     & 0.749     & 0.749    & 0.853     & 0.853    & 0.853    \\
-\textbf{Fibrosis}                     &           &           &           & 0.775     & 0.775     & 0.775    &           &          &          \\
-\textbf{Effusion}                     & 0.872     & 0.872     & 0.872     & 0.866     & 0.866     & 0.866    & 0.847     & 0.847    & 0.847    \\
-\textbf{Pneumonia}                    & 0.854     & 0.947     & 0.999     & 0.693     & 0.779     & 0.898    & 0.62      & 0.74     & 0.846    \\
-\textbf{Pleural\_Thickening}          &           &           &           & 0.718     & 0.718     & 0.718    & 0.841     & 0.841    & 0.841    \\
-\textbf{Cardiomegaly}                 & 0.86      & 0.911     & 0.998     & 0.859     & 0.986     & 0.96     & 0.776     & 0.97     & 0.911    \\
-\textbf{Nodule}                       &           &           &           & 0.751     & 0.751     & 0.751    & 0.383     & 0.383    & 0.383    \\
-\textbf{Mass}                         &           &           &           & 0.797     & 0.797     & 0.797    & 0.913     & 0.913    & 0.913    \\
-\textbf{Hernia}                       &           &           &           & 0.999     & 0.999     & 0.999    & 0.806     & 0.806    & 0.806    \\
-\textbf{Lung Lesion}                  & 0.788     & 0.93      & 1         &           &           &          &           &          &          \\
-\textbf{Fracture}                     & 0.736     & 0.736     & 0.736     &           &           &          & 0.742     & 0.742    & 0.742    \\
-\textbf{Lung Opacity}                 & 0.804     & 0.804     & 0.804     & 0.742     & 0.742     & 0.742    & 0.782     & 0.782    & 0.782    \\
-\textbf{Enlarged   Cardiomediastinum} & 0.852     & 0.852     & 0.852     & 0.717     & 0.717     & 0.717    & 0.665     & 0.665    & 0.665
-\end{tabular}%
-}\label{tab:taxonomy.table.2.auc_default}
-\end{table}
-
-\subsubsection*{F1-score}
-In this section, we discuss the F1-score performance of the three methods---baseline, ``logit'', and ``loss''---on the three public chest radiograph datasets (CheX, NIH, and PC) for various pathologies~\ref{tab:taxonomy.table.3.f1}. The baseline represents the original model's performance, while ``logit'' and ``loss'' refer to the proposed modified logits and loss approaches, respectively. As before, a single model was trained on all three datasets and evaluated on the test cases from each dataset.
-
-The F1-scores reveal that the proposed ``logit'' and ``loss'' approaches generally show improved performance compared to the baseline method. For example, in the CheX dataset, the F1-score for Atelectasis increased from 0.201 in the baseline to 0.353 and 0.927 in the ``logit'' and ``loss'' methods, respectively. Similarly, the F1-score for Edema increased from 0.352 in the baseline to 0.733 and 0.829 in the ``logit'' and ``loss'' methods, respectively.
-
-However, for some pathologies such as Pneumothorax, Emphysema, and Pleural\_Thickening, the F1-scores remained consistently low across all three approaches. This result indicates that there is room for further improvement in these areas.
+% However, for some pathologies like Pneumothorax, Emphysema, and Pleural\_Thickening, the performance remained consistent across all three approaches. In some cases, such as Mass and Nodule in the PC dataset, the performance was notably lower than in the other datasets.
 
 
-\begin{table}[]
-\caption{F1-score performance of the three methods (baseline, ``logit'', and ``loss'') on the CheX, NIH, and PC chest radiograph datasets for various pathologies.}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lccccccccc}
-\textbf{} &
-\multicolumn{3}{c}{\textbf{CheX}} &
-\multicolumn{3}{c}{\textbf{NIH}} &
-\multicolumn{3}{c}{\textbf{PC}} \\
-\multicolumn{1}{r}{pathologies\textbackslash{}approach} &
-\textbf{baseline} & \textbf{on\_logit} & \textbf{on\_loss} & \textbf{baseline} & \textbf{on\_logit} & \textbf{on\_loss} & \textbf{baseline} & \textbf{on\_logit} & \textbf{on\_loss} \\
-\textbf{Atelectasis}                  & 0.201 & 0.353 & 0.927 & 0.007 & 0.123 & 0.007 & 0.079 & 0.4   & 0.081 \\
-\textbf{Consolidation}                & 0.207 & 0.784 & 0.188 & 0     & 0.048 & 0     & 0     & 0.069 & 0     \\
-\textbf{Infiltration}                 &       &       &       & 0.058 & 0.325 & 0.059 & 0.204 & 0.575 & 0.214 \\
-\textbf{Pneumothorax}                 & 0     & 0     & 0     & 0     & 0     & 0     & 0     & 0     & 0     \\
-\textbf{Edema}                        & 0.352 & 0.733 & 0.829 & 0     & 0     & 0     & 0.107 & 0.241 & 0.115 \\
-\textbf{Emphysema}                    &       &       &       & 0     & 0     & 0     & 0     & 0     & 0     \\
-\textbf{Fibrosis}                     &       &       &       & 0     & 0     & 0     &       &       &       \\
-\textbf{Effusion}                     & 0.328 & 0.328 & 0.328 & 0.27  & 0.27  & 0.27  & 0.35  & 0.35  & 0.35  \\
-\textbf{Pneumonia}                    & 0.156 & 0.759 & 0.623 & 0.056 & 0.078 & 0.078 & 0.192 & 0.26  & 0.224 \\
-\textbf{Pleural\_Thickening}          &       &       &       & 0     & 0     & 0     & 0     & 0     & 0     \\
-\textbf{Cardiomegaly}                 & 0.432 & 0.46  & 0.889 & 0.116 & 0.333 & 0.125 & 0.305 & 0.519 & 0.396 \\
-\textbf{Nodule}                       &       &       &       & 0.014 & 0.014 & 0.014 & 0     & 0     & 0     \\
-\textbf{Mass}                         &       &       &       & 0.278 & 0.278 & 0.278 & 0     & 0     & 0     \\
-\textbf{Hernia}                       &       &       &       & 0     & 0     & 0     & 0.267 & 0.267 & 0.267 \\
-\textbf{Lung Lesion}                  & 0.126 & 0.602 & 0.69  &       &       &       &       &       &       \\
-\textbf{Fracture}                     & 0.124 & 0.124 & 0.124 &       &       &       & 0     & 0     & 0     \\
-\textbf{Lung Opacity}                 & 0.345 & 0.345 & 0.345 & 0.446 & 0.446 & 0.446 & 0.537 & 0.537 & 0.537 \\
-\textbf{Enlarged   Cardiomediastinum} & 0.425 & 0.425 & 0.425 & 0     & 0     & 0     & 0.025 & 0.025 & 0.025
-\end{tabular}%
-}\label{tab:taxonomy.table.3.f1}
-\end{table}
+% \begin{table}[]
+% \caption{AUC performance of the three methods (baseline, ``logit'', and ``loss'') on the CheX, NIH, and PC chest radiograph datasets for various pathologies.}
+% \resizebox{\textwidth}{!}{%
+% \begin{tabular}{lccccccccc}
+% & \multicolumn{3}{c}{\textbf{CheX}} & \multicolumn{3}{c}{\textbf{NIH}} & \multicolumn{3}{c}{\textbf{PC}} \\
+% \multicolumn{1}{r}{pathologies\textbackslash{}approach} &
+% \textbf{baseline} & \textbf{on\_logit} & \textbf{on\_loss} & \textbf{baseline} & \textbf{on\_logit} & \textbf{on\_loss} & \textbf{baseline} & \textbf{on\_logit} & \textbf{on\_loss} \\
+% \textbf{Atelectasis}                  & 0.811     & 0.96      & 1         & 0.759     & 0.89      & 0.908    & 0.747     & 0.867    & 0.905    \\
+% \textbf{Consolidation}                & 0.895     & 0.982     & 0.86      & 0.75      & 0.846     & 0.913    & 0.597     & 0.721    & 0.803    \\
+% \textbf{Infiltration}                 &           &           &           & 0.723     & 0.903     & 0.946    & 0.758     & 0.897    & 0.945    \\
+% \textbf{Pneumothorax}                 & 0.774     & 0.774     & 0.774     & 0.739     & 0.739     & 0.739    & 0.4       & 0.4      & 0.4      \\
+% \textbf{Edema}                        & 0.853     & 0.969     & 0.995     & 0.81      & 0.883     & 0.901    & 0.81      & 0.861    & 0.906    \\
+% \textbf{Emphysema}                    &           &           &           & 0.749     & 0.749     & 0.749    & 0.853     & 0.853    & 0.853    \\
+% \textbf{Fibrosis}                     &           &           &           & 0.775     & 0.775     & 0.775    &           &          &          \\
+% \textbf{Effusion}                     & 0.872     & 0.872     & 0.872     & 0.866     & 0.866     & 0.866    & 0.847     & 0.847    & 0.847    \\
+% \textbf{Pneumonia}                    & 0.854     & 0.947     & 0.999     & 0.693     & 0.779     & 0.898    & 0.62      & 0.74     & 0.846    \\
+% \textbf{Pleural\_Thickening}          &           &           &           & 0.718     & 0.718     & 0.718    & 0.841     & 0.841    & 0.841    \\
+% \textbf{Cardiomegaly}                 & 0.86      & 0.911     & 0.998     & 0.859     & 0.986     & 0.96     & 0.776     & 0.97     & 0.911    \\
+% \textbf{Nodule}                       &           &           &           & 0.751     & 0.751     & 0.751    & 0.383     & 0.383    & 0.383    \\
+% \textbf{Mass}                         &           &           &           & 0.797     & 0.797     & 0.797    & 0.913     & 0.913    & 0.913    \\
+% \textbf{Hernia}                       &           &           &           & 0.999     & 0.999     & 0.999    & 0.806     & 0.806    & 0.806    \\
+% \textbf{Lung Lesion}                  & 0.788     & 0.93      & 1         &           &           &          &           &          &          \\
+% \textbf{Fracture}                     & 0.736     & 0.736     & 0.736     &           &           &          & 0.742     & 0.742    & 0.742    \\
+% \textbf{Lung Opacity}                 & 0.804     & 0.804     & 0.804     & 0.742     & 0.742     & 0.742    & 0.782     & 0.782    & 0.782    \\
+% \textbf{Enlarged   Cardiomediastinum} & 0.852     & 0.852     & 0.852     & 0.717     & 0.717     & 0.717    & 0.665     & 0.665    & 0.665
+% \end{tabular}%
+% }\label{tab:taxonomy.table.2.auc_default}
+% \end{table}
+
+% \subsubsection*{F1-score}
+% In this section, we discuss the F1-score performance of the three methods---baseline, ``logit'', and ``loss''---on the three public chest radiograph datasets (CheX, NIH, and PC) for various pathologies~\ref{tab:taxonomy.table.3.f1}. The baseline represents the original model's performance, while ``logit'' and ``loss'' refer to the proposed modified logits and loss approaches, respectively. As before, a single model was trained on all three datasets and evaluated on the test cases from each dataset.
+
+% The F1-scores reveal that the proposed ``logit'' and ``loss'' approaches generally show improved performance compared to the baseline method. For example, in the CheX dataset, the F1-score for Atelectasis increased from 0.201 in the baseline to 0.353 and 0.927 in the ``logit'' and ``loss'' methods, respectively. Similarly, the F1-score for Edema increased from 0.352 in the baseline to 0.733 and 0.829 in the ``logit'' and ``loss'' methods, respectively.
+
+% However, for some pathologies such as Pneumothorax, Emphysema, and Pleural\_Thickening, the F1-scores remained consistently low across all three approaches. This result indicates that there is room for further improvement in these areas.
 
 
-The accuracy of the three methods (baseline, ``logit'', and ``loss'') was evaluated for the CheX, NIH, and PC datasets for different pathologies, as presented in Table~\ref{tab:taxonomy.table.4.acc_default}. Comparing the baseline method to the ``logit'' and ``loss'' methods, we observed improvements in accuracy across most pathologies in all three datasets. For instance, in the CheX dataset, the accuracy for Atelectasis increased from 0.593 in the baseline method to 0.796 and 0.992 in the ``logit'' and ``loss'' methods, respectively. Similarly, in the NIH dataset, the accuracy for Edema improved from 0.972 in the baseline method to 0.971 and 0.972 for the ``logit'' and ``loss'' methods, respectively.
-
-In some cases, the ``logit'' and ``loss'' methods achieved comparable performance, while in others, one method outperformed the other. For example, in the PC dataset, the accuracy for Pneumonia improved from 0.862 in the baseline to 0.806 and 0.887 in the ``logit'' and ``loss'' methods, respectively, with the ``loss'' method yielding higher accuracy. These results demonstrate the effectiveness of the proposed modifications in improving the performance of the models across various chest radiograph pathologies.
-
-
-\begin{table}[]
-\caption{Accuracy performance of the three methods (baseline, ``logit'', and ``loss'') on the CheX, NIH, and PC chest radiograph datasets for various pathologies.}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lccccccccc}
-\multicolumn{1}{c}{\textbf{}} & \multicolumn{3}{c}{\textbf{CheX}} & \multicolumn{3}{c}{\textbf{NIH}} & \multicolumn{3}{c}{\textbf{PC}} \\
-\multicolumn{1}{r}{pathologies\textbackslash{}approach} &
-\textbf{baseline} & \textbf{on\_logit} & \textbf{on\_loss} & \textbf{baseline} & \textbf{on\_logit} & \textbf{on\_loss} & \textbf{baseline} & \textbf{on\_logit} & \textbf{on\_loss} \\
-\textbf{Atelectasis}         & 0.593 & 0.796 & 0.992 & 0.89  & 0.895 & 0.89  & 0.905 & 0.885 & 0.907 \\
-\textbf{Consolidation}       & 0.81  & 0.984 & 0.789 & 0.972 & 0.971 & 0.972 & 0.952 & 0.926 & 0.955 \\
-\textbf{Infiltration}        &       &       &       & 0.88  & 0.887 & 0.882 & 0.765 & 0.819 & 0.779 \\
-\textbf{Pneumothorax}        & 0.983 & 0.983 & 0.983 & 0.973 & 0.973 & 0.973 & 0.995 & 0.995 & 0.995 \\
-\textbf{Edema}               & 0.768 & 0.948 & 0.973 & 0.972 & 0.971 & 0.972 & 0.932 & 0.914 & 0.937 \\
-\textbf{Emphysema}           &       &       &       & 0.98  & 0.98  & 0.98  & 0.988 & 0.988 & 0.988 \\
-\textbf{Fibrosis}            &       &       &       & 0.994 & 0.994 & 0.994 &       &       &       \\
-\textbf{Effusion}            & 0.678 & 0.678 & 0.678 & 0.925 & 0.925 & 0.925 & 0.858 & 0.858 & 0.858 \\
-\textbf{Pneumonia}           & 0.938 & 0.994 & 0.992 & 0.975 & 0.957 & 0.983 & 0.862 & 0.806 & 0.887 \\
-\textbf{Pleural\_Thickening} &       &       &       & 0.982 & 0.982 & 0.982 & 0.989 & 0.989 & 0.989 \\
-\textbf{Cardiomegaly}        & 0.796 & 0.788 & 0.978 & 0.978 & 0.982 & 0.979 & 0.888 & 0.929 & 0.925 \\
-\textbf{Nodule}              &       &       &       & 0.948 & 0.948 & 0.948 & 0.959 & 0.959 & 0.959 \\
-\textbf{Mass}                &       &       &       & 0.933 & 0.933 & 0.933 & 0.985 & 0.985 & 0.985 \\
-\textbf{Hernia}              &       &       &       & 1     & 1     & 1     & 0.985 & 0.985 & 0.985 \\
-\textbf{Lung Lesion}         & 0.874 & 0.983 & 0.991 &       &       &       &       &       &       \\
-\textbf{Fracture}            & 0.943 & 0.943 & 0.943 &       &       &       & 0.975 & 0.975 & 0.975 \\
-\textbf{Lung Opacity}        & 0.564 & 0.564 & 0.564 & 0.74  & 0.74  & 0.74  & 0.72  & 0.72  & 0.72  \\
-\textbf{Enlarged   Cardiomediastinum} & 0.838 & 0.838 & 0.838 & 0.975 & 0.975 & 0.975 & 0.895 & 0.895 & 0.895
-\end{tabular}%
-}\label{tab:taxonomy.table.4.acc_default}
-\end{table}
+% \begin{table}[]
+% \caption{F1-score performance of the three methods (baseline, ``logit'', and ``loss'') on the CheX, NIH, and PC chest radiograph datasets for various pathologies.}
+% \resizebox{\textwidth}{!}{%
+% \begin{tabular}{lccccccccc}
+% \textbf{} &
+% \multicolumn{3}{c}{\textbf{CheX}} &
+% \multicolumn{3}{c}{\textbf{NIH}} &
+% \multicolumn{3}{c}{\textbf{PC}} \\
+% \multicolumn{1}{r}{pathologies\textbackslash{}approach} &
+% \textbf{baseline} & \textbf{on\_logit} & \textbf{on\_loss} & \textbf{baseline} & \textbf{on\_logit} & \textbf{on\_loss} & \textbf{baseline} & \textbf{on\_logit} & \textbf{on\_loss} \\
+% \textbf{Atelectasis}                  & 0.201 & 0.353 & 0.927 & 0.007 & 0.123 & 0.007 & 0.079 & 0.4   & 0.081 \\
+% \textbf{Consolidation}                & 0.207 & 0.784 & 0.188 & 0     & 0.048 & 0     & 0     & 0.069 & 0     \\
+% \textbf{Infiltration}                 &       &       &       & 0.058 & 0.325 & 0.059 & 0.204 & 0.575 & 0.214 \\
+% \textbf{Pneumothorax}                 & 0     & 0     & 0     & 0     & 0     & 0     & 0     & 0     & 0     \\
+% \textbf{Edema}                        & 0.352 & 0.733 & 0.829 & 0     & 0     & 0     & 0.107 & 0.241 & 0.115 \\
+% \textbf{Emphysema}                    &       &       &       & 0     & 0     & 0     & 0     & 0     & 0     \\
+% \textbf{Fibrosis}                     &       &       &       & 0     & 0     & 0     &       &       &       \\
+% \textbf{Effusion}                     & 0.328 & 0.328 & 0.328 & 0.27  & 0.27  & 0.27  & 0.35  & 0.35  & 0.35  \\
+% \textbf{Pneumonia}                    & 0.156 & 0.759 & 0.623 & 0.056 & 0.078 & 0.078 & 0.192 & 0.26  & 0.224 \\
+% \textbf{Pleural\_Thickening}          &       &       &       & 0     & 0     & 0     & 0     & 0     & 0     \\
+% \textbf{Cardiomegaly}                 & 0.432 & 0.46  & 0.889 & 0.116 & 0.333 & 0.125 & 0.305 & 0.519 & 0.396 \\
+% \textbf{Nodule}                       &       &       &       & 0.014 & 0.014 & 0.014 & 0     & 0     & 0     \\
+% \textbf{Mass}                         &       &       &       & 0.278 & 0.278 & 0.278 & 0     & 0     & 0     \\
+% \textbf{Hernia}                       &       &       &       & 0     & 0     & 0     & 0.267 & 0.267 & 0.267 \\
+% \textbf{Lung Lesion}                  & 0.126 & 0.602 & 0.69  &       &       &       &       &       &       \\
+% \textbf{Fracture}                     & 0.124 & 0.124 & 0.124 &       &       &       & 0     & 0     & 0     \\
+% \textbf{Lung Opacity}                 & 0.345 & 0.345 & 0.345 & 0.446 & 0.446 & 0.446 & 0.537 & 0.537 & 0.537 \\
+% \textbf{Enlarged   Cardiomediastinum} & 0.425 & 0.425 & 0.425 & 0     & 0     & 0     & 0.025 & 0.025 & 0.025
+% \end{tabular}%
+% }\label{tab:taxonomy.table.3.f1}
+% \end{table}
 
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=\textwidth]{\figurepath{roc_curve/default_NIH_logit/roc_curve_NIH_logit_default.pdf}}%
-    \caption{Comparative analysis of the ROC curves for eight thoracic pathologies using the baseline and the logit based proposed technique. Each subplot illustrates the overlaid ROC curves for both techniques pertaining to a specific pathology. The subplots highlighted with a darker background, represent parent class diseases.}%
-    \label{fig:taxonomy.fig.2.roc_curve_nih_logit_default}
-\end{figure}
+% The accuracy of the three methods (baseline, ``logit'', and ``loss'') was evaluated for the CheX, NIH, and PC datasets for different pathologies, as presented in Table~\ref{tab:taxonomy.table.4.acc_default}. Comparing the baseline method to the ``logit'' and ``loss'' methods, we observed improvements in accuracy across most pathologies in all three datasets. For instance, in the CheX dataset, the accuracy for Atelectasis increased from 0.593 in the baseline method to 0.796 and 0.992 in the ``logit'' and ``loss'' methods, respectively. Similarly, in the NIH dataset, the accuracy for Edema improved from 0.972 in the baseline method to 0.971 and 0.972 for the ``logit'' and ``loss'' methods, respectively.
 
-Figure~\ref{fig:taxonomy.fig.2.roc_curve_nih_logit_default} illustrates a comparison between the performance of the baseline technique and the proposed logit-based method (Approach 1 discussed in the Methods section) in detecting eight thoracic pathologies. These eight pathologies include the pathologies with child classes and their respective child classes, as shown in Figure~\ref{fig:taxonomy.fig.1.taxonomy_structure}. The individual subplots exhibit overlaid receiver operating characteristic (ROC) curves, each of which corresponds to a specific pathology. The present analysis employed a model that was derived through the application of the test dataset from the NIH dataset to a pre-trained model. The latter had undergone training on various publicly available thoracic datasets, with the aim of allowing the identification of 18 different pathologies related to the thorax. The last two subplots, showcased with a darker background, showcase the roc curves for parent classes diseases. As these parent class diseases were not influenced by the proposed technique, their ROC curves and corresponding Area Under the Curve (AUC) values remain consistent with the baseline technique. The ROC curve and its corresponding AUC for the six child classes demonstrate a significant improvement for the proposed technique in comparison to the baseline technique.
+% In some cases, the ``logit'' and ``loss'' methods achieved comparable performance, while in others, one method outperformed the other. For example, in the PC dataset, the accuracy for Pneumonia improved from 0.862 in the baseline to 0.806 and 0.887 in the ``logit'' and ``loss'' methods, respectively, with the ``loss'' method yielding higher accuracy. These results demonstrate the effectiveness of the proposed modifications in improving the performance of the models across various chest radiograph pathologies.
 
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=\textwidth]{\figurepath{roc_curve/default_NIH_loss/roc_curve_NIH_loss_default.pdf}}
-    \caption{Comparative analysis of the ROC curves for eight thoracic pathologies using the baseline and the loss based proposed technique. Each subplot illustrates the overlaid ROC curves for both techniques pertaining to a specific pathology. The subplots highlighted with a darker background, represent parent class diseases.}%
-    \label{fig:taxonomy.fig.3.roc_curve_nih_loss_default}%
-\end{figure}
+% \begin{table}[]
+% \caption{Accuracy performance of the three methods (baseline, ``logit'', and ``loss'') on the CheX, NIH, and PC chest radiograph datasets for various pathologies.}
+% \resizebox{\textwidth}{!}{%
+% \begin{tabular}{lccccccccc}
+% \multicolumn{1}{c}{\textbf{}} & \multicolumn{3}{c}{\textbf{CheX}} & \multicolumn{3}{c}{\textbf{NIH}} & \multicolumn{3}{c}{\textbf{PC}} \\
+% \multicolumn{1}{r}{pathologies\textbackslash{}approach} &
+% \textbf{baseline} & \textbf{on\_logit} & \textbf{on\_loss} & \textbf{baseline} & \textbf{on\_logit} & \textbf{on\_loss} & \textbf{baseline} & \textbf{on\_logit} & \textbf{on\_loss} \\
+% \textbf{Atelectasis}         & 0.593 & 0.796 & 0.992 & 0.89  & 0.895 & 0.89  & 0.905 & 0.885 & 0.907 \\
+% \textbf{Consolidation}       & 0.81  & 0.984 & 0.789 & 0.972 & 0.971 & 0.972 & 0.952 & 0.926 & 0.955 \\
+% \textbf{Infiltration}        &       &       &       & 0.88  & 0.887 & 0.882 & 0.765 & 0.819 & 0.779 \\
+% \textbf{Pneumothorax}        & 0.983 & 0.983 & 0.983 & 0.973 & 0.973 & 0.973 & 0.995 & 0.995 & 0.995 \\
+% \textbf{Edema}               & 0.768 & 0.948 & 0.973 & 0.972 & 0.971 & 0.972 & 0.932 & 0.914 & 0.937 \\
+% \textbf{Emphysema}           &       &       &       & 0.98  & 0.98  & 0.98  & 0.988 & 0.988 & 0.988 \\
+% \textbf{Fibrosis}            &       &       &       & 0.994 & 0.994 & 0.994 &       &       &       \\
+% \textbf{Effusion}            & 0.678 & 0.678 & 0.678 & 0.925 & 0.925 & 0.925 & 0.858 & 0.858 & 0.858 \\
+% \textbf{Pneumonia}           & 0.938 & 0.994 & 0.992 & 0.975 & 0.957 & 0.983 & 0.862 & 0.806 & 0.887 \\
+% \textbf{Pleural\_Thickening} &       &       &       & 0.982 & 0.982 & 0.982 & 0.989 & 0.989 & 0.989 \\
+% \textbf{Cardiomegaly}        & 0.796 & 0.788 & 0.978 & 0.978 & 0.982 & 0.979 & 0.888 & 0.929 & 0.925 \\
+% \textbf{Nodule}              &       &       &       & 0.948 & 0.948 & 0.948 & 0.959 & 0.959 & 0.959 \\
+% \textbf{Mass}                &       &       &       & 0.933 & 0.933 & 0.933 & 0.985 & 0.985 & 0.985 \\
+% \textbf{Hernia}              &       &       &       & 1     & 1     & 1     & 0.985 & 0.985 & 0.985 \\
+% \textbf{Lung Lesion}         & 0.874 & 0.983 & 0.991 &       &       &       &       &       &       \\
+% \textbf{Fracture}            & 0.943 & 0.943 & 0.943 &       &       &       & 0.975 & 0.975 & 0.975 \\
+% \textbf{Lung Opacity}        & 0.564 & 0.564 & 0.564 & 0.74  & 0.74  & 0.74  & 0.72  & 0.72  & 0.72  \\
+% \textbf{Enlarged   Cardiomediastinum} & 0.838 & 0.838 & 0.838 & 0.975 & 0.975 & 0.975 & 0.895 & 0.895 & 0.895
+% \end{tabular}%
+% }\label{tab:taxonomy.table.4.acc_default}
+% \end{table}
 
 
-Figure~\ref{fig:taxonomy.fig.3.roc_curve_nih_loss_default} illustrates a comparison between the performance of the baseline technique and the proposed loss-based method (Approach 2 discussed in the Methods section) in detecting eight thoracic pathologies. These eight pathologies include two parent classes and their respective child classes, as shown in Figure~\ref{fig:taxonomy.fig.1.taxonomy_structure}. The individual subplots exhibit overlaid ROC curves, each of which corresponds to a specific pathology. The present analysis employed a model that was derived through the application of the test dataset from the NIH dataset to a pre-trained model. The latter had undergone training on various publicly available thoracic datasets, with the aim of allowing the identification of 18 different pathologies related to the thorax. The last two subplots, showcased with a darker background, showcase the roc curves for parent classes diseases. As these parent class diseases were not influenced by the proposed technique, their ROC curves and corresponding AUC values remain consistent with the baseline technique. The ROC curve and its corresponding AUC for the six child classes demonstrate a significant improvement for the proposed technique in comparison to the baseline technique.
+% \begin{figure}[htbp]
+%     \centering
+%     \includegraphics[width=\textwidth]{\figurepath{roc_curve/default_NIH_logit/roc_curve_NIH_logit_default.pdf}}%
+%     \caption{Comparative analysis of the ROC curves for eight thoracic pathologies using the baseline and the logit based proposed technique. Each subplot illustrates the overlaid ROC curves for both techniques pertaining to a specific pathology. The subplots highlighted with a darker background, represent parent class diseases.}%
+%     \label{fig:taxonomy.fig.2.roc_curve_nih_logit_default}
+% \end{figure}
+
+% Figure~\ref{fig:taxonomy.fig.2.roc_curve_nih_logit_default} illustrates a comparison between the performance of the baseline technique and the proposed logit-based method (Approach 1 discussed in the Methods section) in detecting eight thoracic pathologies. These eight pathologies include the pathologies with child classes and their respective child classes, as shown in Figure~\ref{fig:taxonomy.fig.1.taxonomy_structure}. The individual subplots exhibit overlaid receiver operating characteristic (ROC) curves, each of which corresponds to a specific pathology. The present analysis employed a model that was derived through the application of the test dataset from the NIH dataset to a pre-trained model. The latter had undergone training on various publicly available thoracic datasets, with the aim of allowing the identification of 18 different pathologies related to the thorax. The last two subplots, showcased with a darker background, showcase the roc curves for parent classes diseases. As these parent class diseases were not influenced by the proposed technique, their ROC curves and corresponding Area Under the Curve (AUC) values remain consistent with the baseline technique. The ROC curve and its corresponding AUC for the six child classes demonstrate a significant improvement for the proposed technique in comparison to the baseline technique.
+
+
+% \begin{figure}[htbp]
+%     \centering
+%     \includegraphics[width=\textwidth]{\figurepath{roc_curve/default_NIH_loss/roc_curve_NIH_loss_default.pdf}}
+%     \caption{Comparative analysis of the ROC curves for eight thoracic pathologies using the baseline and the loss based proposed technique. Each subplot illustrates the overlaid ROC curves for both techniques pertaining to a specific pathology. The subplots highlighted with a darker background, represent parent class diseases.}%
+%     \label{fig:taxonomy.fig.3.roc_curve_nih_loss_default}%
+% \end{figure}
+
+
+% Figure~\ref{fig:taxonomy.fig.3.roc_curve_nih_loss_default} illustrates a comparison between the performance of the baseline technique and the proposed loss-based method (Approach 2 discussed in the Methods section) in detecting eight thoracic pathologies. These eight pathologies include two parent classes and their respective child classes, as shown in Figure~\ref{fig:taxonomy.fig.1.taxonomy_structure}. The individual subplots exhibit overlaid ROC curves, each of which corresponds to a specific pathology. The present analysis employed a model that was derived through the application of the test dataset from the NIH dataset to a pre-trained model. The latter had undergone training on various publicly available thoracic datasets, with the aim of allowing the identification of 18 different pathologies related to the thorax. The last two subplots, showcased with a darker background, showcase the roc curves for parent classes diseases. As these parent class diseases were not influenced by the proposed technique, their ROC curves and corresponding AUC values remain consistent with the baseline technique. The ROC curve and its corresponding AUC for the six child classes demonstrate a significant improvement for the proposed technique in comparison to the baseline technique.
 
 \section{Discussion and Conclusion}
 The study presented two Hierarchical Multilabel Classification Methods for Enhanced Thoracic Disease Diagnosis in Chest Radiography. One method refered to as ``loss'' udpates the value of loss for pathologies according to their parent pathologies. This method is purticularly useful for both fine-tuning the existing pre-trained models and training from scratch. A second method refered to as ``logit'' is also proposed where the logit values of each pathology is updated based on the logit value of their parent pathologies. This technique is particularly useful when the ground truth labels are not available. This method improves the performance of existing pre-trained models solely based on the taxonomical relationship of pathologies in the model without any need for availablility of ground truth labels.
