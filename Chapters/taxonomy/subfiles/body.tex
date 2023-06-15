@@ -291,59 +291,84 @@ The DenseNet121~\cite{huang_Densely_2017} architecture and the pre-trained weigh
     \item \textbf{Area Under the Receiver Operating Characteristic Curve (AUROC)}: a summary measure of the true positive rate versus the false positive rate at different classification thresholds.
 \end{itemize}
 
-< Reviewed Until Here >
-
 \section{Results}
-\subsection{Distribution of Pathologies in Public Chest Radiograph Datasets}
-In this section, we present the distribution of different pathologies across three major public chest radiograph datasets: CheX, NIH, and PC\@. Table~\ref*{tab:taxonomy.table.1.dataset} compares the original and updated label sets for each dataset. The original counts represent the raw number of samples in the datasets, while the updated counts account for the absence of parent pathology labels in some datasets by considering a parent pathology as true if at least one of its child pathologies is present for that sample.
 
-In the original label sets, the total number of samples across the datasets were 20,543 for CheX, 28,868 for NIH and 61,692 for PC\@. After updating the label sets, the total number of samples remained unchanged for CheX and NIH, while for PC, it increased to 61,692. The distribution of pathologies in the datasets varies, with some pathologies such as Atelectasis, Effusion and Lung Opacity having a higher prevalence, while others such as Hernia and Fibrosis showing a lower prevalence across the datasets.
-
-
-\begin{table}[]
-\caption{Comparison of the number of samples for different chest radiograph public datasets (CheX, NIH, and PC) per pathology, considering both original and updated label sets. The original counts represent the raw number of samples in the datasets, while the updated counts show the number of samples after updating the label set for parent pathologies when a dataset does not contain labels for that parent class. In the updated label set, a parent pathology is considered true if at least one of its child pathologies is present for that sample; otherwise, it is set to false.}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lcccccc}
-& \multicolumn{3}{c}{\textbf{original}}      & \multicolumn{3}{c}{\textbf{updated}}       \\
-& \textbf{CheX} & \textbf{NIH} & \textbf{PC} & \textbf{CheX} & \textbf{NIH} & \textbf{PC} \\
-\textbf{Atelectasis}                & 2460/11643    & 1557/1016    & 2419/232    & 2460/11643    & 1557/1016    & 2419/232    \\
-\textbf{Consolidation}              & 1125/4956     & 384/253      & 475/77      & 1125/4956     & 384/253      & 475/77      \\
-\textbf{Infiltration}               &               & 3273/1131    & 4309/587    &               & 3273/1131    & 4309/587    \\
-\textbf{Pneumothorax}               & 1060/4239     & 243/253      & 97/15       & 1060/4239     & 243/253      & 97/15       \\
-\textbf{Edema}                      & 1330/15117    & 39/237       & 108/130     & 1330/15117    & 39/237       & 108/130     \\
-\textbf{Emphysema}                  &               & 264/193      & 546/30      &               & 264/193      & 546/30      \\
-\textbf{Fibrosis}                   &               & 556/61       & 341/8       &               & 556/61       & 341/8       \\
-\textbf{Effusion}                   & 5206/19349    & 1269/654     & 1625/311    & 5206/19349    & 1269/654     & 1625/311    \\
-\textbf{Pneumonia}                  & 992/2064      & 175/89       & 1910/211    & 992/2064      & 175/89       & 1910/211    \\
-\textbf{Pleural\_Thickening}        &               & 745/145      & 2075/34     &               & 745/145      & 2075/34     \\
-\textbf{Cardiomegaly}               & 2117/8284     & 729/203      & 5387/261    & 2117/8284     & 729/203      & 5387/261    \\
-\textbf{Nodule}                     &               & 1609/460     & 2190/95     &               & 1609/460     & 2190/95     \\
-\textbf{Mass}                       &               & 1213/493     & 506/17      &               & 1213/493     & 506/17      \\
-\textbf{Hernia}                     &               & 81/13        & 988/38      &               & 81/13        & 988/38      \\
-\textbf{Lung Lesion}                & 1655/3110     &              &             & 1655/3110     &              &             \\
-\textbf{Fracture}                   & 1115/3463     &              & 1662/69     & 1115/3463     &              & 1662/69     \\
-\textbf{Lung Opacity}               & 7006/28183    &              &             & 7006/28183    & 4917/2216    & 6947/861    \\
-\textbf{Enlarged Cardiomediastinum} & 1100/4577     &              &             & 1100/4577     & 729/203      & 5387/261    \\
-\textbf{Total} & \textbf{20543/53359} & \textbf{28868/9060} & \textbf{61692/2445} & \textbf{20543/53359} & \textbf{28868/9060} & \textbf{61692/2445}
-\end{tabular}
-}\label{tab:taxonomy.table.1.dataset}
-\end{table}
-
-
+Figure~\ref{fig:taxonomy.fig.1.taxonomy_structure} shows the created taxonomy structure. This comprehensive classification system accumulated using taxonomy graphs in Irvin~\cite{irvin_CheXpert_2019}, and Chen~\cite{chen_Deep_2020} helps categorize various disease manifestations observed in public datasets, such as CheXpert, PadChest and NIH and serves as a framework for understanding and analyzing chest radiograph abnormalities.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{\figurepath{image1.png}}
-    \caption{Taxonomy of lung pathologies on chest radiographs. This comprehensive classification system accumulated using taxonomy graphs in Irvin~\cite{irvin_CheXpert_2019}, and Chen~\cite{chen_Deep_2020} helps categorize various disease manifestations observed in public datasets, such as CheXpert, PadChest and PLCO and serves as a framework for understanding and analyzing chest radiograph abnormalities.}%
+    \caption{Taxonomy structure of lung pathologies in chest radiographs.}%
     \label{fig:taxonomy.fig.1.taxonomy_structure}
 \end{figure}
 
+Table~\ref*{tab:taxonomy.table.1.datasets.pathologies} shows the labels present in each of the three studied datasets. Highlighted with green rows shows the pathologies selected for the final evaluation which are selected based on their presence in atleast two of the three datasets as well as in the taxonomy structure shown shown in Figure~\ref{fig:taxonomy.fig.1.taxonomy_structure}.
 
-Table 1: Details of the datasets included in this library. The number of images shows total images / usable frontal images. Usable frontal means images that are readable, have all the necessary metadata, and are in AP, PA, AP Supine, or AP Erect view.
+Table~\ref*{tab:taxonomy.table.2.datasets.ninstances} shows the number of instances that has a specific pathology in each of the three studied datasets (CheX~\cite{irvin_CheXpert_2019}, PADCHEST~\cite{bustos_Padchest_2020}, NIH~\cite{wang_ChestXRay8_2017}). Prior to applying the proposed technique a set of preprocessing steps are applied to ground truth label set. In medical images with multiple classes, it is common for the labeler to only label the pathologies that their study requires. This sometimes result in sitautions where some instances of data are labeled for the presence of some of the child pathologies but not their corresponding parent pathologies. To compensate for this lack of labeling for some parent classes which is necessary for the effectiveness of the proporsed technques, we updated the label value indicating the presence of classes with at least one child class to $1$ (indicating the class exist in that instance). This preprocessing is applied to all pathologies which are not labeled in the original ground truth label set. As can be seen in Table~\ref{tab:taxonomy.table.2.datasets.ninstances} (highlighted cells), while the Lung Opacity and Enlarged Cardiomediastinum classes were not present in the original ground truth label sets of NIH and PADCHEST datasets (As showcased in Table~\ref{tab:taxonomy.table.1.datasets.pathologies}); by updating the ground truth label set we have ended up with multiple instances where based on the presence of their child class presence we can be certain that the parent calss should have existed as well. 
 
 
-Table 2: Labels available for each dataset, the total number of positive samples for each class across all datasets, and the total number of examples in each dataset, and the sum over each row in the right column. The COVID-19 datasets are excluded from this table because they have many unique pathologies.
+\begin{table}[]
+\centering
+\caption{Pathologies present in each dataset}
+\label{tab:taxonomy.table.1.datasets.pathologies}
+\begin{tabular}{lcccrlccc}
+\cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} \textbf{Pathologies}} & \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} \textbf{NIH}} & \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} \textbf{PadChest}} & \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} \textbf{CheX}} & \textbf{} & \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} \textbf{Pathologies}} & \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} \textbf{NIH}} & \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} \textbf{PadChest}} & \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} \textbf{CheX}} \\
+\textbf{Air Trapping} &  & X &  &  & \textbf{Hemidiaphragm Elevation} &  & X &  \\
+\textbf{Aortic   Atheromatosis} &  & X &  &  & \cellcolor[HTML]{E9ECE6}\textbf{Hernia} & \cellcolor[HTML]{E9ECE6}X & \cellcolor[HTML]{E9ECE6}X & \cellcolor[HTML]{E9ECE6} \\
+\textbf{Aortic Elongation} &  & X &  &  & \textbf{Hilar Enlargement} &  & X &  \\
+\textbf{Aortic   Enlargement} &  &  &  &  & \textbf{ILD} &  &  &  \\
+\cellcolor[HTML]{E9ECE6}\textbf{Atelectasis} & \cellcolor[HTML]{E9ECE6}X & \cellcolor[HTML]{E9ECE6}X & \cellcolor[HTML]{E9ECE6}X &  & \cellcolor[HTML]{E9ECE6}\textbf{Infiltration} & \cellcolor[HTML]{E9ECE6}X & \cellcolor[HTML]{E9ECE6}X & \cellcolor[HTML]{E9ECE6} \\
+\textbf{Bronchiectasis} &  & X &  &  & \cellcolor[HTML]{E9ECE6}\textbf{Lung Lesion} & \cellcolor[HTML]{E9ECE6} & \cellcolor[HTML]{E9ECE6} & \cellcolor[HTML]{E9ECE6}X \\
+\textbf{Calcification} &  &  &  &  & \cellcolor[HTML]{E9ECE6}\textbf{Lung Opacity} & \cellcolor[HTML]{E9ECE6} & \cellcolor[HTML]{E9ECE6} & \cellcolor[HTML]{E9ECE6}X \\
+\textbf{Calcified   Granuloma} &  &  &  &  & \cellcolor[HTML]{E9ECE6}\textbf{Mass} & \cellcolor[HTML]{E9ECE6}X & \cellcolor[HTML]{E9ECE6}X & \cellcolor[HTML]{E9ECE6} \\
+\cellcolor[HTML]{E9ECE6}\textbf{Cardiomegaly} & \cellcolor[HTML]{E9ECE6}X & \cellcolor[HTML]{E9ECE6}X & \cellcolor[HTML]{E9ECE6}X &  & \textbf{Nodule/Mass} &  &  &  \\
+\cellcolor[HTML]{E9ECE6}\textbf{Consolidation} & \cellcolor[HTML]{E9ECE6} & \cellcolor[HTML]{E9ECE6}X & \cellcolor[HTML]{E9ECE6}X &  & \cellcolor[HTML]{E9ECE6}\textbf{Nodule} & \cellcolor[HTML]{E9ECE6}X & \cellcolor[HTML]{E9ECE6}X & \cellcolor[HTML]{E9ECE6} \\
+\textbf{Costophrenic   Angle Blunting} &  & X &  & \multicolumn{1}{l}{} & \textbf{Pleural Other} &  &  & X \\
+\cellcolor[HTML]{E9ECE6}\textbf{Edema} & \cellcolor[HTML]{E9ECE6}X & \cellcolor[HTML]{E9ECE6}X & \cellcolor[HTML]{E9ECE6}X &  & \cellcolor[HTML]{E9ECE6}\textbf{Pleural Thickening} & \cellcolor[HTML]{E9ECE6}X & \cellcolor[HTML]{E9ECE6}X & \cellcolor[HTML]{E9ECE6} \\
+\cellcolor[HTML]{E9ECE6}\textbf{Effusion} & \cellcolor[HTML]{E9ECE6}X & \cellcolor[HTML]{E9ECE6}X & \cellcolor[HTML]{E9ECE6}X &  & \cellcolor[HTML]{E9ECE6}\textbf{Pneumonia} & \cellcolor[HTML]{E9ECE6}X & \cellcolor[HTML]{E9ECE6}X & \cellcolor[HTML]{E9ECE6}X \\
+\cellcolor[HTML]{E9ECE6}\textbf{Emphysema} & \cellcolor[HTML]{E9ECE6}X & \cellcolor[HTML]{E9ECE6}X & \cellcolor[HTML]{E9ECE6} &  & \cellcolor[HTML]{E9ECE6}\textbf{Pneumothorax} & \cellcolor[HTML]{E9ECE6}X & \cellcolor[HTML]{E9ECE6}X & \cellcolor[HTML]{E9ECE6}X \\
+\cellcolor[HTML]{E9ECE6}\textbf{Enlarged   Cardiomediastinum} & \cellcolor[HTML]{E9ECE6} & \cellcolor[HTML]{E9ECE6} & \cellcolor[HTML]{E9ECE6}X & \multicolumn{1}{l}{} & \textbf{Pulmonary Fibrosis} &  &  &  \\
+\cellcolor[HTML]{E9ECE6}\textbf{Fibrosis} & \cellcolor[HTML]{E9ECE6}X & \cellcolor[HTML]{E9ECE6}X & \cellcolor[HTML]{E9ECE6} &  & \textbf{Scoliosis} &  & X &  \\
+\textbf{Flattened   Diaphragm} &  & X &  &  & \textbf{Tuberculosis} &  & X &  \\
+\cellcolor[HTML]{E9ECE6}\textbf{Fracture} & \cellcolor[HTML]{E9ECE6} & \cellcolor[HTML]{E9ECE6}X & \cellcolor[HTML]{E9ECE6}X &  & \textbf{Tube} &  & X &  \\
+\textbf{Granuloma} &  & X &  &  &  & \multicolumn{1}{l}{} & \multicolumn{1}{l}{} & \multicolumn{1}{l}{}
+\end{tabular}
+\end{table}
 
+
+\begin{table}[]
+\centering
+\caption{Number of samples present in the evaluated datasets (CheX, NIH, and PC) per pathology.}
+\label{tab:taxonomy.table.2.datasets.ninstances}
+\begin{tabular}{lcccccc}
+\rowcolor[HTML]{79A8A4} 
+\multicolumn{1}{c}{\cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} }} & \multicolumn{2}{c}{\cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} \textbf{CheXpert}}} & \multicolumn{2}{c}{\cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} \textbf{NIH}}} & \multicolumn{2}{c}{\cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} \textbf{PadChest}}} \\
+\rowcolor[HTML]{79A8A4} 
+\multicolumn{1}{c}{\multirow{-2}{*}{\cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} \textbf{Pathologies\textbackslash{}Dataset}}}} & {\color[HTML]{FFFFFF} PA} & {\color[HTML]{FFFFFF} AP} & {\color[HTML]{FFFFFF} PA} & {\color[HTML]{FFFFFF} AP} & {\color[HTML]{FFFFFF} PA} & {\color[HTML]{FFFFFF} AP} \\
+\textbf{Atelectasis} & 2460 & 11643 & 1557 & 1016 & 2419 & 232 \\
+\textbf{Consolidation} & 1125 & 4956 & 384 & 253 & 475 & 77 \\
+\textbf{Infiltration} & 0 & 0 & 3273 & 1131 & 4309 & 587 \\
+\textbf{Pneumothorax} & 1060 & 4239 & 243 & 253 & 97 & 15 \\
+\textbf{Edema} & 1330 & 15117 & 39 & 237 & 108 & 130 \\
+\textbf{Emphysema} & 0 & 0 & 264 & 193 & 546 & 30 \\
+\textbf{Fibrosis} & 0 & 0 & 556 & 61 & 341 & 8 \\
+\textbf{Effusion} & 5206 & 19349 & 1269 & 654 & 1625 & 311 \\
+\textbf{Pneumonia} & 992 & 2064 & 175 & 89 & 1910 & 211 \\
+\textbf{Pleural\_Thickening} & 0 & 0 & 745 & 145 & 2075 & 34 \\
+\textbf{Cardiomegaly} & 2117 & 8284 & 729 & 203 & 5387 & 261 \\
+\textbf{Nodule} & 0 & 0 & 1609 & 460 & 2190 & 95 \\
+\textbf{Mass} & 0 & 0 & 1213 & 493 & 506 & 17 \\
+\textbf{Hernia} & 0 & 0 & 81 & 13 & 988 & 38 \\
+\textbf{Lung Lesion} & 1655 & 3110 & 0 & 0 & 0 & 0 \\
+\textbf{Fracture} & 1115 & 3463 & 0 & 0 & 1662 & 69 \\
+\textbf{Lung Opacity} & 7006 & 28183 & \cellcolor[HTML]{E9ECE6}4917 & \cellcolor[HTML]{E9ECE6}2216 & \cellcolor[HTML]{E9ECE6}6947 & \cellcolor[HTML]{E9ECE6}861 \\
+\textbf{Enlarged Cardiomediastinum} & 1100 & 4577 & \cellcolor[HTML]{E9ECE6}729 & \cellcolor[HTML]{E9ECE6}203 & \cellcolor[HTML]{E9ECE6}5387 & \cellcolor[HTML]{E9ECE6}261 \\
+\rowcolor[HTML]{79A8A4} 
+{\color[HTML]{FFFFFF} Total} & {\color[HTML]{FFFFFF} 20543} & {\color[HTML]{FFFFFF} 53359} & {\color[HTML]{FFFFFF} 28868} & {\color[HTML]{FFFFFF} 9060} & {\color[HTML]{FFFFFF} 61692} & {\color[HTML]{FFFFFF} 2445}
+\end{tabular}
+\end{table}
+
+< Reviewed Until Here >
 
 \subsection{Model Performance on Public Chest Radiograph Datasets}
 
