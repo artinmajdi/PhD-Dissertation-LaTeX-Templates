@@ -70,7 +70,7 @@ Let us denote the following parameters:
 
     \item  $\mathbb{Y} = {\left\{Y^{(i)}\right\}}_{i=1}^{N} $: Set of all true labels.
 
-    \item     $\mathbb{D}=\left\{\mathbb{X},\mathbb{Y}\right\} $: Dataset containing all instances and all true labels.
+    \item $\mathbb{D}=\left\{\mathbb{X},\mathbb{Y}\right\} $: Dataset containing all instances and all true labels.
 
     % \item  $\mathbb{D}_{\text{phase1}},\mathbb{D}_{\text{phase2}} $: randomly selected subsets of the $\mathbb{D} $ dataset used for phase1: training the machine learning model and phase2: applying the proposed taxonomy technique. $\mathbb{D}_{\text{phase1}}\cup\;\mathbb{D}_{\text{phase2}}=\mathbb{D} $ and $\mathbb{D}_{\text{phase1}} \bigcap \mathbb{D}_{\text{phase2}} = \varnothing $
 
@@ -148,10 +148,12 @@ In multi-label classification problems, where each sample may belong to multiple
     l_k = -\left(y_k^{(i)}\log(p_k^{(i)}) + (1 - y_k^{(i)})\log(1 - p_k^{(i)})\right)
     \label{eq:taxonomy.eq.2.loss}
 \end{equation}
+
 \begin{equation}
     \text{Loss}(\theta) = \sum_{i=1}^{N}\sum_{k=1}^{K}l_k
     \label{eq:taxonomy.eq.3.totalloss}
 \end{equation}
+
 In this formulation, the objective is to minimize the loss function with respect to the model parameters $\theta $, resulting in an optimal set of parameters that produce accurate predictions for multi-label classification tasks. However, class independence and equal importance between different classes cannot always be assumed. Inclusion of a hierarchical penalty or regularization term in the loss function is one way to push the loss function to take the taxonomy into account when optimizing the model hyperparameters (weights and biases). We use a regularization term $\beta_k$  to penalize the loss for class $c_k$ for each instance $i $ in which the probability that its parent class $c_j$ exists in that instance is low. This can be represented mathematically by adding a hierarchical penalty term $H(c_k \vert c_j)$ for the class $c_k$ with respect to its corresponding parent class $c_j$ as follows.
 \begin{equation}
     \widehat{l}_{k}^{(i)} = l_{k}^{(i)}+\beta_k H \left(c_k \vert c_j \right)
@@ -164,11 +166,13 @@ There are multiple ways to define the hierarchical penalty. For example, we can 
     H(k \vert j)=\mathcal{L} \left(y_j^{(i)},p_j^{(i)}\right)
     \label{eq:taxonomy.eq.4.hierarchical_penalty1}
 \end{equation}
+
 Another approach to incorporating the interdependence between different classes into the loss function is to apply the loss function $\mathcal{L} $ to the true label of the parent class and the predicted probability of the child class as follows.
 \begin{equation}
     H\left(k\vert j\right) = \mathcal{L} \left(y_j^{(i)},p_k^{(i)}\right)
     \label{eq:taxonomy.eq.5.hierarchical_penalty2}
 \end{equation}
+
 In both Equations~(\ref{eq:taxonomy.eq.4.hierarchical_penalty1}) and~(\ref{eq:taxonomy.eq.5.hierarchical_penalty2}) the penalization term encourages the model to correctly predict the parent classe when predicting the child class, ensuring that the predicted label set adheres to the hierarchical structure. In the aforementioned approach, we assume a linear relationship between child and parent losses, which can simplify the optimization process. However, this may not always accurately capture the relationship between the parent-child classes, as the relationship may not always be linear. Furthermore, the impact of the parent's loss on the total loss could be less significant, particularly if the child's loss is considerably greater than the parent's loss.
 
 To address this problem, we can modify the loss measurements presented in Equations~(\ref{eq:taxonomy.eq.4.hierarchical_penalty1}) and~(\ref{eq:taxonomy.eq.5.hierarchical_penalty2}) to be based on the multiplication of losses rather than their addition.
@@ -198,11 +202,13 @@ In the following, we show how to calculate the updated predicted probabilities f
     \label{eq:taxonomy.eq.9.sigmoid}
     \widehat{p}_k^{(i)}=\text{sigmoid}\left(\widehat{q}_k^{(i)}\right)=\frac1{1+\exp\left(-\widehat{q}_k^{(i)}\right)}
 \end{equation}
+
 The sigmoid activation function maps any value to a number between zero and one. The gradient of the sigmoid function (shown below) provides the direction in which the predicted probability must be updated.
 \begin{equation}
     \label{eq:taxonomy.eq.10.sigmoidprime}
     \text{sigmoid}'\left(\widehat{q}_k^{(i)}\right)=\frac{\partial{\text{sigmoid}}}{\partial{q}}=\text{sigmoid}\left(\widehat{q}_k^{(i)}\right)\left(1-\text{sigmoid}\left(\widehat{q}_k^{(i)}\right)\right)=\widehat{p}_k^{(i)}\left(1-\widehat{p}_k^{(i)}\right)
 \end{equation}
+
 The loss gradient gives us the direction in which the predicted probability needs to be updated to minimize the loss. The gradient of the binary cross-entropy loss will be as follows.
 \begin{equation}
     \label{eq:taxonomy.eq.11.lossgradient}
@@ -215,16 +221,19 @@ In the following equations, we show how we can use the predicted probability, th
 \label{eq:taxonomy.eq.12.newpredelement}
 \frac{\partial \mathcal{L}\left(p_k^{(i)},\; y_k^{(i)}\right)}{\partial p}\;\text{sigmoid}^{'}\left(\widehat{q}_k^{(i)}\right)=\left(\frac{y_k^{(i)}}{\widehat{p}_k^{(i)}}-\frac{1-y_k^{(i)}}{1-\widehat{p}_k^{(i)}}\right)\widehat{p}_k^{(i)}\left(1-\widehat{p}_k^{(i)}\right)=y_k^{(i)}-\widehat{p}_k^{(i)}
 \end{equation}
+
 Hence, we can conclude the following.
 \begin{equation}
     \label{eq:taxonomy.eq.13.newpred}
     \begin{array}{@{}l}\hat{p}_{k}^{(i)} = \left\{\begin{array}{lc}-\frac{\partial \mathcal{L}\left(p_k^{(i)},\;y_k^{(i)}\right)}{\partial p}\;\text{sigmoid}^{'}\left(\widehat{q}_k^{(i)}\right)\text{+1} & y=1\\-\frac{\partial \mathcal{L}\left(p_k^{(i)},\;y_k^{(i)}\right)}{\partial p}\;\text{sigmoid}^{'}\left(\widehat{q}_k^{(i)}\right) & \text{otherwise.} \end{array}\right.\end{array}
 \end{equation}
+
 We would like to modify this equation so that it does not directly depend on the true value and instead rely on the gradient loss. If we simplify the loss gradient shown in Equation~(\ref{eq:taxonomy.eq.11.lossgradient})  we will have the following:
 \begin{equation}
     \label{eq:taxonomy.eq.14.newlossgradient}
     \frac{\partial \mathcal{L}(\widehat{p}_k^{(i)}, y_k^{(i)})}{\partial \widehat{p}} = \frac{y_k^{(i)}}{\widehat{p}_k^{(i)}} - \frac{1 - y_k^{(i)}}{1 - \widehat{p}_k^{(i)}} = \frac{y_k^{(i)} - \widehat{p}_k^{(i)}}{\widehat{p}_k^{(i)}(1 - \widehat{p}_k^{(i)})}
 \end{equation}
+
 In this equation, we can see that when the true label is positive $\left(y_k^{(i)}=1\right) $, the loss gradient can only be 0 or a positive number. Similarly, when $\left(y_k^{(i)}=0\right) $, the loss gradient can only take the value 0 or a negative number. Thus, we can modify the Equation~(\ref{eq:taxonomy.eq.13.newpred})  to look as follows.
 \begin{equation}
     \label{eq:taxonomy.eq.15.newpred}
@@ -251,11 +260,13 @@ The following demonstrates the Equation~(\ref{eq:taxonomy.eq.16.newpred}) based 
     \label{eq:taxonomy.eq.17}
     \exp{\left(-{\widehat l}_k^{(i)}\right)}=\exp{\left(-l_k^{(i)}\left(\alpha_k\;l_j^{(i)}+\beta_k\right)\right)}={\left(p_k^{(i)}\right)}^{-\alpha_k{\log{\left(p_j^{(i)}\right)}}+\beta_k}
 \end{equation}
+
 Furthermore, $1-\exp{\left(-{\widehat l}_k^{(i)}\right)},\text{for } y_k^{(i)}=0 $ will be as follows.
 \begin{equation}
     \label{eq:taxonomy.eq.18}
     1-\exp{\left(-{\widehat l}_k^{(i)}\right)}=1-\exp{\left(-l_k^{(i)}\left(\alpha_k\;l_j^{(i)}+\beta_k\right)\right)}={1-\left(1-p_k^{(i)}\right)}^{-\alpha_k{\log{\left(1-p_j^{(i)}\right)}}+\beta_k}
 \end{equation}
+
 By substituting the Equations~(\ref{eq:taxonomy.eq.17}) and~(\ref{eq:taxonomy.eq.18})  into Equation~(\ref{eq:taxonomy.eq.16.newpred})  we will have the following.
 \begin{equation}
     \label{eq:taxonomy.eq.19.newpred}
@@ -336,7 +347,7 @@ In this study, we investigated the frequency of various pathological labels in t
 \end{tabular}}
 \end{table}
 
-Table~\ref*{tab:taxonomy.table.2.datasets.ninstances} shows the number of instances that has a specific pathology in each of the three studied datasets (CheX~\cite{irvin_CheXpert_2019}, PADCHEST~\cite{bustos_Padchest_2020}, NIH~\cite{wang_ChestXRay8_2017}). Prior to applying the proposed technique a set of preprocessing steps are applied to ground truth label set. In medical images with multiple classes, it is common for the labeler to only label the pathologies that their study requires. This sometimes result in sitautions where some instances of data are labeled for the presence of some of the child pathologies but not their corresponding parent pathologies. To compensate for this lack of labeling for some parent classes which is necessary for the effectiveness of the proporsed technques, we updated the label value indicating the presence of classes with at least one child class to \textcolor{blue}{TRUE} (indicating the class exist in that instance). This preprocessing is applied to all pathologies which are not labeled in the original ground truth label set. As can be seen in Table~\ref{tab:taxonomy.table.2.datasets.ninstances} (\colorbox{mygreen}{highlighted cells}), while the Lung Opacity and Enlarged Cardiomediastinum classes were not present in the original ground truth label sets of NIH and PADCHEST datasets ( Table~\ref{tab:taxonomy.table.1.datasets.pathologies}), by updating the ground truth label set we end up with multiple instances where based on the presence of their child classes' presence we have determined the presence of the respective parent class.
+Table~\ref{tab:taxonomy.table.2.datasets.ninstances} shows the number of instances that has a specific pathology in each of the three studied datasets (CheX~\cite{irvin_CheXpert_2019}, PADCHEST~\cite{bustos_Padchest_2020}, NIH~\cite{wang_ChestXRay8_2017}). Prior to applying the proposed technique a set of preprocessing steps are applied to ground truth label set. In medical images with multiple classes, it is common for the labeler to only label the pathologies that their study requires. This sometimes result in sitautions where some instances of data are labeled for the presence of some of the child pathologies but not their corresponding parent pathologies. To compensate for this lack of labeling for some parent classes which is necessary for the effectiveness of the proporsed technques, we updated the label value indicating the presence of classes with at least one child class to \textcolor{blue}{TRUE} (indicating the class exist in that instance). This preprocessing is applied to all pathologies which are not labeled in the original ground truth label set. As can be seen in Table~\ref{tab:taxonomy.table.2.datasets.ninstances} (\colorbox{mygreen}{highlighted cells}), while the Lung Opacity and Enlarged Cardiomediastinum classes were not present in the original ground truth label sets of NIH and PADCHEST datasets ( Table~\ref{tab:taxonomy.table.1.datasets.pathologies}), by updating the ground truth label set we end up with multiple instances where based on the presence of their child classes' presence we have determined the presence of the respective parent class.
 
 \begin{table}[]
 \centering
@@ -370,9 +381,7 @@ Table~\ref*{tab:taxonomy.table.2.datasets.ninstances} shows the number of instan
 \end{tabular}
 \end{table}
 
-
 Figure~\ref{fig:taxonomy.fig.3.roc_curve_all_datasets} illustrates a comparison between the performance of the baseline technique and the proposed logit-based method (Approach 1 discussed in the Methods section) in detecting eight thoracic pathologies. These eight pathologies include the pathologies with child classes and their respective child classes, as shown in Figure~\ref{fig:taxonomy.fig.1.taxonomy_structure}. The individual subplots exhibit overlaid receiver operating characteristic (ROC) curves, each of which corresponds to a specific pathology. The present analysis employed a model that was derived through the application of the test dataset from the NIH dataset to a pre-trained model. The latter had undergone training on various publicly available thoracic datasets, with the aim of allowing the identification of 18 different pathologies related to the thorax. The last two subplots, showcased with a darker background, showcase the roc curves for parent classes diseases. As these parent class diseases were not influenced by the proposed technique, their ROC curves and corresponding Area Under the Curve (AUC) values remain consistent with the baseline technique. The ROC curve and its corresponding AUC for the six child classes demonstrate a significant improvement for the proposed technique in comparison to the baseline technique.
-
 
 \begin{figure}[htbp]
     \centering
