@@ -258,6 +258,17 @@ Define $c_{\alpha,k}^{(i)} $ as the consistency score for annotator $\alpha $, c
 
 \end{enumerate}
 
+\subsubsection{Reliability Measurement}
+For each annotator, for each class, and for each instance, there is a consistency score, $c_{\alpha,k}^i$. By averaging these scores across all instances, we can define a reliability score for each annotator and for each class:
+\begin{equation}
+\psi_{\alpha,k}=\frac{1}{N}\sum_{i=1}^N c_{\alpha,k}^i
+\end{equation}
+If desired, one may also calculate an overall reliability score for each annotator by averaging across all classes:
+\begin{equation}
+\psi_{\alpha}=\frac{1}{K}\sum_{k=1}^K \psi_{\alpha,k}
+\end{equation}
+
+
 \subsubsection{Weight Measurement}
 
 Furthermore, we define the annotators' weights $\omega_{\alpha,k}$ for each class k as the mean of their respective consistency scores $c_{\alpha,k}^{(i)} $ over all instances. The weights are normalized between 0 and 1 as follows:
