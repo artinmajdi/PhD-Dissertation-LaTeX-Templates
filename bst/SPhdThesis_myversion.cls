@@ -510,18 +510,23 @@
 		{\large{\SgIntAuthor}}
 		\vspace{1.5in}
 
-		\textbf{A Dissertation Submitted to the Faculty of the}\\
-		\begin{tabular}{ll}
-			Dept. of  & {\uppercase\expandafter{\SgIntDepartment}} \\
-		\end{tabular}
+		A Dissertation Submitted to the Faculty of the\\
+		% \vspace{.25in}
+		\uppercase\expandafter{\SgIntDepartment}
 
-		\vspace{.5in}
+		\vspace{.4in}
 
-		\textbf{In Partial Fulfillment of the Requirements for the}\\
-		\begin{tabular}{ll}
-			Degree of  & DOCTOR OF PHILOSOPHY \\
-			Graduate College & \uppercase\expandafter{\SgIntUniversity}
-		\end{tabular}
+		In Partial Fulfillment of the Requirements \\
+		For the Degree of \\
+		% \vspace{.25in}
+		DOCTOR OF PHILOSOPHY \\
+
+		\vspace{.4in}
+
+		In the Graduate College \\
+		% \vspace{.25in}
+		\uppercase\expandafter{\SgIntUniversity}
+
 
 		\vfill
 		\SgIntDeclarationDate
