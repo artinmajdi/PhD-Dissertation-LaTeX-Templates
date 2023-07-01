@@ -204,42 +204,71 @@ Finally, the aggregated label $\nu^{(i,k)}$ for each instance $i $ and class $k 
     \quad \forall i, k
     \label{eq:crowd.Eq.12.aggregated-label}
 \end{equation}
+
 \subsubsection{Confidence Score Calculation}
-In previous section we showed how to calculate the aggregated label $\nu^{(i,k)}$ (shown in Equation~(\ref{eq:crowd.Eq.12.aggregated-label})). Define $F^{(i,k)} $ as the confidence score for instance $i $ and class $k $. We calculate two confidence scores $F^{(i,k)} $, based on how many different annotators agree on the reported label $\nu^{(i,k)}$. The confidence scores show the level of confidence we should place on the aggregated labels.
-To calculate this confidence score, we modify the two techniques used by Sheng~\cite{sheng_Majority_2019} and Tao~\cite{tao_Label_2020} to incorporate our calculated weight $\omega_{\alpha}^{(k)} $ shown in Equation~(\ref{eq:crowd.eq.11.weights})  for each worker $\alpha $.
+In previous section we showed how to calculate the aggregated label $\nu^{(i,k)}$ (shown in Equation~(\ref{eq:crowd.Eq.12.aggregated-label})). Define $F^{(i,k)} $ as the confidence score for instance $i $ and class $k $. We calculate two confidence scores $F^{(i,k)} $, based on how many different annotators agree on the reported label $\nu^{(i,k)}$. The confidence scores show the level of confidence we should place on the aggregated labels. To calculate this confidence score, we modify the two techniques used by Sheng~\cite{sheng_Majority_2019} and Tao~\cite{tao_Label_2020} to incorporate our calculated weight $\omega_{\alpha}^{(k)} $ shown in Equation~(\ref{eq:crowd.eq.11.weights})  for each worker $\alpha $.
+
+\textbf{Using Weighted Sum:}
+In a standard voting system, for every instance $i$ and class $k$, each contributor in the group—whether that be an annotator in a crowd or a model in an ensemble learning context—provides a class label. The label receiving the most votes, meaning it's predicted by the majority of contributors, is selected as the final prediction. This approach is often referred to as majority voting or hard voting.
+
+This method could be improved by taking into account not only the number of votes each label receives, but also the confidence associated with each vote. This factor introduces the notion of a ``weighted sum of all votes for a particular class''. As part of this study, we propose techniques that assign a weight to each contributor in the group. This calculation is based on their voting consistency and the degree to which they concur with their peers.
+
+To compute the weighted sum of all votes for each class, we can combine the calculated weights with the corresponding labels, whether provided or predicted. This calculation gives greater weight to votes with greater confidence, or, in other words, votes with greater weight. This refined approach prioritizes confidence, thereby enhancing the ensemble's overall effectiveness.
+
+The confidence score $F_{\Omega}^{(i,k)}$ is formulated as follow.
+\begin{equation}
+    F_{\Omega}^{(i,k)} = {\sum\nolimits_{\alpha=1}^{M}{\omega_{\alpha}^{(k)} \delta\left(\eta_{\alpha}^{(i,k)} \;,\;\; \nu^{(i,k)} \right)}}
+    \label{eq:crowd.Eq.13.confidence-score.freq}
+\end{equation}
+where $\delta $ is the Kronecker delta function.
+
+
+\textbf{Using CDF of beta distribution function:}
+The binomial distribution survival function, also referred to as the complementary cumulative distribution function (CCDF), provides the probability of observing a result as extreme or more extreme than a given value. It provides the probability that a random variable drawn from the binomial distribution is greater than or equal to a given value.
+
+It can be applied in the following ways when calculating confidence scores:
+
 \begin{enumerate}
-    \item \textbf{uwMV-Freq:} In this approach, the confidence score $F_{\Omega}^{(i,k)}$ is defined as the weighted sum of labels belonging to annotators whose label is the same as the final aggregated label. It is calculated as
-    \begin{equation}
-     F_{\Omega}^{(i,k)} = {\sum\nolimits_{\alpha=1}^{M}{\omega_{\alpha}^{(k)} \delta\left(\eta_{\alpha}^{(i,k)} \;,\;\; \nu^{(i,k)} \right)}}
-        \label{eq:crowd.Eq.13.confidence-score.freq}
-    \end{equation}
-    where $\delta $ is the Kronecker delta function.
-    \item \textbf{uwMV-Beta:} In this approach, the CDF of the beta distribution at the decision threshold of $0.5 $ is used to calculate a confidence score $F_{\beta}^{(i,k)}$. To calculate the two shape parameters of the beta distributions $l^{(i,k)}$ and $u^{(i,k)}$, we use a weighted sum of all correct and incorrect aggregated labels, respectively:
-    \begin{equation}
-        \begin{aligned}
-            l^{(i,k)} &= 1 + \sum_{\alpha=1}^{M} \omega_{\alpha}^{(k)} \; \delta\left(\eta_{\alpha}^{(i,k)}, \nu_{k}^{(i,k)}\right) \\
-            u^{(i,k)} &= 1 + \sum_{\alpha=1}^{M} \omega_{\alpha}^{(k)} \; \delta\left(\eta_{\alpha}^{(i,k)}, 1 - \nu_{k}^{(i,k)}\right)
-        \end{aligned}
-        \label{eq:crowd.Eq.14.beta_l_u}
-    \end{equation}
-    \begin{equation}
-        F_{\beta}^{(i,k)} =I_{0.5}\left(l^{(i,k)},u^{(i,k)}\right)=\sum_{t=\lfloor l^{(i,k)}\rfloor}^{T-1}\frac{(T-1)!}{t!(T-1-t)!}0.5^{T-1}
-        \label{eq:crowd.Eq.15.confidence-score.beta}
-    \end{equation}
-    where $T=\left\lfloor l^{(i,k)} + u^{(i,k)}\right\rfloor $ and $\left\lfloor\cdot\right\rfloor $ is the floor function.
+    \item \textbf{Hypothesis testing:}
+    Suppose you are testing a hypothesis concerning a parameter of a population, and you collect a sample of observations. Given the null hypothesis, the binomial survival function can be used to calculate the probability of observing a result as extreme or more extreme than the one observed. This probability is the p-value, and if it is very small, the null hypothesis may be rejected. In this context, the confidence score could be interpreted as (1 $-$ p-value), a measure of the certainty with which the null hypothesis can be rejected.
+
+    \item \textbf{Binary classification:} Consider a binary classification problem in which an algorithm sorts objects into two groups, A and B. Given the observed results, the binomial survival function can be used to calculate the probability of misclassification. The confidence score in this instance could be interpreted as (1 $-$ probability of misclassification).
 \end{enumerate}
+
+In the following equation, the probability of obtaining k successes or more out of n trials where the probability of success on any given trial is p is calculated. In this context, ``success'' could refer to the event in question, such as the correct classification of an object or the acceptance of a hypothesis. The CDF of the beta distribution at the decision threshold of $0.5 $ is used to calculate a confidence score $F_{\beta}^{(i,k)}$. To calculate the two shape parameters of the beta distributions $l^{(i,k)}$ and $u^{(i,k)}$, a weighted sum of all correct and incorrect aggregated labels, is used respectively:
+\begin{equation}
+    \begin{aligned}
+        l^{(i,k)} &= 1 + \sum_{\alpha=1}^{M} \omega_{\alpha}^{(k)} \; \delta\left(\eta_{\alpha}^{(i,k)}, \nu_{k}^{(i,k)}\right) \\
+        u^{(i,k)} &= 1 + \sum_{\alpha=1}^{M} \omega_{\alpha}^{(k)} \; \delta\left(\eta_{\alpha}^{(i,k)}, 1 - \nu_{k}^{(i,k)}\right)
+    \end{aligned}
+    \label{eq:crowd.Eq.14.beta_l_u}
+\end{equation}
+%
+\begin{equation}
+    F_{\beta}^{(i,k)} =I_{0.5}\left(l^{(i,k)},u^{(i,k)}\right)=\sum_{t=[l^{(i,k)}]}^{T-1}\frac{(T-1)!}{t!(T-1-t)!}0.5^{T-1}
+    \label{eq:crowd.Eq.15.confidence-score.beta}
+\end{equation}
+where $T = \left [ l^{(i,k)} + u^{(i,k)} \right ] $ and $\left [ \cdot \right ] $ is an integer function.
+
+
 \subsection{Metrics}
+%
 \begin{itemize}
-    \item Accuracy is defined as follows.
-    \begin{equation}
-        \text{Accuracy}=\delta \left(\nu^{(i,k)}, y^{(i,k)} \right)
-    \end{equation}
-    where the $y^{(i,k)}$ and $\nu^{(i,k)}$ are the ground truth and aggregated label respectively for class $k$ and instance $i$.
-\item Calibration: Calibration measures whether the predicted confidence scores match the actual accuracy of the predictions. In a perfectly calibrated system, if you take all instances where the model assigned a confidence score of 80%, for example, then about 80% of those predictions should be correct. A model can be deemed as well-calibrated if the predicted probabilities match the empirical (observed) probabilities. Calibration plots can be a useful tool to visually inspect the calibration of your model. A perfectly calibrated model would have a plot where the points lie on the 45-degree line (y = x).
-\item Brier Score: The Brier score is a proper score rule that measures the accuracy of probabilistic predictions. It is applicable to tasks of binary and categorical outcomes and can also be used for multilabel tasks with some adaptations. It's calculated as the mean squared difference between the predicted probability and the actual outcome (0 or 1), and thus rewards both good calibration and sharpness (high confidence in correct predictions).
-\item Area Under the ROC Curve (AUC-ROC): While ROC-AUC is often used to evaluate classification performance, it can also provide an indication of how well the model's confidence in its predictions corresponds with its accuracy. This would involve treating the confidence score as a ranking over the instances, and the true labels as the thing to predict. This works well if higher confidence in a label is supposed to mean that the label is more likely to be correct.
-\item Expected Calibration Error (ECE): ECE is another metric to quantify the calibration of a model. It is computed as a weighted average of the absolute difference between accuracy and confidence in each bin when predictions are grouped into bins based on their predicted confidence.
+\item \textbf{Accuracy} is defined as follows.
+\begin{equation}
+    \text{Accuracy}=\delta \left(\nu^{(i,k)}, y^{(i,k)} \right)
+\end{equation}
+where the $y^{(i,k)}$ and $\nu^{(i,k)}$ are the ground truth and aggregated label respectively for class $k$ and instance $i$.
+%
+\item \textbf{Calibration:} Calibration measures whether the predicted confidence scores match the actual accuracy of the predictions. In a perfectly calibrated system, if you take all instances where the model assigned a confidence score of 80\%, for example, then about 80\% of those predictions should be correct. A model can be deemed as well-calibrated if the predicted probabilities match the empirical (observed) probabilities. Calibration plots can be a useful tool to visually inspect the calibration of your model. A perfectly calibrated model would have a plot where the points lie on the 45-degree line (y = x).
+%
+\item \textbf{Brier Score:} The Brier score is a proper score rule that measures the accuracy of probabilistic predictions. It is applicable to tasks of binary and categorical outcomes and can also be used for multilabel tasks with some adaptations. It's calculated as the mean squared difference between the predicted probability and the actual outcome (0 or 1), and thus rewards both good calibration and sharpness (high confidence in correct predictions).
+%
+\item \textbf{Area Under the ROC Curve (AUC-ROC):} While ROC-AUC is often used to evaluate classification performance, it can also provide an indication of how well the model's confidence in its predictions corresponds with its accuracy. This would involve treating the confidence score as a ranking over the instances, and the true labels as the thing to predict. This works well if higher confidence in a label is supposed to mean that the label is more likely to be correct.
+%
+\item \textbf{Expected Calibration Error (ECE):} ECE quantifies the calibration of a model. It is computed as a weighted average of the absolute difference between accuracy and confidence in each bin when predictions are grouped into bins based on their predicted confidence.
 \end{itemize}
+
 \section{Results}\label{sec:crowd.results}
 To evaluate our proposed technique, we conducted a series of experiments comparing the proposed technique with several existing techniques such as MV, Tao~\cite{tao_Label_2020}, and Sheng~\cite{sheng_Majority_2019}, as well as with other crowdsourcing methodologies reported in the crowd-kit package~\cite{ustalov_learning_2021 } including Gold Majority Voting, MMSR~\cite{ma_Adversarial_2020}, Wawa, Zero-Based Skill, GLAD~\cite{whitehill_Whose_2009}, and Dawid Skene~\cite{dawid_Maximum_1979}.
 
@@ -278,20 +307,74 @@ We report the performance of our proposed techniques on various datasets. These 
     \item The 1984 US Congressional \textbf{Voting} Records Dataset shows how members voted on 16 CQA-identified critical votes. Votes are divided into nine categories, simplified to yea, nay, or unknown disposition. The dataset has two classes: Democrats (267) and Republicans (168).
     \item The Johns Hopkins \textbf{Ionosphere} dataset contains data collected near Goose Bay, Labrador, using a phased array of 16 high-frequency antennas. ``Good'' radar returns show ionosphere structure, while ``bad'' returns are ionosphere-free. The dataset includes 351 instances with 34 attributes categorized as good or bad.
 \end{itemize}
+
 All datasets were transformed into a two-class binary problem for comparison with existing benchmarks. For instance, only the first and second classes were used in the ``waveform'' dataset, and the first two classes were utilized in the ``Iris'' dataset.
 We generated multiple fictitious label sets for each dataset to simulate the crowdsourcing concept of collecting several crowd labels for each instance. We selected random samples in the datasets using a uniform distribution and altered their corresponding true labels to incorrect ones, while maintaining the original distribution of the ground-truth labels. The probability of each instance containing the correct true label was determined using a uniform distribution, allowing us to create synthetic label sets for each annotator that preserved the underlying structure and difficulty of the original classification problem. By creating datasets with various levels of accuracy, we can evaluate the performance of the proposed method under different conditions of annotator expertise and reliability. This allows us to assess the ability of our method to handle diverse real-world crowdsourcing scenarios and gain insight into its general applicability and effectiveness in improving overall classification accuracy.
+
 \subsection{Benchmarks}
 Tao~\cite{tao_Label_2020} and Sheng~\cite{sheng_Majority_2019} techniques were implemented in Python to evaluate their performance. Furthermore, the crowd-kit package (A General-Purpose Crowdsourcing Computational Quality Control Toolkit for Python)~\cite{ustalov_learning_2021 } was used to implement the remaining benchmark techniques, including Gold Majority Voting, MMSR~\cite{ma_Adversarial_2020}, Wawa, Zero-Based Skill, GLAD~\cite{whitehill_Whose_2009}, and Dawid Skene~\cite{dawid_Maximum_1979}.
+%
 \begin{itemize}
     \item \textbf{Golden majority voting} estimates the probability that each annotator possesses the correct label and then calculates the probability of each label per occurrence based on the weight assigned to each label. Assume that 10,000 jobs are performed by 3,000 annotators as well as 100 instances of ground truth. First, the percentage of correct labels for each annotator is calculated. The remaining labels are then estimated based on the weights.
-    \item \textbf{Wawa} (Annotator Agreement with Aggregate), also referred to as ``inter-rater agreement'', is a commonly used statistic for non-testing problems. This indicates the average frequency with which each annotator's response matches the aggregate response for each instance.
-    \item \textbf{Zero-Based-Skill} employs a weighted majority vote (WMV). After processing a collection of instances, it re-evaluates the abilities of the annotators based on the accuracy of their responses. This process is repeated until the labels no longer change or the maximum number of iterations is reached.
+    \item \textbf{Worker Agreement with Aggregate (WAWA)~\cite{crowdkit_wawa_2023}:} (Annotator Agreement with Aggregate), also referred to as ``inter-rater agreement'', is a commonly used statistic for non-testing problems. This indicates the average frequency with which each annotator's response matches the aggregate response for each instance.
+    \item \textbf{Zero-Based-Skill (ZBS)} employs a weighted majority vote (WMV). After processing a collection of instances, it re-evaluates the abilities of the annotators based on the accuracy of their responses. This process is repeated until the labels no longer change or the maximum number of iterations is reached.
     \item Descriptions of the other techniques can be found in their respective references.
+    \item \textbf{Karger-Oh-Shah (KOS):}
+        Iterative algorithm that calculates the log-likelihood of the task being positive while modeling
+        the reliabilities of the workers.
+
+        Let $A_{ij}$ be a matrix of answers of worker $j$ on task $i$.
+        $A_{ij} = 0$ if worker $j$ didn't answer the task $i$, otherwise $|A_{ij}| = 1$.
+        The algorithm operates on real-valued task messages $x_{i \rightarrow j}$  and
+        worker messages $y_{j \rightarrow i}$. A task message $x_{i \rightarrow j}$ represents
+        the log-likelihood of task $i$ being a positive task, and a worker message $y_{j \rightarrow i}$ represents
+        how reliable worker $j$ is.
+
+        On iteration $k$ the values are updated as follows:
+        \begin{equation}
+        x_{i \rightarrow j}^{(k)} = \sum_{j^{'} \in \partial i \backslash j} A_{ij^{'}} y_{j^{'} \rightarrow i}^{(k-1)} \\
+        y_{j \rightarrow i}^{(k)} = \sum_{i^{'} \in \partial j \backslash i} A_{i^{'}j} x_{i^{'} \rightarrow j}^{(k-1)}
+        \end{equation}
+    \item \textbf{Multi-Annotator Competence Estimation (MACE)~\cite{hovy_MACE_2013}:}
+            Probabilistic model that associates each worker with a probability distribution over the labels. For each task, a worker might be in a spamming or not spamming state. If the worker is not spamming, they yield a correct label. If the worker is spamming, they answer according to their probability distribution. Let's assume that the correct label $T_i$ comes from a discrete uniform distribution. When a worker annotates the task, they are in the spamming state with probability $\operatorname{Bernoulli}(1 - \theta_w)$. So, if their state $s_w = 0$, their response $A_{iw} = T_i$. Otherwise, their response $A_{iw}$ is drawn from a multinomial distribution with parameters $\xi_w$.
+    \item \textbf{Matrix Mean-Subsequence-Reduced Algorithm (MMSR)~\cite{ma_Adversarial_2020}:}
+            The M-MSR assumes that workers have different level of expertise and associated            with a vector of ``skills'' $\boldsymbol{s}$ which entries $s_i$ show the probability of the worker $i$ to answer correctly to the given task. Having that, we can show that.
+            \begin{equation}
+                \mathbb{E}\left[\frac{M}{M-1}\widetilde{C}-\frac{1}{M-1}\boldsymbol{1}\boldsymbol{1}^T\right]
+                = \boldsymbol{s}\boldsymbol{s}^T,
+            \end{equation}
+            where $M$ is the total number of classes, $\widetilde{C}$ is a covariation matrix between
+            workers, and $\boldsymbol{1}\boldsymbol{1}^T$ is the all-ones matrix which has the same
+            size as $\widetilde{C}$.
+
+            So, the problem of recovering the skills vector $\boldsymbol{s}$ becomes equivalent to the
+            rank-one matrix completion problem. The M-MSR algorithm is an iterative algorithm for *rubust* rank-one matrix completion, so its result is an estimator of the vector $\boldsymbol{s}$.
+            Then, the aggregation is the weighted majority vote with weights equal to
+            $\log \frac{(M-1)s_i}{1-s_i}$.
+    %
+    \item \textbf{Generative model of Labels, Abilities, and Difficulties (GLAD)~\cite{whitehill_Whose_2009}:}
+    A probabilistic model that parametrizes workers' abilities and tasks' dificulties.
+    Let's consider a case of $K$ class classification. Let $p$ be a vector of prior class probabilities, $\alpha_i \in (-\infty, +\infty)$ be a worker's ability parameter, $\beta_j \in (0, +\infty)$ be an inverse task's difficulty, $z_j$ be a latent variable representing the true task's label, and $y^i_j$ be a worker's response that we observe. The relationships between this variables and parameters according to GLAD are represented by the following latent label model:
+    The prior probability of $z_j$ being equal to $c$ is $\operatorname{Pr}(z_j = c) = p[c],$
+    the probability distribution of the worker's responses conditioned by the true label value $c$ follows the single coin Dawid-Skene model where the true label probability is a sigmoid function of the product of worker's ability and inverse task's difficulty:
+    \begin{equation}
+    \operatorname{Pr}(y^i_j = k | z_j = c) = \begin{cases}a(i, j), & k = c \\ \frac{1 - a(i,j)}{K-1}, & k \neq c\end{cases},
+    \end{equation}
+    where $a(i,j) = \frac{1}{1 + \exp(-\alpha_i\beta_j)}.$
+
+    Parameters $p$, $\alpha$, $\beta$ and latent variables $z$ are optimized through the Expectation-Minimization algorithm.
+    %
+    \item \textbf{Dawid-Skene~\cite{dawid_Maximum_1979}:}
+    Probabilistic model that parametrizes workers' level of expertise through confusion matrices.   Let $e^w$ be a worker's confusion (error) matrix of size $K \times K$ in case of $K$ class classification, $p$ be a vector of prior classes probabilities, $z_j$ be a true task's label, and $y^w_j$ be a worker's answer for the task $j$. The relationships between these parameters are represented by the following latent label model.
+    Here the prior true label probability is $\operatorname{Pr}(z_j = c) = p[c]$ and the distribution on the worker's responses given the true label $c$ is represented by the
+    corresponding column of the error matrix: $\operatorname{Pr}(y_j^w = k | z_j = c) = e^w[k, c]$
+    Parameters $p$ and $e^w$ and latent variables $z$ are optimized through the Expectation-Maximization algorithm.
 \end{itemize}
 
 \subsection{Weight Measurement}
 After generating the multi-label sets, we employed both the proposed method and several existing methods to obtain the aggregated labels. We experimented with two approaches for classifier selection, as explained in Section~\ref{subsec:crowd.uncertainty}. We found no significant differences in the overall outcomes and thus chose the second approach, which utilizes the random forest classification technique, to save processing time and reduce the number of required Python package dependencies. Ten random forests, each with four trees and a maximum depth of four, were trained in different random states for each annotator $\alpha $, as detailed in Section~\ref{sec:crowd.method}.
-Figure~\ref{fig:crowd.Fig.1.weight} depicts the relationship between the randomly assigned annotators' probability threshold ($\pi_\alpha^{(k)}$) and their corresponding estimated weights ($\omega_\alpha^{(k)}$). In the case of Tao's method, the figure displays the average weights across all instances. As seen, when the reliability of an annotator surpasses a specific threshold, the weight measured by Tao's technique plateaus, whereas the proposed method exhibits a considerably stronger correlation. Individual data points represent the actual measured weights, and the curve represents the regression line.
+
+Figure~\ref{fig:crowd.Fig.1.weight} depicts the relationship between the randomly assigned annotators' probability threshold ($\pi_\alpha^{(k)}$) and their corresponding estimated weights ($\omega_\alpha^{(k)}$). In the case of Tao's method, the figure displays the average weights across all instances. As seen, when the reliability (probability threshold) of an annotator surpasses a specific threshold, the weight measured by Tao's technique plateaus, whereas the proposed method exhibits a considerably stronger correlation. Individual data points represent the actual measured weights, and the curve represents the regression line.
 \begin{figure}[!htbp]
     \centering
     \includegraphics[width=0.9\textwidth]{\figurepath{lmplot_weight_strength_relation/lmplot_weight_strength_relation.pdf}}
@@ -300,16 +383,18 @@ Figure~\ref{fig:crowd.Fig.1.weight} depicts the relationship between the randoml
 \end{figure}
 
 \subsection{Confidence Score}
-The results present a box plot of the average accuracy for different numbers of annotators, ranging from three to ten.
-Figure~\ref{fig:crowd.Fig.2.confidence_scores} illustrates the average accuracy of the crowd-certain technique with penalization for both the ``freq” and ``Beta” confidence measurement approaches showing comparable accuracy.
+Figure~\ref{fig:crowd.Fig.2.confidence_scores} present a box plot of the average accuracy for different numbers of annotators, ranging from three to ten. It illustrates the average accuracy of the crowd-certain technique with penalization for both the ``freq” and ``Beta” confidence measurement approaches showing comparable accuracy.
+%
 Figure~\ref{fig:crowd.Fig.4.confidence_score.freq} displays the average accuracy using the ``freq’’ confidence measurement strategy for the proposed crowd-certain technique with and without penalization. The penalization method penalizes annotators for inaccurate labeling before measuring their weights, as demonstrated in Equation~(\ref{eq:crowd.eq.10.consistency-penalized}). The penalized version of the proposed technique shows an improvement in average accuracy and a reduction in variance.
-\begin{figure*}[!htbp]
+
+\begin{figure*}[htbp]
 \centering
 \includegraphics[width=0.8\textwidth]{\figurepath{image2.png}}
 \caption{Boxplot of eight accuracies (each accuracy is measured for a different number of annotators (from 3 up to 10)) calculated using the proposed crowd-certain technique with penalization for ‘freq’ (blue) and ‘beta’ (yellow) confidence-score measurement strategies for ten datasets.}%
 \label{fig:crowd.Fig.2.confidence_scores}
 \end{figure*}
-\begin{figure*}[!htbp]
+%
+\begin{figure*}[htbp]
     \centering
     \includegraphics[width=0.9\textwidth]{\figurepath{image4.png}}
     \caption{Boxplot of eight accuracies (each accuracy is measured for a different number of annotators (from 3 up to 10)) calculated using the proposed crowd-certain technique with (yellow) and without (blue) penalization for `freq' confidence-score measurement for ten datasets.}%
