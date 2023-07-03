@@ -1,0 +1,13 @@
+strategy,,freq,freq,freq,beta,beta,beta
+technique,,Crowd-Certain,Tao,Sheng,Crowd-Certain,Tao,Sheng
+metric,n_labelers,,,,,,
+ece score,NL3,3.075,2.963,2.117,3.298,1.839,2.052
+ece score,NL4,2.871,2.001,2.249,3.034,2.571,1.945
+ece score,NL5,3.476,3.373,2.761,3.109,3.138,3.388
+ece score,NL6,3.618,2.454,1.844,2.866,3.27,2.588
+ece score,NL7,2.191,1.868,1.749,2.571,3.068,2.52
+brier score loss,NL3,0.73,0.428,0.414,0.485,0.385,0.4
+brier score loss,NL4,0.61,0.448,0.422,0.589,0.426,0.438
+brier score loss,NL5,0.732,0.479,0.438,0.697,0.51,0.486
+brier score loss,NL6,0.645,0.455,0.422,0.696,0.505,0.482
+brier score loss,NL7,0.676,0.411,0.386,0.768,0.451,0.386

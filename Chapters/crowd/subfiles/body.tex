@@ -382,110 +382,89 @@ Figure~\ref{fig:crowd.Fig.1.weight} depicts the relationship between the randoml
     \label{fig:crowd.Fig.1.weight}
 \end{figure}
 
-\subsection{Confidence Score}
-Figure~\ref{fig:crowd.Fig.2.confidence_scores} present a box plot of the average accuracy for different numbers of annotators, ranging from three to ten. It illustrates the average accuracy of the crowd-certain technique with penalization for both the ``freq” and ``Beta” confidence measurement approaches showing comparable accuracy.
-%
-Figure~\ref{fig:crowd.Fig.4.confidence_score.freq} displays the average accuracy using the ``freq’’ confidence measurement strategy for the proposed crowd-certain technique with and without penalization. The penalization method penalizes annotators for inaccurate labeling before measuring their weights, as demonstrated in Equation~(\ref{eq:crowd.eq.10.consistency-penalized}). The penalized version of the proposed technique shows an improvement in average accuracy and a reduction in variance.
+\subsection{Accuracy}
+
+% Figure~\ref{fig:crowd.Fig.6.accuracy.different.n.annotators} shows the average accuracy for the ``ionosphere'' dataset for various annotator counts (horizontal axis). As can be seen, the proposed strategies considerably improve accuracy while utilizing a small number of annotators. Furthermore, Figure~\ref{fig:crowd.Fig.7.accuracy.different.datasets} shows the average accuracy of the three annotators (the smallest number of annotators that could perform consensus voting) on all ten datasets. Similarly, for the ionosphere dataset, we observed a similar trend in achieving higher accuracy on nine of the ten datasets compared to all benchmarks. It is important to note that the ``freq'' confidence measurement strategy is used to report the proposed techniques, as well as the Tao and Sheng results. Furthermore, the measured average accuracy (using three annotators) over different datasets shows improvement for the proposed technique with and without penalization over all remaining benchmarks (Gold Majority Vote, MV, MMSR, Wawa, Zero-Based Skill, GLAD, Dawid Skene).
+% \begin{figure*}[!htbp]
+%     \centering
+%     \includegraphics[width=\textwidth]{\figurepath{image9.png}}
+%     \caption{Average accuracy for the ionosphere dataset for the proposed aggregation techniques with and without penalization as well as benchmark techniques for different numbers of annotators (horizontal axis). Darker blue represents a higher accuracy.}%
+%     \label{fig:crowd.Fig.6.accuracy.different.n.annotators}
+% \end{figure*}
+% %
+% \begin{figure*}[!htbp]
+%     \centering \includegraphics[width=\textwidth]{\figurepath{image10.png}}
+%     \caption{Average accuracy (when the number of annotators are three) for the proposed aggregation techniques with and without penalization as well as benchmark techniques for different datasets. Darker blue represents a higher accuracy.}%
+%     \label{fig:crowd.Fig.7.accuracy.different.datasets}
+% \end{figure*}
 
 \begin{figure*}[htbp]
 \centering
-\includegraphics[width=0.8\textwidth]{\figurepath{image2.png}}
-\caption{Boxplot of eight accuracies (each accuracy is measured for a different number of annotators (from 3 up to 10)) calculated using the proposed crowd-certain technique with penalization for ‘freq’ (blue) and ‘beta’ (yellow) confidence-score measurement strategies for ten datasets.}%
-\label{fig:crowd.Fig.2.confidence_scores}
+\includegraphics[width=0.9\textwidth]{\figurepath{figure_metrics_mean_over_seeds_per_dataset_per_worker_ACC/figure_metrics_mean_over_seeds_per_dataset_per_worker_ACC.pdf}}
+\caption{}%
+\label{fig:crowd.Fig.accuracy_per_worker_acc}
+\end{figure*}
+
+\begin{figure*}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{\figurepath{figure_metrics_all_datasets_workers/figure_metrics_all_datasets_workers.pdf}}
+\caption{}%
+\label{fig:crowd.Fig.accuracy_all_datasets_workers}
+\end{figure*}
+
+\subsection{Confidence Score}
+% Figure~\ref{fig:crowd.Fig.2.confidence_scores} present a box plot of the average accuracy for different numbers of annotators, ranging from three to ten. It illustrates the average accuracy of the crowd-certain technique with penalization for both the ``freq” and ``Beta” confidence measurement approaches showing comparable accuracy.
+% %
+% Figure~\ref{fig:crowd.Fig.4.confidence_score.freq} displays the average accuracy using the ``freq’’ confidence measurement strategy for the proposed crowd-certain technique with and without penalization. The penalization method penalizes annotators for inaccurate labeling before measuring their weights, as demonstrated in Equation~(\ref{eq:crowd.eq.10.consistency-penalized}). The penalized version of the proposed technique shows an improvement in average accuracy and a reduction in variance.
+
+\begin{figure*}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{\figurepath{heatmap_F_evals_all_datasets_NL3/heatmap_F_evals_all_datasets_NL3.pdf}}
+\caption{}%
+\label{fig:crowd.Fig.confidence_scores_all_datasets_3_workers}
 \end{figure*}
 %
 \begin{figure*}[htbp]
     \centering
-    \includegraphics[width=0.9\textwidth]{\figurepath{image4.png}}
-    \caption{Boxplot of eight accuracies (each accuracy is measured for a different number of annotators (from 3 up to 10)) calculated using the proposed crowd-certain technique with (yellow) and without (blue) penalization for `freq' confidence-score measurement for ten datasets.}%
-    \label{fig:crowd.Fig.4.confidence_score.freq}
+    \includegraphics[width=0.9\textwidth]{\figurepath{heatmap_F_evals_ionosphere_all_labelers/heatmap_F_evals_ionosphere_all_labelers.pdf}}
+    \caption{}%
+    \label{fig:crowd.Fig.confidence_score_ionosphere_all_workers}
 \end{figure*}
-Figure~\ref{fig:crowd.Fig.5.confidencescore-beta} shows the average accuracy distribution (``freq'' strategy) of the proposed penalized versus Tao and Sheng for a different number of annotators using the kernel density estimation technique. This demonstrates that the proposed technique outperforms both Tao and Sheng on nine of the ten datasets, with higher average accuracy and less fluctuation over different annotator counts. Table~\ref{tab:crowd.Table.2.crowdcertain_vs_Tao.freq}  shows the statistical data measured between the proposed penalized technique and Tao's method. As can be seen from these results, the proposed technique has a significant improvement for the seven datasets, while delivering similar results for the other three datasets.
-\begin{figure*}[!htbp]
-    \centering
-    \includegraphics[width=\textwidth]{\figurepath{image7.png}}
-    \caption{Measured accuracy distribution of the proposed-penalized aggregation technique uwMV-Freq, compared to wMV-Freq (Tao \unskip~\protect\cite{tao_Label_2020}), and MV-Freq (Sheng \unskip~\protect\cite{sheng_Majority_2019}) for different numbers of annotators, using the kernel density estimation technique}%
-    \label{fig:crowd.Fig.5.confidencescore-beta}
-\end{figure*}
-\begin{table}[]
-    \caption{{Statistical tests between the proposed-penalized technique and Tao\unskip~\protect\cite{tao_Label_2020} for the ``freq” confidence measurement strategy.} }
-    \resizebox{\textwidth}{!}{
-    % \scalebox{0.75}{
-        \begin{tabular}{lccclllccrc}
-        \hline
-        \textbf{\begin{tabular}[c]{@{}l@{}}Independent   \\ t-test\end{tabular}} &
-        \textbf{Diff} &
-        \textbf{\begin{tabular}[c]{@{}l@{}}Degrees of \\ freedom\end{tabular}} &
-        \textbf{t} &
-        \textbf{\begin{tabular}[c]{@{}l@{}}2-sided \\ p-value\end{tabular}} &
-        \textbf{\begin{tabular}[c]{@{}l@{}}Diff\textless{}0 \\ p-value\end{tabular}} &
-        \textbf{\begin{tabular}[c]{@{}l@{}}Diff\textgreater{}0 \\ p-value\end{tabular}} &
-        \textbf{Cohen d} &
-        \textbf{Hedge's g} &
-        \textbf{\begin{tabular}[c]{@{}l@{}}Glass's \\ delta\end{tabular}} &
-        \textbf{Pearson r} \\ \hline
-            Kr-vs-kp    & -0.044 & 12 & -6.171 & 0     & 0     & 1     & -3.299 & -3.088 & -2.743 & 0.872 \\
-            mushroom    & -0.012 & 12 & -2.781 & 0.017 & 0.008 & 0.992 & -1.487 & -1.392 & -1.076 & 0.626 \\
-            iris        & -0.012 & 12 & -0.506 & 0.622 & 0.311 & 0.689 & -0.271 & -0.253 & -0.226 & 0.145 \\
-            spambase    & -0.031 & 12 & -3.691 & 0.003 & 0.002 & 0.998 & -1.973 & -1.847 & -1.458 & 0.729 \\
-            tic-tac-toe & -0.036 & 12 & -4.612 & 0.001 & 0     & 1     & -2.466 & -2.308 & -2.156 & 0.8   \\
-            sick        & 0.002  & 12 & 0.294  & 0.774 & 0.613 & 0.387 & 0.157  & 0.147  & 0.112  & 0.085 \\
-            waveform    & -0.025 & 12 & -5.118 & 0     & 0     & 1     & -2.736 & -2.561 & -2.022 & 0.828 \\
-            car         & -0.008 & 12 & -0.779 & 0.451 & 0.226 & 0.774 & -0.416 & -0.39  & -0.309 & 0.219 \\
-            vote        & -0.033 & 12 & -5.352 & 0     & 0     & 1     & -2.861 & -2.678 & -2.112 & 0.84  \\
-            ionosphere  & -0.061 & 12 & -6.047 & 0     & 0     & 1     & -3.232 & -3.026 & -2.586 & 0.868 \\ \hline
-        \end{tabular}}%
-    \label{tab:crowd.Table.2.crowdcertain_vs_Tao.freq}
-\end{table}
-Figure~\ref{fig:crowd.Fig.6.accuracy} shows the average accuracy distribution (``Beta'' strategy) of the proposed-penalized method versus Tao and Sheng strategies for different numbers of annotators using kernel density estimation. This demonstrates that the proposed technique outperforms both Tao and Sheng on seven out of ten datasets, with higher average accuracy and less fluctuation over different annotator counts. Furthermore, Table~\ref{tab:crowd.Table.3.crowdcertain_vs_Tao.beta} shows the statistical data measured between the proposed penalized technique and Tao, showing a significant improvement in six datasets, while performing similarly in the remaining datasets.
-\begin{figure*}[!htbp]
-    \centering
-    \includegraphics[width=\textwidth]{\figurepath{image4.png}}
-    \caption{Kernel density estimate (KDE) plots of pseudo-accuracy metric measured for different numbers of annotators for the crowd-certain technique, Tao~\cite{tao_Label_2020}, and Sheng~\cite{sheng_Majority_2019}. The pseudo-accuracy is calculated by treating the confidence score (using ‘beta’ strategy) as the final determiner of whether to trust the aggregated label or not. A secondary aggregated label is set to equal to the aggregated label $\left( \nu^{(i,k)} \text{if} F_{\beta}^{(i,k)}>=0.5 \right)$ and $\left(1-\nu^{(i,k)}\right)$ otherwise. Finally a pseudo-accuracy is measured for this secondary aggregated label with respect to ground truth labels.}%
-    \label{fig:crowd.Fig.6.accuracy}
-\end{figure*}
-\begin{table}[]
-    \caption{Statistical tests between the proposed-penalized and Tao\unskip~\protect\cite{tao_Label_2020} technique for the ``Beta'' confidence measurement strategy.}
-    \resizebox{\textwidth}{!}{
-    \begin{tabular}{lccclllccrc}
-        \hline
-        \multicolumn{1}{c}{\textbf{\begin{tabular}[c]{@{}c@{}}Independent\\ t-test\end{tabular}}} &
-        \multicolumn{1}{c}{\textbf{Diff}} &
-        \multicolumn{1}{c}{\textbf{\begin{tabular}[c]{@{}c@{}}Degrees of \\ freedom\end{tabular}}} &
-        \multicolumn{1}{c}{\textbf{t}} &
-        \multicolumn{1}{c}{\textbf{\begin{tabular}[c]{@{}c@{}}2-sided\\ p-value\end{tabular}}} &
-        \multicolumn{1}{c}{\textbf{\begin{tabular}[c]{@{}c@{}}Diff \textless~0 \\ p-value\end{tabular}}} &
-        \multicolumn{1}{c}{\textbf{\begin{tabular}[c]{@{}c@{}}Diff \textgreater~0 \\ p-value\end{tabular}}} &
-        \multicolumn{1}{c}{\textbf{Cohen d}} &
-        \multicolumn{1}{c}{\textbf{Hedge's g}} &
-        \multicolumn{1}{c}{\textbf{Glass's delta}} &
-        \multicolumn{1}{c}{\textbf{Pearson r}} \\ \hline
-        kr-vs-kp    & -0.04  & 12 & -5.702 & 0     & 0     & 1     & -3.048 & -2.854 & -2.921 & 0.855 \\
-        mushroom    & -0.009 & 12 & -0.793 & 0.443 & 0.222 & 0.778 & -0.424 & -0.397 & -0.477 & 0.223 \\
-        iris        & -0.002 & 12 & -0.091 & 0.929 & 0.465 & 0.535 & -0.048 & -0.045 & -0.048 & 0.026 \\
-        spambase    & -0.03  & 12 & -3.547 & 0.004 & 0.002 & 0.998 & -1.896 & -1.775 & -1.421 & 0.715 \\
-        tic-tac-toe & -0.033 & 12 & -4.326 & 0.001 & 0     & 1     & -2.312 & -2.165 & -1.781 & 0.781 \\
-        sick        & 0.001  & 12 & 0.14   & 0.891 & 0.554 & 0.446 & 0.074  & 0.07   & 0.053  & 0.04  \\
-        waveform    & -0.023 & 12 & -2.672 & 0.02  & 0.01  & 0.99  & -1.428 & -1.337 & -1.442 & 0.611 \\
-        car         & -0.008 & 12 & -0.871 & 0.401 & 0.2   & 0.8   & -0.465 & -0.436 & -0.332 & 0.244 \\
-        vote        & -0.034 & 12 & -5.198 & 0     & 0     & 1     & -2.779 & -2.601 & -2.081 & 0.832 \\
-        ionosphere  & -0.052 & 12 & -3.875 & 0.002 & 0.001 & 0.999 & -2.071 & -1.939 & -1.742 & 0.746 \\ \hline
-    \end{tabular} }%
-    \label{tab:crowd.Table.3.crowdcertain_vs_Tao.beta}
-\end{table}
-Figure~\ref{fig:crowd.Fig.6.accuracy.different.n.annotators} shows the average accuracy for the ``ionosphere'' dataset for various annotator counts (horizontal axis). As can be seen, the proposed strategies considerably improve accuracy while utilizing a small number of annotators. Furthermore, Figure~\ref{fig:crowd.Fig.7.accuracy.different.datasets} shows the average accuracy of the three annotators (the smallest number of annotators that could perform consensus voting) on all ten datasets. Similarly, for the ionosphere dataset, we observed a similar trend in achieving higher accuracy on nine of the ten datasets compared to all benchmarks. It is important to note that the ``freq'' confidence measurement strategy is used to report the proposed techniques, as well as the Tao and Sheng results. Furthermore, the measured average accuracy (using three annotators) over different datasets shows improvement for the proposed technique with and without penalization over all remaining benchmarks (Gold Majority Vote, MV, MMSR, Wawa, Zero-Based Skill, GLAD, Dawid Skene).
-\begin{figure*}[!htbp]
-    \centering
-    \includegraphics[width=\textwidth]{\figurepath{image9.png}}
-    \caption{Average accuracy for the ionosphere dataset for the proposed aggregation techniques with and without penalization as well as benchmark techniques for different numbers of annotators (horizontal axis). Darker blue represents a higher accuracy.}%
-    \label{fig:crowd.Fig.6.accuracy.different.n.annotators}
-\end{figure*}
-%
-\begin{figure*}[!htbp]
-    \centering \includegraphics[width=\textwidth]{\figurepath{image10.png}}
-    \caption{Average accuracy (when the number of annotators are three) for the proposed aggregation techniques with and without penalization as well as benchmark techniques for different datasets. Darker blue represents a higher accuracy.}%
-    \label{fig:crowd.Fig.7.accuracy.different.datasets}
-\end{figure*}
+% Figure~\ref{fig:crowd.Fig.5.confidencescore-beta} shows the average accuracy distribution (``freq'' strategy) of the proposed penalized versus Tao and Sheng for a different number of annotators using the kernel density estimation technique. This demonstrates that the proposed technique outperforms both Tao and Sheng on nine of the ten datasets, with higher average accuracy and less fluctuation over different annotator counts. Table~\ref{tab:crowd.Table.2.crowdcertain_vs_Tao.freq}  shows the statistical data measured between the proposed penalized technique and Tao's method. As can be seen from these results, the proposed technique has a significant improvement for the seven datasets, while delivering similar results for the other three datasets.
+
+% \begin{table}[]
+%     \caption{{Statistical tests between the proposed-penalized technique and Tao\unskip~\protect\cite{tao_Label_2020} for the ``freq” confidence measurement strategy.} }
+%     \resizebox{\textwidth}{!}{
+%     % \scalebox{0.75}{
+%         \begin{tabular}{lccclllccrc}
+%         \hline
+%         \textbf{\begin{tabular}[c]{@{}l@{}}Independent   \\ t-test\end{tabular}} &
+%         \textbf{Diff} &
+%         \textbf{\begin{tabular}[c]{@{}l@{}}Degrees of \\ freedom\end{tabular}} &
+%         \textbf{t} &
+%         \textbf{\begin{tabular}[c]{@{}l@{}}2-sided \\ p-value\end{tabular}} &
+%         \textbf{\begin{tabular}[c]{@{}l@{}}Diff\textless{}0 \\ p-value\end{tabular}} &
+%         \textbf{\begin{tabular}[c]{@{}l@{}}Diff\textgreater{}0 \\ p-value\end{tabular}} &
+%         \textbf{Cohen d} &
+%         \textbf{Hedge's g} &
+%         \textbf{\begin{tabular}[c]{@{}l@{}}Glass's \\ delta\end{tabular}} &
+%         \textbf{Pearson r} \\ \hline
+%             Kr-vs-kp    & -0.044 & 12 & -6.171 & 0     & 0     & 1     & -3.299 & -3.088 & -2.743 & 0.872 \\
+%             mushroom    & -0.012 & 12 & -2.781 & 0.017 & 0.008 & 0.992 & -1.487 & -1.392 & -1.076 & 0.626 \\
+%             iris        & -0.012 & 12 & -0.506 & 0.622 & 0.311 & 0.689 & -0.271 & -0.253 & -0.226 & 0.145 \\
+%             spambase    & -0.031 & 12 & -3.691 & 0.003 & 0.002 & 0.998 & -1.973 & -1.847 & -1.458 & 0.729 \\
+%             tic-tac-toe & -0.036 & 12 & -4.612 & 0.001 & 0     & 1     & -2.466 & -2.308 & -2.156 & 0.8   \\
+%             sick        & 0.002  & 12 & 0.294  & 0.774 & 0.613 & 0.387 & 0.157  & 0.147  & 0.112  & 0.085 \\
+%             waveform    & -0.025 & 12 & -5.118 & 0     & 0     & 1     & -2.736 & -2.561 & -2.022 & 0.828 \\
+%             car         & -0.008 & 12 & -0.779 & 0.451 & 0.226 & 0.774 & -0.416 & -0.39  & -0.309 & 0.219 \\
+%             vote        & -0.033 & 12 & -5.352 & 0     & 0     & 1     & -2.861 & -2.678 & -2.112 & 0.84  \\
+%             ionosphere  & -0.061 & 12 & -6.047 & 0     & 0     & 1     & -3.232 & -3.026 & -2.586 & 0.868 \\ \hline
+%         \end{tabular}}%
+%     \label{tab:crowd.Table.2.crowdcertain_vs_Tao.freq}
+% \end{table}
+
+
+
 
 \section{Discussion}\label{sec:crowd.discussion}
 Label aggregation is a critical component of crowdsourcing and ensemble learning strategies. Many generic label aggregation algorithms fall short because they do not account for the varying reliability of the annotators. In response to this, we have developed a novel label aggregation method that calculates a reliability score for each annotator based on the annotator’s consistency versus a trained classifier. In the first approach (proposed techniques without penalization), we utilize uncertainty estimates to assign each annotator a more accurate weight, which correlates with their agreement with others and their consistency during labeling. In the second approach (proposed technique with penalization. Also noted as crowd-certain), we improve  on this technique by penalizing the annotator for their disagreements with other annotators (shown in Eq.~\ref{eq:crowd.eq.10.consistency-penalized} and hence mitigate the effect of annotators’ bias when calculating the final weights $\omega_{\alpha}^{(k)}$).
