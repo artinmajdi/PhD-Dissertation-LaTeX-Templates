@@ -282,6 +282,7 @@ where $\text{Precision} = \frac{\text{TP}}{\text{TP+FP}}$ and $\text{Recall} = \
 \text{ECE} = \sum_{b=1}^{B} \frac{|B_b|}{N} \left\vert{\text{Accuracy}(B_b) - \text{Confidence-Score}(B_b)}\right\vert
 \end{equation}
 where $B$ is the number of bins, $B_b$ is the set of instances in bin $b$, $N$ is the total number of instances, $\text{Accuracy}(B_b)$ is the accuracy of bin $b$, and $\text{Confidence-Score}(B_b)$ is the average confidence of bin $b$.
+%
 \end{itemize}
 
 \section{Results}\label{sec:crowd.results}
@@ -331,50 +332,33 @@ We generated multiple fictitious label sets for each dataset to simulate the cro
 Tao~\cite{tao_Label_2020} and Sheng~\cite{sheng_Majority_2019} techniques were implemented in Python to evaluate their performance. Furthermore, the crowd-kit package (A General-Purpose Crowdsourcing Computational Quality Control Toolkit for Python)~\cite{ustalov_learning_2021 } was used to implement the remaining benchmark techniques, including Gold Majority Voting, MMSR~\cite{ma_Adversarial_2020}, Wawa, Zero-Based Skill, GLAD~\cite{whitehill_Whose_2009}, and Dawid Skene~\cite{dawid_Maximum_1979}.
 %
 \begin{itemize}
-    \item \textbf{Golden majority voting} estimates the probability that each annotator possesses the correct label and then calculates the probability of each label per occurrence based on the weight assigned to each label. Assume that 10,000 jobs are performed by 3,000 annotators as well as 100 instances of ground truth. First, the percentage of correct labels for each annotator is calculated. The remaining labels are then estimated based on the weights.
     \item \textbf{Worker Agreement with Aggregate (WAWA)~\cite{crowdkit_wawa_2023}:} (Annotator Agreement with Aggregate), also referred to as ``inter-rater agreement'', is a commonly used statistic for non-testing problems. This indicates the average frequency with which each annotator's response matches the aggregate response for each instance.
+    %
     \item \textbf{Zero-Based-Skill (ZBS)} employs a weighted majority vote (WMV). After processing a collection of instances, it re-evaluates the abilities of the annotators based on the accuracy of their responses. This process is repeated until the labels no longer change or the maximum number of iterations is reached.
-    \item Descriptions of the other techniques can be found in their respective references.
-    \item \textbf{Karger-Oh-Shah (KOS):}
-        Iterative algorithm that calculates the log-likelihood of the task being positive while modeling
-        the reliabilities of the workers.
-
-        Let $A_{ij}$ be a matrix of answers of worker $j$ on task $i$.
-        $A_{ij} = 0$ if worker $j$ didn't answer the task $i$, otherwise $|A_{ij}| = 1$.
-        The algorithm operates on real-valued task messages $x_{i \rightarrow j}$  and
-        worker messages $y_{j \rightarrow i}$. A task message $x_{i \rightarrow j}$ represents
-        the log-likelihood of task $i$ being a positive task, and a worker message $y_{j \rightarrow i}$ represents
-        how reliable worker $j$ is.
-
-        On iteration $k$ the values are updated as follows:
-        \begin{equation}
+    %
+    \item \textbf{Karger-Oh-Shah (KOS):} Iterative algorithm that calculates the log-likelihood of the task being positive while modeling the reliabilities of the workers. Let $A_{ij}$ be a matrix of answers of worker $j$ on task $i$. $A_{ij} = 0$ if worker $j$ didn't answer the task $i$, otherwise $|A_{ij}| = 1$. The algorithm operates on real-valued task messages $x_{i \rightarrow j}$  and worker messages $y_{j \rightarrow i}$. A task message $x_{i \rightarrow j}$ represents the log-likelihood of task $i$ being a positive task, and a worker message $y_{j \rightarrow i}$ represents how reliable worker $j$ is. On iteration $k$ the values are updated as follows:
+    \begin{equation}
         x_{i \rightarrow j}^{(k)} = \sum_{j^{'} \in \partial i \backslash j} A_{ij^{'}} y_{j^{'} \rightarrow i}^{(k-1)} \\
         y_{j \rightarrow i}^{(k)} = \sum_{i^{'} \in \partial j \backslash i} A_{i^{'}j} x_{i^{'} \rightarrow j}^{(k-1)}
-        \end{equation}
-    \item \textbf{Multi-Annotator Competence Estimation (MACE)~\cite{hovy_MACE_2013}:}
-            Probabilistic model that associates each worker with a probability distribution over the labels. For each task, a worker might be in a spamming or not spamming state. If the worker is not spamming, they yield a correct label. If the worker is spamming, they answer according to their probability distribution. Let's assume that the correct label $T_i$ comes from a discrete uniform distribution. When a worker annotates the task, they are in the spamming state with probability $\operatorname{Bernoulli}(1 - \theta_w)$. So, if their state $s_w = 0$, their response $A_{iw} = T_i$. Otherwise, their response $A_{iw}$ is drawn from a multinomial distribution with parameters $\xi_w$.
-    \item \textbf{Matrix Mean-Subsequence-Reduced Algorithm (MMSR)~\cite{ma_Adversarial_2020}:}
-            The M-MSR assumes that workers have different level of expertise and associated            with a vector of ``skills'' $\boldsymbol{s}$ which entries $s_i$ show the probability of the worker $i$ to answer correctly to the given task. Having that, we can show that.
-            \begin{equation}
-                \mathbb{E}\left[\frac{M}{M-1}\widetilde{C}-\frac{1}{M-1}\boldsymbol{1}\boldsymbol{1}^T\right]
-                = \boldsymbol{s}\boldsymbol{s}^T,
-            \end{equation}
-            where $M$ is the total number of classes, $\widetilde{C}$ is a covariation matrix between
-            workers, and $\boldsymbol{1}\boldsymbol{1}^T$ is the all-ones matrix which has the same
-            size as $\widetilde{C}$.
-
-            So, the problem of recovering the skills vector $\boldsymbol{s}$ becomes equivalent to the
-            rank-one matrix completion problem. The M-MSR algorithm is an iterative algorithm for *rubust* rank-one matrix completion, so its result is an estimator of the vector $\boldsymbol{s}$.
-            Then, the aggregation is the weighted majority vote with weights equal to
-            $\log \frac{(M-1)s_i}{1-s_i}$.
+    \end{equation}
     %
-    \item \textbf{Generative model of Labels, Abilities, and Difficulties (GLAD)~\cite{whitehill_Whose_2009}:}
-    A probabilistic model that parametrizes workers' abilities and tasks' dificulties.
-    Let's consider a case of $K$ class classification. Let $p$ be a vector of prior class probabilities, $\alpha_i \in (-\infty, +\infty)$ be a worker's ability parameter, $\beta_j \in (0, +\infty)$ be an inverse task's difficulty, $z_j$ be a latent variable representing the true task's label, and $y^i_j$ be a worker's response that we observe. The relationships between this variables and parameters according to GLAD are represented by the following latent label model:
+    \item \textbf{Multi-Annotator Competence Estimation (MACE)~\cite{hovy_MACE_2013}:}
+    Probabilistic model that associates each worker with a probability distribution over the labels. For each task, a worker might be in a spamming or not spamming state. If the worker is not spamming, they yield a correct label. If the worker is spamming, they answer according to their probability distribution. Let's assume that the correct label $T_i$ comes from a discrete uniform distribution. When a worker annotates the task, they are in the spamming state with probability $\operatorname{Bernoulli}(1 - \theta_w)$. So, if their state $s_w = 0$, their response $A_{iw} = T_i$. Otherwise, their response $A_{iw}$ is drawn from a multinomial distribution with parameters $\xi_w$.
+    %
+    \item \textbf{Matrix Mean-Subsequence-Reduced Algorithm (MMSR)~\cite{ma_Adversarial_2020}:} The M-MSR assumes that workers have different level of expertise and associated with a vector of ``skills'' $\boldsymbol{s}$ which entries $s_i$ show the probability of the worker $i$ to answer correctly to the given task. Having that, we can show that.
+    \begin{equation}
+        \mathbb{E}\left[\frac{M}{M-1}\widetilde{C}-\frac{1}{M-1}\boldsymbol{1}\boldsymbol{1}^T\right]
+        = \boldsymbol{s}\boldsymbol{s}^T,
+    \end{equation}
+    where $M$ is the total number of classes, $\widetilde{C}$ is a covariation matrix between workers, and $\boldsymbol{1}\boldsymbol{1}^T$ is the all-ones matrix which has the same size as $\widetilde{C}$.
+
+    So, the problem of recovering the skills vector $\boldsymbol{s}$ becomes equivalent to the rank-one matrix completion problem. The M-MSR algorithm is an iterative algorithm for *rubust* rank-one matrix completion, so its result is an estimator of the vector $\boldsymbol{s}$. Then, the aggregation is the weighted majority vote with weights equal to $\log \frac{(M-1)s_i}{1-s_i}$.
+    %
+    \item \textbf{Generative model of Labels, Abilities, and Difficulties (GLAD)~\cite{whitehill_Whose_2009}:} A probabilistic model that parametrizes workers' abilities and tasks' dificulties. Let's consider a case of $K$ class classification. Let $p$ be a vector of prior class probabilities, $\alpha_i \in (-\infty, +\infty)$ be a worker's ability parameter, $\beta_j \in (0, +\infty)$ be an inverse task's difficulty, $z_j$ be a latent variable representing the true task's label, and $y^i_j$ be a worker's response that we observe. The relationships between this variables and parameters according to GLAD are represented by the following latent label model.
     The prior probability of $z_j$ being equal to $c$ is $\operatorname{Pr}(z_j = c) = p[c],$
     the probability distribution of the worker's responses conditioned by the true label value $c$ follows the single coin Dawid-Skene model where the true label probability is a sigmoid function of the product of worker's ability and inverse task's difficulty:
     \begin{equation}
-    \operatorname{Pr}(y^i_j = k | z_j = c) = \begin{cases}a(i, j), & k = c \\ \frac{1 - a(i,j)}{K-1}, & k \neq c\end{cases},
+        \operatorname{Pr}(y^i_j = k | z_j = c) = \begin{cases}a(i, j), & k = c \\ \frac{1 - a(i,j)}{K-1}, & k \neq c\end{cases},
     \end{equation}
     where $a(i,j) = \frac{1}{1 + \exp(-\alpha_i\beta_j)}.$
 
@@ -385,6 +369,8 @@ Tao~\cite{tao_Label_2020} and Sheng~\cite{sheng_Majority_2019} techniques were i
     Here the prior true label probability is $\operatorname{Pr}(z_j = c) = p[c]$ and the distribution on the worker's responses given the true label $c$ is represented by the
     corresponding column of the error matrix: $\operatorname{Pr}(y_j^w = k | z_j = c) = e^w[k, c]$
     Parameters $p$ and $e^w$ and latent variables $z$ are optimized through the Expectation-Maximization algorithm.
+    %
+    \item Descriptions of the other techniques can be found in their respective references.
 \end{itemize}
 
 \subsection{Weight Measurement}
