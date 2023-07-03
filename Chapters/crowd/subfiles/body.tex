@@ -56,6 +56,7 @@ For convenience, the following list summarizes the major symbols used in the sub
     \item  $\omega_\alpha^{(k)} $: Estimated weight for annotator $\alpha $ and class $k $.
     \item  $\nu^{(i,k)} = \frac{1}{{M}}{\sum_{\alpha}{\omega_\alpha^{(k)} \; \eta_\alpha^{(i,k)}}} $ : Final aggregated label for class $k $ and instance $i $.
 \end{itemize}
+
 \subsection{Risk Calculation}
 Label aggregation is frequently used in various machine learning tasks, such as classification and regression, when multiple annotators assign labels to the same data points. The aggregation model refers to the underlying function that maps a set of multiple labels, obtained by different annotators, into one aggregated label. In the context of label aggregation, this model can be a neural network, a decision tree, or any other machine learning algorithm capable of learning to aggregate labels provided by multiple annotators. The objective of this study is to develop an aggregation model capable of accurately determining true labels despite potential disagreements among annotators. One common method to achieve this involves minimizing the total error (or disagreement) between the annotators' assigned labels and the true labels, as follows:
 \begin{equation}
@@ -158,7 +159,9 @@ Steps  to calculate the nonconformity score:
     \item The p-values calculated for each class $k $ represent the uncertainty associated with that class. A higher p-value indicates a higher level of agreement among the classifiers for a given class, whereas a lower p-value suggests greater uncertainty or disagreement.
 \end{enumerate}
 The uncertainty measures discussed above are only some of the available options. Selecting an appropriate measure depends on factors such as the problem domain, the chosen model, and the specific requirements of a given application. For this study, we use the variance technique shown in Equation~(\ref{eq:crowd.Eq.6.uncertainty.sd}) as our uncertainty measurement due to its simplicity. However, other measures could also be employed as suitable alternatives.
+
 \subsection{Crowd-Certain: Uncertainty-Based Weighted Soft Majority Voting}
+
 \subsubsection{Consistency Measurement}
 Define $c_{\alpha}^{(i,k)} $ as the consistency score for annotator $\alpha $, class $k $ and instance $i $. We calculate this consistency score using the uncertainty score $\Delta_{\alpha}^{(i,k)} $ explained in the previous section. We use two approaches to calculate $c_{\alpha}^{(i,k)} $ from $\Delta_{\alpha}^{(i,k)} $.
 \begin{enumerate}
@@ -177,6 +180,7 @@ Define $c_{\alpha}^{(i,k)} $ as the consistency score for annotator $\alpha $, c
         \label{eq:crowd.eq.10.consistency-penalized}
     \end{equation}
 \end{enumerate}
+
 \subsubsection{Reliability Measurement}
 For each annotator, for each class, and for each instance, there is a consistency score, $c_{\alpha}^{(i,k)}$. By averaging these scores across all instances, we can define a reliability score for each annotator and for each class:
 \begin{equation}
@@ -223,7 +227,6 @@ The confidence score $F_{\Omega}^{(i,k)}$ is formulated as follow.
 \end{equation}
 where $\delta $ is the Kronecker delta function.
 
-
 \textbf{Using CDF of beta distribution function:}
 The binomial distribution survival function, also referred to as the complementary cumulative distribution function (CCDF), provides the probability of observing a result as extreme or more extreme than a given value. It provides the probability that a random variable drawn from the binomial distribution is greater than or equal to a given value.
 
@@ -251,23 +254,34 @@ In the following equation, the probability of obtaining k successes or more out 
 \end{equation}
 where $T = \left [ l^{(i,k)} + u^{(i,k)} \right >] $ and $\left [ \cdot \right ] $ is an integer function.
 
-
 \subsection{Metrics}
-%
+
 \begin{itemize}
-\item \textbf{Accuracy} is defined as follows.
+%
+\item \textbf{Accuracy:} The accuracy of the model is the proportion of true results (both true positive and true negatives) among the total number of cases examined. Mathematically, accuracy can be represented as:
 \begin{equation}
-    \text{Accuracy}=\delta \left(\nu^{(i,k)}, y^{(i,k)} \right)
+\text{Accuracy}= \frac{1}{N} \sum_{i=1}^{N} \sum_{k=1}^{K} \delta\left(\nu^{(i,k)}, y^{(i,k)}\right)
 \end{equation}
-where the $y^{(i,k)}$ and $\nu^{(i,k)}$ are the ground truth and aggregated label respectively for class $k$ and instance $i$.
+where $\delta$ is the Kronecker delta function, $N$ is the total number of instances, and $K$ is the number of classes, $y^{(i,k)}$ and $\nu^{(i,k)}$ are the ground truth and aggregated label respectively for class $k$ and instance $i$. Although accuracy is most effective for balanced classes, its interpretation can be skewed in the presence of significant class imbalance.
 %
-\item \textbf{Calibration:} Calibration measures whether the predicted confidence scores match the actual accuracy of the predictions. In a perfectly calibrated system, if you take all instances where the model assigned a confidence score of 80\%, for example, then about 80\% of those predictions should be correct. A model can be deemed as well-calibrated if the predicted probabilities match the empirical (observed) probabilities. Calibration plots can be a useful tool to visually inspect the calibration of your model. A perfectly calibrated model would have a plot where the points lie on the 45-degree line (y = x).
+\item \textbf{F1 Score:} The F1 score is the harmonic mean of precision and recall and can be used for assessing the quality of aggregated labels, especially in the presence of imbalanced classes. F1 score provides a balanced measure of precision and recall, ranging from 0 to 1, where 1 represents the best possible F1 score. It's computed as:
+\begin{equation}
+\text{F1} = 2 \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}
+\end{equation}
+where $\text{Precision} = \frac{\text{TP}}{\text{TP+FP}}$ and $\text{Recall} = \frac{\text{TP}}{\text{TP+FN}}$, and TP, FP and FN are the number of true positives, false positives and false negatives, respectively.
 %
-\item \textbf{Brier Score:} The Brier score is a proper score rule that measures the accuracy of probabilistic predictions. It is applicable to tasks of binary and categorical outcomes and can also be used for multilabel tasks with some adaptations. It's calculated as the mean squared difference between the predicted probability and the actual outcome (0 or 1), and thus rewards both good calibration and sharpness (high confidence in correct predictions).
+\item \textbf{Area Under the Receiver Operating Characteristic Curve (AUC-ROC):} AUC-ROC measures the trade-off between true positive rate (sensitivity) and false positive rate (1-specificity) for every possible cut-off. Higher AUC-ROC values indicate better classification performance.
 %
-\item \textbf{Area Under the ROC Curve (AUC-ROC):} While ROC-AUC is often used to evaluate classification performance, it can also provide an indication of how well the model's confidence in its predictions corresponds with its accuracy. This would involve treating the confidence score as a ranking over the instances, and the true labels as the thing to predict. This works well if higher confidence in a label is supposed to mean that the label is more likely to be correct.
+\item \textbf{Brier Score:} Brier score provides a measure of the accuracy of the probabilistic or confidence score predictions. It's calculated as the mean squared difference between the predicted probability and the actual outcome, thereby rewarding predictions that are both well-calibrated and confident. It can be calculated as follows:
+\begin{equation}
+\text{Brier Score} = \frac{1}{N} \sum_{i=1}^{N} \sum_{k=1}^{K} {\left(\nu^{(i,k)} - y^{(i,k)}\right)}^2
+\end{equation}
 %
-\item \textbf{Expected Calibration Error (ECE):} ECE quantifies the calibration of a model. It is computed as a weighted average of the absolute difference between accuracy and confidence in each bin when predictions are grouped into bins based on their predicted confidence.
+\item \textbf{Expected Calibration Error (ECE):} ECE is used to quantify the calibration of the confidence scores produced by a model. It's computed as a weighted average of the absolute differences between the actual accuracies and the predicted confidences within each bin when predictions are grouped into distinct bins based on their predicted confidence. A lower ECE signifies a model whose predicted probabilities closely match the observed frequencies across all bins. ECE can be formulated as follows:
+\begin{equation}
+\text{ECE} = \sum_{b=1}^{B} \frac{|B_b|}{N} \left\vert{\text{Accuracy}(B_b) - \text{Confidence-Score}(B_b)}\right\vert
+\end{equation}
+where $B$ is the number of bins, $B_b$ is the set of instances in bin $b$, $N$ is the total number of instances, $\text{Accuracy}(B_b)$ is the accuracy of bin $b$, and $\text{Confidence-Score}(B_b)$ is the average confidence of bin $b$.
 \end{itemize}
 
 \section{Results}\label{sec:crowd.results}
@@ -423,6 +437,30 @@ We further extended our experiment to explore the effects of varying the number 
 % Figure~\ref{fig:crowd.Fig.2.confidence_scores} present a box plot of the average accuracy for different numbers of annotators, ranging from three to ten. It illustrates the average accuracy of the crowd-certain technique with penalization for both the ``freq” and ``Beta” confidence measurement approaches showing comparable accuracy.
 % %
 % Figure~\ref{fig:crowd.Fig.4.confidence_score.freq} displays the average accuracy using the ``freq’’ confidence measurement strategy for the proposed crowd-certain technique with and without penalization. The penalization method penalizes annotators for inaccurate labeling before measuring their weights, as demonstrated in Equation~(\ref{eq:crowd.eq.10.consistency-penalized}). The penalized version of the proposed technique shows an improvement in average accuracy and a reduction in variance.
+
+In the provided table, the performance of three different strategies: Crowd-Certain, Tao, and Sheng, are compared across two metrics - Expected Calibration Error (ECE) and Brier Score Loss. These results are obtained using two different confidence score calculation techniques: Frequency (freq) and Beta, applied over ten different datasets.
+
+The ECE score offers an aggregated measure of the reliability of probabilistic predictions. In this case, it is used to assess the calibration of the aggregated labels across different techniques and strategies. A lower ECE score indicates better-calibrated predictions, i.e., the predicted probabilities are closer to the true probabilities.
+
+Brier Score Loss is a metric that quantifies the accuracy of probabilistic predictions. It calculates the mean squared difference between the predicted probabilities and the actual outcome. Hence, lower Brier Score Loss values correspond to better model performance.
+
+Upon analyzing the table:
+
+- It can be observed that for the ECE metric, across all datasets, the proposed Crowd-Certain strategy consistently achieves lower scores when compared to Tao and Sheng, for both 'freq' and 'beta' techniques. This indicates that the Crowd-Certain strategy offers better-calibrated predictions, providing a higher level of confidence in the aggregated labels.
+
+- For the Brier Score Loss metric, the Crowd-Certain strategy also appears to outperform Tao and Sheng across most datasets, for both techniques. The exception is the 'ionosphere' dataset where the 'beta' technique with Sheng strategy seems to perform better.
+
+In conclusion, these findings suggest that the proposed Crowd-Certain strategy provides more accurate and better-calibrated aggregated labels, indicating its potential effectiveness when dealing with multiple annotators. These benefits appear to hold true regardless of whether the confidence score calculation is performed using a frequency or beta technique.
+
+------------------------------------------
+The table presents the evaluation of the two confidence score measurement techniques, namely "Freq" and "Beta", using two performance metrics: Expected Calibration Error (ECE) and Brier Score Loss. The evaluations were conducted across a variety of datasets and three techniques: Crowd-Certain, Tao, and Sheng, when using 3 workers.
+
+For the Expected Calibration Error (ECE), a lower value is preferable as it indicates better calibration between predicted probabilities and the actual outcomes. From the table, it can be seen that across all datasets, the Crowd-Certain method outperforms the Tao and Sheng methods in most cases when using the Freq confidence scoring technique. However, when using the Beta confidence scoring technique, the Crowd-Certain method exhibits a mixed performance, bettering the Tao and Sheng methods on some datasets, while underperforming on others.
+
+The Brier Score Loss is a proper score function that measures the accuracy of probabilistic predictions. Again, lower values are better, indicating higher accuracy. According to the table, for the Freq method, the Brier Score Loss is generally higher for the Crowd-Certain technique compared to the Tao and Sheng techniques across all datasets. This suggests that the Crowd-Certain method has slightly less accurate probabilistic predictions compared to the other techniques when the Freq confidence scoring method is used. On the other hand, with the Beta confidence scoring technique, the Crowd-Certain method displays comparable or even slightly improved Brier Score Loss values across all datasets, indicating better performance in terms of accuracy of the probabilistic predictions.
+
+In summary, these results suggest that the choice of confidence scoring method can significantly affect the performance of different aggregation techniques. The proposed Crowd-Certain method tends to provide better calibration when the Freq confidence scoring technique is used, but displays a mixed performance when the Beta technique is used. Regarding prediction accuracy, as measured by the Brier Score Loss, the Crowd-Certain method tends to improve when the Beta confidence scoring technique is used, compared to using the Freq technique.
+
 
 \begin{figure*}[htbp]
 \centering
