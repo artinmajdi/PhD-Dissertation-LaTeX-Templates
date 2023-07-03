@@ -15,6 +15,7 @@ The MV technique assumes that all annotators are equally reliable. For segmentat
 Among the numerous existing label aggregation strategies, MV remains the most efficient and widely used approach~\cite{tao_Label_2020}. If we assume that all annotators are equally reliable and that their errors are independent of one another, then, according to the theory of large numbers, the likelihood that the MV is accurate increases as the number of annotators increases. However, the assumption that all annotators are equally competent and independent may not always hold. Furthermore, MV does not provide any additional information on the degree of disagreement among the annotators (As an example, consider the scenario where four of seven doctors think patient A needs immediate surgery, while all seven think patient B needs immediate surgery; MV will simply label ``yes'' in both cases).
 To address this problem, additional measures such as inter-annotator agreement (IAA) have been used~\cite{artstein_InterAnnotator_2017}. IAA is a measurement of the agreement among multiple annotators who label the same data instance. Typically, IAA is calculated using statistical measures, such as Cohen's kappa, Fleiss's kappa, or Krippendorff's alpha~\cite{krippendorff_Content_2018}. These measures consider both the observed agreement between the annotators and the expected agreement owing to random chance. IAA can also be visualized using a confusion matrix or annotation heatmap, which illustrates the distribution of labels assigned by the annotators. This can help identify instances where the annotators disagree or are uncertain and can guide further analysis to improve the annotation~\cite{carletta_Assessing_1996}.
 Recently, Sheng~\cite{sheng_Majority_2019} proposed a technique that provided a confidence score along with an aggregated label. The main problem with this approach is that it assumes that all annotators are equally capable when calculating the confidence score. Tao~\cite{tao_Label_2020} improved Sheng's approach by assigning different weights to annotators for each instance. This weighting method combines the specific quality $s_\alpha^{(i,k)} $ for the annotator $\alpha $ and instance $i $ and the overall quality $\tau_\alpha$ across all instances. Inspired by Li's technique~\cite{li_Incorporating_2018}, Tao evaluates the similarity between the annotator labels for each instance. To derive the specific quality $s_{\alpha}^{(i)}$, Tao counts the number of annotators who assigned the same label as the annotator $\alpha $ for that instance. To calculate the overall quality $\tau_\alpha $, Tao performs a 10-fold cross-validation to train each of the 10 classifiers on a different subset of data using the labels provided by the annotator $\alpha $ as true labels and then assigns the average accuracy of the classifiers across all remaining instances as $\tau_\alpha $. The final weight for annotator $\alpha $ and instance $i $ is then calculated using the sigmoid function $\gamma_{i,\alpha}=\tau_\alpha\left(1+{\left(s_{\alpha}^{(i)}\right)}^{2}\right) $. However, Tao's technique~\cite{tao_Label_2020} has some drawbacks. It relies on the labels of other annotators to estimate $s_{\alpha}^{(i)} $. However, different annotators have varying levels of competence (reliability) when labeling the data, and therefore, relying on their labels to measure $s_{\alpha}^{(i)} $ will result in propagating the errors and biases of their labels during weight estimation. Furthermore, Tao's technique~\cite{tao_Label_2020} relies on the labels provided by each annotator $\alpha $ to estimate their respective $\tau_\alpha $ by assuming that the trained classifiers can learn the inherent characteristics of the datasets even in the absence of ground truth labels. While that may be true in some cases, it typically leads to suboptimal measurement and the propagation of biases and errors, from both the annotator's labels and the classifier, into weight estimation.
+
 \section{Methods}\label{sec:crowd.method}
 We propose a novel method called ``crowd-certain'' which focuses on leveraging uncertainty measurements to improve decision-making in crowdsourcing and ensemble learning scenarios. Crowd-Certain employs a weighted soft majority voting approach, where the weights are determined based on the uncertainty associated with each annotator's labels. Initially, we use uncertainty measurement techniques to calculate the degree of consistency of each annotator during labeling. Furthermore, to ensure that the proposed technique does not calculate a high weight for annotators who are consistently wrong (for example, when a specific annotator always mislabels a specific class, and hence demonstrates a high consistency even if they label instances incorrectly), we extend the proposed technique by penalizing the annotators for instances in which they disagree with the aggregated label obtained using MV\@. To mitigate the reliance on training a classifier on an annotator's labels, which may be inaccurate, we train an ensemble of classifiers for each annotator. In addition, we report two confidence scores along with the aggregated label to provide additional context for each calculated aggregate label. We report a single weight for all instances in the dataset. As will be demonstrated in Section~\ref{sec:crowd.results}, the proposed crowd-certain method is not only comparable to other techniques in terms of accuracy of the aggregated labels with respect to the ground truth labels for scenarios with a large number of annotators, but also provides a significant improvement in accuracy for scenarios where the number of annotators may be limited. Furthermore, by assigning a single weight to each annotator for all instances in the dataset, the model can assign labels to new test instances without recalculating the annotator weights. This is especially advantageous in situations where annotators are scarce as it enables the model to make accurate predictions with minimal dependence on the annotator input. This characteristic of the crowd-certain method can significantly reduce the time and resources required for labeling in practical applications. When deploying the model in real-world scenarios such as medical diagnosis, fraud detection, or sentiment analysis, it could be advantageous to be able to assign labels to new instances without constantly recalculating annotator weights.
 \subsection{Glossary of Symbols}
@@ -78,7 +79,7 @@ Our goal is to choose an aggregation model $\widehat{h} $ that minimizes the ris
 \label{eq:crowd.Eq.3.risk.h}
 \end{equation}
 
-\subsection{Generating Annotators’  Label Sets from Ground Truth}
+\subsection{Generating Annotators' Label Sets from Ground Truth}\label{subsec:methods.generating_fictitious_labelset}
 In order to evaluate the proposed crowd-certain technique (with and without penalization) as well as other aggregation techniques, we create $M$ fictitious annotators. To synthesize a multi-annotator dataset from a dataset with existing ground truth, we use a uniform distribution in the interval from $0.4 $ to $1 $, i.e., $\pi_\alpha^{(k)} \sim U\left(0.4,1\right) $ (however other ranges can also be used) to obtain $M \times  K$ probability thresholds $\Pi $, where $K$ is the number of classes. (Note that
 an annotator may be skilled at labeling dogs, but not rabbits.) Then we use these probability thresholds to generate the crowd label set $Z_{\alpha}^{(i)} $ from the ground truth labels for each instance $i $.
 For each annotator $\alpha $, each instance $i $ and class $k $ in the dataset is assigned its true label with probability $\pi_\alpha^{(k)}$ and the opposite label with probability $ (1-\pi_\alpha^{(k)})$. To generate the labels for each annotator $\alpha $, a random number $0 < \rho^{(i)} < 1 $ is generated for each instance $i $ in the dataset. Then $\forall \alpha,k \; \; \text{if} \; \; \rho^{(i)}\leq \pi_\alpha^{(k)}$. Then the true label is used for that instance and class for the annotator $\alpha $; otherwise, the incorrect label is used.
@@ -198,7 +199,7 @@ Finally, the aggregated label $\nu^{(i,k)}$ for each instance $i $ and class $k 
 \begin{equation}
     \nu^{(i,k)} =
     \begin{cases}
-        1 & \text{if } \left(\sum_{\alpha=1}^{M} \omega_{\alpha}^{(k)}\, \eta_{\alpha}^{(i,k)}\right) \geq 0.5 \\
+        1 & \text{if } \left(\sum_{\alpha=1}^{M} \omega_{\alpha}^{(k)}\, \eta_{\alpha}^{(i,k)}\right) > 0.5 \\
         0 & \text{otherwise}
     \end{cases}
     \quad \forall i, k
@@ -248,7 +249,7 @@ In the following equation, the probability of obtaining k successes or more out 
     F_{\beta}^{(i,k)} =I_{0.5}\left(l^{(i,k)},u^{(i,k)}\right)=\sum_{t=[l^{(i,k)}]}^{T-1}\frac{(T-1)!}{t!(T-1-t)!}0.5^{T-1}
     \label{eq:crowd.Eq.15.confidence-score.beta}
 \end{equation}
-where $T = \left [ l^{(i,k)} + u^{(i,k)} \right ] $ and $\left [ \cdot \right ] $ is an integer function.
+where $T = \left [ l^{(i,k)} + u^{(i,k)} \right >] $ and $\left [ \cdot \right ] $ is an integer function.
 
 
 \subsection{Metrics}
@@ -272,7 +273,7 @@ where the $y^{(i,k)}$ and $\nu^{(i,k)}$ are the ground truth and aggregated labe
 \section{Results}\label{sec:crowd.results}
 To evaluate our proposed technique, we conducted a series of experiments comparing the proposed technique with several existing techniques such as MV, Tao~\cite{tao_Label_2020}, and Sheng~\cite{sheng_Majority_2019}, as well as with other crowdsourcing methodologies reported in the crowd-kit package~\cite{ustalov_learning_2021 } including Gold Majority Voting, MMSR~\cite{ma_Adversarial_2020}, Wawa, Zero-Based Skill, GLAD~\cite{whitehill_Whose_2009}, and Dawid Skene~\cite{dawid_Maximum_1979}.
 
-\subsection{Datasets}
+\subsection{Datasets}\label{subsec:results.datasets}
 We report the performance of our proposed techniques on various datasets. These datasets cover a wide range of domains and have varying characteristics in terms of the number of features, samples, and class distributions. Table~\ref{tab:crowd.Table.1.Datasets} provides an overview of the datasets used. All datasets are obtained from the University of California, Irvine (UCI) repository~\cite{duan_UCI_2017}.
 \begin{table}[!htbp]
 \centering
@@ -295,6 +296,7 @@ We report the performance of our proposed techniques on various datasets. These 
 \end{tabulary}%
 \label{tab:crowd.Table.1.Datasets}
 \end{table}
+%
 \begin{itemize}
     \item The \textbf{kr-vs-kp} dataset represents the King Rook-King Pawn on a7 in chess. The positive class indicates a victory for white (1,669 instances, or 52\%), while the negative class indicates a defeat for white (1,527 instances, 48\%).
     \item The \textbf{mushroom} dataset is based on the Audubon Society Field Guide for North American Mushrooms (1981) and includes 21 attributes related to mushroom characteristics such as cap shape, surface, odor, and ring type.
@@ -372,39 +374,44 @@ Tao~\cite{tao_Label_2020} and Sheng~\cite{sheng_Majority_2019} techniques were i
 \end{itemize}
 
 \subsection{Weight Measurement}
-After generating the multi-label sets, we employed both the proposed method and several existing methods to obtain the aggregated labels. We experimented with two approaches for classifier selection, as explained in Section~\ref{subsec:crowd.uncertainty}. We found no significant differences in the overall outcomes and thus chose the second approach, which utilizes the random forest classification technique, to save processing time and reduce the number of required Python package dependencies. Ten random forests, each with four trees and a maximum depth of four, were trained in different random states for each annotator $\alpha $, as detailed in Section~\ref{sec:crowd.method}.
+Following the generation of multi-label sets, the aggregate labels were determined using both the proposed approach and various established methods. We examined two strategies for classifier selection, as detailed in Section~\ref{subsec:crowd.uncertainty}. Despite there being no substantial variations in the final outcomes, the second strategy was adopted for its utilization of the random forest classification technique. This choice not only conserved processing time but also decreased the need for numerous Python package dependencies. For each annotator $\alpha $, we trained ten distinct random forests, each comprising four trees with a maximum depth of four, under various random states, as outlined in Section~\ref{sec:crowd.method}.
 
-Figure~\ref{fig:crowd.Fig.1.weight} depicts the relationship between the randomly assigned annotators' probability threshold ($\pi_\alpha^{(k)}$) and their corresponding estimated weights ($\omega_\alpha^{(k)}$). In the case of Tao's method, the figure displays the average weights across all instances. As seen, when the reliability (probability threshold) of an annotator surpasses a specific threshold, the weight measured by Tao's technique plateaus, whereas the proposed method exhibits a considerably stronger correlation. Individual data points represent the actual measured weights, and the curve represents the regression line.
-\begin{figure}[!htbp]
+Figure~\ref{fig:crowd.Fig.1.weight} depicts the relationship between the randomly assigned annotators' probability threshold ($\pi_\alpha^{(k)}$) and their corresponding estimated weights ($\omega_\alpha^{(k)}$). In Tao's method scenario, the figure presents the average weights over all instances. Notably, as the reliability (probability threshold) of an annotator exceeds a particular threshold, the weight computed by Tao's method reaches a saturation point, while the proposed technique exhibits a considerably stronger correlation. The individual data points symbolize the actual calculated weights, and the curve illustrates the regression line.
+%
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.9\textwidth]{\figurepath{lmplot_weight_strength_relation/lmplot_weight_strength_relation.pdf}}
-    \caption{Comparison of the estimated weight ($\omega_{\alpha}^{(k)}$) (vertical axis)  to the annotators' probability threshold ($\pi_\alpha^{(k)}$) (horizontal axis) for the proposed aggregation technique with penalization ``crowd-certain'' and Tao~\cite{tao_Label_2020} for 10 different datasets.}%
+    \caption{Comparison of weight computation techniques across ten different datasets. Each subplot corresponds to a unique dataset, illustrating the relationship between the randomly assigned annotator's probability threshold ($\pi_\alpha^{(k)}$) (horizontal axis) and the computed weights ($\omega_{\alpha}^{(k)}$) (vertical axis) for the proposed aggregation technique with penalization ``crowd-certain'' and Tao~\cite{tao_Label_2020}. The individual data points represent actual measured weights, while the curve stands for the regression line.}%
     \label{fig:crowd.Fig.1.weight}
 \end{figure}
 
 \subsection{Accuracy}
+The Figure~\ref{fig:crowd.accuracy_per_worker} portrays a thorough accuracy comparison of our novel label aggregation technique, termed ``Crowd-Certain'', against ten existing methods, evaluated over ten distinct datasets. Each dataset was labeled by three different workers, with labels generated based on a uniform distribution and specific probability thresholds $\Pi_\alpha$ as explained in Section~\ref{subsec:methods.generating_fictitious_labelset}.
 
-% Figure~\ref{fig:crowd.Fig.6.accuracy.different.n.annotators} shows the average accuracy for the ``ionosphere'' dataset for various annotator counts (horizontal axis). As can be seen, the proposed strategies considerably improve accuracy while utilizing a small number of annotators. Furthermore, Figure~\ref{fig:crowd.Fig.7.accuracy.different.datasets} shows the average accuracy of the three annotators (the smallest number of annotators that could perform consensus voting) on all ten datasets. Similarly, for the ionosphere dataset, we observed a similar trend in achieving higher accuracy on nine of the ten datasets compared to all benchmarks. It is important to note that the ``freq'' confidence measurement strategy is used to report the proposed techniques, as well as the Tao and Sheng results. Furthermore, the measured average accuracy (using three annotators) over different datasets shows improvement for the proposed technique with and without penalization over all remaining benchmarks (Gold Majority Vote, MV, MMSR, Wawa, Zero-Based Skill, GLAD, Dawid Skene).
-% \begin{figure*}[!htbp]
-%     \centering
-%     \includegraphics[width=\textwidth]{\figurepath{image9.png}}
-%     \caption{Average accuracy for the ionosphere dataset for the proposed aggregation techniques with and without penalization as well as benchmark techniques for different numbers of annotators (horizontal axis). Darker blue represents a higher accuracy.}%
-%     \label{fig:crowd.Fig.6.accuracy.different.n.annotators}
-% \end{figure*}
-% %
-% \begin{figure*}[!htbp]
-%     \centering \includegraphics[width=\textwidth]{\figurepath{image10.png}}
-%     \caption{Average accuracy (when the number of annotators are three) for the proposed aggregation techniques with and without penalization as well as benchmark techniques for different datasets. Darker blue represents a higher accuracy.}%
-%     \label{fig:crowd.Fig.7.accuracy.different.datasets}
-% \end{figure*}
+For a comprehensive evaluation, all experiments were repeated three times using different random seed numbers to account for randomness. The accuracy scores presented in the figure represent the average of these three runs and illustrate the degree of concordance between the aggregated label $\nu^{(i,k)}$ from each technique and the actual ground truth $y^{(i,k)}$.
 
+It is important to note that, in the execution of our proposed technique, ``Crowd-Certain'', the aggregated labels were derived through the application of the predicted probabilities, denoted as $\eta_{\alpha}^{(i,k)}$. This approach is significant as it enables the reuse of trained classifiers on future sample data, eliminating the need for recurrent simulation processes - a substantial advantage in terms of computational efficiency. Conversely, the methodologies of existing techniques necessitated the use of actual crowd labels $z_\alpha^{(i,k)}$ to determine the aggregated labels. For example, in case of Tao~\cite{tao_Label_2020} the aggregated labels were obtained using the equation~\ref{eq:crowd.Eq.12.aggregated-label_for_benchmarks}. These methods inherently involve re-running simulations for every new dataset, which could be computationally expensive and time-consuming.
+%
+\begin{equation}
+    \nu^{(i,k)} =
+    \begin{cases}
+        1 & \text{if } \left(\sum_{\alpha=1}^{M} \omega_{\alpha}^{(k)}\, z_{\alpha}^{(i,k)}\right) > 0.5 \\
+        0 & \text{otherwise}
+    \end{cases}
+    \quad \forall i, k
+    \label{eq:crowd.Eq.12.aggregated-label_for_benchmarks}
+\end{equation}
+%
+Across all ten datasets, it is clear that the "Crowd-Certain" method consistently outperforms the existing methods, yielding higher average accuracy rates. For example, in the 'kr-vs-kp' dataset, our proposed "Crowd-Certain" method achieved an average accuracy of approximately 0.923, significantly exceeding the highest-performing existing method that reached an accuracy of about 0.784. This trend holds true across other datasets as well, such as 'mushroom', 'spambase', and 'tic-tac-toe', where the "Crowd-Certain" method achieves superior average accuracies of around 0.980, 0.900, and 0.741, respectively. In contrast, the competing methods struggled to exceed an average accuracy of 0.771 in these datasets.
+%
 \begin{figure*}[htbp]
 \centering
 \includegraphics[width=0.9\textwidth]{\figurepath{figure_metrics_mean_over_seeds_per_dataset_per_worker_ACC/figure_metrics_mean_over_seeds_per_dataset_per_worker_ACC.pdf}}
-\caption{}%
-\label{fig:crowd.Fig.accuracy_per_worker_acc}
+\caption{Comparison of Accuracy Scores for Multiple Label Aggregation Techniques on Various Datasets. The figure displays the mean accuracy score obtained across three independent trials for the proposed method ("Crowd-Certain") and ten existing label aggregation techniques. The trials were conducted using three labelers (workers) per dataset. The aggregated labels for "Crowd-Certain" were derived using predicted probabilities, allowing for reuse of trained classifiers. In contrast, existing techniques used actual crowd labels, necessitating repeated simulations.}%
+\label{fig:crowd.accuracy_per_worker}
 \end{figure*}
 
+We further extended our experiment to explore the effects of varying the number of annotators, ranging from 3 up to 7. The results shown in Figure~\ref{fig:crowd.Fig.accuracy_all_datasets_workers}, are presented as a series of box plots, each illustrating the distribution of accuracy (1st column), F1 (2nd column), and AUC (3rd column) scores across the 10 datasets for a given number of annotators. These plots provide a clear visual summary of our technique's robust performance across various settings, including the median, quartiles, and potential outliers in the distribution of accuracies. Notably, our proposed "Crowd-Certain" technique consistently shows improvements over the 10 benchmark methods across all scenarios. This enhancement is evident irrespective of the number of annotators involved, further highlighting the robustness and adaptability of the "Crowd-Certain" approach.
 \begin{figure*}[htbp]
 \centering
 \includegraphics[width=0.9\textwidth]{\figurepath{figure_metrics_all_datasets_workers/figure_metrics_all_datasets_workers.pdf}}
@@ -462,9 +469,6 @@ Figure~\ref{fig:crowd.Fig.1.weight} depicts the relationship between the randoml
 %         \end{tabular}}%
 %     \label{tab:crowd.Table.2.crowdcertain_vs_Tao.freq}
 % \end{table}
-
-
-
 
 \section{Discussion}\label{sec:crowd.discussion}
 Label aggregation is a critical component of crowdsourcing and ensemble learning strategies. Many generic label aggregation algorithms fall short because they do not account for the varying reliability of the annotators. In response to this, we have developed a novel label aggregation method that calculates a reliability score for each annotator based on the annotator’s consistency versus a trained classifier. In the first approach (proposed techniques without penalization), we utilize uncertainty estimates to assign each annotator a more accurate weight, which correlates with their agreement with others and their consistency during labeling. In the second approach (proposed technique with penalization. Also noted as crowd-certain), we improve  on this technique by penalizing the annotator for their disagreements with other annotators (shown in Eq.~\ref{eq:crowd.eq.10.consistency-penalized} and hence mitigate the effect of annotators’ bias when calculating the final weights $\omega_{\alpha}^{(k)}$).
