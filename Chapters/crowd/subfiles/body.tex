@@ -316,7 +316,7 @@ We report the performance of our proposed techniques on various datasets. These 
     \item The \textbf{kr-vs-kp} dataset represents the King Rook-King Pawn on a7 in chess. The positive class indicates a victory for white (1,669 instances, or 52\%), while the negative class indicates a defeat for white (1,527 instances, 48\%).
     \item The \textbf{mushroom} dataset is based on the Audubon Society Field Guide for North American Mushrooms (1981) and includes 21 attributes related to mushroom characteristics such as cap shape, surface, odor, and ring type.
     \item The \textbf{Iris} Plants Dataset comprises three classes, each with 50 instances, representing different iris plant species. The dataset contains four numerical attributes in centimeters: sepal length, sepal width, petal length, and petal width.
-    \item The \textbf{Spambase} dataset consists of 57 attributes, each representing the frequency of a term appearing in an email, such as the ``address’’.
+    \item The \textbf{Spambase} dataset consists of 57 attributes, each representing the frequency of a term appearing in an email, such as the ``address''.
     \item The \textbf{tic-tac-toe} endgame dataset encodes all possible board configurations for the game, with ``x'' playing first. It contains attributes (X, O, and blank) corresponding to each of the nine tic-tac-toe squares.
     \item The \textbf{Sick} dataset includes thyroid disease records from the Garvan Institute and J. Ross Quinlan of the New South Wales Institute in Sydney, Australia. 3,772 instances with 30 attributes (seven continuous and 23 discrete) and 5.4\% missing data. Attributes include age, pregnancy, TSH, T3, TT4, etc.
     \item The \textbf{waveform} dataset generator comprises 41 attributes and three wave types, with each class consisting of two ``base'' waves.
@@ -373,19 +373,19 @@ Tao~\cite{tao_Label_2020} and Sheng~\cite{sheng_Majority_2019} techniques were i
     \item Descriptions of the other techniques can be found in their respective references.
 \end{itemize}
 
-\subsection{Weight Measurement}
+\subsection{Weight Measurement Evaluation}
 Following the generation of multi-label sets, the aggregate labels were determined using both the proposed approach and various established methods. We examined two strategies for classifier selection, as detailed in Section~\ref{subsec:crowd.uncertainty}. Despite there being no substantial variations in the final outcomes, the second strategy was adopted for its utilization of the random forest classification technique. This choice not only conserved processing time but also decreased the need for numerous Python package dependencies. For each annotator $\alpha $, we trained ten distinct random forests, each comprising four trees with a maximum depth of four, under various random states, as outlined in Section~\ref{sec:crowd.method}.
 
 Figure~\ref{fig:crowd.Fig.1.weight} depicts the relationship between the randomly assigned annotators' probability threshold ($\pi_\alpha^{(k)}$) and their corresponding estimated weights ($\omega_\alpha^{(k)}$). In Tao's method scenario, the figure presents the average weights over all instances. Notably, as the reliability (probability threshold) of an annotator exceeds a particular threshold, the weight computed by Tao's method reaches a saturation point, while the proposed technique exhibits a considerably stronger correlation. The individual data points symbolize the actual calculated weights, and the curve illustrates the regression line.
 %
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.9\textwidth]{\figurepath{lmplot_weight_strength_relation/lmplot_weight_strength_relation.pdf}}
+    \includegraphics[width=0.8\textwidth]{\figurepath{lmplot_weight_strength_relation/lmplot_weight_strength_relation.pdf}}
     \caption{Comparison of weight computation techniques across ten different datasets. Each subplot corresponds to a unique dataset, illustrating the relationship between the randomly assigned annotator's probability threshold ($\pi_\alpha^{(k)}$) (horizontal axis) and the computed weights ($\omega_{\alpha}^{(k)}$) (vertical axis) for the proposed aggregation technique with penalization ``crowd-certain'' and Tao~\cite{tao_Label_2020}. The individual data points represent actual measured weights, while the curve stands for the regression line.}%
     \label{fig:crowd.Fig.1.weight}
 \end{figure}
 
-\subsection{Accuracy}
+\subsection{Label Aggregation Evaluation}
 The Figure~\ref{fig:crowd.accuracy_per_worker} portrays a thorough accuracy comparison of our novel label aggregation technique, termed ``Crowd-Certain'', against ten existing methods, evaluated over ten distinct datasets. Each dataset was labeled by three different workers, with labels generated based on a uniform distribution and specific probability thresholds $\Pi_\alpha$ as explained in Section~\ref{subsec:methods.generating_fictitious_labelset}.
 
 For a comprehensive evaluation, all experiments were repeated three times using different random seed numbers to account for randomness. The accuracy scores presented in the figure represent the average of these three runs and illustrate the degree of concordance between the aggregated label $\nu^{(i,k)}$ from each technique and the actual ground truth $y^{(i,k)}$.
@@ -419,84 +419,64 @@ We further extended our experiment to explore the effects of varying the number 
 \label{fig:crowd.Fig.accuracy_all_datasets_workers}
 \end{figure*}
 
-\subsection{Confidence Score}
-% Figure~\ref{fig:crowd.Fig.2.confidence_scores} present a box plot of the average accuracy for different numbers of annotators, ranging from three to ten. It illustrates the average accuracy of the crowd-certain technique with penalization for both the ``freq” and ``Beta” confidence measurement approaches showing comparable accuracy.
-% %
-% Figure~\ref{fig:crowd.Fig.4.confidence_score.freq} displays the average accuracy using the ``freq’’ confidence measurement strategy for the proposed crowd-certain technique with and without penalization. The penalization method penalizes annotators for inaccurate labeling before measuring their weights, as demonstrated in Equation~(\ref{eq:crowd.eq.10.consistency-penalized}). The penalized version of the proposed technique shows an improvement in average accuracy and a reduction in variance.
+\subsection{Confidence Score Evaluation}
+The table presents the evaluation of the two confidence score measurement techniques, namely ``Freq'' and ``Beta'', using two performance metrics: Expected Calibration Error (ECE) and Brier Score Loss. The evaluations were conducted across a variety of datasets and three techniques: Crowd-Certain, Tao, and Sheng, when using 3 workers.
 
-In the provided table, the performance of three different strategies: Crowd-Certain, Tao, and Sheng, are compared across two metrics - Expected Calibration Error (ECE) and Brier Score Loss. These results are obtained using two different confidence score calculation techniques: Frequency (freq) and Beta, applied over ten different datasets.
-
-The ECE score offers an aggregated measure of the reliability of probabilistic predictions. In this case, it is used to assess the calibration of the aggregated labels across different techniques and strategies. A lower ECE score indicates better-calibrated predictions, i.e., the predicted probabilities are closer to the true probabilities.
-
-Brier Score Loss is a metric that quantifies the accuracy of probabilistic predictions. It calculates the mean squared difference between the predicted probabilities and the actual outcome. Hence, lower Brier Score Loss values correspond to better model performance.
-
-Upon analyzing the table:
-
-- It can be observed that for the ECE metric, across all datasets, the proposed Crowd-Certain strategy consistently achieves lower scores when compared to Tao and Sheng, for both 'freq' and 'beta' techniques. This indicates that the Crowd-Certain strategy offers better-calibrated predictions, providing a higher level of confidence in the aggregated labels.
-
-- For the Brier Score Loss metric, the Crowd-Certain strategy also appears to outperform Tao and Sheng across most datasets, for both techniques. The exception is the 'ionosphere' dataset where the 'beta' technique with Sheng strategy seems to perform better.
-
-In conclusion, these findings suggest that the proposed Crowd-Certain strategy provides more accurate and better-calibrated aggregated labels, indicating its potential effectiveness when dealing with multiple annotators. These benefits appear to hold true regardless of whether the confidence score calculation is performed using a frequency or beta technique.
-
-------------------------------------------
-The table presents the evaluation of the two confidence score measurement techniques, namely "Freq" and "Beta", using two performance metrics: Expected Calibration Error (ECE) and Brier Score Loss. The evaluations were conducted across a variety of datasets and three techniques: Crowd-Certain, Tao, and Sheng, when using 3 workers.
-
-For the Expected Calibration Error (ECE), a lower value is preferable as it indicates better calibration between predicted probabilities and the actual outcomes. From the table, it can be seen that across all datasets, the Crowd-Certain method outperforms the Tao and Sheng methods in most cases when using the Freq confidence scoring technique. However, when using the Beta confidence scoring technique, the Crowd-Certain method exhibits a mixed performance, bettering the Tao and Sheng methods on some datasets, while underperforming on others.
-
-The Brier Score Loss is a proper score function that measures the accuracy of probabilistic predictions. Again, lower values are better, indicating higher accuracy. According to the table, for the Freq method, the Brier Score Loss is generally higher for the Crowd-Certain technique compared to the Tao and Sheng techniques across all datasets. This suggests that the Crowd-Certain method has slightly less accurate probabilistic predictions compared to the other techniques when the Freq confidence scoring method is used. On the other hand, with the Beta confidence scoring technique, the Crowd-Certain method displays comparable or even slightly improved Brier Score Loss values across all datasets, indicating better performance in terms of accuracy of the probabilistic predictions.
-
-In summary, these results suggest that the choice of confidence scoring method can significantly affect the performance of different aggregation techniques. The proposed Crowd-Certain method tends to provide better calibration when the Freq confidence scoring technique is used, but displays a mixed performance when the Beta technique is used. Regarding prediction accuracy, as measured by the Brier Score Loss, the Crowd-Certain method tends to improve when the Beta confidence scoring technique is used, compared to using the Freq technique.
-
-
-\begin{figure*}[htbp]
-\centering
-\includegraphics[width=0.9\textwidth]{\figurepath{heatmap_F_evals_all_datasets_NL3/heatmap_F_evals_all_datasets_NL3.pdf}}
-\caption{}%
-\label{fig:crowd.Fig.confidence_scores_all_datasets_3_workers}
-\end{figure*}
-%
+Figure~\ref{fig:crowd.Fig.confidence_scores_all_datasets_3_workers} depicts the performance of three different strategies: Crowd-Certain, Tao, and Sheng, compared across two metrics - Expected Calibration Error (ECE) and Brier Score Loss. These results are obtained using two different confidence score calculation techniques ``Freq'' and ``Beta'', applied over ten different datasets when having three annotators. The ECE score offers an aggregated measure of the reliability of probabilistic predictions. In this case, it is used to assess the calibration of the aggregated labels across different techniques and strategies. A lower ECE score indicates better-calibrated predictions, i.e., the predicted probabilities are closer to the true probabilities. Brier Score Loss is a metric that quantifies the accuracy of probabilistic predictions.
+It calculates the mean squared difference between the predicted probabilities and the actual outcome. Hence, lower Brier Score Loss values correspond to better model performance. In the Figure~\ref{fig:crowd.Fig.confidence_scores_all_datasets_3_workers}, it can be observed that for the ECE metric, across all datasets, the proposed Crowd-Certain strategy consistently achieves lower scores when compared to Tao and Sheng, for both ``Freq'' and ``Beta'' techniques. This indicates that the Crowd-Certain strategy offers better-calibrated predictions, providing a higher level of confidence in the aggregated labels. For the Brier Score Loss metric, the Crowd-Certain strategy also appears to outperform Tao and Sheng across most datasets, for both techniques..
 \begin{figure*}[htbp]
     \centering
-    \includegraphics[width=0.9\textwidth]{\figurepath{heatmap_F_evals_ionosphere_all_labelers/heatmap_F_evals_ionosphere_all_labelers.pdf}}
-    \caption{}%
-    \label{fig:crowd.Fig.confidence_score_ionosphere_all_workers}
+    \includegraphics[width=0.9\textwidth]{\figurepath{heatmap_F_evals_all_datasets_NL3/heatmap_F_evals_all_datasets_NL3.pdf}}
+    \caption{Comparison of Expected Calibration Error (ECE) and Brier Score Loss for two confidence score measurement strategies (``Freq'' and ``Beta'') across three different techniques (Crowd-Certain, Tao, and Sheng). Results are shown for ten different datasets for 3 workers (NL3). The metrics reflect the calibration and sharpness of the predictions under different configurations.}%
+    \label{fig:crowd.Fig.confidence_scores_all_datasets_3_workers}
 \end{figure*}
-% Figure~\ref{fig:crowd.Fig.5.confidencescore-beta} shows the average accuracy distribution (``freq'' strategy) of the proposed penalized versus Tao and Sheng for a different number of annotators using the kernel density estimation technique. This demonstrates that the proposed technique outperforms both Tao and Sheng on nine of the ten datasets, with higher average accuracy and less fluctuation over different annotator counts. Table~\ref{tab:crowd.Table.2.crowdcertain_vs_Tao.freq}  shows the statistical data measured between the proposed penalized technique and Tao's method. As can be seen from these results, the proposed technique has a significant improvement for the seven datasets, while delivering similar results for the other three datasets.
+%
+The Figure~\ref{fig:crowd.Fig.confidence_score_one_datasets_all_workers} showcases the results for two metrics, Expected Calibration Error (ECE) and Brier Score Loss, for two confidence measurement techniques - ``Freq'' and ``Beta'' strategies, applied using three different techniques: Crowd-Certain, Tao, and Sheng. These results are obtained for the kr-vs-kp dataset under different numbers of labelers from 3 (denoted with NL3) up to (denoted with NL7).
 
-% \begin{table}[]
-%     \caption{{Statistical tests between the proposed-penalized technique and Tao\unskip~\protect\cite{tao_Label_2020} for the ``freq” confidence measurement strategy.} }
-%     \resizebox{\textwidth}{!}{
-%     % \scalebox{0.75}{
-%         \begin{tabular}{lccclllccrc}
-%         \hline
-%         \textbf{\begin{tabular}[c]{@{}l@{}}Independent   \\ t-test\end{tabular}} &
-%         \textbf{Diff} &
-%         \textbf{\begin{tabular}[c]{@{}l@{}}Degrees of \\ freedom\end{tabular}} &
-%         \textbf{t} &
-%         \textbf{\begin{tabular}[c]{@{}l@{}}2-sided \\ p-value\end{tabular}} &
-%         \textbf{\begin{tabular}[c]{@{}l@{}}Diff\textless{}0 \\ p-value\end{tabular}} &
-%         \textbf{\begin{tabular}[c]{@{}l@{}}Diff\textgreater{}0 \\ p-value\end{tabular}} &
-%         \textbf{Cohen d} &
-%         \textbf{Hedge's g} &
-%         \textbf{\begin{tabular}[c]{@{}l@{}}Glass's \\ delta\end{tabular}} &
-%         \textbf{Pearson r} \\ \hline
-%             Kr-vs-kp    & -0.044 & 12 & -6.171 & 0     & 0     & 1     & -3.299 & -3.088 & -2.743 & 0.872 \\
-%             mushroom    & -0.012 & 12 & -2.781 & 0.017 & 0.008 & 0.992 & -1.487 & -1.392 & -1.076 & 0.626 \\
-%             iris        & -0.012 & 12 & -0.506 & 0.622 & 0.311 & 0.689 & -0.271 & -0.253 & -0.226 & 0.145 \\
-%             spambase    & -0.031 & 12 & -3.691 & 0.003 & 0.002 & 0.998 & -1.973 & -1.847 & -1.458 & 0.729 \\
-%             tic-tac-toe & -0.036 & 12 & -4.612 & 0.001 & 0     & 1     & -2.466 & -2.308 & -2.156 & 0.8   \\
-%             sick        & 0.002  & 12 & 0.294  & 0.774 & 0.613 & 0.387 & 0.157  & 0.147  & 0.112  & 0.085 \\
-%             waveform    & -0.025 & 12 & -5.118 & 0     & 0     & 1     & -2.736 & -2.561 & -2.022 & 0.828 \\
-%             car         & -0.008 & 12 & -0.779 & 0.451 & 0.226 & 0.774 & -0.416 & -0.39  & -0.309 & 0.219 \\
-%             vote        & -0.033 & 12 & -5.352 & 0     & 0     & 1     & -2.861 & -2.678 & -2.112 & 0.84  \\
-%             ionosphere  & -0.061 & 12 & -6.047 & 0     & 0     & 1     & -3.232 & -3.026 & -2.586 & 0.868 \\ \hline
-%         \end{tabular}}%
-%     \label{tab:crowd.Table.2.crowdcertain_vs_Tao.freq}
-% \end{table}
+In general, the ECE and Brier Score Loss both increase as the number of labelers increases, which suggests that increasing the number of labelers does not necessarily improve the performance. The performance varies depending on the confidence measurement technique and the strategy used.
+
+For the ``Freq'' strategy, the Crowd-Certain technique consistently yields lower ECE and Brier Score across different numbers of labelers compared to the Tao and Sheng techniques, indicating better calibration and sharper predictions. For the beta strategy, the performance varies between techniques. The Tao technique generally results in higher ECE and Brier Score Loss, indicating worse calibration and sharper predictions, whereas the Crowd-Certain and Sheng techniques show varying performance depending on the number of labelers.
+
+For the Brier Score Loss, the ``Freq'' strategy combined with the Crowd-Certain technique tends to perform better across all numbers of labelers compared to other combinations of techniques and strategies. For the ECE, the beta strategy combined with the Crowd-Certain technique yields the lowest values for three and four labelers, indicating a good match between predicted confidences and observed frequencies. However, the ECE tends to increase as the number of labelers increases, indicating a decline in calibration.
+
+Overall, these results suggest that the choice of the confidence measurement technique and the strategy has significant impacts on the calibration and sharpness of the predictions. Further investigations could be beneficial to understand the specific conditions under which certain techniques and strategies yield superior performance.
+\begin{figure*}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{\figurepath{heatmap_F_evals_kr-vs-kp_all_labelers/heatmap_F_evals_kr-vs-kp_all_labelers.pdf}}
+    \caption{Comparison of Expected Calibration Error (ECE) and Brier Score Loss for two confidence score measurement strategies (``Freq'' and ``Beta'') across three different techniques (Crowd-Certain, Tao, and Sheng). Results are shown for varying numbers of labelers (NL3 to NL7) on the kr-vs-kp dataset. The metrics reflect the calibration and sharpness of the predictions under different configurations.}%
+    \label{fig:crowd.Fig.confidence_score_one_datasets_all_workers}
+\end{figure*}
 
 \section{Discussion}\label{sec:crowd.discussion}
-Label aggregation is a critical component of crowdsourcing and ensemble learning strategies. Many generic label aggregation algorithms fall short because they do not account for the varying reliability of the annotators. In response to this, we have developed a novel label aggregation method that calculates a reliability score for each annotator based on the annotator’s consistency versus a trained classifier. In the first approach (proposed techniques without penalization), we utilize uncertainty estimates to assign each annotator a more accurate weight, which correlates with their agreement with others and their consistency during labeling. In the second approach (proposed technique with penalization. Also noted as crowd-certain), we improve  on this technique by penalizing the annotator for their disagreements with other annotators (shown in Eq.~\ref{eq:crowd.eq.10.consistency-penalized} and hence mitigate the effect of annotators’ bias when calculating the final weights $\omega_{\alpha}^{(k)}$).
-The first part (calculating weights based on annotator’s consistency) of the proposed crowd-certain algorithm (the proposed technique with penalization) is essential because non-expert annotators often exhibit more irregular consistency during labeling than experts, as they are not well trained to identify specific features. This (utilizing consistency when assigning weights to each annotator) helps to differentiate expert and non-expert annotators. The goal of the second part (penalty for voting against the majority) of the algorithm is to prevent the algorithm from assigning disproportionately high weights to annotators who are consistently incorrect. For example, if annotators consistently mislabel a specific bird species, the second part penalizes them for their error, despite their consistency.
+
+% In this work, we introduced a new method for crowd labeling aggregation termed as "crowd-certain". This technique effectively leverages uncertainty measurements to refine the aggregation of labels obtained from multiple annotators. Through an extensive comparative analysis, it was shown to yield higher accuracy in label aggregation against ground truth, particularly in settings where only a limited number of annotators are available. This advantage over established methods such as Gold Majority Vote, MV, MMSR, Wawa, Zero-Based Skill, GLAD, and Dawid Skene demonstrates the potential of the proposed method in enhancing the reliability of label aggregation in crowdsourcing and ensemble learning applications.
+
+% Our approach is distinguished by its application of a weighted soft majority voting scheme, where the weights are determined based on the level of uncertainty associated with each annotator's labels. Importantly, the proposed technique takes into account the possibility of consistently inaccurate annotators and includes measures to penalize them, thus ensuring the credibility of the computed weights. The employment of an ensemble of classifiers for each annotator further bolsters the robustness of the technique.
+
+% Moreover, the crowd-certain technique demonstrates an appreciable capability to generate confidence scores that accompany each aggregated label, offering an extended context that can be invaluable in practical applications. The calculated weights follow a pre-set ground-truth accuracy closely, highlighting the effectiveness of the technique in capturing the quality of annotators' labels.
+
+% The weight measurement evaluation using two different strategies indicated a slight preference for the second strategy due to its lower computational requirements and reduced dependencies on Python packages. The visualization of the relationship between an annotator's probability threshold and their assigned weight indicated that our proposed method manifests a stronger correlation than Tao's method, further validating its efficacy.
+
+% Significantly, our technique introduces an advantageous property by assigning a single weight to each annotator for all instances in the dataset. This implies that the model can label new instances without having to recalculate annotator weights each time. In practical applications, where annotators may be scarce or where continuous recalculation may not be feasible, this is of substantial benefit.
+
+% Our results show that the crowd-certain method offers not only comparable performance to other techniques in scenarios with a larger number of annotators but also a noteworthy improvement in accuracy where annotator numbers may be limited. This supports the scalability and practical applicability of our technique in diverse contexts.
+
+% In summary, our proposed crowd-certain method presents a significant advancement in label aggregation techniques for crowdsourcing and ensemble learning applications. It offers enhanced accuracy, flexibility, and efficiency, thus holding considerable potential for adoption in a range of real-world scenarios. Future work may seek to refine the technique further and to explore its applications in more complex or larger-scale datasets.
+
+% In this study, we evaluated various techniques for aggregating crowd-sourced labels and measuring the confidence scores associated with these labels. This evaluation involved two key metrics: Expected Calibration Error (ECE) and Brier Score Loss, as well as three additional metrics: accuracy, AUC, and F1 score. These metrics assessed different facets of model performance: calibration and sharpness of the confidence scores, and the performance of the aggregated labels against the ground truth.
+
+% Our results indicate that the choice of aggregation and confidence measurement technique can significantly impact the performance. Specifically, the Crowd-Certain technique consistently performed well when combined with the frequentist strategy, yielding lower ECE and Brier Score Loss across different numbers of labelers. This suggests that the Crowd-Certain technique can effectively aggregate crowd-sourced labels and produce well-calibrated and sharp confidence scores when applied using the frequentist strategy.
+
+% We also noted that increasing the number of labelers does not necessarily improve the performance, as indicated by the general increase in ECE and Brier Score Loss with a higher number of labelers. This suggests a trade-off between the number of labelers and the performance, and that the optimal number may depend on the specific context and the chosen techniques.
+
+% We implemented additional performance metrics (accuracy, AUC, and F1 score) to evaluate the quality of the aggregated labels in comparison to the ground truth. It's crucial to note that while these metrics are not directly related to the confidence scores, they provide essential insights into the effectiveness of the aggregation process.
+
+% Future work could delve deeper into understanding why certain techniques and strategies outperform others under specific conditions. Further investigations could explore the effects of other factors such as the complexity of the task and the diversity of the crowd, which may impact the performance of different techniques and strategies.
+
+% In conclusion, the choice of aggregation and confidence measurement technique plays a significant role in effectively leveraging crowd-sourced labels. Our findings could guide future research and applications in this domain, with potential implications for various fields that rely on crowd-sourced data, including machine learning, data science, and citizen science.
+
+Label aggregation is a critical component of crowdsourcing and ensemble learning strategies. Many generic label aggregation algorithms fall short because they do not account for the varying reliability of the annotators. In response to this, we have developed a novel label aggregation method that calculates a reliability score for each annotator based on the annotator's consistency versus a trained classifier. In the first approach (proposed techniques without penalization), we utilize uncertainty estimates to assign each annotator a more accurate weight, which correlates with their agreement with others and their consistency during labeling. In the second approach (proposed technique with penalization. Also noted as crowd-certain), we improve  on this technique by penalizing the annotator for their disagreements with other annotators (shown in Eq.~\ref{eq:crowd.eq.10.consistency-penalized} and hence mitigate the effect of annotator's bias when calculating the final weights $\omega_{\alpha}^{(k)}$).
+The first part (calculating weights based on annotator's consistency) of the proposed crowd-certain algorithm (the proposed technique with penalization) is essential because non-expert annotators often exhibit more irregular consistency during labeling than experts, as they are not well trained to identify specific features. This (utilizing consistency when assigning weights to each annotator) helps to differentiate expert and non-expert annotators. The goal of the second part (penalty for voting against the majority) of the algorithm is to prevent the algorithm from assigning disproportionately high weights to annotators who are consistently incorrect. For example, if annotators consistently mislabel a specific bird species, the second part penalizes them for their error, despite their consistency.
 Furthermore, our method reports a single weight for the entire dataset instead of individual weights for each instance. This enables the reuse of calculated weights for future unlabeled test samples without needing to reacquire labels or retrain classifiers each time new data need labeling. While we have not assessed our method in multi-label scenarios, the proposed techniques are anticipated to perform comparably on multi-label datasets, considering that all steps of the proposed approach involve per-class calculations. Experiments conducted on various crowdsourcing datasets demonstrate that our proposed methods outperform existing techniques in terms of accuracy and variance, especially when there are few annotators available.
 
 \section{Availability of Data and Materials}
