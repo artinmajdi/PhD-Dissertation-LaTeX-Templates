@@ -381,10 +381,10 @@ Following the generation of multi-label sets, the aggregate labels were determin
 Figure~\ref{fig:crowd.Fig.1.weight} depicts the relationship between the randomly assigned annotators' probability threshold ($\pi_\alpha^{(k)}$) and their corresponding estimated weights ($\omega_\alpha^{(k)}$). In Tao's method scenario, the figure presents the average weights over all instances. Notably, as the reliability (probability threshold) of an annotator exceeds a particular threshold, the weight computed by Tao's method reaches a saturation point, while the proposed technique exhibits a considerably stronger correlation. The individual data points symbolize the actual calculated weights, and the curve illustrates the regression line.
 %
 \begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.8\textwidth]{\figurepath{lmplot_weight_strength_relation/lmplot_weight_strength_relation.pdf}}
-    \caption{Comparison of weight computation techniques across ten different datasets. Each subplot corresponds to a unique dataset, illustrating the relationship between the randomly assigned annotator's probability threshold ($\pi_\alpha^{(k)}$) (horizontal axis) and the computed weights ($\omega_{\alpha}^{(k)}$) (vertical axis) for the proposed aggregation technique with penalization Crowd-Certain and Tao~\cite{tao_Label_2020}. The individual data points represent actual measured weights, while the curve stands for the regression line.}%
-    \label{fig:crowd.Fig.1.weight}
+\centering
+\includegraphics[width=0.8\textwidth]{\figurepath{lmplot_weight_strength_relation/lmplot_weight_strength_relation.pdf}}
+\caption{Comparison of weight computation techniques across ten different datasets. Each subplot corresponds to a unique dataset, illustrating the relationship between the randomly assigned annotator's probability threshold ($\pi_\alpha^{(k)}$) (horizontal axis) and the computed weights ($\omega_{\alpha}^{(k)}$) (vertical axis) for the proposed aggregation technique with penalization Crowd-Certain and Tao~\cite{tao_Label_2020}. The individual data points represent actual measured weights, while the curve stands for the regression line.}%
+\label{fig:crowd.Fig.1.weight}
 \end{figure}
 
 \subsection{Label Aggregation Evaluation}
