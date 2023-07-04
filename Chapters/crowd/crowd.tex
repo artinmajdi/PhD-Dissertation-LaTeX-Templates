@@ -20,13 +20,13 @@
 %% to compile with pdflatex/xelatex use pdflatex option %%
 %%======================================================%%
 
-\documentclass[pdflatex,bst/sn-basic]{bst/sn-jnl}% Basic Springer Nature Reference Style/Chemistry Reference Style
+% \documentclass[pdflatex,bst/sn-basic]{bst/sn-jnl}% Basic Springer Nature Reference Style/Chemistry Reference Style
 
 
 %%Note: the following reference styles support Namedate and Numbered referencing. By default the style follows the most common style. To switch between the options you can add or remove Numbered in the optional parenthesis.
 %%The option is available for: sn-basic.bst, sn-vancouver.bst, sn-chicago.bst, sn-mathphys.bst. %
 
-% \documentclass[sn-nature]{bst/sn-jnl}% Style for submissions to Nature Portfolio journals
+\documentclass[sn-nature]{bst/sn-jnl}% Style for submissions to Nature Portfolio journals
 % \documentclass[bst/sn-basic]{bst/sn-jnl}% Basic Springer Nature Reference Style/Chemistry Reference Style
 % \documentclass[bst/sn-mathphys,Numbered]{bst/sn-jnl}% Math and Physical Sciences Reference Style
 % \documentclass[bst/sn-aps]{bst/sn-jnl}% American Physical Society (APS) Reference Style
@@ -51,7 +51,7 @@
 \usepackage{algpseudocode}
 \usepackage{listings}
 
-\jyear{2023}
+% \jyear{2023}
 
 % Typeset.io %%%
 \usepackage{setspace}
@@ -67,9 +67,9 @@
 % \usepackage{lasy}
 \usepackage{fix-cm}
 
-\newcommand{\figurepath}[1]{figures/#1}
-\begin{document}
+% \newcommand{\figurepath}[1]{figures/#1}
 
+\begin{document}
 
 \title[Article Title]{Towards Robust Label Aggregation in Crowdsourced and Ensemble Learning Classification}
 
@@ -78,11 +78,11 @@
 \affil[1]{\orgdiv{Dept of Electrical \& Computer Engineering}, \orgname{The University of Arizona}, \orgaddress{\city{Tucson}, \postcode{86719}, \state{AZ}, \country{USA}}}
 
 
-\abstract{\include{subfiles/abstract}}
-\keywords{\include{subfiles/keywords}}
+\abstract{\input{subfiles/abstract.tex}}
+\keywords{\input{subfiles/keywords.tex}}
 \maketitle
 
-\input{subfiles/body}
+\input{Chapters/crowd/subfiles/body.tex}
 
 % \bibliographystyle{bst/sn-aps}
 \bibliographystyle{apalike}
