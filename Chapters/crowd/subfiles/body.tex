@@ -382,7 +382,7 @@ Figure~\ref{fig:crowd.Fig.1.weight} depicts the relationship between the randoml
 %
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.8\textwidth]{\figurepath{lmplot_weight_strength_relation/lmplot_weight_strength_relation.pdf}}
+\includegraphics[width=\textwidth]{\figurepath{figure_weight_strength_relation/figure_weight_strength_relation.pdf}}
 \caption{Comparison of weight computation techniques across ten different datasets. Each subplot corresponds to a unique dataset, illustrating the relationship between the randomly assigned annotator's probability threshold ($\pi_\alpha^{(k)}$) (horizontal axis) and the computed weights ($\omega_{\alpha}^{(k)}$) (vertical axis) for the proposed aggregation technique with penalization Crowd-Certain and Tao~\cite{tao_Label_2020}. The individual data points represent actual measured weights, while the curve stands for the regression line.}%
 \label{fig:crowd.Fig.1.weight}
 \end{figure}
@@ -429,7 +429,7 @@ Figure~\ref{fig:crowd.Fig.confidence_scores_all_datasets_3_workers} depicts the 
 It calculates the mean squared difference between the predicted probabilities and the actual outcome. Hence, lower Brier Score Loss values correspond to better model performance. In the Figure~\ref{fig:crowd.Fig.confidence_scores_all_datasets_3_workers}, it can be observed that for the ECE metric, across all datasets, the proposed Crowd-Certain strategy consistently achieves lower scores when compared to Tao and Sheng, for both Freq and Beta techniques. This indicates that the Crowd-Certain strategy offers better-calibrated predictions, providing a higher level of confidence in the aggregated labels. For the Brier Score Loss metric, the Crowd-Certain strategy also appears to outperform Tao and Sheng across most datasets, for both techniques.
 \begin{figure*}[htbp]
     \centering
-    \includegraphics[width=0.9\textwidth]{\figurepath{heatmap_F_evals_all_datasets_NL3/heatmap_F_evals_all_datasets_NL3.pdf}}
+    \includegraphics[width=0.9\textwidth]{\figurepath{figure_heatmap_F_evals_all_datasets_NL3/figure_heatmap_F_evals_all_datasets_NL3.pdf}}
     \caption{Comparison of Expected Calibration Error (ECE) and Brier Score Loss for two confidence score measurement strategies (Freq and Beta) across three different techniques (Crowd-Certain, Tao, and Sheng). Results are shown for ten different datasets for 3 workers (NL3). The metrics reflect the calibration and sharpness of the predictions under different configurations.}%
     \label{fig:crowd.Fig.confidence_scores_all_datasets_3_workers}
 \end{figure*}
@@ -445,7 +445,7 @@ For the Brier Score Loss, the Freq strategy combined with the Crowd-Certain tech
 Overall, these results suggest that the choice of the confidence measurement technique and the strategy has significant impacts on the calibration and sharpness of the predictions. Further investigations could be beneficial to understand the specific conditions under which certain techniques and strategies yield superior performance.
 \begin{figure*}[htbp]
     \centering
-    \includegraphics[width=0.9\textwidth]{\figurepath{heatmap_F_evals_kr-vs-kp_all_labelers/heatmap_F_evals_kr-vs-kp_all_labelers.pdf}}
+    \includegraphics[width=0.9\textwidth]{\figurepath{figure_heatmap_F_evals_kr-vs-kp_all_labelers/figure_heatmap_F_evals_kr-vs-kp_all_labelers.pdf}}
     \caption{Comparison of Expected Calibration Error (ECE) and Brier Score Loss for two confidence score measurement strategies (Freq and Beta) across three different techniques (Crowd-Certain, Tao, and Sheng). Results are shown for varying numbers of annotators (NL3 to NL7) on the kr-vs-kp dataset. The metrics reflect the calibration and sharpness of the predictions under different configurations.}%
     \label{fig:crowd.Fig.confidence_score_one_datasets_all_workers}
 \end{figure*}
