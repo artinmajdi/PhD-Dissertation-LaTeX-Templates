@@ -205,7 +205,7 @@
 \newenvironment{SgAlgorithm}[1][t]
 {%
 	\begin{algorithm2e}[#1]
-    \linespread{1.3} % Set the line spacing to one and half.
+    \linespread{1.5} % Set the line spacing to one and half.
     \selectfont      % The linespread is effective only after selectfont.%
 }
 {%
@@ -250,13 +250,14 @@
 % page number on right side.
 % \nouppercase is used on left header to force bibliography in lowercase.
 \fancyhead{}
-\fancyhead[L]{\nouppercase{\SgIntHeaderFormat\leftmark}}
-\fancyhead[R]{\SgIntPageNumFormat\thepage}
-\renewcommand{\headrulewidth}{1pt}
-\addtolength{\headheight}{10pt}
+% \fancyhead[L]{\nouppercase{\SgIntHeaderFormat\leftmark}}
+\fancyhead[R]{Chapter~\SgIntHeaderFormat\theHchapter}
+\renewcommand{\headrulewidth}{0pt}
+\setlength{\headheight}{5pt}
 
 % Disable footer.
 \fancyfoot{}
+\fancyfoot[C]{\SgIntPageNumFormat\thepage}
 \renewcommand{\footrulewidth}{0pt}
 
 % Define header and footer for plain pages.
