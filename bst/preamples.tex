@@ -59,25 +59,22 @@
 % Change the captions fonts to PT Sans Narrow. This is important to be able to fit some of larger tables in the page.
 \newcommand{\ptsansnarrow}{\fontfamily{PTSansNarrow-TLF}\selectfont}
 
+\newcommand{\addtitle}{title}
+\newcommand{\addkeyword}{keyword}
+\newcommand{\addabstract}{abstract}
+\newcommand{\chapterpath}[1]{#1}
+\newcommand{\figurepath}[1]{\chapterpath{figures}/#1}
 
+\definecolor{mygreen}{HTML}{E9ECE6}% Adding a custom color
 \let\origcaption\caption\renewcommand{\caption}[1]{\ptsansnarrow\origcaption{#1}}
+\setlength{\parskip}{1.1em}% Adding space after each paragraph
+\setlength{\parindent}{0pt}% Removing the indentation in the beginning of each paragraph
+\linespread{1.5}% Increase the line spacing to 1.5
 
-% Adding space after each paragraph
-\setlength{\parskip}{1.1em}
-
-% Removing the indentation in the begininig of each paragraph
-\setlength{\parindent}{0pt}
-
-% Increase the line spacing to 1.5
-\linespread{1.5}
-
-% \pagestyle{fancy}
 \fancyhead{}
-\fancyhead[R]{Chapter~\SgIntHeaderFormat\theHchapter}
-\setlength{\headheight}{5pt}
-
+\fancyhead[R]{\ifnum\theHchapter>0 Chapter~\SgIntHeaderFormat\theHchapter~\fi}
+\setlength{\headheight}{14pt}
+% \addtolength{\topmargin}{-9.0pt}
+%
 \fancyfoot{}
 \fancyfoot[C]{\SgIntPageNumFormat\thepage}
-
-% Adding a custom color
-\definecolor{mygreen}{HTML}{E9ECE6}

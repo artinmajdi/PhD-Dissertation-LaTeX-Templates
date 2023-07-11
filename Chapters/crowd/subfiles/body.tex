@@ -170,13 +170,15 @@ The uncertainty measures discussed above are only some of the available options.
 \subsection{Crowd-Certain: Uncertainty-Based Weighted Soft Majority Voting}
 \subsubsection{Consistency Measurement}
 Define $c_{\alpha}^{(i,k)} $ as the consistency score for worker $\alpha $, class $k $ and instance $i $. We calculate this consistency score using the uncertainty score $\Delta_{\alpha}^{(i,k)} $ explained in the previous section. We use two approaches to calculate $c_{\alpha}^{(i,k)} $ from $\Delta_{\alpha}^{(i,k)} $.
-\begin{enumerate}
-    \item The first approach is to simply subtract the uncertainty from $1 $ as follows:
+\myframedmeth{1}{Consistency Measurement without Penalization}{%
+    The first approach is to simply subtract the uncertainty from $1 $ as follows:
     \begin{equation}
         c_{\alpha}^{(i,k)}=1-\Delta_{\alpha}^{(i,k)}\;\;,\;\forall i,\alpha,k
         \label{eq:crowd.Eq.9.consistency}
     \end{equation}
-    \item In a second approach (shown in Equation~(\ref{eq:crowd.eq.10.consistency-penalized})), we penalize workers for instances in which their predicted label $\eta_{\alpha}^{(i,k)} $ (explained in the Glossary of Symbols section) does not match the MV of all worker labels ${{\underset \alpha{\mathrm{MV}}}{\left(z_{\alpha,\;k}^{(i,k)}\right)}} $. As previously discussed, instead of directly working with the worker's labels $z_{\alpha}^{(i,k)} $, we use the predicted labels obtained from the ensemble of classifiers $\eta_{\alpha}^{(i,k)} $. This methodology does not require repeating the crowd-labeling process for new data samples. In particular, we are likely not to have access to the same crowd of workers employed in the training dataset.
+}
+\myframedmeth{2}{Consistency Measurement with Penalization}{%
+In a second approach (shown in Equation~(\ref{eq:crowd.eq.10.consistency-penalized})), we penalize workers for instances in which their predicted label $\eta_{\alpha}^{(i,k)} $ (explained in the Glossary of Symbols section) does not match the MV of all worker labels ${{\underset \alpha{\mathrm{MV}}}{\left(z_{\alpha,\;k}^{(i,k)}\right)}} $. As previously discussed, instead of directly working with the worker's labels $z_{\alpha}^{(i,k)} $, we use the predicted labels obtained from the ensemble of classifiers $\eta_{\alpha}^{(i,k)} $. This methodology does not require repeating the crowd-labeling process for new data samples. In particular, we are likely not to have access to the same crowd of workers employed in the training dataset.
     \begin{equation}
         c_{\alpha}^{(i,k)} =
         \begin{cases}
@@ -185,7 +187,7 @@ Define $c_{\alpha}^{(i,k)} $ as the consistency score for worker $\alpha $, clas
         \end{cases}
         \label{eq:crowd.eq.10.consistency-penalized}
     \end{equation}
-\end{enumerate}
+}
 %
 \subsubsection{Reliability Measurement}
 For each worker, for each class, and for each instance, there is a consistency score, $c_{\alpha}^{(i,k)}$. By averaging these scores across all instances, we can define a reliability score for each worker and for each class:
@@ -219,45 +221,45 @@ Finally, the aggregated label $\nu^{(i,k)}$ for each instance $i $ and class $k 
 \subsubsection{Confidence Score Calculation}
 In previous section we showed how to calculate the aggregated label $\nu^{(i,k)}$ (shown in Equation~(\ref{eq:crowd.aggregated_label})). Define $F^{(i,k)} $ as the confidence score for instance $i $ and class $k $. We calculate two confidence scores $F^{(i,k)} $, based on how many different workers agree on the reported label $\nu^{(i,k)}$. The confidence scores show the level of confidence we should place on the aggregated labels. To calculate this confidence score, we modify the two techniques used by Sheng~\cite{sheng_Majority_2019} and Tao~\cite{tao_Label_2020} to incorporate our calculated weight $\omega_{\alpha}^{(k)} $ shown in Equation~(\ref{eq:crowd.eq.11.weights})  for each worker $\alpha $.
 %
-\textbf{Using Weighted Sum:}
-In a standard voting system, for every instance $i$ and class $k$, each contributor in the group—whether that be an worker in a crowd or a model in an ensemble learning context—provides a class label. The label receiving the most votes, meaning it's predicted by the majority of contributors, is selected as the final prediction. This approach is often referred to as majority voting or hard voting.
+\myframedmeth{1}{Confidence Score Calculation using Weighted Sum:}{%
+    In a standard voting system, for every instance $i$ and class $k$, each contributor in the group—whether that be an worker in a crowd or a model in an ensemble learning context—provides a class label. The label receiving the most votes, meaning it's predicted by the majority of contributors, is selected as the final prediction. This approach is often referred to as majority voting or hard voting.
+    // %
+    This method could be improved by taking into account not only the number of votes each label receives, but also the confidence associated with each vote. This factor introduces the notion of a ``weighted sum of all votes for a particular class''. As part of this study, we propose techniques that assign a weight to each contributor in the group. This calculation is based on their voting consistency and the degree to which they concur with their peers.
+    // %
+    To compute the weighted sum of all votes for each class, we can combine the calculated weights with the corresponding labels, whether provided or predicted. This calculation gives greater confidence to votes with greater certainty. This refined approach prioritizes certainty, thereby enhancing the ensemble's overall effectiveness.
+    // %
+    The confidence score $F_{\Omega}^{(i,k)}$ is formulated as follow.
+    \begin{equation}
+        F_{\Omega}^{(i,k)} = {\sum\nolimits_{\alpha=1}^{M}{\omega_{\alpha}^{(k)} \delta\left(\eta_{\alpha}^{(i,k)} \;,\;\; \nu^{(i,k)} \right)}}
+        \label{eq:crowd.Eq.13.confidence-score.Freq}
+    \end{equation}
+    where $\delta $ is the Kronecker delta function.
+}
 
-This method could be improved by taking into account not only the number of votes each label receives, but also the confidence associated with each vote. This factor introduces the notion of a ``weighted sum of all votes for a particular class''. As part of this study, we propose techniques that assign a weight to each contributor in the group. This calculation is based on their voting consistency and the degree to which they concur with their peers.
-
-To compute the weighted sum of all votes for each class, we can combine the calculated weights with the corresponding labels, whether provided or predicted. This calculation gives greater confidence to votes with greater certainty. This refined approach prioritizes certainty, thereby enhancing the ensemble's overall effectiveness.
-
-The confidence score $F_{\Omega}^{(i,k)}$ is formulated as follow.
-\begin{equation}
-    F_{\Omega}^{(i,k)} = {\sum\nolimits_{\alpha=1}^{M}{\omega_{\alpha}^{(k)} \delta\left(\eta_{\alpha}^{(i,k)} \;,\;\; \nu^{(i,k)} \right)}}
-    \label{eq:crowd.Eq.13.confidence-score.Freq}
-\end{equation}
-where $\delta $ is the Kronecker delta function.
-
-\textbf{Using CDF of Beta Distribution Function:}
-The binomial distribution survival function, also referred to as the complementary cumulative distribution function (CCDF), provides the probability of observing a result as extreme or more extreme than a given value. It provides the probability that a random variable drawn from the binomial distribution is greater than or equal to a given value.
-
-It can be applied in the following ways when calculating confidence scores:
-\begin{enumerate}
-    \item \textbf{Hypothesis testing:}
-    Suppose you are testing a hypothesis concerning a parameter of a population, and you collect a sample of observations. Given the null hypothesis, the binomial survival function can be used to calculate the probability of observing a result as extreme or more extreme than the one observed. This probability is the p-value, and if it is very small, the null hypothesis may be rejected. In this context, the confidence score could be interpreted as (1 $-$ p-value), a measure of the certainty with which the null hypothesis can be rejected.
-
-    \item \textbf{Binary classification:} Consider a binary classification problem in which an algorithm sorts objects into two groups, A and B. Given the observed results, the binomial survival function can be used to calculate the probability of misclassification. The confidence score in this instance could be interpreted as (1 $-$ probability of misclassification).
-\end{enumerate}
-%
-In the following equation, the probability of obtaining k successes or more out of n trials where the probability of success on any given trial is p is calculated. In this context, ``success'' could refer to the event in question, such as the correct classification of an object or the acceptance of a hypothesis. The CDF of the Beta distribution at the decision threshold of $0.5 $ is used to calculate a confidence score $F_{\beta}^{(i,k)}$. To calculate the two shape parameters of the Beta distributions $l^{(i,k)}$ and $u^{(i,k)}$, a weighted sum of all correct and incorrect aggregated labels, is used respectively:
-\begin{equation}
-    \begin{aligned}
-        l^{(i,k)} &= 1 + \sum_{\alpha=1}^{M} \omega_{\alpha}^{(k)} \; \delta\left(\eta_{\alpha}^{(i,k)}, \nu_{k}^{(i,k)}\right) \\
-        u^{(i,k)} &= 1 + \sum_{\alpha=1}^{M} \omega_{\alpha}^{(k)} \; \delta\left(\eta_{\alpha}^{(i,k)}, 1 - \nu_{k}^{(i,k)}\right)
-    \end{aligned}
-    \label{eq:crowd.Eq.14.beta_l_u}
-\end{equation}
-%
-\begin{equation}
-    F_{\beta}^{(i,k)} =I_{0.5}\left(l^{(i,k)},u^{(i,k)}\right)=\sum_{t=[l^{(i,k)}]}^{T-1}\frac{(T-1)!}{t!(T-1-t)!}0.5^{T-1}
-    \label{eq:crowd.Eq.15.confidence-score.Beta}
-\end{equation}
-where $T = \left [ l^{(i,k)} + u^{(i,k)} \right ] $ and $\left [ \cdot \right ] $ is an integer function.
+\myframedmeth{2}{Confidence Score Calculation using CDF of Beta Distribution Function:}{%
+    The binomial distribution survival function, also referred to as the complementary cumulative distribution function (CCDF), provides the probability of observing a result as extreme or more extreme than a given value. It provides the probability that a random variable drawn from the binomial distribution is greater than or equal to a given value. It can be applied in the following ways when calculating confidence scores:
+    \begin{enumerate}[label=\alph*]
+        \item \textbf{Hypothesis testing:}
+        Suppose you are testing a hypothesis concerning a parameter of a population, and you collect a sample of observations. Given the null hypothesis, the binomial survival function can be used to calculate the probability of observing a result as extreme or more extreme than the one observed. This probability is the p-value, and if it is very small, the null hypothesis may be rejected. In this context, the confidence score could be interpreted as (1 $-$ p-value), a measure of the certainty with which the null hypothesis can be rejected.
+        %
+        \item \textbf{Binary classification:} Consider a binary classification problem in which an algorithm sorts objects into two groups, A and B. Given the observed results, the binomial survival function can be used to calculate the probability of misclassification. The confidence score in this instance could be interpreted as (1 $-$ probability of misclassification).
+    \end{enumerate}
+    %
+    In the following equation, the probability of obtaining k successes or more out of n trials where the probability of success on any given trial is p is calculated. In this context, ``success'' could refer to the event in question, such as the correct classification of an object or the acceptance of a hypothesis. The CDF of the Beta distribution at the decision threshold of $0.5 $ is used to calculate a confidence score $F_{\beta}^{(i,k)}$. To calculate the two shape parameters of the Beta distributions $l^{(i,k)}$ and $u^{(i,k)}$, a weighted sum of all correct and incorrect aggregated labels, is used respectively:
+    \begin{equation}
+        \begin{aligned}
+            l^{(i,k)} &= 1 + \sum_{\alpha=1}^{M} \omega_{\alpha}^{(k)} \; \delta\left(\eta_{\alpha}^{(i,k)}, \nu_{k}^{(i,k)}\right) \\
+            u^{(i,k)} &= 1 + \sum_{\alpha=1}^{M} \omega_{\alpha}^{(k)} \; \delta\left(\eta_{\alpha}^{(i,k)}, 1 - \nu_{k}^{(i,k)}\right)
+        \end{aligned}
+        \label{eq:crowd.Eq.14.beta_l_u}
+    \end{equation}
+    %
+    \begin{equation}
+        F_{\beta}^{(i,k)} =I_{0.5}\left(l^{(i,k)},u^{(i,k)}\right)=\sum_{t=[l^{(i,k)}]}^{T-1}\frac{(T-1)!}{t!(T-1-t)!}0.5^{T-1}
+        \label{eq:crowd.Eq.15.confidence-score.Beta}
+    \end{equation}
+    where $T = \left [ l^{(i,k)} + u^{(i,k)} \right ] $ and $\left [ \cdot \right ] $ is an integer function.
+}
 %
 \subsection{Metrics}
 \begin{itemize}

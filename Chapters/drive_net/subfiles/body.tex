@@ -19,7 +19,7 @@ Therefore, there is interest in using dashboard camera image analysis to automat
 \begin{figure}[!htbp]
     \centering
     \includegraphics[width=\textwidth]{\figurepath{image1.jpeg}}%
-    \caption{Representative dashboard camera images of drivers being distracted. From left to right: drinking while driving; safe driving; reaching behind while driving; talking on the phone (left hand) while driving~\cite{montoya_State_2016}.}%
+    \caption[Examples of Driver Distractions Captured by Dashboard Camera]{Representative dashboard camera images of drivers being distracted. From left to right: drinking while driving; safe driving; reaching behind while driving; talking on the phone (left hand) while driving~\cite{montoya_State_2016}.}%
     \label{fig:drive-net/figure1}
 \end{figure}
 
@@ -28,7 +28,7 @@ Object detection and human behavior detection are well-researched topics in the 
 \begin{figure*}[!htbp]
     \centering
     \includegraphics[width=\textwidth]{\figurepath{image2.jpeg}}%
-    \caption{An overview of the proposed Drive-Net. Our proposed CNN architecture (shown on the left side) consists of two convolution layers (conv), each followed by a maxpooling layer (pool), and a final ReLU layer, the output of which is regularized using dropouts to obtain a fully connected layer (FC). The FC layer is fed as input to the random forest classifier (on the right side), which predicts the final class label.}%
+    \caption[Overview of the Proposed Drive-Net: A CNN Architecture Coupled with a Random Forest Classifier]{An overview of the proposed Drive-Net. Our proposed CNN architecture (shown on the left side) consists of two convolution layers (conv), each followed by a maxpooling layer (pool), and a final ReLU layer, the output of which is regularized using dropouts to obtain a fully connected layer (FC). The FC layer is fed as input to the random forest classifier (on the right side), which predicts the final class label.}%
     \label{Drive-Net/figure2}
 \end{figure*}
 
@@ -107,7 +107,7 @@ Table~\ref{tab:drive-net.table.1} shows the mean classification accuracy of the 
 
 \begin{table}[]
 \centering
-\caption{Mean classification accuracy of the automated methods}%
+\caption{Mean Classification Accuracy of the Automated Methods}%
 \label{tab:drive-net.table.1}
 \begin{tabular}{@{}lr@{}}
 \toprule
@@ -130,7 +130,7 @@ Table~\ref{tab:drive-net.table.2} shows the number of false classifications for 
 
 \begin{table}[]
 \centering
-\caption{The error count of each class for the neural network methods}%
+\caption{Error Count of Each Class for the Neural Network Methods}%
 \label{tab:drive-net.table.2}
 \begin{tabular}{@{}lccc@{}}
 \toprule

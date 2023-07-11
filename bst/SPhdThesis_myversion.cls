@@ -226,6 +226,7 @@
 \newcommand{\SgIncludeBib}[1]
 {%
 	\clearpage                                 % Fix the page number in TOC.
+	\fancyhead{}					% remove the heading chapter number
 	\phantomsection                            % Fix the link in PDF.
 	\addcontentsline{toc}{chapter}{References} % Add the bibliography to TOC.
 	\bibliographystyle{ieeetr}                  % Set the bibliography style.
@@ -253,7 +254,7 @@
 % \fancyhead[L]{\nouppercase{\SgIntHeaderFormat\leftmark}}
 \fancyhead[R]{Chapter~\SgIntHeaderFormat\theHchapter}
 \renewcommand{\headrulewidth}{0pt}
-\setlength{\headheight}{5pt}
+\setlength{\headheight}{14pt}
 
 % Disable footer.
 \fancyfoot{}
@@ -625,15 +626,24 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % ACKNOWLEDGMENTS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newenvironment{acknowledgments}
-    {\begin{center}
+\newcommand{\SgAddAcknowledgement}[1]{
+    \begin{center}
     {\large\bfseries ACKNOWLEDGMENTS}
     \end{center}
     \bigskip
-    \hspace*{\parindent}}
-    {\newpage}
+    \hspace*{\parindent}
+    \input{#1}
+    \newpage
+}
 
+% \newenvironment{acknowledgments}[1]{
+% 	\begin{center}
+%     {\large\bfseries ACKNOWLEDGMENTS}
+%     \end{center}
+%     \bigskip
+%     \hspace*{\parindent}
+%     \newpage
+% }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % DEDICATION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -718,3 +728,10 @@
 	\setcounter{page}{1}
 	\SgIntClearDoublePage
 }
+
+
+
+
+% -----------------------------------------------------------------------
+% S L E E K - T E M P L A T E
+\RequirePackage{bst/sleek-theorems}

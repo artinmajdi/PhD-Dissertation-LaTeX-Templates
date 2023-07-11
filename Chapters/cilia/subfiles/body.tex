@@ -7,18 +7,18 @@ Manual detection and classification of primary cilia within tissues usually invo
 \begin{figure}[!htbp]
 	\centering
     \includegraphics[width= 0.7\textwidth]{\figurepath{fig1}}
-	\caption{Microscopy image showing primary cilia which are in red color. (a) Cilia (red color) near AQP2-expressing renal collecting duct (white color). (b) Primary cilium within an AQP2 expressed region that we are interested in. (c) Primary cilium elsewhere in the image.}%
+	\caption[Microscopy Images of Primary Cilia in Relation to AQP2-Expressing Renal Collecting Duct]{Microscopy image showing primary cilia which are in red color. (a) Cilia (red color) near AQP2-expressing renal collecting duct (white color). (b) Primary cilium within an AQP2 expressed region that we are interested in. (c) Primary cilium elsewhere in the image.}%
 	\vspace{-6mm}%
 	\label{fig:cilia.fig.1}
 \end{figure}
 %-------------------------------------------------------------------------------------------------------------------%
 
 Recently, the availability of large amounts of data and significant computational power have rapidly increased the popularity of machine learning (esp.\ deep learning) approaches. Convolutional neural networks (CNNs)~\cite{lecun_deeplearning_2015} have outperformed the state-of-the-art in many computer vision applications~\cite{krizhevsky_Imagenet_2017}. Similarly, the applicability of CNNs has also been investigated for medical image analysis~\cite{gupta_Convolutional_2017}. In particular, their capability to learn discriminative features when trained in a supervised fashion makes them useful for automated detection of structures in, e.g., microscopy images~\cite{gupta_Convolutional_2017}.
-%----------------------------------------------- FIGURE 2------------------------------------------------------%
+
 \begin{figure}[!htbp]
 	\centering
     \includegraphics[width=\textwidth]{\figurepath{fig2n.png}}
-	\caption{An overview of the proposed convolutional neural random forest classifier. Our proposed CNN model where the feature mapping happens (shown on the left side) consists of two convolutional layers each followed by a maxpooling layer and a final ReLU activation layer, following which a dropout regularization is used to obtain the fully connected layer. The learned features are fed to our random forests classifier (shown on the right side), which have trees with decision nodes (d) (in red color) and leaf nodes (\emph{l}) (in green color). At each leaf node we compute posterior probabilities belonging to each class.}
+	\caption[Overview of the Convolutional Neural Random Forest Classifier: Integration of CNN Feature Mapping with Decision and Leaf Nodes]{An overview of the proposed convolutional neural random forest classifier. Our proposed CNN model where the feature mapping happens (shown on the left side) consists of two convolutional layers each followed by a maxpooling layer and a final ReLU activation layer, following which a dropout regularization is used to obtain the fully connected layer. The learned features are fed to our random forests classifier (shown on the right side), which have trees with decision nodes (d) (in red color) and leaf nodes (\emph{l}) (in green color). At each leaf node we compute posterior probabilities belonging to each class.}
 	\vspace{-4mm}%
 	\label{fig:cilia.fig.2}
 \end{figure}
@@ -100,9 +100,9 @@ The AUC is the average of precision $P(R)$ over the interval ($0 \leq R \leq 1$)
 \label{eq:cilia.eq.6}
 \end{equation}
 The best classification algorithm among several alternatives is commonly defined as the one that maximizes either the AUC  or the $F_{\beta}$-score.
-%----------------------------------------------- TABLE 1------------------------------------------------------%
+
 \begin{table}[!t]
-\caption{Performance of the Classification Algorithms}%
+\caption[Performance of the Classification Algorithms]{Performance of the Classification Algorithms}%
 \label{tab:cilia.table.1}
 \begin{center}
 \renewcommand{\arraystretch}{1.7}
@@ -135,7 +135,7 @@ Accurate detection and classification of primary cilia in microscopy images is a
 \begin{figure}[!htbp]
 	\centering
 	\includegraphics[width= 3.5in, height=2.5in]{\figurepath{fig3}}
-	\caption{ROC curves for all the classification methods.}%
+	\caption[ROC Curves for Various Classification Methods]{ROC curves for various classification methods.}%
 	\label{fig:cilia.fig.3}
 	\vspace{-4mm}
 \end{figure}

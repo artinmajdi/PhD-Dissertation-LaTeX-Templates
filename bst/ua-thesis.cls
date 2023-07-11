@@ -5,7 +5,7 @@
 %% The original source files were:
 %%
 %% ua-classes.dtx  (with options: `ua-thesis')
-%% 
+%%
 %% Except where otherwise indicated this code was originally written
 %% by, and continues to be maintained by, Marcel Oliver. It is released
 %% into the public domain.
@@ -36,6 +36,9 @@
 \RequirePackage{amsfonts}[1996/10/24]
 \RequirePackage{amsthm}[1996/10/24]
 \RequirePackage{ua-title}
+% -----------------------------------------------------------------------
+% S L E E K - T E M P L A T E
+\RequirePackage{bst/sleek-theorems}
 \def\contentsname{Table of Contents}
 \def\bibname{References}
 \def\dedicationname{Dedication}
@@ -358,3 +361,6 @@
 \endinput
 %%
 %% End of file `ua-thesis.cls'.
+
+
+
