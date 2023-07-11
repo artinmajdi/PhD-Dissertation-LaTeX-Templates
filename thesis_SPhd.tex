@@ -1,16 +1,37 @@
 \documentclass[]{bst/SPhdThesis_myversion}
-\input{bst/preamples}
-\input{bst/commands_initialization}
-
+\newcommand{\preface}{
+    \SgSetTitle{Bridging the Gap: Leveraging Machine Learning for Improved Data Interpretation and Decision Making under Uncertainty}
+    \SgSetAuthor{Artin Majdi}
+    \SgSetAuthorDegrees{M.Sc.}
+    \SgSetYear{2023}
+    \SgSetDegree{Doctor of Philosophy}
+    \SgSetDepartment{Department of Electrical and Computer Engineering}
+    \SgSetUniversity{University of Arizona}
+    \SgSetDeclarationDate{2023}
+    \SgSetSupervisor{Jeffrey J. Rodriguez}
+    \SgSetSuperTitle{Professor}
+    \SgSetSuperDept{Department of Electrical and Computer Engineering}
+    \SgSetSecondMember{Carlos Alsua}
+    \SgSetThirdMember{Abhijit Mahalanobis}
+    \SgSetFourthMember{Janet M. Roveda}
+    \SgAddTitle%
+    \SgAddApproval%
+    \SgAddStatement%
+    \SgAddAcknowledgement{bst/acknowledgments.tex}
+    \SgAddToc%  Table of contents.
+    \SgAddLof%  List of figures.
+    \SgAddLot%  List of tables.
+    % \SgAddLoa%  List of algorithms.
+}
+%
+\input{bst/preamples.tex}
 \begin{document}
-
-\include{bst/preface_SPhD}
-% \include{Chapters/Introduction}
-% \include{Chapters/crowd/crowd_thesis}
+\preface%
+\include{Chapters/Introduction}
+\include{Chapters/crowd/crowd_thesis}
 \include{Chapters/taxonomy/taxonomy_thesis}
-% \include{Chapters/thalamus/thalamus_thesis}
-% \include{Chapters/drive_net/drive_net_thesis}
-% \include{Chapters/cilia/cilia_thesis}
-
+\include{Chapters/thalamus/thalamus_thesis}
+\include{Chapters/drive_net/drive_net_thesis}
+\include{Chapters/cilia/cilia_thesis}
 \SgIncludeBib{bst/Better_BibTeX_Zotero}
 \end{document}

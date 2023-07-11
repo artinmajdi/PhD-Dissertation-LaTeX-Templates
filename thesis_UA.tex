@@ -1,17 +1,35 @@
-\documentclass[final]{bst/ua-thesis}
-% \documentclass[draft]{ua-thesis}
+\documentclass[]{bst/ua-thesis}
+\newcommand{\preface}{
+    \author{Artin Majdi}
+    \title{Bridging the Gap: Leveraging Machine Learning for Improved Data Interpretation and Decision Making under Uncertainty}
+    \department{Department of Electrical and Computer Engineering}
+    \thesis{Dissertation}
+    \degree{Doctor of Philosophy}
+    \degreeabbrev{Ph.D.}
+    \director{Jeffrey J. Rodriguez}
+    \directortitle{Associate Professor}
+    \fancyhf{}
+    \cfoot{\thepage}
+    \chead{\th}
+    \maketitle%
+    % \makeapproval%
+    % \makestatement%
 
+    \chapter*{Acknowledgments}
+    \input{bst/acknowledgments.tex}
+
+    % \begin{dedication} To my wife, Bertha, \end{dedication}
+    \tableofcontents
+    \listoffigures
+    \newpage
+    \listoftables
+    \newpage
+    % \begin{abstract} \input{abst} \end{abstract}	% no effect with MS option
+}
+%
 \input{bst/preamples}
-\input{bst/commands_initialization}
-
 \begin{document}
-
-\include{bst/preface_UA}
-
-% \begin{abstract}
-% \input{Chapters/Introduction}
-% \end{abstract}
-
+\preface% \include{bst/preface_UA}
 \include{Chapters/Introduction}
 \include{Chapters/crowd/crowd_thesis}
 \include{Chapters/taxonomy/taxonomy_thesis}
@@ -21,5 +39,4 @@
 
 \bibliographystyle{ieeetr}
 \bibliography{bst/Better_BibTeX_Zotero}
-
 \end{document}
