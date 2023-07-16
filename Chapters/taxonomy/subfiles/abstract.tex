@@ -1,16 +1,1 @@
-Accurate diagnosis of thoracic diseases from chest radiographs is a challenging task that can lead to diagnostic errors and negative patient outcomes.
-This study introduces two novel hierarchical multi-label classification methods, leveraging the taxonomy of pathologies to boost both the accuracy and interpretability of disease classifications.
-These methods cater to scenarios where ground truth is accessible (termed ``loss'') as well as when it isn't (termed ``logit'').
-By utilizing disease taxonomy, the proposed methods acknowledge the interrelationships among diseases, thereby enhancing their adaptability to new tasks.
-The ``logit'' method offers ease of integration with existing pre-trained models, eliminating the need for re-optimization and ensuring extensive applicability.
-Conversely, the ``loss'' method modifies the loss function during the training phase, thus providing an avenue for integration into the current training process.
-The proposed techniques were evaluated on three publicly accessible, diverse chest radiograph datasets, namely CheXpert, PadChest, and NIH Chest-Xray14 as well as various statistical tests.
-The results underpin the significant enhancement in accuracy and interpretability these methods provide in the diagnosis of thoracic diseases in chest radiography.
-This approach has the potential to promote an accurate and efficient diagnosis by providing an additional layer of decision support to radiologists, ultimately leading to better patient outcomes.
-
-
-
-
-
-
-
+This paper introduces two innovative multi-label classification methods that utilize hierarchical taxonomy of labels to improve the diagnostic accuracy of lung diseases from chest X-rays. These diseases are often challenging to distinguish due to their similar characteristics, even for seasoned radiologists. The first method, termed as the ``logit'' technique, adjusts the neural network logit outputs based on the hierarchy of class relationships. The second method, termed as ``loss'', integrates these hierarchical relationships directly into the loss function. We apply these methods to categorize lung abnormalities in chest X-rays, using three publicly available datasets - CheXpert, PADCHEST, and NIH for evaluation. The ``logit'' and ``loss'' techniques consistently surpass the standard approach in terms of performance metrics such as accuracy, AUC, and F1 scores. Additional statistical measures, including Cohen's d, Cohen's kappa, t-statistics, p-value, and Bayes factor further validate these performance enhancements.
