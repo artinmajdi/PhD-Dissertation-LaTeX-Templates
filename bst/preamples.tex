@@ -1,3 +1,5 @@
+\usepackage{bst/sleek-theorems}
+
 \usepackage{subfiles}
 \usepackage{standalone}
 \usepackage{verbatim, amssymb, amsmath, amsthm, graphicx, psfrag, afterpage, hyperref}
@@ -67,6 +69,9 @@
 
 \definecolor{mygreen}{HTML}{E9ECE6}% Adding a custom color
 \let\origcaption\caption\renewcommand{\caption}[1]{\ptsansnarrow\origcaption{#1}}
+
+% \let\origalgorithm\algorithm\renewcommand{\algorithm}[1]{\SgAlgorithm}
+
 \setlength{\parskip}{1.1em}% Adding space after each paragraph
 \setlength{\parindent}{0pt}% Removing the indentation in the beginning of each paragraph
 \linespread{1.5}% Increase the line spacing to 1.5

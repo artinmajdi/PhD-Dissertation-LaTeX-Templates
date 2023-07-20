@@ -1,4 +1,3 @@
-
 % SPhdThesis v1.0
 % By Saurabh Garg (saurabhgarg@mysoc.net)
 % Version 1.0 released 11.06.2013
@@ -10,19 +9,19 @@
 
 % \DeclareOption{copyright}{\@copyrighttrue}
 
-% -----------------------------------------------------------------------------
+% --------------------------------------------------------------------------
 % Define option for formatting for [screen] and print.
 % When formatting for screen colors are used for links, tables, and algorithms.
 % When formatting for print black color is used for links, tables, and algorithms.
 \define@choicekey*[Sg]{PhDThesis}{media}{screen,print}[screen]{\def \SgIntMedia{#1}}
 \setkeys[Sg]{PhDThesis}{media}
 
-% -----------------------------------------------------------------------------
+% --------------------------------------------------------------------------
 % Define option for formatting title page in lower or [upper] case.
 \define@choicekey*[Sg]{PhDThesis}{titlecase}{upper,lower}[upper]{\def \SgIntTitleCase{#1}}
 \setkeys[Sg]{PhDThesis}{titlecase}
 
-% -----------------------------------------------------------------------------
+% --------------------------------------------------------------------------
 % Define line spacing. The valid values are [onehalf] and double.
 % Note that before using \SgLineSpacing setspace package must be loaded.
 \define@choicekey*[Sg]{PhDThesis}{linespacing}[\val\nr]{onehalf,double}[onehalf]{%
@@ -39,12 +38,12 @@
 \define@choicekey*[Sg]{PhDThesis}{fontsize}{11pt,12pt}[11pt]{\def \SgIntFontSize{#1}}
 \setkeys[Sg]{PhDThesis}{fontsize}
 
-% -----------------------------------------------------------------------------
+% -------------------------------------------------------------------------
 % Define font family to be used. Default is cm.
 \define@choicekey*[Sg]{PhDThesis}{font}{cm,times,helvet,palatino}[cm]{\def \SgIntFont{#1}}
 \setkeys[Sg]{PhDThesis}{font}
 
-% -----------------------------------------------------------------------------
+% -------------------------------------------------------------------------
 % Define open. The valid values are right and [any].
 % Right makes chapters and entries in frontmatter begin  only on right hand pages
 % or on the next page available. Any puts them on the next available page.
@@ -57,7 +56,7 @@
 }
 \setkeys[Sg]{PhDThesis}{open}
 
-% -----------------------------------------------------------------------------
+% -------------------------------------------------------------------------
 % Define pageside. The valid values are oneside and [twoside].
 % Specifies whether double or single sided output should be generated.
 \define@choicekey*[Sg]{PhDThesis}{pageside}{oneside,twoside}[twoside]{\def \SgIntPageSide{#1}}
@@ -70,8 +69,9 @@
 % Finally load the report class.
 \LoadClass[a4paper, \SgIntFontSize, \SgIntOpen, \SgIntPageSide]{report}
 
-% -----------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % F O N T S.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage[T1]{fontenc}  % Use T1 encoded cm-super fonts.
 \RequirePackage{microtype}    % Improve typesetting.
@@ -106,11 +106,11 @@
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  P A C K A G E S
 
 % Include important packages.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{graphicx, subfig}                     % Figures.
 \RequirePackage{amsmath, amssymb, amsthm}             % Math symbols and fonts.
@@ -120,10 +120,12 @@
 % \RequirePackage{etoolbox}
 
 
-% -----------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % P A G E   L A Y O U T.
 
 % Use geometry package to set up margins.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % A4 paper is 8.27 x 11.69 inch.
 % \RequirePackage[a4paper, left=1.25in, right=1in, top=1in, bottom=1in, includehead, \SgIntPageSide]{geometry}
 \RequirePackage[letterpaper, left=1in, right=1in, top=1in, bottom=1in, includehead, \SgIntPageSide]{geometry}
@@ -168,10 +170,10 @@
 
 
 
-% -----------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % T A B L E
-%
 % Set table layout and design.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{booktabs, colortbl} % Tables.
 \RequirePackage{tabularx}           % Auto column sizing.
@@ -190,10 +192,11 @@
 
 
 
-% -----------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % A L G O R I T H M
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[algo2e, ruled, linesnumbered, algochapter]{algorithm2e}
+\RequirePackage[algo2e, algoruled, algosection]{algorithm2e}
 \DontPrintSemicolon                      % Dont print semicolons at end of lines.
 \algoheightrule       = \heavyrulewidth  % Set the width of the top and bottom rules.
 \algotitleheightrule  = \lightrulewidth  % Set the width of the middle rule.
@@ -204,19 +207,46 @@
 
 \newenvironment{SgAlgorithm}[1][t]
 {%
+	\SetAlgorithmName{Method}{}{} % {name}{algotitle}{list of alg. title}
 	\begin{algorithm2e}[#1]
-    \linespread{1.5} % Set the line spacing to one and half.
-    \selectfont      % The linespread is effective only after selectfont.%
+	\LinesNotNumbered
+    \linespread{1.5}
+    \selectfont
 }
+{\end{algorithm2e}}
+
+
+%---------------------------------------------------------------
+% S L E E K - T E M P L A T E
+%---------------------------------------------------------------
+\RequirePackage{bst/sleek-theorems}
+
+%---------------------------------------------------------------
+% T E X T  INSIDE  F R A M E
+%---------------------------------------------------------------
+\RequirePackage[framemethod=TikZ]{mdframed}
+\definecolor{mygreen}{HTML}{E9ECE6}% Adding a custom color
+
+\newenvironment{mymdframed}[1]
 {%
-	\end{algorithm2e}
+    \begin{mdframed}[
+        frametitle=#1,
+        nobreak=false,
+        skipabove=\topskip,
+        skipbelow=\topskip,
+        innerleftmargin=0.5em,
+        innerrightmargin=0.5em,
+        innerbottommargin=0.5em,
+        innertopmargin=0.5em,
+        linewidth=0.25em,
+        roundcorner=0.15em,
+        linecolor=mygreen,
+        frametitlebackgroundcolor=mygreen]
 }
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\end{mdframed}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  B I B L I O G R A P H Y
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Rename bibliography to references.
 \renewcommand{\bibname}{References}
@@ -234,9 +264,9 @@
 }
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % F A N C Y   H E A D E R
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{fancyhdr}
 
@@ -275,11 +305,11 @@
 }
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % T O C    L O F    L O T    L O A
 %
 % Change the appearance of toc, lof, lot, etc.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Using tocloft, the toc can be formatted easily.
 \RequirePackage[titles, subfigure]{tocloft}
@@ -324,11 +354,11 @@
 }
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % C H A P T E R   H E A D I N G
 %
 % Change the appearance of chapter headers and section titles.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Change the fonts for chapter heading.
 \RequirePackage[Lenny]{fncychap}
@@ -381,9 +411,9 @@
 \makeatother
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % H Y P E R E F
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage[hyphens]{url} % Embedding URL's in document.
 
@@ -417,11 +447,11 @@
 	}
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % C L E V E R E F
 %
 % Must come as late as possible, especially after hyperref.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage[capitalize]{cleveref}
 
@@ -446,11 +476,11 @@
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % D O C U M E N T   P R O P E R T I E S
 %
 % DEFINITIONS NEEDED FOR PREFACE PAGES
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newlength{\signwidth}
 \setlength{\signwidth}{3.1in}
@@ -494,9 +524,9 @@
 \newcommand{\SgSetThirdMember}[1]{\renewcommand{\SgIntThirdMember}{#1}}
 \newcommand{\SgSetFourthMember}[1]{\renewcommand{\SgIntFourthMember}{#1}}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % T I T L E  P A G E
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ifthenelse{\equal{\SgIntTitleCase}{upper}}{ \newcommand{\SgIntMakeUpperCase}[1]{\MakeUppercase{#1}} }{ \newcommand{\SgIntMakeUpperCase}[1]{#1} }
 
@@ -540,9 +570,9 @@
 	\SgIntClearDoublePage
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % APPROVAL PAGE
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand{\committeemember}[2]{%
 	\if #1 ""
@@ -583,9 +613,9 @@
 	\newpage
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % STATEMENT BY AUTHOR
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand{\SgAddStatement}[1][nosignimage]{%
 	\newpage
@@ -623,9 +653,9 @@
 	\newpage
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % ACKNOWLEDGMENTS
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\SgAddAcknowledgement}[1]{
     \begin{center}
     {\large\bfseries ACKNOWLEDGMENTS}
@@ -636,17 +666,9 @@
     \newpage
 }
 
-% \newenvironment{acknowledgments}[1]{
-% 	\begin{center}
-%     {\large\bfseries ACKNOWLEDGMENTS}
-%     \end{center}
-%     \bigskip
-%     \hspace*{\parindent}
-%     \newpage
-% }
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % DEDICATION
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newenvironment{dedication}
     {\@dspacing\begin{center}}
     {\end{center}
@@ -654,7 +676,7 @@
 
 
 
-% % -----------------------------------------------------------------------
+% % ------------------------------------------------------------------
 % % D E C L A R A T I O N  P A G E
 % \newcommand{\SgAddDeclaration}[1][nosignimage]{%
 % 	\newpage
@@ -687,10 +709,7 @@
 % 	\SgIntClearDoublePage
 % }
 
-
-
-
-% -----------------------------------------------------------------------
+% ------------------------------------------------------------------
 % A B S T R A C T
 %
 % The abstract environment puts a large, bold, centered "Abstract" label at the top of the page. The abstract itself appears in a quote environment, i.e. tabbed in at both sides, and on its own page.
@@ -711,9 +730,10 @@
 
 
 
-% -----------------------------------------------------------------------
+%-----------------------------------------------------------------
 % F R O N T M A T T E R
-%
+%-----------------------------------------------------------------
+
 % The frontmatter environment set the page numbering to lowercase roman for
 % ack, abstract, toc, lof, lot, loa, etc. It also resets page numbering for the
 % remainder of thesis (arabic, starting at 1).
@@ -729,9 +749,3 @@
 	\SgIntClearDoublePage
 }
 
-
-
-
-% -----------------------------------------------------------------------
-% S L E E K - T E M P L A T E
-\RequirePackage{bst/sleek-theorems}
