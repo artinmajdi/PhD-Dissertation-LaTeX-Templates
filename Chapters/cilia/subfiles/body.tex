@@ -44,7 +44,7 @@ To construct our CNN, we discard U-Net's layers of up-convolution and the last t
 
 The inputs to our CNN are the $32 \times 32$ image patches of primary cilia, extracted from both within AQP2 expressed regions and elsewhere within the microscopy images. We do not zero-pad the image patches, as we already select patch sizes that are much larger than a typical cilia length and thereby avoiding the additional computational cost. Next, two consecutive convolutional layers are used in the network. The first convolutional layer consists of 32 kernels of size $5 \times 5 \times 1$. The second convolutional layer consists of 64 kernels of size $5 \times 5 \times 32$. The sub-sampling layer is set as the maximum values in non-overlapping windows of size $2 \times 2$ (stride of 2). This reduces the size of the output of each convolutional layer by half. After the two convolutional and sub-sampling layers, we use a ReLU, where the activation $y$ for a given input $x$ is obtained as
 \begin{equation}
-y = f(x) = \text{max}(0,x)
+y = f(x) = \max{(0,x)}
 \label{eq:cilia.eq.1}
 \end{equation}
 A graphical representation of the architecture of the proposed CNN model is shown in Fig~\ref{fig:cilia.fig.2} (see the left side).
