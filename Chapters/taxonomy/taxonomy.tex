@@ -17,6 +17,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{endfloat}
 \usepackage{caption}
+\usepackage{natbib} 
 \usepackage[utf8]{inputenc}
 \usepackage{stmaryrd}
 \usepackage{url,multirow,morefloats,floatflt,cancel,tfrupee}
@@ -76,7 +77,6 @@
 \end{frontmatter}
 
 % \linenumbers
-% \input{subfiles/body}
 \section{Introduction}\label{sec:taxonomy.introduction}
 Chest X-ray (CXR) is a prevalent radiological examination for diagnosing lung and heart disorders, constituting a significant share of ordered imaging studies. Fast and accurate detection of different thoracic diseases, such as pneumothorax, is crucial for optimal patient care~\cite{bellaviti_Increased_2016}. However, interpreting CXRs can be challenging due to similarities between different thoracic diseases, which may result in misinterpretation even by experienced radiologists~\cite{delrue_Difficulties_2011}. Consequently, devising an accurate system to identify and localize common thoracic diseases can aid radiologists in minimizing diagnostic errors~\cite{crisp_Global_2014,silverstein_Most_2016}.
 Progress in natural language processing (NLP) has enabled the collection of extensive annotated datasets such as ChestX-ray8~\cite{wang_ChestXRay8_2017}, PADCHEST~\cite{bustos_Padchest_2020}, and CheXpert~\cite{irvin_CheXpert_2019}, allowing researchers to develop more efficient and robust supervised learning algorithms.
@@ -552,8 +552,8 @@ However, further research is needed to explore their potential benefits in a cli
 \section*{Appendices}
 
 
-% \bibliographystyle{apalike}
-\bibliographystyle{bst/elsarticle-num}%elsarticle-harv}
+\bibliographystyle{apalike}
+%\bibliographystyle{bst/elsarticle-harv}%elsarticle-num
 \bibliography{subfiles/Better_BibTeX_Zotero}
 
 \end{document}
