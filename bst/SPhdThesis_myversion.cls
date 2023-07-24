@@ -88,6 +88,7 @@
 \newcommand{\SgIntChapTitleFormat}{\LARGE\bfseries}
 \newcommand{\SgIntSecTitleFormat}{\Large\bfseries}
 \newcommand{\SgIntSubsecTitleFormat}{\large\bfseries}
+\newcommand{\SgIntSubsubsecTitleFormat}{\large\bfseries}
 
 % Specify the format for displaying chapter in fancy header.
 \newcommand{\SgIntHeaderFormat}{\large\bfseries}
@@ -370,6 +371,7 @@
 \RequirePackage{sectsty}
 \sectionfont{\SgIntSecTitleFormat}
 \subsectionfont{\SgIntSubsecTitleFormat}
+\subsubsectionfont{\SgIntSubsubsecTitleFormat}
 
 % Adjust the spacing between titles and surrounding matter.
 \RequirePackage{etoolbox}
