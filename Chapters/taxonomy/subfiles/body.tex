@@ -91,7 +91,6 @@ When computational resources are limited, this technique can be applied to test 
 Directly updating the predicted probabilities presents potential benefits, including the following:
 \begin{itemize}
     \item  \textbf{Simplicity:} Direct modification of predicted probabilities eliminates the need for substantial changes to the loss function, thus facilitating implementation.
-    \item  \textbf{Faster convergence:} In some cases, direct updates can accelerate convergence due to a more accurate representation of hierarchical relationships, thus reducing the overall training time.
     \item  \textbf{Improved performance in specific scenarios:} Depending on the problem and dataset, direct updates may provide superior performance in certain circumstances, especially when incorporating class relationships into the loss function is challenging.
     \item  \textbf{Easier calibration:} Direct modification of predicted probabilities can facilitate calibration of the model output to more closely match the true label distribution.
 \end{itemize}
@@ -470,6 +469,7 @@ The ``loss'' and ``logit'' techniques harness the disease taxonomy to enhance cl
 %
 However, further research is needed to explore their potential benefits in a clinical setting. There are also some limitations to these methods. For example, applying these techniques to other applications would necessitate the creation of a taxonomical structure for the dataset labels, which could be challenging for complex applications and usually requires consensus among several domain experts. Also, the effectiveness of the introduced techniques could be influenced by the quality and consistency of dataset labeling, which may vary across different sources. Future research should aim to evaluate these techniques across a broader array of datasets and investigate the impact of labeling quality on performance.
 %
+
 \section*{Appendices}
 
 \section*{Acknowledgements}
