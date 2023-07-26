@@ -231,7 +231,9 @@ In multi-label classification problems, where each sample may belong to multiple
     \text{Loss}(\theta) = \sum_{i=1}^{N}\sum_{k=1}^{K}l_k
     \label{eq:taxonomy.eq.3.totalloss}
 \end{equation}
-In this formulation, the objective is to minimize the loss function with respect to the model parameters $\theta $, resulting in an optimal set of parameters that produce accurate predictions for multi-label classification tasks. However, class independence and equal importance between different classes cannot always be assumed. Inclusion of a hierarchical penalty or regularization term in the loss function is one way to push the loss function to take the taxonomy into account when optimizing the model hyperparameters (weights and biases). We use a regularization term $\beta_k$  to penalize the loss for class $c_k$ for each instance $i $ in which there is a low probability that it also belongs to parent class $c_j$. This can be represented mathematically by adding a hierarchical penalty term $H(c_k \vert c_j)$ for the class $c_k$ with respect to its corresponding parent class $c_j$ as follows:
+In this formulation, the objective is to minimize the loss function with respect to the model parameters $\theta $, resulting in an optimal set of parameters that produce accurate predictions for multi-label classification tasks. However, class independence and equal importance between different classes cannot always be assumed. Inclusion of a hierarchical penalty or regularization term in the loss function is one way to push the loss function to take the taxonomy into account when optimizing the model hyperparameters (weights and biases).
+
+Let's denote $\beta_k$ as the regularization term that penalizes the loss for class $c_k$ for each instance $i $ in which there is a low probability that it also belongs to parent class $c_j$. This can be represented mathematically by adding a hierarchical penalty term $H(c_k \vert c_j)$ for the class $c_k$ with respect to its corresponding parent class $c_j$ as follows:
 \begin{equation}
     \widehat{l}_{k}^{(i)} = l_{k}^{(i)}+\beta_k H \left(c_k \vert c_j \right)
     \label{eq:taxonomy.eq.3.newloss}
@@ -268,7 +270,7 @@ where $c_j$ is the parent class of the child class $c_k$, and $l_j$ is the paren
 
 In Equation~(\ref{eq:taxonomy.eq.7.newloss}), $\widehat{l}_k^{(i)}$ represents the new loss value that we calculate by multiplying the original loss value $l_k^{(i)}$ for child class $k$ and instance $i$ with the hierarchical penalty term $H(k \vert j)$ which is calculated based on the parent class $j$. The hierarchical penalty term $H(k \vert j)$, defined in Equation~(\ref{eq:taxonomy.eq.8.hierarchical_penalty.loss}), adjusts based on the hierarchical relationships between classes. The terms $\alpha _k$ and $\beta_k$ are parameters that can be adjusted to control the degree of influence the hierarchical relationships have on the learning process.
 \\ %
-The parameter $\alpha _k$ directly scales the parent's loss $l_j^{(i)}$. If $\alpha _k$ is increased, the penalty term becomes larger, and thus the total loss $\widehat{l}_k^{(i)}$ becomes more sensitive to the parent's loss. This, in effect, increases the degree of influence that hierarchical information has on the learning process. The parameter $\beta_k$ serves as a baseline or offset. If $\beta_k$ is increased, the penalty term increases irrespective of the parent's loss value. This means that even if the parent's loss is low, the total loss $\widehat{l}_k^{(i)}$ can still be high, thus maintaining the influence of hierarchical information in the learning process. However, if $\beta_k$ is set too high, it may lead to an overemphasis on hierarchy, possibly at the expense of other important learning elements. The regulation of parameters $\alpha_k$ and $\beta_k$ allow us to balance the degree to which hierarchical information influences the learning process, thus improving the reflection of the hierarchical structure in the model outputs, while remaining flexible to diverse learning scenarios.
+The parameter $\alpha _k$ directly scales the parent's loss $l_j^{(i)}$. If $\alpha _k$ is increased, the penalty term becomes larger, and thus the updated loss $\widehat{l}_k^{(i)}$ becomes more sensitive to the parent's loss. This, in effect, increases the degree of influence that hierarchical information has on the learning process. The parameter $\beta_k$ serves as a baseline or offset. If $\beta_k$ is increased, the penalty term increases irrespective of the parent's loss value. This means that even if the parent's loss is low, the updated loss $\widehat{l}_k^{(i)}$ can still be high, thus maintaining the influence of hierarchical information in the learning process. However, if $\beta_k$ is set too high, it may lead to an overemphasis on hierarchy, possibly at the expense of other important learning elements. The regulation of parameters $\alpha_k$ and $\beta_k$ allow us to balance the degree to which hierarchical information influences the learning process, thus improving the reflection of the hierarchical structure in the model outputs, while remaining flexible to diverse learning scenarios.
 %
 \subsection{Updating Loss Values and Predicted Probabilities}\label{subsec:updating-loss-values-and-predicted-probabilities}
 In the previous section, we introduced a taxonomy-based loss function with the goal of improving the classification accuracy of multi-class problems. However, one of the main advantages of our proposed technique is that it enables efficient utilization of pre-trained models and leverages the existing knowledge, thus reducing the computational cost and training time associated with re-optimization. In this section, we illustrate how both of our proposed approaches can be seamlessly integrated into an existing classification framework without the necessity to re-run the optimization phase of the classifier (e.g., DenseNet121). This can be achieved by focusing on updating the loss values (approach 2 shown in Section~\ref{subsec:taxonomy.method.approach2}) and predicted probabilities (approach 1 shown in Section~\ref{subsec:taxonomy.method.approach1}) to incorporate the hierarchical relationships present in the taxonomy structure.
@@ -384,7 +386,22 @@ By substituting Equations~(\ref{eq:taxonomy.eq.17}) and~(\ref{eq:taxonomy.eq.18}
         \text{otherwise.}
     \end{cases}
 \end{equation}
-%
+
+In order to make this work on new test instances, we can substitute the $y_{k}^{(i)}=1$ condition with the predicted presence of both child and parent class.
+\begin{equation}
+    \label{eq:taxonomy.eq.19.newpred_wo_groundtruth}
+    \widehat{p}_k^{(i)} =
+    \begin{cases}
+        \, {\left( p_k^{(i)} \right)}^{-\alpha_k \log(p_j^{(i)}) + \beta_k}
+        &
+        \text{if} \quad (p_k^{(i)} > 0.5) \; \& \; (p_j^{(i)} > 0.5)
+        \\
+        \, 1 - {\left( 1 - p_k^{(i)} \right)}^{-\alpha_k \log{\left( 1 - p_j^{(i)} \right)} + \beta_k}
+        &
+        \text{otherwise.}
+    \end{cases}
+\end{equation}
+
 \subsection{Experimental Setup}
 %
 \subsubsection{Datasets}
