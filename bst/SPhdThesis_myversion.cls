@@ -208,9 +208,8 @@
 
 \newenvironment{SgAlgorithm}[1][t]
 {%
-	\SetAlgorithmName{Method}{}{} % {name}{algotitle}{list of alg. title}
+	% \SetAlgorithmName{Method}{}{} % {name}{algotitle}{list of alg. title}
 	\begin{algorithm2e}[#1]
-	\LinesNotNumbered
     \linespread{1.5}
     \selectfont
 }

@@ -17,7 +17,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{endfloat}
 \usepackage{caption}
-\usepackage{natbib} 
+\usepackage{natbib}
 \usepackage[utf8]{inputenc}
 \usepackage{stmaryrd}
 \usepackage{url,multirow,morefloats,floatflt,cancel,tfrupee}
@@ -25,6 +25,14 @@
 \usepackage{pifont}
 \usepackage[nointegrals]{wasysym}
 \usepackage{float}
+
+\newenvironment{SgAlgorithm}[1][t]
+{%
+	\begin{algorithm2e}[#1]
+    \linespread{1.5}
+    \selectfont
+}
+{\end{algorithm2e}}
 
 \newcommand{\figurepath}[1]{figures/#1}
 \definecolor{mygreen}{HTML}{E9ECE6}

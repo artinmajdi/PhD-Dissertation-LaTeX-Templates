@@ -28,13 +28,13 @@ This additional layer of interpretability can help radiologists in understanding
 In the context of neural networks, a logit refers to the raw, unscaled output of a neuron. This output is obtained at the last layer of a neural network model prior to the application of the sigmoid layer~\cite{furnieles_Sigmoid_2022}. Logit values can range from negative to positive infinity. The term ``logit'' originally comes from logistic regression, and it is the inverse of the logistic sigmoid function. In machine learning, it's often desirable for our model to produce real numbers ranging from 0 to 1. Applying the sigmoid function to the logit ensures this, as the sigmoid function maps any real number to the interval \([0,1]\).
 The equation representing the sigmoid function is:
 \begin{equation}
-p = \text{{sigmoid}}(x) = \frac{1}{1 + e^{-x}}
+p = \text{{sigmoid}}(q) = \frac{1}{1 + e^{-q}}
 \end{equation}
 When we apply this sigmoid function to the logit values produced by the neural network, the result is a predicted probability ranging from 0 to 1. This property is particularly useful in binary classification tasks, where the aim is to model the probability of a given input pertaining to a certain class.
 In a binary classification scenarios, if we apply the sigmoid function to the logit value and obtain output \( p \), we interpret this as the model's estimated probability that the input belongs to the class.
 Finally, the equation for the logit (also known as the log-odds) can be given as
 \begin{equation}
-x = \text{{logit}}(p) = \log \left( \frac{p}{1 - p} \right)
+q = \text{{logit}}(p) = \log \left( \frac{p}{1 - p} \right)
 \end{equation}
 where \( p \) is the probability of a positive event. This function maps a probability \( p \) from the interval \((0,1)\) to any real number.
 %
@@ -70,10 +70,10 @@ Let us define the following parameters:
     % \item  ${\widehat p}_k^{(i)}=\omega_k^{(i)}\;p_k^{(i)} $: updated predicted probability for the $k $ -th class.
 \end{itemize}
 Let us define the multi-label classification problem as follows. Let $\mathbb{X} = {\left\{X^{(i)}\right\}}_{i=1}^{N} $ be a set of $N $ chest radiograph images and $\mathbb{Y} = {\left\{Y^{(i)}\right\}}_{i=1}^{N} $ be their corresponding ground truth labels. The ground-truth labels for the dataset were provided by experienced radiologists who annotated each image with the corresponding abnormalities.
-Given the set of disease classes $\mathcal{C} = \{c_1,c_2,\dots,c_K\} $, let us define a  graph $\mathcal{G}=\left\{\mathcal{C},\mathcal{E}\right\} $ representing the taxonomy of thoracic diseases, where $\mathcal{E}$ is the set of edges representing parent-child relationships between these classes. For each node $c_k \in \mathcal{C} $, let $\Lambda_k$ be the parent node of class $c_k $ and let $\mathcal{J}_k\subset \mathcal{C} $ be the set of child classes of class $c_k $ in graph $\mathcal{G}$. \\
+Given the set of disease classes $\mathcal{C} = \{c_1,c_2,\dots,c_K\} $, let us define a  graph $\mathcal{G}=\left\{\mathcal{C},\mathcal{E}\right\} $ representing the taxonomy of thoracic diseases, where $\mathcal{E}$ is the set of edges representing parent-child relationships between these classes. For each node $c_k \in \mathcal{C} $, let $\Lambda (c_k)$ be the parent node of class $c_k $ and let $\mathcal{J}_k\subset \mathcal{C} $ be the set of child classes of class $c_k $ in graph $\mathcal{G}$. \\
 In the context of multi-label classification problems, each sample may have multiple labels assigned to it simultaneously. To this end, we use a deep neural network, with multiple hidden layers and the sigmoid activation function in the final layer. Let's denote the input to this neural network by $x^{(i)}$, which represents data for instance $i$ (data type can be a 1D feature vector, 2D image, or 3D volume). This network is trained to predict the probabilities for each class being present in a given sample. Hence, the output of the final layer of the neural network for instance $i$ is passed through a sigmoid function to generate a set of values, each ranging from 0 to 1, corresponding to the label set $\mathcal{C} $.
 The outcome of this operation is a set of $K $ predicted probabilities $P^{(i)}={\left\{p_k^{(i)}\right\}}_{k=1}^{K} $. Each of these predicted probabilities, derived from the sigmoid activation function, can be interpreted as the likelihood that the input sample belongs to each class.
-Furthermore, let $\omega_k^{(i)} $ be a scalar weight assigned to the class $c_k $ of instance $i $ with respect to its parent class $\Lambda_k$.
+Furthermore, let $\omega_k^{(i)} $ be a scalar weight assigned to the class $c_k $ of instance $i $ with respect to its parent class $\Lambda (c_k)$.
 Each of these predicted probabilities, derived from the sigmoid activation function, can be interpreted as the likelihood that the input sample belongs to each class. A loss function is utilized to quantify the similarity between predicted probabilities and true labels. This function guides the learning process of the neural network by providing a measure of the prediction error, which is minimized during the training phase.
 Let us denote the loss value as $l_k = \mathcal{L} \left(p_k^{(i)},y_k^{(i)}\right),\hspace{0.33em}k \in \{1,2,\dots,K\} $ where $\mathcal{L}(\cdot) $ is an appropriate single-class loss function for the task (e.g., binary cross-entropy, Dice, etc.) that is used to calculate the difference between the predicted probability $p_k^{(i)} $ and the true class label $y_k^{(i)} $ for instance $i$ and class $k $.
 %
@@ -96,21 +96,125 @@ Directly updating the predicted probabilities presents potential benefits, inclu
 \end{itemize}
 The proposed technique provides an easy way to improve the performance of existing pre-trained models during inference time by updating the value of the predicted logit for each class that was obtained at the last layer of the neural network based on the predicted logit of its corresponding parent class. The aim is to calculate the conditional predicted probability for each class $k $ and instance $i $, taking into account the predicted probability of the parent class. We can formalize this by defining a new predicted probability for the $k$-th class $(c_k) $ and instance $i $ as follows.
 \begin{equation}
-    \widehat{p}_k^{(i)} = \frac{1}{ 1 + \exp \left(-\left(q_k^{(i)} + \alpha_{k,j} q_j^{(i)} \right)\right) }
+    \widehat{p}_k^{(i)} = \frac{1}{ 1 + \exp \left(-\left(q_k^{(i)} + \alpha_k q_j^{(i)} \right)\right) }
     \label{eq:taxonomy.eq.1.pred.approach1}
 \end{equation}
-where $j=\Lambda_k$ is the index of the parent class of the $k$-th class, and $\alpha_{k,j} $ is the hyperparameter that controls the influence of different parent class logits on child class logits.
-When $\alpha_{k,j}=0 $, there is no influence from the parent class $c_j$ on the child class $c_k$.  By carefully selecting appropriate hyperparameter values, this transfer learning technique can be employed to effectively adjust the predicted probabilities of each class, considering the hierarchical relationship between classes, and potentially improving classification accuracy.
+where $c_j = \Lambda (c_k)$ is the index of the parent class of the $k$-th class, and $\alpha_k $ is the hyperparameter that controls the influence of different parent class logits on child class logits.
+When $\alpha_k=0 $, there is no influence from the parent class $c_j$ on the child class $c_k$.  By carefully selecting appropriate hyperparameter values, this transfer learning technique can be employed to effectively adjust the predicted probabilities of each class, considering the hierarchical relationship between classes, and potentially improving classification accuracy.
 \subsubsection{Parameter Selection and Tuning}
-The selection of appropriate hyperparameters is crucial for the effectiveness of the proposed transfer learning technique. In this study, we employ a systematic approach to tune the hyperparameters $\alpha_{k,j} $, which controls the dependency between the predicted probabilities of the child and parent classes. We utilize a grid search method along with cross-validation to determine the optimal values for these hyperparameters. The search space for both hyperparameters is defined based on preliminary experiments and domain knowledge, ensuring a balance between model complexity and predictive performance.
+The selection of appropriate hyperparameters is crucial for the effectiveness of the proposed transfer learning technique. In this study, we employ a systematic approach to tune the hyperparameters $\alpha_k $, which controls the dependency between the predicted probabilities of the child and parent classes. We utilize a grid search method along with cross-validation to determine the optimal values for these hyperparameters. The search space for both hyperparameters is defined based on preliminary experiments and domain knowledge, ensuring a balance between model complexity and predictive performance.
+
+\begin{enumerate}
+    \item Combine all three datasets (NIH, CheXpert, PADCHEST). Let's denote this dataset as $\mathcal{D} = (X, Y)$
+    \item Split the new dataset $\mathcal{D}$ into three subsets: $\mathcal{D}^{\text{train}}$, $\mathcal{D}^{\text{valid}}$, and $\mathcal{D}^{\text{test}}$, representing $60\%$, $10\%$, and $30\%$ of the data respectively.
+    \item Optimize the CNN model (DenseNet121) $f_1(\cdot)$, using $\mathcal{D}^{\text{train}}$ and $\mathcal{D}^{\text{valid}}$.
+    \item Create a secondary model $f_2 (\cdot)$:
+    \begin{itemize}
+        \item Construct a second model $f_2(\cdot)$ which is identical in architecture to the original model $f(\cdot)$ except for the last activation layer (sigmoid).
+        \item Update the weights and biases in the $f_2 (\cdot)$ using their counterpart values in $f(\cdot)$
+    \end{itemize}
+    \item Obtain the logit values:
+    \begin{itemize}
+        \item Run the data samples $x^{(i)}$ in both $\mathcal{D}^{\text{train}}$ and $\mathcal{D}^{\text{test}}$ subsets as test cases into the trained model $f_2(\cdot)$ to obtain $K$ logit values $Q = \{q_k^{(i)}\}_{k=1}^{K}$ for $K$ classes for each instance $i$, where $Q = f_2(x^{(i)})$.
+        \item Define $\mathcal{T}^{\text{train}} = \{X^{\text{train}}, Y^{\text{train}}, Q^{\text{train}}\}$ and $\mathcal{T}^{\text{test}} = \{X^{\text{test}}, Y^{\text{test}}, Q^{\text{test}}\}$.
+    \end{itemize}
+    \item Perform Hyper Parameter Tuning to find the $\alpha_k$ parameter values:
+    \begin{itemize}
+        \item Use $\mathcal{T}^{\text{train}}$ to determine the instances of $\alpha_k$ where the Area Under the Curve (AUC) is maximized.
+        \begin{itemize}
+            \item \textbf{Search Space:} A uniform distribution $U(-1, 1)$.
+            \item \textbf{Optimization Algorithm:} Tree-structured Parzen Estimator (TPE). TPE is a sequential model-based optimization (SMBO) approach.
+            \item A Bayesian optimization strategy is employed where it iteratively constructs a probabilistic model of the function to be optimized and uses this model to select the most promising parameters to evaluate in the true function.
+            \item This algorithm is generally considered to be more efficient than other optimization methods such as grid search and random search, especially for high-dimensional hyperparameter optimization problems. This is due to its ability to focus the search on promising areas of the parameter space, guided by the information collected from previous evaluations of the objective function.
+        \end{itemize}
+        \item Use the calculated $\alpha_k$ to find the updated predicted probability values for instances in $\mathcal{T}^{\text{test}}$.
+    \end{itemize}
+    \item Repeat step 6 for different thresholding techniques (ROC, AUC, 0.5).
+\end{enumerate}
+
+% \begin{algorithm}
+%     \caption{Combining datasets and logit adjustment}
+%     \begin{enumerate}
+%         \item Combine all three datasets (NIH, CheXpert, PADCHEST). Let's denote this dataset as $\mathcal{D} = (X, Y)$
+%         \item Split the new dataset $\mathcal{D}$ into three subsets: $\mathcal{D}^{\text{train}}$, $\mathcal{D}^{\text{valid}}$, and $\mathcal{D}^{\text{test}}$, representing $60%$, $10%$, and $30%$ of the data respectively.
+
+%         \item Optimize the CNN model $f_1(\cdot)$, using $\mathcal{D}^{\text{train}}$ and $\mathcal{D}^{\text{valid}}$.
+%         \item Create a secondary model $f_2(\cdot)$:
+%         \begin{itemize}
+%             \item Construct a second model $f_2(\cdot)$ which is identical in architecture to the original model $f(\cdot)$ except for the last activation layer (sigmoid).
+%             \item Update the weights and biases in the $f_2(\cdot)$ using their counterpart values in $f(\cdot)$
+%         \end{itemize}
+%         \item Obtain the logit values:
+%         \begin{itemize}
+%             \item Run the data samples $x^{(i)}$ in both $\mathcal{D}^{\text{train}}$ and $\mathcal{D}^{\text{test}}$ subsets as test cases into the trained model $f_2(\cdot)$ to obtain $K$ logit values $Q = {q_k^{(i)}}_{k=1}^{K}$ for $K$ classes for each instance $i$, where $Q = f_2(x^{(i)})$.
+%             \item Define $\mathcal{T}^{\text{train}} = {X^{\text{train}}, Y^{\text{train}}, Q^{\text{train}}}$ and $\mathcal{T}^{\text{test}} = {X^{\text{test}}, Y^{\text{test}}, Q^{\text{test}}}$.
+%         \end{itemize}
+%         \item Perform Hyper Parameter Tuning to find the $\alpha_k$ parameter values:
+%         \begin{itemize}
+%             \item Use $\mathcal{T}^{\text{train}}$ to determine the instances of $\alpha_k$ where the Area Under the Curve (AUC) is maximized.
+%             \begin{itemize}
+%                 \item \textbf{Search Space:} A uniform distribution $U(-1, 1)$.
+%                 \item \textbf{Optimization Algorithm:} Tree-structured Parzen Estimator (TPE). TPE is a sequential model-based optimization (SMBO) approach.
+%                 \item A Bayesian optimization strategy is employed where it iteratively constructs a probabilistic model of the function to be optimized and uses this model to select the most promising parameters to evaluate in the true function.
+%                 \item This algorithm is generally considered to be more efficient than other optimization methods such as grid search and random search, especially for high-dimensional hyperparameter optimization problems. This is due to its ability to focus the search on promising areas of the parameter space, guided by the information collected from previous evaluations of the objective function.
+%             \end{itemize}
+%             \item Use the calculated $\alpha_k$ to find the updated predicted probability values for instances in $\mathcal{T}^{\text{test}}$.
+%         \end{itemize}
+%         \item Repeat step 6 for different thresholding techniques (ROC, AUC, 0.5).
+%     \end{enumerate}
+% \end{algorithm}
+
+\begin{SgAlgorithm}
+\caption{Training the Classification Model $f_1 (\cdot)$}
+\label{alg:taxonomy.predictor}
+\begin{algorithmic}
+    \State{Combine all three datasets (NIH, CheXpert, PADCHEST) into one dataset called $\mathcal{D} = (X, Y)$}
+
+    \State{Randomly split the $\mathcal{D}$ into $\mathcal{D}^\text{train}$, $\mathcal{D}^\text{valid}$, and $\mathcal{D}^\text{test}$ subsets, representing \%60, \%10, and \%30 of the data}
+
+    \State{Optimize the predictor model (DenseNet121) $f_1(\cdot)$, using $\mathcal{D}^\text{train}$ and $\mathcal{D}^\text{valid}$.}
+
+    \State{Construct $f_2(\cdot)$ predictor model using an architecture identical to $f(\cdot)$ except for the last layer (Sigmoid layer)}
+
+    \State{Update weights and biases in $f_2 (\cdot)$ using their counterparts in $f_1 (\cdot)$}
+\end{algorithmic}
+\end{SgAlgorithm}
+
+% \TODO complete the below algorithms
+
+% \begin{SgAlgorithm}
+% \caption{Applying the ``logit_based'' technique Algorithm}
+% \label{alg:taxonomy.logit}
+% \begin{algorithmic}
+%     \State{Get the predictor model $f_2(\cdot)$ from Algorithm~\ref{alg:taxonomy.predictor}}
+%     \State{Feed the data instances $x^{(i)}$ in both $\mathcal{D}^\text{train}$ and $\mathcal{D}^\text{test}$ as test cases, into the $f_2(\cdot)$ predictor to obtain $K$ logit values $Q = {q_k^{(i)}}_{k=1}^{K}$}
+
+%     \State{Define $\mathcal{T}^{\text{train}} = {X^{\text{train}}, Y^{\text{train}}, Q^{\text{train}}}$ and $\mathcal{T}^{\text{test}} = {X^{\text{test}}, Y^{\text{test}}, Q^{\text{test}}}$}
+
+%     \State{Get the $\alpha_k$ from Algorithm~\ref{alg:taxonomy.hyperparameter_tuning}}
+%     % \State{Use $\alpha_k$ and Eq~\ref{} }
+% \end{algorithmic}
+% \end{SgAlgorithm}
+
+
+% \begin{SgAlgorithm}
+% \caption{Hyperparameter Optimization Algorithm}
+% \label{alg:taxonomy.hyperparameter_tuning}
+% \begin{algorithmic}
+%     \State{For each instance of $\alpha_k$ in $\mathcal{T}^\text{train}$
+%         \State{Define search space as $U(-1, 1)$}
+%         \State{Employ Bayesian optimization strategy: Tree-structured Parzen Estimator (TPE)}
+%         \State\If{$\alpha_k$ maximizes Area Under the Curve (AUC)}{
+%             \State{Update predicted probability values for instances in $\mathcal{T}^{\text{test}}$ using calculated $\alpha_k$}}
+%         }
+%     \State\For{\text{each thresholding technique (ROC, AUC, 0.5)}}{
+%         \State{Repeat step 6}
+%     }
+% \end{algorithmic}
+% \end{SgAlgorithm}
+
 \subsection{Approach 2: Conditional Loss}\label{subsec:taxonomy.method.approach2}
-In a second approach, we propose a similar concept to the approach discussed in Section~\ref{subsec:taxonomy.method.approach1}; however, rather than directly updating the predicted probability of each class, we instead update the loss value of each class based on the loss values of its parent classes. In the previous approach, we directly updated the predicted probability so that it could be applied unsupervised to existing pre-trained models. Although this method is highly useful during inference time, it presents some challenges if we use it during the optimization phase of our classifier model. Among these disadvantages are the following.
-\begin{itemize}
-    \item \textbf{Inconsistency with the optimization process:} Direct updating of predicted probabilities can misalign with the optimization procedure, which typically minimizes the loss function, potentially resulting in learning inconsistencies.
-    \item \textbf{Difficulty in fine-tuning:} Direct updates can complicate fine-tuning the method's impact on the model, whereas adjusting the influence of various components is often simpler when updating the loss value through weighting factors or hyperparameters.
-    \item \textbf{Potential overfitting:} Direct modification of predicted probabilities could inadvertently overfit the model to particular hierarchical relationships in the training data, thus hindering generalization to unseen data.
-\end{itemize}
-The utilization of the loss function approach can prove advantageous in certain scenarios, particularly in the context of multi-label classification tasks that involve hierarchical relationships, as it offers numerous benefits:
+In a second approach, we propose a similar concept to the approach discussed in Section~\ref{subsec:taxonomy.method.approach1}; however, rather than directly updating the predicted probability of each class, we instead update the loss value of each class based on the loss values of its parent classes. The utilization of the loss function approach can prove advantageous in certain scenarios, particularly in the context of multi-label classification tasks that involve hierarchical relationships, as it offers numerous benefits:
 \begin{itemize}
     \item \textbf{Emphasis on error minimization:} The loss values quantify the divergence between the predictions made by the model and the actual labels provided as ground truth. Integrating parent class loss values into child class loss calculations aims to minimize errors throughout the hierarchy, with the goal of improving prediction accuracy for both parent and child classes.
     \item \textbf{Enhanced gradient propagation:} During the training process of deep learning models, the model parameters are updated by backpropagating gradients through layers. Incorporating the loss values of the parent class through the calculation of the loss for the child classes can improve the gradient propagation between the parent and child classes. This may lead to more effective learning of hierarchical associations and speed up the training convergence.
