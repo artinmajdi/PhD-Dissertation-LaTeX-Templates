@@ -77,6 +77,7 @@ Furthermore, let $\omega_k^{(i)} $ be a scalar weight assigned to the class $c_k
 Each of these predicted probabilities, derived from the sigmoid activation function, can be interpreted as the likelihood that the input sample belongs to each class. A loss function is utilized to quantify the similarity between predicted probabilities and true labels. This function guides the learning process of the neural network by providing a measure of the prediction error, which is minimized during the training phase.
 Let us denote the loss value as $l_k = \mathcal{L} \left(p_k^{(i)},y_k^{(i)}\right),\hspace{0.33em}k \in \{1,2,\dots,K\} $ where $\mathcal{L}(\cdot) $ is an appropriate single-class loss function for the task (e.g., binary cross-entropy, Dice, etc.) that is used to calculate the difference between the predicted probability $p_k^{(i)} $ and the true class label $y_k^{(i)} $ for instance $i$ and class $k $.
 %
+
 \subsection{Label Taxonomy Structure}\label{subsec:label-taxonomy-and-hierarchy}
 To exploit the hierarchical relationships between thoracic abnormalities, the first step is to define a disease taxonomy that demonstrates different abnormalities' interrelationships. In this taxonomy, diseases are structured hierarchically in a graph, with higher levels representing broader disease categories and lower levels representing more nuanced distinctions between related diseases. The taxonomy is structured such that if a disease is present then its parent disease is also present. Furthermore, in the presence of multiple parent classes for a given child class, the taxonomy structure only utilizes the more dominant parent (e.g., if class $c_1$ has two parent classes $c_3$ and $c_5$, while the $c_5$ is also the parent of $c_3$ class (it's both the parent and grandparent of $c_1$ class), in this scenario, we assume $c_5$ as the parent class of both $c_1$ and $c_3$).
 %
@@ -86,6 +87,7 @@ In medical imaging, classes are frequently organized as graphs to represent the 
 To create the label taxonomy shown in Figure~\ref{fig:taxonomy.fig.1.taxonomy_structure}, we combined the taxonomies provided by Irvin~\cite{irvin_CheXpert_2019} for the CheXpert dataset, Chen~\cite{chen_Deep_2020} for the PADCHEST~\cite{bustos_Padchest_2020} and the CXR portion of the prostate, lung, colorectal and ovarian (PLCO) dataset~\cite{gohagan_Prostate_2000}.
 In order to maintain uniformity, we adopted the renaming scheme introduced by Cohen~\cite{cohen_TorchXRayVision_2022} for the pathology names. Subsequently, the key pathologies were identified and extracted to build the hierarchical taxonomy structure illustrated in Figure~\ref{fig:taxonomy.fig.1.taxonomy_structure}.
 %
+
 \subsection{Approach 1: Conditional Predicted Probability}\label{subsec:taxonomy.method.approach1}
 When computational resources are limited, this technique can be applied to test samples without the need to fine-tune the pre-trained, multi-label classification model. This adaptability ensures that the benefits of considering hierarchical relationships between labels can be realized in a wide range of practical scenarios, without imposing excessive computational requirements.
 Directly updating the predicted probabilities presents potential benefits, including the following:
@@ -272,6 +274,7 @@ In Equation~(\ref{eq:taxonomy.eq.7.newloss}), $\widehat{l}_k^{(i)}$ represents t
 \\ %
 The parameter $\alpha _k$ directly scales the parent's loss $l_j^{(i)}$. If $\alpha _k$ is increased, the penalty term becomes larger, and thus the updated loss $\widehat{l}_k^{(i)}$ becomes more sensitive to the parent's loss. This, in effect, increases the degree of influence that hierarchical information has on the learning process. The parameter $\beta_k$ serves as a baseline or offset. If $\beta_k$ is increased, the penalty term increases irrespective of the parent's loss value. This means that even if the parent's loss is low, the updated loss $\widehat{l}_k^{(i)}$ can still be high, thus maintaining the influence of hierarchical information in the learning process. However, if $\beta_k$ is set too high, it may lead to an overemphasis on hierarchy, possibly at the expense of other important learning elements. The regulation of parameters $\alpha_k$ and $\beta_k$ allow us to balance the degree to which hierarchical information influences the learning process, thus improving the reflection of the hierarchical structure in the model outputs, while remaining flexible to diverse learning scenarios.
 %
+
 \subsection{Updating Loss Values and Predicted Probabilities}\label{subsec:updating-loss-values-and-predicted-probabilities}
 In the previous section, we introduced a taxonomy-based loss function with the goal of improving the classification accuracy of multi-class problems. However, one of the main advantages of our proposed technique is that it enables efficient utilization of pre-trained models and leverages the existing knowledge, thus reducing the computational cost and training time associated with re-optimization. In this section, we illustrate how both of our proposed approaches can be seamlessly integrated into an existing classification framework without the necessity to re-run the optimization phase of the classifier (e.g., DenseNet121). This can be achieved by focusing on updating the loss values (approach 2 shown in Section~\ref{subsec:taxonomy.method.approach2}) and predicted probabilities (approach 1 shown in Section~\ref{subsec:taxonomy.method.approach1}) to incorporate the hierarchical relationships present in the taxonomy structure.
 During a training phase of a classifier (e.g., DenseNet121), an optimization algorithm such as gradient descent is used to determine the predicted probabilities that minimize the loss across the entire dataset. However, this approach is only valid during the training phase and only shows the predicted probability with respect to the original loss values measured by the classifier.
@@ -356,6 +359,38 @@ Finally, Equation~(\ref{eq:taxonomy.eq.15.newpred}) can be simplified as follows
 \end{equation}
 where, ${\widehat l}_k^{(i)} $ is the updated loss for class $k $ and instance $i $.
 
+Alternatively, we can substitute condition factor in Eq~\ref{eq:taxonomy.eq.16.newpred} to have.
+\begin{equation}
+    \label{eq:taxonomy.loss.newpred_based_on_loss}
+    \widehat{p}_k^{(i)} =
+    \begin{cases}
+        \, \exp(-\widehat{l}_k^{(i)})
+        &
+        \text{if} \quad y_{k}^{(i)}=1
+        \\
+        \, 1 - \exp(-\widehat{l}_k^{(i)})
+        &
+        \text{otherwise}
+    \end{cases}
+\end{equation}
+
+In order to utilize this during inference time, we can substitute the $y_{k}^{(i)}=1$ condition with the predicted presence of both child and parent class.
+\begin{equation}
+    \label{eq:taxonomy.loss.newpred_based_on_loss_inference}
+    \widehat{p}_k^{(i)} =
+    \begin{cases}
+        \, \exp(-\widehat{l}_k^{(i)})
+        &
+        \text{if} \quad (p_k^{(i)} > 0.5) \; \& \; (p_j^{(i)} > 0.5)
+        \\
+        \, 1 - \exp(-\widehat{l}_k^{(i)})
+        &
+        \text{otherwise}
+    \end{cases}
+\end{equation}
+
+
+\subsubsection{Updated Predicted Probabilities with Respect to Original Values}
 The following demonstrates Equation~(\ref{eq:taxonomy.eq.16.newpred}) based on predicted probability to demonstrate its similarity to Equation~(\ref{eq:taxonomy.eq.1.pred.approach1}) in Approach 1 (Section~\ref{subsec:taxonomy.method.approach1}). From Equation~(\ref{eq:taxonomy.eq.8.hierarchical_penalty.loss}) we have $\hat{l}_k^{(i)}=l_k^{(i)}\left(\alpha_k\;l_j^{(i)}+\beta_k\right) $. By substituting that into $\exp{\left(-\widehat{l}_{k}^{(i)}\right)}, \text{for } y_{k}^{(i)}=1 $ we obtain:
 \begin{align}
     \label{eq:taxonomy.eq.17}
@@ -517,6 +552,7 @@ The distribution of samples per pathology in each dataset is presented in Table~
 \end{tabular}
 \end{table}
 %
+
 \subsection{Techniques Evaluation}
 The performance comparison of our proposed methods, namely ``logit'' and ``loss'', with the ``baseline'' technique is illustrated in Figure~\ref{fig:taxonomy.fig.3.roc_curve_all_datasets}. This comparative analysis centers on nine distinct medical conditions associated with pulmonary and cardiovascular diseases within three datasets. These nine pathologies encompass two parent classes (\textbf{Lung Opacity}, and \textbf{Enlarged Cardiomediastinum}) and their respective child classes, as illustrated in Figure~\ref{fig:taxonomy.fig.1.taxonomy_structure}. Each subplot exhibits the receiver operating characteristic (ROC) curves for each methodology superimposed on one another, accompanied by their respective AUC (Area Under Curve) scores annotated. AUC (Area Under the Curve) scores are computed for each pathology class across all test samples in all studies datasets. We can see a notable improvement in AUC scores for all pathologies possessing parent classes. The aforementioned findings serve as compelling evidence for the effectiveness of the proposed methodologies, as they showcase their ability to improve the accuracy of classification in scenarios involving hierarchical class structures. AUC scores for two parent classes, ``Lung Opacity'' and ``Enlarged Cardiomediastinum'', remain unchanged as expected. The techniques proposed in this study are designed to exploit the hierarchical structure of classes, and therefore only bring about improvements where a class possesses a parent class.
 
@@ -574,7 +610,7 @@ The obtained results provides further support for our previous findings, which i
 \caption[Comparative Analysis of ROC Curves for Nine Thoracic Pathologies: ``logit'', ``loss'', and ``baseline'' Techniques]{Comparative analysis of the ROC curves for nine thoracic pathologies using the ``logit'' and ``loss'' techniques as well as the baseline. The subplots highlighted with a darker background, represent parent class diseases.}\label{fig:taxonomy.fig.3.roc_curve_all_datasets}
 \end{figure}
 
-Table~\ref{tab:taxonomy.table.3.metrics} provides a comparative analysis of the performance of our proposed ``logit'' and ``loss'' techniques with the ``baseline'' method, using various statistical metrics. The ``logit'' technique, as indicated in the upper table, suggest a significant performance enhancement compared to the ``baseline'' across all evaluation tests, with kappa values ranging between 0.495 and 1. The kappa statistic is used to measure the level of agreement between two techniques, where a value of 1 signifies perfect alignment. The p-value for all child classes is below 0.05, ranging from 2.1E-89 to 2.9E-16, thereby implying a statistically significant improvement of the ``logit'' method over the ``baseline''. High t-statistics and power values of 1 further underscore the robustness of our technique. The Bayes factor results for the ``logit'' technique are exceptionally strong across all conditions, suggesting substantial evidence favoring the ``logit'' method for these scenarios.
+Table~\ref{tab:taxonomy.table.3.metrics} provides a comparative analysis of the performance of our proposed ``logit'' and ``loss'' techniques with the ``baseline'' method, using various statistical metrics. The ``logit'' technique, as indicated in the upper table, suggest a significant performance enhancement compared to the ``baseline'' across all evaluation tests, with kappa values ranging between 0.495 and 1. The kappa statistic is used to measure the level of agreement between two techniques, where a value of 1 signifies perfect alignment. The p-value for all child classes is below 0.05, ranging from 2.1E-89 to 2.9E-16, thereby implying a statistically significant improvement of the ``logit'' method over the ``baseline''. High t-statistics and power values of 1 further underscore the robustness of our technique. The Bayes factor results for the ``logit'' technique are exceptionally strong across all classes, suggesting substantial evidence favoring the ``logit'' method for these scenarios.
 
 The proposed ``loss'' technique demonstrates encouraging results when benchmarked against the ``baseline'', albeit with more variability. Kappa values spanned from a minimum of 0.059 for Lung Lesion to a maximum of 0.836 for Infiltration. While the p-values indicate statistically significant improvement for most conditions, Infiltration and Pneumonia had p-values exceeding 0.05 (0.053 and 0.207, respectively), hinting that the performance improvement over the ``baseline'' for these conditions may not be statistically significant. High t-statistics and power values of 1 were observed for all conditions except Infiltration and Pneumonia. The cohen-d values for the ``loss'' technique were generally larger than those for the ``logit'' technique, signifying a larger effect size. The Bayes factor results for the ``loss'' technique were exceedingly strong for conditions such as Atelectasis and Edema, but considerably lower for conditions like Infiltration and Pneumonia, indicating less evidence supporting the ``loss'' technique for these conditions.
 
