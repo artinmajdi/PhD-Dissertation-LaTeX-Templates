@@ -129,7 +129,7 @@
 
 % A4 paper is 8.27 x 11.69 inch.
 % \RequirePackage[a4paper, left=1.25in, right=1in, top=1in, bottom=1in, includehead, \SgIntPageSide]{geometry}
-\RequirePackage[letterpaper, left=1in, right=1in, top=1in, bottom=1in, includehead, \SgIntPageSide]{geometry}
+\RequirePackage[letterpaper, left=2cm, right=2cm, top=2cm, bottom=2cm, includehead,\SgIntPageSide]{geometry}
 
 \ifthenelse{\equal{\SgIntOpen}{openright}}
 {
@@ -197,7 +197,8 @@
 % A L G O R I T H M
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[algo2e, algoruled, algosection]{algorithm2e}
+\RequirePackage[algo2e, algoruled, algosection, linesnumbered, noend]{algorithm2e}
+% allowdisplaybreaks
 \DontPrintSemicolon                      % Dont print semicolons at end of lines.
 \algoheightrule       = \heavyrulewidth  % Set the width of the top and bottom rules.
 \algotitleheightrule  = \lightrulewidth  % Set the width of the middle rule.
@@ -206,10 +207,11 @@
 \setlength{\algomargin}{2.25em}          % Set the margin of the algorithm text.
 \SetNlSkip{1.25em}                       % Set the spacing between line numbers and text.
 
-\newenvironment{SgAlgorithm}[1][t]
-{%
+\newenvironment{SgAlgorithm}[1][htbp]
+{
 	% \SetAlgorithmName{Method}{}{} % {name}{algotitle}{list of alg. title}
 	\begin{algorithm2e}[#1]
+	\SetAlgoLined
     \linespread{1.5}
     \selectfont
 }

@@ -9,7 +9,7 @@
 \input{bst/isomath}
 \input{bst/mathenv}
 \input{bst/syms}
-\usepackage{graphicx, amsmath, url, multirow, morefloats, floatflt, cancel, tfrupee, colortbl, xcolor, pifont, wasysym}
+\usepackage{graphicx, url, multirow, morefloats, floatflt, cancel, tfrupee, colortbl, xcolor, pifont, wasysym}
 \usepackage[cmintegrals]{newtxmath}
 \usepackage[nocompress]{cite}
 \usepackage{tabulary}
@@ -77,9 +77,12 @@
 \linespread{1.5}% Increase the line spacing to 1.5
 
 \fancyhead{}
-\fancyhead[R]{\ifnum\theHchapter>0 Chapter~\SgIntHeaderFormat\theHchapter~\fi}
-\setlength{\headheight}{14pt}
-% \addtolength{\topmargin}{-9.0pt}
+% \fancyhead[R]{\ifnum\theHchapter>0 Chapter~\SgIntHeaderFormat\theHchapter~\fi}
+\setlength{\headheight}{-20pt}
+% \addtolength{\topmargin}{-35pt}
 %
 \fancyfoot{}
 \fancyfoot[C]{\SgIntPageNumFormat\thepage}
+\fancyfoot[R]{\ifnum\theHchapter>0 Chapter~\SgIntHeaderFormat\theHchapter~\fi}
+
+\DeclareMathOperator*{\argmax}{arg\,max} % thin space, limits underneath in displays

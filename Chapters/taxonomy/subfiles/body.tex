@@ -54,29 +54,31 @@ Let us define the following parameters:
     \item  ${\widehat p}_k^{(i)} \in (0,1) $: updated predicted probability for the $k $-th class of instance $i $ with a value between 0 and 1.
     \item  $\widehat{t}_k^{(i)}=\left\{\begin{array}{ll}1&\text{if}\;\widehat{p}_k^{(i)}\geq\theta_k\\0&\text{otherwise.}\end{array}\right. $: updated predicted label for the $k $-th class of instance $i $.
     \item $K $: number of categories (aka classes) in a multi-class, multi-label problem. For example, suppose that we have a dataset that is labeled for the presence of cats, dogs, and rabbits in any given image. If a given image $X^{(i)} $ has cats and dogs but not rabbits, then $Y^{(i)} = \{1,1,0\} $.
-    \item  $N $: Number of instances.
+    \item $N $: Number of instances.
     \item $X^{(i)} $: Data for instance $i$.
-    \item     $Y^{(i)}=\left\{y_1^{(i)},y_2^{(i)},\;\dots,y_{K}^{(i)}\right\} $: True label set for instance $i $. For example, consider a dataset that is labeled for the presence of cats, dogs, and rabbits in any given instance. If a given instance $X^{(i)} $ has cats and dogs but not rabbits, then $Y^{(i)}=\{1,1,0\} $.
-    \item     $P^{(i)} = {\left\{ p_k^{(i)} \right\}}_{k=1}^{K} $: Predicted probability set obtained in the output of the classifier $F(\cdot) $ representing the probability that each class $k $ is present in the sample.
-    \item  $T^{(i)} = {\left\{t_k^{(i)}\right\}}_{k=1}^{K} $: predicted label set for instance $i $.
-    \item  $\mathbb{X} = {\left\{X^{(i)}\right\}}_{i=1}^{N} $: Set of all instances.
-    \item  $\mathbb{Y} = {\left\{Y^{(i)}\right\}}_{i=1}^{N} $: Set of all true labels.
+    \item $Y^{(i)}=\left\{y_1^{(i)},y_2^{(i)},\;\dots,y_{K}^{(i)}\right\} $: True label set for instance $i $. For example, consider a dataset that is labeled for the presence of cats, dogs, and rabbits in any given instance. If a given instance $X^{(i)} $ has cats and dogs but not rabbits, then $Y^{(i)}=\{1,1,0\} $.
+    \item $P^{(i)} = {\left\{ p_k^{(i)} \right\}}_{k=1}^{K} $: Predicted probability set obtained in the output of the classifier $F(\cdot) $ representing the probability that each class $k $ is present in the sample.
+    \item $T^{(i)} = {\left\{t_k^{(i)}\right\}}_{k=1}^{K} $: predicted label set for instance $i $.
+    \item $\mathbb{X} = {\left\{X^{(i)}\right\}}_{i=1}^{N} $: Set of all instances.
+    \item $\mathbb{Y} = {\left\{Y^{(i)}\right\}}_{i=1}^{N} $: Set of all true labels.
     \item $\mathbb{D}=\left\{\mathbb{X},\mathbb{Y}\right\} $: Dataset containing all instances and all true labels.
     % \item  $\mathbb{D}_{\text{phase1}},\mathbb{D}_{\text{phase2}} $: randomly selected subsets of the $\mathbb{D} $ dataset used for phase1: training the machine learning model and phase2: applying the proposed taxonomy technique. $\mathbb{D}_{\text{phase1}}\cup\;\mathbb{D}_{\text{phase2}}=\mathbb{D} $ and $\mathbb{D}_{\text{phase1}} \bigcap \mathbb{D}_{\text{phase2}} = \varnothing $
-    \item  $l_k^{(i)} = \mathcal{L} \left(y_k^{(i)},p_k^{(i)}\right) $:  $\mathcal{L}(\cdot)$ is an arbitrary loss function (e.g., binary cross entropy) that takes the true label $y_k^{(i)}$ and predicted probability $p_k^{(i)}$ for class $k$ and instance $i$ and outputs the loss value $l_k^{(i)} $. We refer to this as the ``base loss function'' throughout this paper.
-    \item  $\text{Loss}(\theta) $: Measured loss for all classes and instances. This value is obtained using a modified version of the base loss function $\mathcal{L}(\cdot) $ (e.g., with added regularization, etc.).
-    \item  $\omega_k^{(i)} $: Estimated weight for $k$-th class $c_k $ of instance $i $ with respect to its parent class $\Gamma_k $.
-    \item  ${\widehat l}_k^{(i)} = \omega_k^{(i)} \; l_k^{(i)} $: updated loss for class $k $ and instance $i $.
+    \item $l_k^{(i)} = \mathcal{L} \left(y_k^{(i)},p_k^{(i)}\right) $:  $\mathcal{L}(\cdot)$ is an arbitrary loss function (e.g., binary cross entropy) that takes the true label $y_k^{(i)}$ and predicted probability $p_k^{(i)}$ for class $k$ and instance $i$ and outputs the loss value $l_k^{(i)} $. We refer to this as the ``base loss function'' throughout this paper.
+    \item $\text{Loss}(\theta) $: Measured loss for all classes and instances. This value is obtained using a modified version of the base loss function $\mathcal{L}(\cdot) $ (e.g., with added regularization, etc.).
+    \item $\omega_k^{(i)} $: Estimated weight for $k$-th class $c_k $ of instance $i $ with respect to its parent class $\Gamma_k $.
+    \item ${\widehat l}_k^{(i)} = \omega_k^{(i)} \; l_k^{(i)} $: updated loss for class $k $ and instance $i $.
     % \item  ${\widehat p}_k^{(i)}=\omega_k^{(i)}\;p_k^{(i)} $: updated predicted probability for the $k $ -th class.
 \end{itemize}
+%
 Let us define the multi-label classification problem as follows. Let $\mathbb{X} = {\left\{X^{(i)}\right\}}_{i=1}^{N} $ be a set of $N $ chest radiograph images and $\mathbb{Y} = {\left\{Y^{(i)}\right\}}_{i=1}^{N} $ be their corresponding ground truth labels. The ground-truth labels for the dataset were provided by experienced radiologists who annotated each image with the corresponding abnormalities.
+
 Given the set of disease classes $\mathcal{C} = \{c_1,c_2,\dots,c_K\} $, let us define a  graph $\mathcal{G}=\left\{\mathcal{C},\mathcal{E}\right\} $ representing the taxonomy of thoracic diseases, where $\mathcal{E}$ is the set of edges representing parent-child relationships between these classes. For each node $c_k \in \mathcal{C} $, let $\Lambda (c_k)$ be the parent node of class $c_k $ and let $\mathcal{J}_k\subset \mathcal{C} $ be the set of child classes of class $c_k $ in graph $\mathcal{G}$. \\
 In the context of multi-label classification problems, each sample may have multiple labels assigned to it simultaneously. To this end, we use a deep neural network, with multiple hidden layers and the sigmoid activation function in the final layer. Let's denote the input to this neural network by $x^{(i)}$, which represents data for instance $i$ (data type can be a 1D feature vector, 2D image, or 3D volume). This network is trained to predict the probabilities for each class being present in a given sample. Hence, the output of the final layer of the neural network for instance $i$ is passed through a sigmoid function to generate a set of values, each ranging from 0 to 1, corresponding to the label set $\mathcal{C} $.
 The outcome of this operation is a set of $K $ predicted probabilities $P^{(i)}={\left\{p_k^{(i)}\right\}}_{k=1}^{K} $. Each of these predicted probabilities, derived from the sigmoid activation function, can be interpreted as the likelihood that the input sample belongs to each class.
+
 Furthermore, let $\omega_k^{(i)} $ be a scalar weight assigned to the class $c_k $ of instance $i $ with respect to its parent class $\Lambda (c_k)$.
 Each of these predicted probabilities, derived from the sigmoid activation function, can be interpreted as the likelihood that the input sample belongs to each class. A loss function is utilized to quantify the similarity between predicted probabilities and true labels. This function guides the learning process of the neural network by providing a measure of the prediction error, which is minimized during the training phase.
 Let us denote the loss value as $l_k = \mathcal{L} \left(p_k^{(i)},y_k^{(i)}\right),\hspace{0.33em}k \in \{1,2,\dots,K\} $ where $\mathcal{L}(\cdot) $ is an appropriate single-class loss function for the task (e.g., binary cross-entropy, Dice, etc.) that is used to calculate the difference between the predicted probability $p_k^{(i)} $ and the true class label $y_k^{(i)} $ for instance $i$ and class $k $.
-%
 
 \subsection{Label Taxonomy Structure}\label{subsec:label-taxonomy-and-hierarchy}
 To exploit the hierarchical relationships between thoracic abnormalities, the first step is to define a disease taxonomy that demonstrates different abnormalities' interrelationships. In this taxonomy, diseases are structured hierarchically in a graph, with higher levels representing broader disease categories and lower levels representing more nuanced distinctions between related diseases. The taxonomy is structured such that if a disease is present then its parent disease is also present. Furthermore, in the presence of multiple parent classes for a given child class, the taxonomy structure only utilizes the more dominant parent (e.g., if class $c_1$ has two parent classes $c_3$ and $c_5$, while the $c_5$ is also the parent of $c_3$ class (it's both the parent and grandparent of $c_1$ class), in this scenario, we assume $c_5$ as the parent class of both $c_1$ and $c_3$).
@@ -103,117 +105,181 @@ The proposed technique provides an easy way to improve the performance of existi
 \end{equation}
 where $c_j = \Lambda (c_k)$ is the index of the parent class of the $k$-th class, and $\alpha_k $ is the hyperparameter that controls the influence of different parent class logits on child class logits.
 When $\alpha_k=0 $, there is no influence from the parent class $c_j$ on the child class $c_k$.  By carefully selecting appropriate hyperparameter values, this transfer learning technique can be employed to effectively adjust the predicted probabilities of each class, considering the hierarchical relationship between classes, and potentially improving classification accuracy.
-\subsubsection{Parameter Selection and Tuning}
-The selection of appropriate hyperparameters is crucial for the effectiveness of the proposed transfer learning technique. In this study, we employ a systematic approach to tune the hyperparameters $\alpha_k $, which controls the dependency between the predicted probabilities of the child and parent classes. We utilize a grid search method along with cross-validation to determine the optimal values for these hyperparameters. The search space for both hyperparameters is defined based on preliminary experiments and domain knowledge, ensuring a balance between model complexity and predictive performance.
 
+\subsubsection{Parameter Selection and Tuning}
+The selection of appropriate hyperparameters is crucial for the effectiveness of the proposed transfer learning technique. In this study, we employ a systematic approach to tune the hyperparameter vector $\{\alpha_k \}_{k=1}^K$ , which controls the dependency between the predicted probabilities of the child and parent classes. We utilize a grid search method to determine the optimal values for these hyperparameters. The search space for the hyperparameters is defined based on preliminary experiments and domain knowledge, ensuring a balance between model complexity and predictive performance.
+
+The steps are as follows.
 \begin{enumerate}
-    \item Combine all three datasets (NIH, CheXpert, PADCHEST). Let's denote this dataset as $\mathcal{D} = (X, Y)$
-    \item Split the new dataset $\mathcal{D}$ into three subsets: $\mathcal{D}^{\text{train}}$, $\mathcal{D}^{\text{valid}}$, and $\mathcal{D}^{\text{test}}$, representing $60\%$, $10\%$, and $30\%$ of the data respectively.
-    \item Optimize the CNN model (DenseNet121) $f_1(\cdot)$, using $\mathcal{D}^{\text{train}}$ and $\mathcal{D}^{\text{valid}}$.
-    \item Create a secondary model $f_2 (\cdot)$:
+    \item Pre-process the data. Details shown in Algorithm~\ref{alg:taxonomy.dataset}
+    \item Get logit values. Details shown in Algorithm~\ref{alg:taxonomy.logits}
     \begin{itemize}
-        \item Construct a second model $f_2(\cdot)$ which is identical in architecture to the original model $f(\cdot)$ except for the last activation layer (sigmoid).
-        \item Update the weights and biases in the $f_2 (\cdot)$ using their counterpart values in $f(\cdot)$
+        \item Fine Tune $f_1(\cdot)$, using $\mathbb{D}^{\text{train}}$ and $\mathbb{D}^{\text{valid}}$.
+        \item Create a secondary model $f_2 (\cdot)$ identical to $f_1(\cdot)$ except for the last activation layer (sigmoid). Update the weights and biases in the $f_2 (\cdot)$ using their counterparts in $f_1(\cdot)$
+        \item Calculate the logit values
     \end{itemize}
-    \item Obtain the logit values:
+    \item Perform Hyper Parameter Tuning to find the $\{\alpha_k \}_{k=1}^K$ values. The detail shown in Algorithm~\ref{alg:taxonomy.logit.hyperparameter-optimization}
     \begin{itemize}
-        \item Run the data samples $x^{(i)}$ in both $\mathcal{D}^{\text{train}}$ and $\mathcal{D}^{\text{test}}$ subsets as test cases into the trained model $f_2(\cdot)$ to obtain $K$ logit values $Q = \{q_k^{(i)}\}_{k=1}^{K}$ for $K$ classes for each instance $i$, where $Q = f_2(x^{(i)})$.
-        \item Define $\mathcal{T}^{\text{train}} = \{X^{\text{train}}, Y^{\text{train}}, Q^{\text{train}}\}$ and $\mathcal{T}^{\text{test}} = \{X^{\text{test}}, Y^{\text{test}}, Q^{\text{test}}\}$.
+        \item Determining the instances of $\alpha_k$ where the Area Under the Curve (AUC) calculated for the instances in train dataset is maximized.
+        \item Optimization Algorithm: Tree-structured Parzen Estimator (TPE). TPE is a Sequential Model-Based Optimization (SMBO) method. It builds a hierarchical model of the hyperparameter space to suggest new hyperparameters, making it more efficient than grid and random search, in exploring large, high-dimensional spaces. TPE enhances efficiency by focusing on promising areas of the parameter space, guided by data from previous evaluations.
+        \item Use the optimal hyperparameter vector $\{\alpha_k \}_{k=1}^K$ calculated in Algorithm~\ref{alg:taxonomy.logit.hyperparameter-optimization}, logit values in $\mathbb{T}^{\text{test}}=\left\{ \mathbb{Y}^{\text{test}}, \mathbb{Q}^{\text{test}} \right\}$, and Eq.~\ref{eq:taxonomy.eq.1.pred.approach1} to calculate the new predicted probabilities for test instances.
     \end{itemize}
-    \item Perform Hyper Parameter Tuning to find the $\alpha_k$ parameter values:
-    \begin{itemize}
-        \item Use $\mathcal{T}^{\text{train}}$ to determine the instances of $\alpha_k$ where the Area Under the Curve (AUC) is maximized.
-        \begin{itemize}
-            \item \textbf{Search Space:} A uniform distribution $U(-1, 1)$.
-            \item \textbf{Optimization Algorithm:} Tree-structured Parzen Estimator (TPE). TPE is a sequential model-based optimization (SMBO) approach.
-            \item A Bayesian optimization strategy is employed where it iteratively constructs a probabilistic model of the function to be optimized and uses this model to select the most promising parameters to evaluate in the true function.
-            \item This algorithm is generally considered to be more efficient than other optimization methods such as grid search and random search, especially for high-dimensional hyperparameter optimization problems. This is due to its ability to focus the search on promising areas of the parameter space, guided by the information collected from previous evaluations of the objective function.
-        \end{itemize}
-        \item Use the calculated $\alpha_k$ to find the updated predicted probability values for instances in $\mathcal{T}^{\text{test}}$.
-    \end{itemize}
-    \item Repeat step 6 for different thresholding techniques (ROC, AUC, 0.5).
 \end{enumerate}
 
-% \begin{algorithm}
-%     \caption{Combining datasets and logit adjustment}
-%     \begin{enumerate}
-%         \item Combine all three datasets (NIH, CheXpert, PADCHEST). Let's denote this dataset as $\mathcal{D} = (X, Y)$
-%         \item Split the new dataset $\mathcal{D}$ into three subsets: $\mathcal{D}^{\text{train}}$, $\mathcal{D}^{\text{valid}}$, and $\mathcal{D}^{\text{test}}$, representing $60%$, $10%$, and $30%$ of the data respectively.
-
-%         \item Optimize the CNN model $f_1(\cdot)$, using $\mathcal{D}^{\text{train}}$ and $\mathcal{D}^{\text{valid}}$.
-%         \item Create a secondary model $f_2(\cdot)$:
-%         \begin{itemize}
-%             \item Construct a second model $f_2(\cdot)$ which is identical in architecture to the original model $f(\cdot)$ except for the last activation layer (sigmoid).
-%             \item Update the weights and biases in the $f_2(\cdot)$ using their counterpart values in $f(\cdot)$
-%         \end{itemize}
-%         \item Obtain the logit values:
-%         \begin{itemize}
-%             \item Run the data samples $x^{(i)}$ in both $\mathcal{D}^{\text{train}}$ and $\mathcal{D}^{\text{test}}$ subsets as test cases into the trained model $f_2(\cdot)$ to obtain $K$ logit values $Q = {q_k^{(i)}}_{k=1}^{K}$ for $K$ classes for each instance $i$, where $Q = f_2(x^{(i)})$.
-%             \item Define $\mathcal{T}^{\text{train}} = {X^{\text{train}}, Y^{\text{train}}, Q^{\text{train}}}$ and $\mathcal{T}^{\text{test}} = {X^{\text{test}}, Y^{\text{test}}, Q^{\text{test}}}$.
-%         \end{itemize}
-%         \item Perform Hyper Parameter Tuning to find the $\alpha_k$ parameter values:
-%         \begin{itemize}
-%             \item Use $\mathcal{T}^{\text{train}}$ to determine the instances of $\alpha_k$ where the Area Under the Curve (AUC) is maximized.
-%             \begin{itemize}
-%                 \item \textbf{Search Space:} A uniform distribution $U(-1, 1)$.
-%                 \item \textbf{Optimization Algorithm:} Tree-structured Parzen Estimator (TPE). TPE is a sequential model-based optimization (SMBO) approach.
-%                 \item A Bayesian optimization strategy is employed where it iteratively constructs a probabilistic model of the function to be optimized and uses this model to select the most promising parameters to evaluate in the true function.
-%                 \item This algorithm is generally considered to be more efficient than other optimization methods such as grid search and random search, especially for high-dimensional hyperparameter optimization problems. This is due to its ability to focus the search on promising areas of the parameter space, guided by the information collected from previous evaluations of the objective function.
-%             \end{itemize}
-%             \item Use the calculated $\alpha_k$ to find the updated predicted probability values for instances in $\mathcal{T}^{\text{test}}$.
-%         \end{itemize}
-%         \item Repeat step 6 for different thresholding techniques (ROC, AUC, 0.5).
-%     \end{enumerate}
-% \end{algorithm}
-
 \begin{SgAlgorithm}
-\caption{Training the Classification Model $f_1 (\cdot)$}
-\label{alg:taxonomy.predictor}
-\begin{algorithmic}
-    \State{Combine all three datasets (NIH, CheXpert, PADCHEST) into one dataset called $\mathcal{D} = (X, Y)$}
+    \caption{Combining and Preprocessing Chest X-ray Datasets}\label{alg:taxonomy.dataset}
+    \KwIn{
+        \begin{itemize}
+            \item $\mathbb{D}_{\text{NIH}} \gets \text{NIH dataset}$
+            \item $\mathbb{D}_{\text{Chexpert}} \gets \text{CheXpert dataset}$
+            \item $\mathbb{D}_{\text{PADCHEST}} \gets \text{PADCHEST dataset}$
+        \end{itemize}
+    }
+    \BlankLine%
 
-    \State{Randomly split the $\mathcal{D}$ into $\mathcal{D}^\text{train}$, $\mathcal{D}^\text{valid}$, and $\mathcal{D}^\text{test}$ subsets, representing \%60, \%10, and \%30 of the data}
+    \SetKwProg{Fn}{Data Preprocessing}{:}{end}
+    \Fn{}
+    {%
+        \For{$\mathbb{X} \in \{ \mathbb{X}_\text{NIH}, \mathbb{X}_\text{Chexpert}, \mathbb{X}_\text{PADCHEST} \}$}
+        {%
+            Resize all images $x^{(i)} \in \mathbb{X}$ the resolution of $224 \times 224$ pixels. \;
+            \BlankLine%
 
-    \State{Optimize the predictor model (DenseNet121) $f_1(\cdot)$, using $\mathcal{D}^\text{train}$ and $\mathcal{D}^\text{valid}$.}
+            Normalize the pixel intensities to the range of 0 and 1
+        }
+        \KwRet{$ \{ \mathbb{X}_\text{NIH}^{*}, \mathbb{X}_\text{Chexpert}^{*}, \mathbb{X}_\text{PADCHEST}^{*} \} $}
+    }
+    \BlankLine%
 
-    \State{Construct $f_2(\cdot)$ predictor model using an architecture identical to $f(\cdot)$ except for the last layer (Sigmoid layer)}
+    \SetKwProg{Fn}{Updating Labels}{:}{end}
+    \Fn{}
+    {%
+        \For{$\mathbb{Y} \in \{ \mathbb{Y}_\text{NIH}, \mathbb{Y}_\text{Chexpert}, \mathbb{Y}_\text{PADCHEST} \}$}
+        {%
+            Standardize labels (pathology names) to common schema \;
+            \BlankLine%
 
-    \State{Update weights and biases in $f_2 (\cdot)$ using their counterparts in $f_1 (\cdot)$}
-\end{algorithmic}
+            Extract 18 common pathologies:
+            \begin{itemize}
+                \item Atelectasis, Consolidation, Infiltration, Pneumothorax, Edema, Emphysema, Fibrosis, Effusion, Pneumonia, Pleural Thickening, Cardiomegaly, Nodule, Mass, Hernia, Lung Lesion, Fracture, Lung Opacity, Enlarged Cardiomediastinum
+            \end{itemize}
+        }
+        \KwRet{$ \{ \mathbb{Y}_\text{NIH}^{*}, \mathbb{Y}_\text{Chexpert}^{*}, \mathbb{Y}_\text{PADCHEST}^{*} \} $}
+    }
+    \BlankLine%
+
+    \SetKwProg{Fn}{Getting the Dataset}{:}{end}
+    \Fn{}
+    {%
+        Combine datasets: $\mathbb{D} = \{ \mathbb{X}_{\text{NIH}}^{*}, \mathbb{Y}_{\text{NIH}}^{*} \}
+        \cup
+        \{ \mathbb{X}_{\text{Chexpert}}^{*}, \mathbb{Y}_{\text{Chexpert}}^{*} \}
+        \cup
+        \{ \mathbb{X}_{\text{PADCHEST}}^{*}, \mathbb{Y}_{\text{PADCHEST}}^{*} \}$
+        \BlankLine%
+
+        Split $\mathbb{D}$ into 3 subsets: $\mathbb{D}^\text{train}, \mathbb{D}^\text{valid}, \mathbb{D}^\text{test}$, representing 60\%, 10\%, and 30\% of data respectively
+    }
+    \BlankLine%
+    \KwRet{$\mathbb{D}^\text{train}, \mathbb{D}^\text{valid}, \mathbb{D}^\text{test}$}
 \end{SgAlgorithm}
 
-% \TODO complete the below algorithms
+\begin{SgAlgorithm}
+    \caption{Computing Original Logit Values}\label{alg:taxonomy.logits}
+    \KwIn{
+        \begin{itemize}
+            \item $\mathbb{D}^{\text{train}}, \mathbb{D}^{\text{valid}}, \mathbb{D}^{\text{test}}$ from Algorithm~\ref{alg:taxonomy.dataset}
+            \item Baseline model architecture: DenseNet121, $f_1(\cdot)$
+        \end{itemize}
+    }
+    \BlankLine%
 
-% \begin{SgAlgorithm}
-% \caption{Applying the ``logit_based'' technique Algorithm}
-% \label{alg:taxonomy.logit}
-% \begin{algorithmic}
-%     \State{Get the predictor model $f_2(\cdot)$ from Algorithm~\ref{alg:taxonomy.predictor}}
-%     \State{Feed the data instances $x^{(i)}$ in both $\mathcal{D}^\text{train}$ and $\mathcal{D}^\text{test}$ as test cases, into the $f_2(\cdot)$ predictor to obtain $K$ logit values $Q = {q_k^{(i)}}_{k=1}^{K}$}
+    \SetKwProg{Fn}{Predictor Model}{:}{end}
+    \Fn{$f_2(\cdot)$}
+    {%
+        Optimize model $f_1(\cdot)$ on $\mathbb{D}^{\text{train}}$ and $\mathbb{D}^{\text{valid}}$ \;
 
-%     \State{Define $\mathcal{T}^{\text{train}} = {X^{\text{train}}, Y^{\text{train}}, Q^{\text{train}}}$ and $\mathcal{T}^{\text{test}} = {X^{\text{test}}, Y^{\text{test}}, Q^{\text{test}}}$}
+        Clone architecture of $f_1(\cdot)$ into $f_2(\cdot)$, without the last sigmoid activation. \;
 
-%     \State{Get the $\alpha_k$ from Algorithm~\ref{alg:taxonomy.hyperparameter_tuning}}
-%     % \State{Use $\alpha_k$ and Eq~\ref{} }
-% \end{algorithmic}
-% \end{SgAlgorithm}
+        Update weights of $f_2(\cdot)$ from $f_1(\cdot)$
+    }
+    \BlankLine%
 
+    \SetKwProg{Fn}{Calculating Logits}{:}{end}
+    \Fn{$\text{getLogit}(\cdot)$}
+    {%
+        \KwIn{$\mathbb{D} = \left\{ \mathbb{X}, \mathbb{Y} \right\}, f_2(\cdot)$}
+        \ForEach{$x^{(i)} \in \mathbb{X}$}
+        {
+            Compute logit vector ${\left\{ q_k^{(i)} \right\}}_{k=1}^K = f_2 \left(x^{(i)}\right)$
+        }
+        \BlankLine%
+        ${\mathbb{Q}} = {\left\{ {\left\{ q_k^{(i)} \right\}}_{k=1}^K \right\}}_{i=1}^N$
 
-% \begin{SgAlgorithm}
-% \caption{Hyperparameter Optimization Algorithm}
-% \label{alg:taxonomy.hyperparameter_tuning}
-% \begin{algorithmic}
-%     \State{For each instance of $\alpha_k$ in $\mathcal{T}^\text{train}$
-%         \State{Define search space as $U(-1, 1)$}
-%         \State{Employ Bayesian optimization strategy: Tree-structured Parzen Estimator (TPE)}
-%         \State\If{$\alpha_k$ maximizes Area Under the Curve (AUC)}{
-%             \State{Update predicted probability values for instances in $\mathcal{T}^{\text{test}}$ using calculated $\alpha_k$}}
-%         }
-%     \State\For{\text{each thresholding technique (ROC, AUC, 0.5)}}{
-%         \State{Repeat step 6}
-%     }
-% \end{algorithmic}
-% \end{SgAlgorithm}
+        \KwRet{
+            $\mathbb{T} = \left\{ \mathbb{Y}, \mathbb{Q} \right\}$
+        }
+    }
+    \BlankLine%
+
+    \textbf{Create New Dataset} \;
+    ${\mathbb{T}}^\text{train} = \text{getLogit}(\mathbb{D}^\text{train})$ \;
+
+    $\mathbb{T}^\text{test} = \text{getLogit}(\mathbb{D}^\text{test})$ \;
+    \BlankLine%
+
+    \KwRet{
+        $\mathbb{T}^\text{train} , \mathbb{T}^\text{test}$
+        }
+
+\end{SgAlgorithm}
+
+\begin{SgAlgorithm}
+    \SetAlgoLined
+    \caption{Hyper Parameter Optimization for Logit-Base Technique}\label{alg:taxonomy.logit.hyperparameter-optimization}
+    \KwIn{%
+        \begin{itemize}
+            \item \textbf{Data} $\mathbb{T}^\text{train} = \left\{ \mathbb{Y}^\text{train} , \mathbb{Q}^\text{train} \right\} $
+            \item \textbf{Number of iterations:} MAX\_EVALS
+            \item \textbf{Search Space:} $ \mathcal{S} = \text{Uniform}(-1, 1) $
+            \item \textbf{Predictor model $f_1(\cdot)$} that is trained on $\mathbb{D}^\text{train} = \left\{ \mathbb{X}^\text{train} , \mathbb{Y}^\text{train} \right\} $.
+        \end{itemize}
+    }
+    \BlankLine%
+    \SetKwProg{Fn}{ObjectiveFunction}{:}{end}
+    \Fn{$\mathcal{O}$}
+    {%
+        \KwIn{$k, \alpha_k, \mathbb{Q}^\text{train}, \mathbb{Y}^\text{train}$}
+        $ j \gets (c_j = \Lambda(c_k)) $ \;
+        \ForEach{ $i, k$ }
+        {
+            $ \widehat{p}_k^{(i)} = \frac{1}{ 1 + \exp \left(-\left(q_k^{(i)} + \alpha_k q_j^{(i)} \right)\right) } $ (Eq.~\ref{eq:taxonomy.eq.1.pred.approach1})
+        }
+        \KwRet{ $ 1 - \text{AUC} \left( {\left\{ \widehat{p}_k^{(i)} \right\}}_{i=1}^N, {\left\{ y_k^{(i)} \right\}}_{i=1}^N \right) $ }
+    }
+    \BlankLine%
+    \SetKwProg{Fn}{EstimatorFunction}{:}{end}
+    \Fn{TPE}
+    {%
+        \KwIn{$\alpha_k^0, \mathcal{S}, \text{MAX\_EVALS}, k, \mathbb{Q}^\text{train}, \mathbb{Y}^\text{train}, \mathcal{O}(\cdot) $}
+        \dots Tree-structured Parzen Estimator (TPE) \dots \;
+        \KwRet{ $ \alpha_k^* $ }
+    }
+    \BlankLine%
+
+    \textit{Optimization:} \;
+    \For{ $k=1$ \KwTo~$K$}
+    {%
+        $ \alpha_k = 0 $ \;
+        \If{$ \Lambda(c_k) \neq \varnothing $}
+        {%
+            $ \alpha_k =$ TPE($\alpha_k$, $\mathcal{S}$, $\mathcal{O}(\dots)$, MAX\_EVALS)
+        }
+    }
+    \BlankLine%
+
+    \KwRet{Optimal hyperparameters $ {\{ \alpha_{k} \}}_{k=1}^K $ }
+\end{SgAlgorithm}
 
 \subsection{Approach 2: Conditional Loss}\label{subsec:taxonomy.method.approach2}
 In a second approach, we propose a similar concept to the approach discussed in Section~\ref{subsec:taxonomy.method.approach1}; however, rather than directly updating the predicted probability of each class, we instead update the loss value of each class based on the loss values of its parent classes. The utilization of the loss function approach can prove advantageous in certain scenarios, particularly in the context of multi-label classification tasks that involve hierarchical relationships, as it offers numerous benefits:
@@ -223,6 +289,7 @@ In a second approach, we propose a similar concept to the approach discussed in 
     \item \textbf{Robustness to label noise:} Real-world datasets may exhibit inconsistencies or noise in their ground truth labels. The inclusion of loss values from parent classes in the computation of loss values for child classes can enhance the consistency of the hierarchy by penalizing deviations from expected parent-child associations. This approach can result in improvement in the model's resilience to potential label inaccuracies in the dataset.
     \item \textbf{Improved interpretability:} The use of loss values rather than predicted probabilities enables a more straightforward understanding of the model's ability to capture hierarchical relationships among classes. When parent classes have high loss values, these losses influence their corresponding child classes' losses, underscoring the importance of improving the underlying model architecture and parameters to better present these hierarchical associations.
 \end{itemize}
+
 \subsubsection{Formulation of the Proposed Technique}
 In multi-label classification problems, where each sample may belong to multiple classes, it is often necessary to combine the loss values for all classes to effectively train the model. Various methods can be employed to achieve this, depending on the specific problem. A common approach is to calculate the average loss across all classes for each sample by summing the losses for each class of a given sample and dividing the sum by the total number of classes to which the sample belongs. This method is effective when all classes are independent, of equal importance, and warrant equal weight in the total loss calculation. For example, in the case of cross-entropy loss, we have
 \begin{equation}
@@ -274,6 +341,139 @@ In Equation~(\ref{eq:taxonomy.eq.7.newloss}), $\widehat{l}_k^{(i)}$ represents t
 \\ %
 The parameter $\alpha _k$ directly scales the parent's loss $l_j^{(i)}$. If $\alpha _k$ is increased, the penalty term becomes larger, and thus the updated loss $\widehat{l}_k^{(i)}$ becomes more sensitive to the parent's loss. This, in effect, increases the degree of influence that hierarchical information has on the learning process. The parameter $\beta_k$ serves as a baseline or offset. If $\beta_k$ is increased, the penalty term increases irrespective of the parent's loss value. This means that even if the parent's loss is low, the updated loss $\widehat{l}_k^{(i)}$ can still be high, thus maintaining the influence of hierarchical information in the learning process. However, if $\beta_k$ is set too high, it may lead to an overemphasis on hierarchy, possibly at the expense of other important learning elements. The regulation of parameters $\alpha_k$ and $\beta_k$ allow us to balance the degree to which hierarchical information influences the learning process, thus improving the reflection of the hierarchical structure in the model outputs, while remaining flexible to diverse learning scenarios.
 %
+
+\subsubsection{Parameter Selection and Tuning}
+The selection of appropriate hyperparameters is crucial for the effectiveness of the proposed transfer learning technique. In this study, we employ a systematic approach to tune the two hyperparameter vectors $\alpha_k $, and $\beta_k$, which controls the dependency between the predicted probabilities of the child and parent classes. We utilize a grid search method to determine the optimal values for these hyperparameters. The search space for the hyperparameters is defined based on preliminary experiments and domain knowledge, ensuring a balance between model complexity and predictive performance.
+
+The steps are as follows.
+\begin{enumerate}
+    \item Pre-process the data. Details shown in Algorithm~\ref{alg:taxonomy.dataset}
+    \item Get loss values. Details shown in Algorithm~\ref{alg:taxonomy.loss.original}
+    \item Perform Hyper Parameter Tuning to find the $\{\alpha_k \}_{k=1}^K$, and $\{\beta_k \}_{k=1}^K$ hyperparameter vectors. The detail shown in Algorithm~\ref{alg:taxonomy.loss.hyperparameter-optimization}
+\end{enumerate}
+
+\begin{SgAlgorithm}
+    \caption{Computing Original Loss Values}\label{alg:taxonomy.loss.original}
+    \KwIn{
+        \begin{itemize}
+            \item $\mathbb{D}^{\text{train}}, \mathbb{D}^{\text{valid}}, \mathbb{D}^{\text{test}}$ from Algorithm~\ref{alg:taxonomy.dataset}
+            \item Baseline model architecture: DenseNet121, $f_1(\cdot)$
+            \item Baseline Loss Function: $\mathcal{L}(\cdot)$
+        \end{itemize}
+    }
+    \BlankLine%
+
+    \SetKwProg{Fn}{Predictor Model}{:}{}
+    \Fn{$f_2(\cdot)$}
+    {%
+        Optimize model $f_1(\cdot)$ on $\mathbb{D}^{\text{train}}$ and $\mathbb{D}^{\text{valid}}$ \;
+
+        Clone $f_1(\cdot)$ into $f_2(\cdot)$.
+    }
+    \BlankLine%
+
+    \SetKwProg{Fn}{Calculating Pred Values}{:}{}
+    \Fn{$\text{getPred}(\mathbb{X})$}
+    {%
+        \ForEach{$x^{(i)} \in \mathbb{X}$}
+        {
+            ${\left\{ p_k^{(i)} \right\}}_{k=1}^K = f_2 \left(x^{(i)}\right)$
+        }
+        \KwRet{$\mathbb{P} = {\left\{ {\left\{ p_k^{(i)} \right\}}_{k=1}^K \right\}}_{i=1}^N $}
+    }
+    \BlankLine%
+
+    \SetKwProg{Fn}{Calculating Threshold Values}{:}{}
+    \Fn{$\text{getThreshold}(\mathbb{P}^\text{train}, \mathbb{Y}^\text{train})$}
+    {%
+        $\left\{ \theta_k \right\}_{k=1}^K \gets {\left\{ \mathbb{P}^\text{train}, \mathbb{Y}^\text{train} \right\}}$ Using some thresholding technique (eg, ROC, 0.5, AUC)
+    }
+    \BlankLine%
+
+    \SetKwProg{Fn}{Calculating Loss Values}{:}{}
+    \Fn{$\text{getLoss}(\mathbb{P}, \mathbb{Y})$}
+    {%
+        \ForEach{$i, k$}
+        {
+            $l_k^{(i)} = \mathcal{L}\left(y_k^{(i)}, p_k^{(i)} > \theta_k\right)$
+        }
+        \KwRet{
+            ${\mathbb{Q}} = {\left\{ {\left\{ l_k^{(i)} \right\}}_{k=1}^K \right\}}_{i=1}^N$
+            }
+    }
+    \BlankLine%
+
+    \KwRet{$\mathbb{Q}^\text{test} = \text{getLoss}(\mathbb{P}^\text{test}, \mathbb{Y}^\text{test})$}
+
+\end{SgAlgorithm}
+
+\begin{SgAlgorithm}
+    \SetAlgoLined
+    \caption{Hyper Parameter Optimization for Loss-Base Technique}\label{alg:taxonomy.loss.hyperparameter-optimization}
+    \KwIn{%
+        \begin{itemize}
+            \item \textbf{Number of iterations:} MAX\_EVALS
+            \item \textbf{Search Space:} $ \mathcal{S}_\alpha = \text{Uniform}(-1, 1)  ,  \mathcal{S}_\beta = \text{Uniform}(-4, 4) $
+            \item \textbf{Original Values for $\mathbb{D}^\text{train}$:} $\mathbb{Q}^\text{train}, \mathbb{P}^\text{train} ,\Theta^\text{train} \leftarrow \text{Algorithm~\ref{alg:taxonomy.loss.original}} (\mathbb{D}_\text{train})$
+            \item \textbf{Original Values for $\mathbb{D}^\text{test}$:} $\mathbb{Q}^\text{test}, \mathbb{P}^\text{test} , \_  \qquad \leftarrow \text{Algorithm~\ref{alg:taxonomy.loss.original}} (\mathbb{D}_\text{test})$
+            \item \textbf{stage:} Optimization, or Inference
+        \end{itemize}
+    }
+    % \BlankLine%
+
+    \SetKwProg{Fn}{getCondition}{:}{}
+    \Fn{}
+    {%
+        \eIf{stage \textbf{is} Optimization}
+        {
+            <condition> $ = \left(\frac{\partial \mathcal{L}(\widehat{p}_k^{(i)}, y_k^{(i)})}{\partial {\widehat{p}_k^{(i)}}} \geq 0 \right)$
+        }
+        {
+            <condition> $ = (p_k^{(i)} > \theta_k) \; \& \; (p_j^{(i)} > \theta_j)$
+        }
+    }
+
+    \SetKwProg{Fn}{ObjectiveFunction}{:}{}
+    \Fn{$\mathcal{O}(k, \alpha_k, \mathbb{Q}^\text{train}, \mathbb{Y}^\text{train})$}
+    {%
+        $ j \gets (c_j = \Lambda(c_k)) $ \;
+
+        \ForEach{ $i, k$ }
+        {
+            $\widehat{l}_k^{(i)} = l_k^{(i)} \left( \alpha_k l_j^{(i)} + \beta_k \right)$ (Eq.~\ref{eq:taxonomy.eq.7.newloss} and Eq.~\ref{eq:taxonomy.eq.8.hierarchical_penalty.loss})
+
+            $\widehat{p}_k^{(i)} =
+                \begin{cases}
+                    \, \exp(-\widehat{l}_k^{(i)})  & \textbf{if} \, <condition>
+                    \\
+                    \, 1 - \exp(-\widehat{l}_k^{(i)}) & \text{otherwise}
+                \end{cases}$
+        }
+        \KwRet{ $ 1 - \text{AUC} \left( {\left\{ \widehat{p}_k^{(i)} \right\}}_{i=1}^N, {\left\{ y_k^{(i)} \right\}}_{i=1}^N \right) $ }
+    }
+    \BlankLine%
+    \SetKwProg{Fn}{EstimatorFunction}{:}{}
+    \Fn{$\text{TPE} (\alpha_k^0, \beta_k^0, \mathcal{S}_\alpha, \mathcal{S}_\beta, k, \mathbb{L}^\text{train}, \mathbb{Y}^\text{train}, \mathcal{O}(\cdot),\text{MAX\_EVALS})$}
+    {%
+        \dots Tree-structured Parzen Estimator (TPE) \dots \;
+        \KwRet{ $ \alpha_k^* , \beta_k^* $ }
+    }
+    % \BlankLine%
+    \SetKwProg{Fn}{Optimization}{:}{}
+    \Fn{}
+    {
+        \ForEach{ $k$}
+        {%
+            $ \alpha_k = 0 \, , \beta_k = 1$ \;
+            \If{$ \Lambda(c_k) \neq \varnothing $}
+            {%
+                $ \alpha_k, \beta_k =$ TPE($\dots$)
+            }
+        }
+    }
+    \BlankLine%
+    \KwOut{$ {\{ \alpha_k \}}_{k=1}^K , {\{ \beta_k \}}_{k=1}^K $ }
+\end{SgAlgorithm}
 
 \subsection{Updating Loss Values and Predicted Probabilities}\label{subsec:updating-loss-values-and-predicted-probabilities}
 In the previous section, we introduced a taxonomy-based loss function with the goal of improving the classification accuracy of multi-class problems. However, one of the main advantages of our proposed technique is that it enables efficient utilization of pre-trained models and leverages the existing knowledge, thus reducing the computational cost and training time associated with re-optimization. In this section, we illustrate how both of our proposed approaches can be seamlessly integrated into an existing classification framework without the necessity to re-run the optimization phase of the classifier (e.g., DenseNet121). This can be achieved by focusing on updating the loss values (approach 2 shown in Section~\ref{subsec:taxonomy.method.approach2}) and predicted probabilities (approach 1 shown in Section~\ref{subsec:taxonomy.method.approach1}) to incorporate the hierarchical relationships present in the taxonomy structure.
@@ -381,14 +581,14 @@ In order to utilize this during inference time, we can substitute the $y_{k}^{(i
     \begin{cases}
         \, \exp(-\widehat{l}_k^{(i)})
         &
-        \text{if} \quad (p_k^{(i)} > 0.5) \; \& \; (p_j^{(i)} > 0.5)
+        \text{if} \quad (p_k^{(i)} > \theta_k) \; \& \; (p_j^{(i)} > \theta_j)
         \\
         \, 1 - \exp(-\widehat{l}_k^{(i)})
         &
         \text{otherwise}
     \end{cases}
 \end{equation}
-
+where $\theta_k$, and $\theta_j$ are binarization threshold values for child and parent classes respectively.
 
 \subsubsection{Updated Predicted Probabilities with Respect to Original Values}
 The following demonstrates Equation~(\ref{eq:taxonomy.eq.16.newpred}) based on predicted probability to demonstrate its similarity to Equation~(\ref{eq:taxonomy.eq.1.pred.approach1}) in Approach 1 (Section~\ref{subsec:taxonomy.method.approach1}). From Equation~(\ref{eq:taxonomy.eq.8.hierarchical_penalty.loss}) we have $\hat{l}_k^{(i)}=l_k^{(i)}\left(\alpha_k\;l_j^{(i)}+\beta_k\right) $. By substituting that into $\exp{\left(-\widehat{l}_{k}^{(i)}\right)}, \text{for } y_{k}^{(i)}=1 $ we obtain:
@@ -482,7 +682,7 @@ While accuracy is a useful metric for evaluating overall performance, it may not
 In this study, we devised a detailed taxonomy, depicted in Figure~\ref{fig:taxonomy.fig.1.taxonomy_structure}, to classify various lung pathologies observable in chest radiographs. This classification system, inspired by the works of Irvin~\cite{irvin_CheXpert_2019}, Chen~\cite{chen_Deep_2020}, and Gohagan~\cite{gohagan_Prostate_2000}, integrates prevalent disease manifestations evident in widely used datasets like CheXpert~\cite{irvin_CheXpert_2019}, PADCHEST~\cite{bustos_Padchest_2020}, and NIH~\cite{wang_ChestXRay8_2017}. The taxonomy provides a structured approach to categorize these disease manifestations and offers a framework to facilitate the comprehension and analysis of abnormalities in chest radiographs.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{\figurepath{taxonomy_structure/taxonomy_structure.pdf}}
+    \includegraphics[width=\textwidth]{\figurepath{taxonomy_structure/taxonomy_structure}}
     \caption[Taxonomy Structure of Lung Pathologies in Chest Radiographs]{Taxonomy structure of lung pathologies in chest radiographs.}%
     \label{fig:taxonomy.fig.1.taxonomy_structure}
 \end{figure}
@@ -631,13 +831,13 @@ The obtained results provides further support for our previous findings, which i
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\textwidth]{\figurepath{auc_acc_f1_all_datasets/ROC/metrics_AUC_ACC_F1.pdf}}
+\includegraphics[width=\textwidth]{\figurepath{auc_acc_f1_all_datasets/ROC/metrics_AUC_ACC_F1}}
 \caption[Heatmap Visualization of Model Performance Metrics (ACC, AUC, F1) for Different Techniques across Pathologies]{Heatmap visualization of model performance metrics across all three datasets. The subplots from left to right correspond to the Accuracy (ACC), Area Under the ROC Curve (AUC), and F1 Score for the baseline, ``loss'', and ``logit'' techniques respectively. The pathologies are shared on the y-axis. Darker colors signify higher values, indicating better model performance. Each cell represents the value of the corresponding metric for the given technique on a specific pathology}\label{fig:taxonomy.fig.2.metrics}
 \end{figure}
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\textwidth]{\figurepath{roc_curve_all_datasets/ROC/roc_curve_all_datasets.pdf}}
+\includegraphics[width=\textwidth]{\figurepath{roc_curve_all_datasets/ROC/roc_curve_all_datasets}}
 \caption[Comparative Analysis of ROC Curves for Nine Thoracic Pathologies: ``logit'', ``loss'', and ``baseline'' Techniques]{Comparative analysis of the ROC curves for nine thoracic pathologies using the ``logit'' and ``loss'' techniques as well as the baseline. The subplots highlighted with a darker background, represent parent class diseases.}\label{fig:taxonomy.fig.3.roc_curve_all_datasets}
 \end{figure}
 
