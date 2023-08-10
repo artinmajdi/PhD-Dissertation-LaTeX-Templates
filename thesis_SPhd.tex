@@ -1,11 +1,14 @@
 \documentclass[]{bst/SPhdThesis_myversion}
 \newcommand{\preface}{
-    \SgSetTitle{LEVERAGING MACHINE LEARNING FOR IMPROVED DATA INTERPRETATION AND DECISION MAKING UNDER UNCERTAINTY}
-    \SgSetAuthor{Artin Majdi}
+    \SgSetTitle{LEVERAGING MACHINE LEARNING \\ FOR IMPROVED DATA INTERPRETATION AND DECISION MAKING \\ UNDER UNCERTAINTY}
+
+    \SgSetTitleNoBreaks{LEVERAGING MACHINE LEARNING FOR IMPROVED DATA INTERPRETATION AND DECISION MAKING UNDER UNCERTAINTY}
+
+    \SgSetAuthor{Mohammad S. Majdi}
     \SgSetAuthorDegrees{M.Sc.}
     \SgSetYear{2023}
     \SgSetDegree{Doctor of Philosophy}
-    \SgSetDepartment{Dept\@. of Electrical and Computer Engineering}
+    \SgSetDepartment{Department of Electrical and Computer Engineering}
     \SgSetUniversity{The University of Arizona}
     \SgSetDeclarationDate{2023}
     \SgSetSupervisor{Jeffrey J\@. Rodriguez}
@@ -15,13 +18,14 @@
     \SgSetThirdMember{Abhijit Mahalanobis}
     \SgSetFourthMember{Janet M\@. Roveda}
     \SgAddTitle%
-    \SgAddApproval%
+    \includepdf[pages={1}]{Chapters/Approval_page.pdf}% \SgAddApproval%
     \SgAddStatement%
     \SgAddAcknowledgement{bst/acknowledgments}
     \SgAddToc%  Table of contents.
     \SgAddLof%  List of figures.
     \SgAddLot%  List of tables.
     \SgAddLoa%  List of algorithms.
+    \input{Chapters/Abstract}
 }
 
 
@@ -30,6 +34,7 @@
 
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+\usepackage{pdfpages}
 
 \begin{document}
     \preface%

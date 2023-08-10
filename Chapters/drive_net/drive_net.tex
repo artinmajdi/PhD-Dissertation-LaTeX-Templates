@@ -12,15 +12,171 @@
 \maketitle
 
 \begin{abstract}
-\input{subfiles/abstract}
+%\input{subfiles/abstract}
+To help prevent motor vehicle accidents, there has been significant interest in finding an automated method to recognize signs of driver distraction, such as talking to passengers, fixing hair and makeup, eating and drinking, and using a cell phone. In this paper, we present an automated supervised learning method called Drive-Net for driver distraction detection. Drive-Net uses a combination of a convolutional neural network (CNN) and a random decision forest to classify images of a driver. We compare the performance of our proposed Drive-Net to two other popular machine learning approaches: a recurrent neural network (RNN) and a multilayer perceptron (MLP). We tested the methods on a publicly available database of images acquired in a controlled environment that contained about 22425 images manually annotated by an expert. The results show that Drive-Net achieves a detection accuracy of 95\%, which is 2\% more than the best results obtained in the same database using other methods.
 
 \textbf{KEYWORDS:}
-\input{subfiles/keywords}
+%\input{subfiles/keywords}
+Image classification, convolutional neural networks, random forest, driver distraction
 \end{abstract}
 
+%\input{subfiles/body}
+
+\section{Introduction}
+Distracted driving is a major cause of motor vehicle accidents. Each day in the United States, approximately 9 people are killed, and more than 1000 are injured in crashes that involve a distracted driver~\cite{schroeder_National_2018}. It is estimated that about 25\% of fatalities in motor vehicle accidents are due to distracted driving~\cite{website_insurer_2013}. A study of American motor vehicle fatalities~\cite{schroeder_National_2018} reveals the top 10 causes of distracted driving:
+
+\begin{enumerate}
+\item Generally distracted or ``lost in thought'' -{\textendash} 62\%
+\item Cell phone use {\textemdash} 12\%
+\item Outside person, object, or event {\textendash} 7\%.
+\item Other occupants -{\textendash} 5\%.
+\item Using or reaching for a device brought into the car (e.g., phone) {\textendash} 2\%.
+\item Eating or drinking -{\textendash} 2\%.
+\item Adjusting audio or climate controls {\textemdash} 2\%.
+\item Using devices to operate the vehicle (e.g., adjusting mirrors or seatbelts) {\textemdash} 1\%.
+\item Moving objects (e.g., insects or pets) -{\textendash} 1\%
+\item Smoking related {\textemdash} 1\%.
+\end{enumerate}
+
+Therefore, there is interest in using dashboard camera image analysis to automatically detect drivers engaged in distracting behavior. A dataset of such dashboard camera images, observing various activities of drivers, has been compiled and used for the Kaggle competition regarding automated detection of driver distraction~\cite{montoya_State_2016}. Figure~\ref{fig:drive-net/figure1} shows examples of some images from the dashboard camera manually annotated as different activities while driving.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{\figurepath{image1.jpeg}}%
+    \caption[Examples of Driver Distractions Captured by Dashboard Camera]{Representative dashboard camera images of drivers being distracted. From left to right: drinking while driving; safe driving; reaching behind while driving; talking on the phone (left hand) while driving~\cite{montoya_State_2016}.}%
+    \label{fig:drive-net/figure1}
+\end{figure}
+
+Object detection and human behavior detection are well-researched topics in the computer vision literature~\cite{borji_Salient_2019}. Machine learning (esp. Deep Learning) techniques can often learn complex models and achieve high accuracy, so many researchers have started to apply such techniques to solve computer vision problems, including object detection and human behavior detection. For example, the Inception-v4 model proposed by Szegedy~\cite{szegedy_InceptionV4_2017} is a supervised learning model made up of deep convolutional residual networks (ResNet) that have more than 75 trainable layers, and achieves 96.92\% accuracy in the ImageNet data set. Girshick~\cite{girshick_RegionBased_2016} introduced a very powerful method for object detection and segmentation using a region-based convolutional neural network (CNN). This method divides the human behavior detection problem into two problems. First, they apply an object detection algorithm to detect the regions of interest (ROIs) where people are present within an image. Next, each ROI is fed to CNN to identify the type of behavior exhibited in the given ROI\@. Adding other traditional machine learning methods, such as ensemble learning (i.e.\ bagging) and K nearest neighbors (KNN), to the CNN model is a way to improve the accuracy of the already existing model~\cite{kim_Vehicle_2017}.
+
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{\figurepath{image2.jpeg}}%
+    \caption[Overview of the Proposed Drive-Net: A CNN Architecture Coupled with a Random Forest Classifier]{An overview of the proposed Drive-Net. Our proposed CNN architecture (shown on the left side) consists of two convolution layers (conv), each followed by a maxpooling layer (pool), and a final ReLU layer, the output of which is regularized using dropouts to obtain a fully connected layer (FC). The FC layer is fed as input to the random forest classifier (on the right side), which predicts the final class label.}%
+    \label{Drive-Net/figure2}
+\end{figure*}
+
+One of the main drawbacks of CNN is that training the network using a large data set can lead to overfitting the model. To avoid this, ensemble methods such as random decision forests can be effective. With this in mind, we propose a new supervised learning algorithm called Drive-Net that combines a CNN and a random forest in a cascading fashion for application to the problem of driver distraction detection using dashboard camera images. We compare our proposed Drive-Net to two other neural network methods: a residual neural network (RNN) and a multilayer perceptron (MLP). We show that Drive-Net achieves better classification accuracy than the driver distraction detection algorithms that were proposed in the Kaggle competition~\cite{montoya_State_2016}.
+
+\section{Methods}
+Our proposed method, Drive-Net, is a cascaded classifier consisting of two stages: a CNN as the first stage, whose output layer is fed as input to a random decision forest to predict the final class label. We define each stage in detail below.
 
 
-\input{subfiles/body}
+\subsection{Convolutional Neural Network Configurations}
+We adopted the U-Net architecture~\cite{ronneberger_UNet_2015} as the basis for our CNN\@. The motivation behind this architecture is that the contracting path captures the context around the objects to provide a better representation of the object compared to architectures such as AlexNet~\cite{krizhevsky_One_2014} and VGGNet~\cite{simonyan_Very_2014} Very large networks like AlexNet and VGGNet require learning a massive number of parameters and are very difficult to train in general, needing significant computational time. Thus, we empirically modified the U-Net architecture in this work to suit our application.
+
+To construct our CNN, we discard U-Net's layers of up-convolution and the last two layers of down-sampling and replace them with a $1\times1 $ convolution instead to obtain a fully connected layer. We use the rectifier activation function~\cite{simonyan_Very_2014} for our CNN as the constant gradient of rectified linear units (ReLU) results in faster learning and reduces the problem of vanishing gradient compared to the hyperbolic tangent (${\tanh{(\bullet)}} $). We implement a maximum-pooling layer instead of average-pooling in the subsampling layer. Furthermore, we observed that performance is better when a ReLU layer was configured with the maximum pool layer, resulting in higher classification accuracy after 50 epochs. We use the $1\times1 $ convolutional filter for the Adam~\cite{kingma_Adam_2014} optimizer. All other parameters, such as the number of layers, the size of the convolutional kernel, the training algorithm, and the number of neurons in the final dense layer, were experimentally determined for our application.
+
+To keep the training time small, we reduced the size of the dashboard camera images by a factor of 10 by making them 64 $\times$ 48 in size and feed them as input to our CNN\@. We do not zero-pad the image patches, as the ROI of human activity is located toward the center of the image. Two consecutive convolutional layers are used in the network. The first convolutional layer consists of 32 kernels of size $5\times5\times1 $. The second convolutional layer consists of 64 kernels of size $5\times5\times32 $. The subsampling layer is set as the maximum value in non-overlapping windows of size $2\times2 $ (stride of 2). This reduces the size of the output of each convolutional layer by half. After the two convolutional and subsampling layers, we use a ReLU layer, where the activation y for a given input x is obtained as follows.
+\begin{equation}
+\label{eq:disp-formula-group-e98e45e883854b6aa2d919dcc0573fee}
+y=f(x)=\max(0,x)
+\end{equation}
+
+A graphical representation of the architecture of the proposed CNN model is shown in Figure~\ref{Drive-Net/figure2} (see the left side).
+
+\subsection{Random Decision Forest}
+A random forest classifier consists of a collection of decision tree classifiers combined to predict the class label, where each tree is grown in a randomized fashion. Each decision tree classifier consists of decision (or split) nodes and prediction (or leaf) nodes. The prediction nodes of each tree in the random forest classifier are labeled by the posterior distribution over the image classes~\cite{bosch_Image_2007}. Each decision node contains a test that best splits the space of the data to be classified. An image is classified by sending it down the decision tree and aggregating the posterior distributions that are reached. Most of the time, randomness is added to training at two points: when subsampling the training data and when choosing node tests. Each tree within the random forest classifier is binary and grows top-down. At each node, we select the binary test to maximize the information gain obtained by partitioning the training set $Q$ of image patches into two sets $Q_i$ according to the test.
+
+
+\begin{equation}
+\label{eq:disp-formula-group-d27d73835da3454a817782924579e245}
+\Delta E = - \sum_{i} \frac {\vert Q_i \vert} {\vert Q \vert} E (Q_i)
+\end{equation}
+
+
+Here $E(\cdot) $ is the entropy of the set and $\left\vert \cdot\right\vert $ is the size of the set. We repeat this selection process for each decision node until it reaches a certain depth. Many implementations of random forests~\cite{lepetit_Keypoint_2006,winn_Object_2006} use simple pixel-level tests at nodes because it results in faster tree convergence. As we are interested in features that encode shape and appearance, we are interested in spatial correspondence between pixels. Therefore, we use a simple test proposed by Bosch~\cite{bosch_Image_2007} {\textemdash} as a linear classifier on the characteristic vector {\textemdash} at each decision node.
+
+Suppose that $T $ is the set of all trees, $C $ is the set of all classes, and $L $ is the set of all leaves for a given tree. During training, posterior probabilities $P_{t,l}\left(Y\left(I\right)=c\:\right) $ for each class $c\in C $ are found at each leaf node $l\in L $ for each tree $t\in T $. These probabilities are calculated as the ratio of the number of images $I $ of class $c $ that reach a leaf node $l $ to the total number of images that reach that leaf node $l $. $Y\left(I\right) $ is the class label of image $I $. During test time, we pass a new image through every decision tree until it reaches a prediction (or leaf) node, average all the posterior probabilities, and classify the image as
+
+
+\begin{equation}
+\label{eq:disp-formula-group-032e1395024b44bca0feeb46474c0adc}
+\widehat Y(I) = \underset c {\arg \max} \left\{\frac{1}{\left\vert T\right\vert}\sum_{t=1}^{\left\vert T\right\vert} P_{t,l} (Y(I) = c) \right\}
+\end{equation}
+where $l $ is the leaf node reached by the image $I $ in the tree $t $. A graphical representation of the proposed random forest classifier is shown in Figure~\ref{Drive-Net/figure2}  (see the right side).
+
+\section{Experiments and Results}
+\subsection{Data set}
+The Kaggle competition~\cite{montoya_State_2016} for driver distraction has provided 22425 images for training and 79727 for tests. Since we did not have access to the test labels, our experiments were carried out solely on the training images. However, the quality and conditions of the training and testing images are similar; the only difference is that none of the drivers used in the training data set appear in the images in the test data set. The images are of size 640 \ensuremath{\times} 480, and for our experiments, we converted them from color to grayscale.
+
+Ten classes are provided, related to the ones listed in Section I\@. Each class includes almost tens of the data, so that we have a uniform distribution of sample data.
+
+%\begin{multicols}{2}
+%\centering
+\begin{itemize}
+\item c0: safe driving
+\item c1: texting (right hand)
+\item c2: talking on the phone (right hand)
+\item c3: texting (left hand)
+\item c4: talking on the phone (left hand)
+\item c5: operating the radio
+\item c6: drinking
+\item c7: reaching behind
+\item c8: hair and makeup
+\item c9: talking to a passenger
+\end{itemize}
+%\end{multicols}
+
+
+\subsection{Algorithm Parameters}
+The convolutional neural random forest classifier is implemented using TensorFlow~\cite{abadi_tensorflowlarge_2016} and runs on an NVIDIA GeForce GTX TITAN X GPU with 16 GB of memory. The classifier was trained using the Adam stochastic gradient descent algorithm~\cite{kingma_Adam_2014} to efficiently optimize CNN weights. The weights were normalized using initialization as proposed in Kingma~\cite{kingma_Adam_2014} and updated in a mini-batch scheme of 128 candidates. The biases were initialized with zero, and the learning rate was set at $\alpha = 0.001 $. The exponential decay rates for the estimates for the first and second moments were set as $\beta_1 = 0.9 $ and $\beta_2 = 0.99 $, respectively. We used $\epsilon = {10}^{-8} $ to prevent division by zero. A dropout rate of $0.5 $ was implemented as regularization, applied to the output of the last convolutional layer and the dense layer to avoid overfitting. Finally, we used an epoch size of 50.  SoftMax loss (cross-entropy error loss) was used to measure the error loss. We used 100 estimators and a keep rate of $\gamma = {10}^{-4} $ for the random forest algorithm.
+
+
+\subsection{Performance Evaluation} We tested the algorithm performance by performing k-fold cross-validation on the entire dataset. For our experiments, we varied the values of $k\in\lbrack2, 5 \rbrack $ and found that the results were consistent enough to indicate that the network is not overfitting. Therefore, we chose $k = 5 $. First, we randomly choose the order of the driver images within the data set. For each fold of the k-fold cross-validation, we chose 80\% of the 22425 images as the training data set and tested the trained model on the remaining 20\% of the images. We ensured that the images from the entire dataset appeared in the test dataset only once in all k-folds, thereby allowing each image to be classified as a test image exactly once.
+
+We compared our proposed Drive-Net with two other neural network classifiers: an RNN classifier~\cite{liang_Recurrent_2015} and an MLP classifier~\cite{haykin_Neural_2009}. We report the classification accuracy, which is defined as the percentage of correct predictions and the number of false positives (a.k.a.\ false detections) for each class, as the figures of merit for comparing the algorithms. For classification precision, we present the results of seven other methods based on support vector machines (SVMs), dimensionality reduction techniques such as principal component analysis (PCA), feature extraction techniques such as histogram of oriented gradients (HOG), very deep convolutional nets such as VGG-16, VGG-GAP, and an ensemble of these two as reported by Zhang~\cite{zhang_Apply_2016} using the same Kaggle dataset of 22425 images.
+
+Table~\ref{tab:drive-net.table.1} shows the mean classification accuracy of the different classifiers as reported by Zhang~\cite{zhang_Apply_2016} and that of the three neural network classifiers that we implemented. From Table~\ref{tab:drive-net.table.1}, we observe that Drive-Net achieves a classification accuracy of 4.8\% points higher than the VGG-16 classifier, $3.7\% $ points higher than a VGG-GAP classifier, 2.4\% points higher than an ensemble of VGG-16 and VGG-GAP classifiers, 3.3\% points higher than the RNN classifier and 13\% points higher than the MLP classifier.
+
+\begin{table}[htbp]
+\centering
+\caption{Mean Classification Accuracy of the Automated Methods}%
+\label{tab:drive-net.table.1}
+\begin{tabular}{@{}lr@{}}
+\toprule
+\textbf{Method}             & \textbf{Accuracy} \\ \midrule
+Pixel SVC                   & 18.3\%            \\
+SVC + HOG                   & 28.2\%            \\
+SVC + PCA                   & 34.8\%            \\
+SVC + BBox + PCA            & 40.7\%            \\
+VGG-16                      & 90.2\%            \\
+VGG-GAP                     & 91.3\%            \\
+Ensemble VGG-16 and VGG-GAP & 92.6\%            \\
+\multicolumn{2}{l}{\cellcolor[HTML]{C0C0C0}}    \\
+MLP                         & 82\%              \\
+RNN                         & 91.7\%            \\
+Drive-Net                   & 95\%              \\ \bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:drive-net.table.2} shows the number of false classifications for our Drive-Net and for RNN and MLP\@. From Table~\ref{tab:drive-net.table.2}, we observe that our Drive-Net can identify the classes c6 (drinking) and c3 (texting with left hand) with minimum false detections, while the RNN and MLP classifiers have a hard time distinguishing these classes with many false detections, usually higher than the number of false detections in the other classes of these methods. Also, the total number of false detections for our Drive-Net is an order of magnitude smaller than that of the MLP classifier and slightly smaller compared to the RNN classifier.
+
+\begin{table}[htbp]
+\centering
+\caption{Error Count of Each Class for the Neural Network Methods}%
+\label{tab:drive-net.table.2}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\rowcolor[HTML]{FFFFFF}
+Class       & Drive-Net & RNN & MLP  \\ \midrule
+c0          & 35        & 48  & 356  \\
+c1          & 17        & 34  & 199  \\
+c2          & 14        & 31  & 158  \\
+c3          & 09        & 47  & 116  \\
+c4          & 34        & 30  & 252  \\
+c5          & 15        & 14  & 108  \\
+c6          & 08        & 18  & 263  \\
+c7          & 21        & 10  & 117  \\
+c8          & 29        & 46  & 181  \\
+c9          & 26        & 46  & 268  \\
+\rowcolor[HTML]{EFEFEF}
+All Classes & 208       & 324 & 2018 \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\section{Conclusion}
+Distracted driving is one of the main causes of motor vehicle accidents. Therefore, there is a significant interest in finding automated methods to recognize signs of driver distraction from dashboard camera images installed in vehicles. We propose a solution to this problem using a supervised learning framework. Our method, named Drive-Net, combines a CNN and a random forest classifier to recognize the various categories of driver distraction in images. We apply our Drive-Net to a publicly available dataset of images used in a Kaggle competition and show that our Drive-Net achieves better accuracy than the driver-distraction algorithms reported in the competition. We also compared Drive-Net to two other neural network algorithms: an RNN and an MLP algorithm, using the same data set. The results show that DriveNet achieves better detection accuracy compared to the other two algorithms.
 
 \bibliographystyle{ieeetr}
 \bibliography{subfiles/Better_BibTeX_Zotero}

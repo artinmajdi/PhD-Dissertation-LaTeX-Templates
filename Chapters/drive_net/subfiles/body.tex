@@ -16,7 +16,7 @@ Distracted driving is a major cause of motor vehicle accidents. Each day in the 
 
 Therefore, there is interest in using dashboard camera image analysis to automatically detect drivers engaged in distracting behavior. A dataset of such dashboard camera images, observing various activities of drivers, has been compiled and used for the Kaggle competition regarding automated detection of driver distraction~\cite{montoya_State_2016}. Figure~\ref{fig:drive-net/figure1} shows examples of some images from the dashboard camera manually annotated as different activities while driving.
 
-\begin{figure}[!htbp]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{\figurepath{image1.jpeg}}%
     \caption[Examples of Driver Distractions Captured by Dashboard Camera]{Representative dashboard camera images of drivers being distracted. From left to right: drinking while driving; safe driving; reaching behind while driving; talking on the phone (left hand) while driving~\cite{montoya_State_2016}.}%
@@ -25,7 +25,7 @@ Therefore, there is interest in using dashboard camera image analysis to automat
 
 Object detection and human behavior detection are well-researched topics in the computer vision literature~\cite{borji_Salient_2019}. Machine learning (esp. Deep Learning) techniques can often learn complex models and achieve high accuracy, so many researchers have started to apply such techniques to solve computer vision problems, including object detection and human behavior detection. For example, the Inception-v4 model proposed by Szegedy~\cite{szegedy_InceptionV4_2017} is a supervised learning model made up of deep convolutional residual networks (ResNet) that have more than 75 trainable layers, and achieves 96.92\% accuracy in the ImageNet data set. Girshick~\cite{girshick_RegionBased_2016} introduced a very powerful method for object detection and segmentation using a region-based convolutional neural network (CNN). This method divides the human behavior detection problem into two problems. First, they apply an object detection algorithm to detect the regions of interest (ROIs) where people are present within an image. Next, each ROI is fed to CNN to identify the type of behavior exhibited in the given ROI\@. Adding other traditional machine learning methods, such as ensemble learning (i.e.\ bagging) and K nearest neighbors (KNN), to the CNN model is a way to improve the accuracy of the already existing model~\cite{kim_Vehicle_2017}.
 
-\begin{figure*}[!htbp]
+\begin{figure*}[htbp]
     \centering
     \includegraphics[width=\textwidth]{\figurepath{image2.jpeg}}%
     \caption[Overview of the Proposed Drive-Net: A CNN Architecture Coupled with a Random Forest Classifier]{An overview of the proposed Drive-Net. Our proposed CNN architecture (shown on the left side) consists of two convolution layers (conv), each followed by a maxpooling layer (pool), and a final ReLU layer, the output of which is regularized using dropouts to obtain a fully connected layer (FC). The FC layer is fed as input to the random forest classifier (on the right side), which predicts the final class label.}%
@@ -105,7 +105,7 @@ We compared our proposed Drive-Net with two other neural network classifiers: an
 
 Table~\ref{tab:drive-net.table.1} shows the mean classification accuracy of the different classifiers as reported by Zhang~\cite{zhang_Apply_2016} and that of the three neural network classifiers that we implemented. From Table~\ref{tab:drive-net.table.1}, we observe that Drive-Net achieves a classification accuracy of 4.8\% points higher than the VGG-16 classifier, $3.7\% $ points higher than a VGG-GAP classifier, 2.4\% points higher than an ensemble of VGG-16 and VGG-GAP classifiers, 3.3\% points higher than the RNN classifier and 13\% points higher than the MLP classifier.
 
-\begin{table}[]
+\begin{table}[htbp]
 \centering
 \caption{Mean Classification Accuracy of the Automated Methods}%
 \label{tab:drive-net.table.1}
@@ -128,7 +128,7 @@ Drive-Net                   & 95\%              \\ \bottomrule
 
 Table~\ref{tab:drive-net.table.2} shows the number of false classifications for our Drive-Net and for RNN and MLP\@. From Table~\ref{tab:drive-net.table.2}, we observe that our Drive-Net can identify the classes c6 (drinking) and c3 (texting with left hand) with minimum false detections, while the RNN and MLP classifiers have a hard time distinguishing these classes with many false detections, usually higher than the number of false detections in the other classes of these methods. Also, the total number of false detections for our Drive-Net is an order of magnitude smaller than that of the MLP classifier and slightly smaller compared to the RNN classifier.
 
-\begin{table}[]
+\begin{table}[htbp]
 \centering
 \caption{Error Count of Each Class for the Neural Network Methods}%
 \label{tab:drive-net.table.2}

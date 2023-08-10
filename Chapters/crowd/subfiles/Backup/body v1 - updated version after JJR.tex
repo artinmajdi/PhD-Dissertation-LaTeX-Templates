@@ -330,7 +330,7 @@ In this section, we assess the efficacy of our proposed strategy. To evaluate ou
 \subsection{Datasets:}
 
 We report the performance of our proposed techniques on various datasets. These datasets cover a wide range of domains and have varying characteristics in terms of the number of features, samples, and class distributions. Table~\ref{tab:crowd.table.1.datasets} provides an overview of the datasets used. All datasets are obtained from the University of California, Irvine (UCI) repository~\cite{duan_UCI_2017}.
-\begin{table}[!htbp]
+\begin{table}[htbp]
 \centering
 \caption{Descriptions of the datasets used.}
 \def\arraystretch{1}
@@ -396,7 +396,7 @@ After generating the multi-label sets, we employed both the proposed and state-o
 
 Figure~\ref{fig:crowd.fig.1.weight} depicts the relationship between the randomly assigned annotators' reliability value ($\pi_{\alpha,k}$) and their corresponding estimated weights, $\omega_{\alpha,k}$. In the case of Tao's method, the figure displays the average weights across all instances. As seen, when the reliability of an annotator surpasses a specific threshold, the weight measured by Tao's technique plateaus, whereas the proposed method exhibits a considerably stronger correlation. Individual data points represent the actual measured weights, and the curve represents the regression line.
 
-\begin{figure}[!htbp]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{\figurepath{image1.png}}
     \caption{{Comparison of estimated weight with respect to annotators' degree of reliability for the proposed aggregation technique ``proposed-penalized'' and Tao~\cite{tao_Label_2020} for 10 different datasets.}}%
@@ -410,14 +410,14 @@ Figure~\ref{fig:crowd.fig.2.confidence_scores} illustrates the average accuracy 
 
 Figure~\ref{fig:crowd.fig.4.confidence_score.freq} displays the average accuracy using the ``freq'' confidence measurement strategy for the proposed crowd-certain technique with and without penalization. The penalization method occurs by penalizing annotators for inaccurate labeling before measuring their weights, as demonstrated in Equation~(\ref{eq:crowd.eq.10.consistency-penalized}). The penalized version of the proposed technique shows an improvement in average accuracy and a reduction in variance.
 
-\begin{figure}[!htbp]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=0.8\textwidth]{\figurepath{image2.png}}
 \caption{Comparison of the measured average accuracy for the two confidence-score measurement techniques in ten different datasets (using the proposed crowd-certain technique with penalization) in different numbers of annotators (from 3 up to 10).}%
 \label{fig:crowd.fig.2.confidence_scores}
 \end{figure}
 
-\begin{figure}[!htbp]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.9\textwidth]{\figurepath{image4.png}}
     \caption{Comparison of the measured average accuracy for the proposed crowd-certain technique with and without penalization and using the `freq' confidence-score strategy on ten different datasets with different numbers of annotators (starting from 3 to 10).}%
@@ -426,14 +426,14 @@ Figure~\ref{fig:crowd.fig.4.confidence_score.freq} displays the average accuracy
 
 Figure~\ref{fig:crowd.fig.5.confidencescore-beta} shows the average accuracy distribution (``freq'' strategy) of the proposed penalized versus Tao and Sheng for a different number of annotators using the kernel density estimation technique. This demonstrates that the proposed technique outperforms both Tao and Sheng on nine of the ten datasets, with higher average accuracy and less fluctuation over different annotator counts. Table~\ref{tab:crowd.table.2.crowdcertain_vs_tao.freq}  shows the statistical data measured between the proposed penalized technique and Tao's method. As can be seen from these results, the proposed technique has a significant improvement over the seven datasets, while delivering similar results for the other three datasets (p-value < 0.05).
 
-\begin{figure}[!htbp]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{\figurepath{image7.png}}
     \caption{{Measured accuracy distribution of the proposed-penalized aggregation technique uwMV-Freq, compared to wMV-Freq (Tao \unskip~\protect\cite{tao_Label_2020}), and MV-Freq (Sheng \unskip~\protect\cite{sheng_Majority_2019}) for different numbers of annotators, using the kernel density estimation technique}}%
     \label{fig:crowd.fig.5.confidencescore-beta}
 \end{figure}
 
-\begin{table}[]
+\begin{table}[htbp]
     \caption{{Statistical tests between the proposed-penalized technique and Tao\unskip~\protect\cite{tao_Label_2020} for the ``freq'' confidence measurement strategy.} }
     \resizebox{\textwidth}{!}{
     % \scalebox{0.75}{
@@ -465,14 +465,14 @@ Figure~\ref{fig:crowd.fig.5.confidencescore-beta} shows the average accuracy dis
 
 Figure~\ref{fig:crowd.fig.6.accuracy} shows the average accuracy distribution (``Beta'' strategy) of the proposed penalized versus Tao and Sheng strategies for different numbers of annotators using kernel density estimation. This demonstrates that the proposed technique outperforms both Tao and Sheng on seven out of ten datasets, with higher average accuracy and less fluctuation over different annotator counts. Furthermore, Table~\ref{tab:crowd.table.3.crowdcertain_vs_tao.beta} shows the statistical data measured between the proposed penalized technique and Tao, showing a significant improvement in six datasets, while performing similarly in the remaining datasets (p-value < 0.05).
 
-\begin{figure}[!htbp]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{\figurepath{image8.png}}
     \caption{{Measured accuracy distribution of the proposed-penalized aggregation technique uwMV-Beta, compared to wMV-Beta (Tao \unskip~\protect\cite{tao_Label_2020}), and MV- Beta (Sheng \unskip~\protect\cite{sheng_Majority_2019}) for different numbers of annotators, using the kernel density estimation technique.}}%
     \label{fig:crowd.fig.6.accuracy}
 \end{figure}
 
-\begin{table}[]
+\begin{table}[htbp]
     \caption{Statistical tests between the proposed-penalized and Tao~\cite{tao_Label_2020} technique for the ``Beta'' confidence measurement strategy.}
     \resizebox{\textwidth}{!}{
     \begin{tabular}{lccclllccrc}
@@ -503,14 +503,14 @@ Figure~\ref{fig:crowd.fig.6.accuracy} shows the average accuracy distribution (`
 
 Figure~\ref{fig:fig.6-accuracy-different-n-annotators} shows the average accuracy for the ``ionosphere'' dataset for various annotator counts (horizontal axis). As can be seen, the proposed strategies considerably improve accuracy while utilizing a small number of annotators. Furthermore, Figure~\ref{fig:fig.7-accuracy-different-datasets} shows the average accuracy of the three annotators (the smallest number of annotators that could perform consensus voting) on all ten datasets. Similarly, for the ionosphere dataset, we observed a similar trend in achieving higher accuracy on nine of the ten datasets compared to all benchmarks. It is important to note that the ``freq'' confidence measurement strategy is used to report the proposed techniques, as well as the Tao and Sheng results. Furthermore, the measured p-value calculated for the measured average accuracy (using three annotators) over different datasets showed a significant improvement for the proposed technique with and without penalization over all remaining benchmarks (Gold Majority Vote, MV, MMSR, Wawa, Zero-Based Skill, GLAD, Dawid Skene).
 
-\begin{figure}[!htbp]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{\figurepath{image9.png}}
     \caption{{Average accuracy for the proposed aggregation techniques compared to the benchmarks for different numbers of annotators (horizontal axis) in the ionosphere dataset.}}%
     \label{fig:fig.6-accuracy-different-n-annotators}
 \end{figure}
 
-\begin{figure}[!htbp]
+\begin{figure}[htbp]
     \centering \includegraphics[width=\textwidth]{\figurepath{image10.png}}
     \caption{Average accuracy of the proposed aggregation techniques compared to the benchmarks for different datasets using three annotators.}%
     \label{fig:fig.7-accuracy-different-datasets}

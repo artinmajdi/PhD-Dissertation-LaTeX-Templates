@@ -16,7 +16,7 @@ In this work, we propose the use of a modified residual U-Net in a cascaded mult
 The proposed method uses a modified residual U-Net architecture (mRU-Net) for 2D thalamic nuclei segmentation as shown in Figure~\ref{Thalamus.Fig.1.Architecture}  (top panel). The conventional U-Net~\cite{ronneberger_UNet_2015} uses a contracting (encoder) layer and an expanding (decoder) layer for multi-resolution feature extraction and synthesis. To improve the convergence performance and reduce overfitting, we incorporated batch normalization~\cite{ioffe_Batch_2015} and dropout~\cite{srivastava_Dropout_2014} layers into the network. Residual convolutional blocks~\cite{he_Deep_2016} were included to mitigate the problem of vanishing and exploding loss function gradients. Each convolutional block consists of 2D convolution units followed by a batch normalization and a leaky rectified linear unit~\cite{maas_Rectifier_2013} (leakage factor 0.1). A 1$\times$1 convolution with a sigmoid activation function maps the final feature maps into the desired number of classes, generating a probability map for each class.
 
 
-\begin{figure}[t]
+\begin{figure}[htbp]
 \centering\includegraphics[width=\textwidth]{\figurepath{pdf/slide1.pdf}}
 \caption[mRU-Net Architecture and Proposed Cascaded Network for Thalamic Nuclei Segmentation]{Top panel shows the mRU-Net architecture, where normalization and residual blocks are added to a standard U-Net. Bottom panel shows the proposed cascaded network for thalamic nuclei segmentation. Following pre-processing, mRU-Net1 is trained to segment the whole thalamus. The output of this network is used to find a bounding box (red square) that encompasses the left thalamus. The cropped inputs are used to train a second network (mRU-Net2) to segment the thalamic nuclei.}%
 \label{Thalamus.Fig.1.Architecture}
@@ -27,7 +27,7 @@ For thalamic segmentation, we use a two-step cascaded approach~\cite{jia_Prostat
 Due to the limitation in the number of labeled datasets available, training a generalizable 3D CNN which can exploit the 3D structure is infeasible. In order to overcome this limitation, and take advantage of the spatial information present in an isotropic-resolution 3D MRI dataset, we use a multi-planar~\cite{prasoon_Deep_2013} approach as shown in Figure~\ref{Thalamus.Fig.2.MultiPlanar}. The input 3D dataset is pre-processed, reformatted into three orthogonal orientations (axial, coronal, and sagittal), and the resulting 2D images are fed into three cascaded 2D networks (from Figure~\ref{Thalamus.Fig.1.Architecture}) to take advantage of the complementary information from each orientation. For each cascaded network, the output segmentations are reformatted to the original imaging orientation and then fused using voxel-wise majority voting.
 
 
-\begin{figure}[t]
+\begin{figure}[htbp]
 \centering \includegraphics[width=\textwidth]{\figurepath{pdf/slide2.pdf}}
 \caption[Multi-Planar Thalamic Nuclei Segmentation Using Cascaded Networks]{Schematic of the multi-planar scheme, based on the cascaded network of Figure~\ref{Thalamus.Fig.1.Architecture}. The 3D input image is reformatted to the sagittal, coronal and axial planes and fed as 2D input to three separate cascaded networks. Segmentations from the three 2D networks are fused using majority voting to generate the final 3D thalamic nuclei segmentation.}%
 \label{Thalamus.Fig.2.MultiPlanar}
@@ -41,7 +41,7 @@ Two instances of the cascaded multi-planar network were implemented: a WMn netwo
 \subsection{Datasets and Labels}
 To evaluate thalamic nuclei segmentation of WMn-MPRAGE images, we used data from 40 subjects (13 healthy subjects, 15 patients with MS, and 12 patients with ET) acquired on a 7T scanner. We used data from the 12 ET patients rescanned on a 3T scanner to extend this work to 3T. To evaluate thalamic nuclei segmentation of CSFn-MPRAGE images, we used data from 33 subjects (6 healthy subjects, 15 patients with MS, and 12 patients with ET) scanned with both WMn-MPRAGE and CSFn-MPRAGE pulse sequences on a 7T scanner. A separate dataset consisting of 93 WMn-MPRAGE images from a 3T scanner was used just for the purpose of network initialization (referred to as initialization dataset); this included patients with alcohol use disorder (AUD) and healthy control subjects. Note that data from AUD patients (whose images are similar to healthy subjects except for slight atrophy~\cite{zahr_Sensitivity_2020}) was used solely to obtain initialization weights for the WMn network to help accelerate network convergence. All subjects were scanned on GE (General Electric Healthcare, Waukesha WI) 7T and 3T scanners after obtaining prior informed consent and adhering to institutional review board protocols. The pulse sequence parameters for both the WMn-MPRAGE and CSFn-MPRAGE pulse sequences are listed in Table~\ref{tab:thalamus.table.1}
 
-\begin{table}[t]
+\begin{table}[htbp]
 \centering
 \caption[Image Acquisition Parameters for WMn-MPRAGE and CSFn-MPRAGE for 7T and 3T Data]{Image acquisition parameters for WMn-MPRAGE and CSFn-MPRAGE for 7T and 3T data used in this study}\label{tab:thalamus.table.1}
 \begin{tabular}{llll}
@@ -150,7 +150,7 @@ For the 40 test subjects (13 control, 15 MS, 12 ET subjects), no statistical dif
 
 The WMn network initialized using weights from a 3T initialization network showed a significant improvement in Dice for two nuclei (VA, and Hb) and an increase in convergence rate compared to random initialization (Figure~\ref{Thalamus.Fig.5.ConvergenceRate}). Following this, all experiments on WMn-MPRAGE data were performed using this initializing step. For the WMn network, the use of the Dice loss function showed a statistically significant improvement in Dice for the whole thalamus and 4 nuclei (VPl, LGN, CM, MGN) compared to a weighted cross entropy loss function (Table~\ref{tab:thalamus.table.2.dice_vsi}). Further, it reduced the overall number of epochs, required training time (per epoch) and convergence time by 32\%, 16\%, and 43\%, respectively. As a result, the Dice loss function was used for all further experiments.
 
-\begin{table}[t]
+\begin{table}[htbp]
 \centering
 \caption[Effect of Loss Function on Dice and VSI\@.]{Effect of loss function on Dice and VSI\@. Average Dice and VSI shown for 11 subjects.}\label{tab:thalamus.table.2.dice_vsi}
 \begin{tabular}{lcccc}
@@ -182,7 +182,7 @@ The WMn network initialized using weights from a 3T initialization network showe
 \subsubsection{Network Performance}
 Figure~\ref{Thalamus.Fig.1.Dice} shows Dice for (a) WMn-MPRAGE data segmented using the proposed method (blue) and THOMAS (red) and (b) CSFn-MPRAGE data segmented using the proposed method (blue) and FreeSurfer (red). Note that this aggregates the Dice over control, MS, and ET cases (WMn: n=40 and CSFn: n=33). Our proposed CNN-based method shows improved Dice over THOMAS and FreeSurfer for seven and ten nuclei, respectively.
 
-\begin{figure}[t]
+\begin{figure}[htbp]
 \includegraphics[width=\textwidth]{\figurepath{pdf/slide3.pdf}}
 \caption[Dice Score Comparison: Proposed Method vs. THOMAS/FreeSurfer for WMn-MPRAGE and CSFn-MPRAGE]{Comparison of average Dice for (a) WMn-MPRAGE and (b) CSFn-MPRAGE for the proposed method (blue) and THOMAS/FreeSurfer (red), aggregated over all cases. Dice values segregated by disease type is shown in Tables~\ref{tab:thalamus.table.3.comparison.thomas} and~\ref{tab:thalamus.table.4.comparison.freesurfer}.}%
 \label{Thalamus.Fig.1.Dice}
@@ -197,14 +197,14 @@ Average Dice and VSI for the proposed method on 3T WMn-MPRAGE data from ET patie
 
 Figure 4 shows segmentation results from a patient with ET scanned on a 7T (top panel) and a 3T MRI scanner (bottom panel) using WMn-MPRAGE\@. Representative axial and coronal slices with automated segmentation labels overlaid for both the left and right thalamus are shown on the right. The increased SNR and $B_1$ inhomogeneity in the 7T image (white arrow) can be clearly seen at the periphery while the inter-nuclear contrast seems comparable. The Dices (and hence the segmentations) are virtually identical as shown in Table~\ref{tab:thalamus.table.3.comparison.thomas}.
 
-\begin{figure}[t]
+\begin{figure}[htbp]
 \centering \includegraphics[width=\textwidth]{\figurepath{pdf/slide4.pdf}}
 \caption[Comparison of 7T and 3T WMn-MPRAGE Images with Thalamic Nuclei Segmentations in an ET Patient]{WMn-MPRAGE images from a patient with ET acquired at 7T (top left) and 3T (bottom left). The zoomed inset images on the right show representative axial and coronal sections with and without automated segmentation overlays. Automated segmentations of the thalamic nuclei are almost identical to the manual segmentation shown for the left thalamus in outlines. Note the clear visualization of small structures such as the MTT and habenula on both sets of images. The increased B1 heterogeneity at 7T can be clearly seen (white arrow), but the cropped images are comparable.}\label{Thalamus.Fig.2.MultiPlanar.ET}
 \end{figure}
 
 
 
-\begin{table}[t]
+\begin{table}[htbp]
 \caption[Mean Dice and VSI for THOMAS vs. Proposed Method for WMn-MPRAGE Data]{Comparison of mean Dice and VSI for THOMAS versus proposed method for WMn-MPRAGE data (median volumes in mm3 are shown in parentheses and nuclei with \textless{}200 mm3 shaded, red bold indicates \textgreater{}10\% change)}\label{tab:thalamus.table.3.comparison.thomas}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lccccccccccccccc}
@@ -243,7 +243,7 @@ Figure 4 shows segmentation results from a patient with ET scanned on a 7T (top 
 }
 \end{table}
 
-\begin{table}[t]
+\begin{table}[htbp]
 \caption[Mean Dice and VSI for FreeSurfer vs. Proposed Method for CSFn-MPRAGE Data]{Comparison of mean Dice and VSI for FreeSurfer versus proposed method for CSFn-MPRAGE data (median volumes in mm3 are shown in parentheses and nuclei with  \textless{}200 mm3 shaded, red bold indicates \textgreater{}20\% change)}\label{tab:thalamus.table.4.comparison.freesurfer}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lccccccccccccc}
@@ -298,7 +298,7 @@ Table~\ref{tab:thalamus.table.4.comparison.freesurfer}  shows the average Dice a
 
 Images from a representative MS patient acquired using two different contrasts (WMn-MPRAGE and CSFn-MPRAGE) along with their overlaid segmentations are shown in Figure~\ref{Thalamus.Fig.3.MS}. We can clearly see that the network segmented the thalamic nuclei fairly accurately in the CSFn-MPRAGE image, despite its seemingly poor intra-thalamic contrast. For the larger nuclei, Dice values for these two subjects ranged from $0.69-0.86$ and $0.66-0.89$ for WMn-MPRAGE and CSFn-MPRAGE, respectively, and for the smaller nuclei, Dice values ranged from $0.73-0.82$ and $0.61-0.81$, respectively. Note also that the presence of MS lesions (arrows) has not affected the network performance, attesting to the robustness of the training process which included healthy and MS patients.
 
-\begin{figure}[t]
+\begin{figure}[htbp]
 \centering \includegraphics[width=\textwidth]{\figurepath{pdf/slide5.pdf}}
 \caption[Comparison of WMn-MPRAGE and CSFn-MPRAGE Images with Thalamic Nuclei Segmentations in an MS Patient]{WMn-MPRAGE (top left) and CSFn-MPRAGE (bottom left) images from a patient with MS acquired at 7T. The zoomed inset images on the right show representative axial and coronal sections with and without automated segmentation overlays with manual segmentation shown for the left thalamus in outlines. Note the comparable thalamic nuclei segmentations for both cases, despite the poor intra-thalamic nuclear contrast in the CSFn-MPRAGE image. MS lesions are shown as white arrows in the top inset image.}%
 \label{Thalamus.Fig.3.MS}
@@ -307,7 +307,7 @@ Images from a representative MS patient acquired using two different contrasts (
 \subsection{Network Robustness to Noise}
 Figure~\ref{Thalamus.Fig.6.NoiseAddition}  shows the effect of noise addition on the performance of the proposed method. It can be seen that even though there is a gradual decline in Dice for whole thalamus and all nuclei (except for VPL and LGN), there is no significant reduction in accuracy until SNR = 11.4 (i.e.\ reduced 2x from the baseline), showing that further acquisition speed-up (which usually comes at the cost of SNR) can be achieved. From SNR of 11.4 to SNR of 8 (3x reduction from baseline), two nuclei (MTT and LGN) and the whole thalamus show significant decline whilst the remaining show a more modest decline.
 
-\begin{figure}[t]
+\begin{figure}[htbp]
 \centering\includegraphics[width=\textwidth]{\figurepath{pdf/slide6.pdf}}
 \caption[Impact of Noise Addition on Proposed Method Performance at Different SNR Levels]{Effect of noise addition on the performance of the proposed method. Note the excellent performance on most nuclei for 2X lower SNR (SNR = 11.4) compared to baseline (SNR = 23).}%
 \label{Thalamus.Fig.6.NoiseAddition}
@@ -316,7 +316,7 @@ Figure~\ref{Thalamus.Fig.6.NoiseAddition}  shows the effect of noise addition on
 \subsection{Clinical Analysis in Multiple Sclerosis}
 Two-tailed t-test analyses showed no statistically significant difference between the automatically segmented nuclei volumes of left and right thalami except for MTT, and thus the average volume of left and right thalami was used for the analysis. An ANCOVA was conducted to compare absolute bilateral thalamic nuclear volumes between the two groups, controlling for age, gender, ICV, and PI\@. There was significant atrophy in MS patients in whole thalamus (F~\cite{aggleton_Hippocampalanterior_2010,heckemann_Automatic_2006} = 9.5, p = 0.005), AV (F = 26.6, p \textless\ 0.0001), Pul (F = 18, p = 0.0003), and MGN (F = 17, p = 0.0004). These were identical to the results observed using THOMAS segmented data except for an additional atrophy in Hb (F = 9.1, p = 0.006) which did not survive significance after Bonferroni correction.
 
-\begin{figure}[t]
+\begin{figure}[htbp]
 \centering\includegraphics[width=\textwidth]{\figurepath{pdf/SupportingFigure1.pdf}}
 \caption[Impact of Initialization on Accuracy and Convergence: Comparison between Random and 3T Network Initialization]{Effect of initialization on final accuracy and convergence curves. The validation accuracy (Dice) and training loss for a network with random initialization versus initialization from a network trained on a 3T dataset is shown. The segmentation results indicate a statistically significant improvement over two nuclei (VA and Hb) when initialized from the 3T network.}%
 \label{Thalamus.Fig.5.ConvergenceRate}
@@ -335,26 +335,29 @@ The proposed CNN-based method has limitations that are common to most deep learn
 We have proposed the use of a CNN-based cascaded multi-class multi-planar method for the segmentation of thalamic nuclei and evaluated it on images with different contrasts, and magnetic field strengths for both healthy and diseased populations. This method has been applied successfully to both advanced MR acquisition techniques with high intra-thalamic contrast (WMn-MPRAGE) and the more commonly used low intra-thalamic contrast sequences (CSFn-MPRAGE). Further, the effectiveness of this method in real-life applications has been investigated via a clinical analysis of volume atrophy in patients with MS\@.
 
 \section{Abbreviations}
-AV Anteroventral nucleus
-Centromedian nucleus
-DTI Diffusion tensor imaging
-Hb Habenular nucleus
-LGN Lateral geniculate nucleus
-Mediodorsal nucleus
-MGN Medial geniculate nucleus
-MTT Mammillothalamic tract
-Pul Pulvinar nucleus
-VA Ventral anterior nucleus
-Ventralis intermedius nucleus
-VLa Ventral lateral anterior nucleus
-VLp Ventral lateral posterior nucleus
-VPL Ventral posterolateral nucleus
-WM White matter
-WMn White matter nulled
-CSF Cerebrospinal fluid
-CSFn Cerebrospinal fluid nulled
-MPRAGE Magnetization-prepared rapid gradient echo
+\begin{tabular}{@{} >{\bfseries}l @{\hspace{1em}} l}
+  AV & Anteroventral nucleus \\
+  CM & Centromedian nucleus \\
+  DTI & Diffusion tensor imaging \\
+  Hb & Habenular nucleus \\
+  LGN & Lateral geniculate nucleus \\
+  MD & Mediodorsal nucleus \\
+  MGN & Medial geniculate nucleus \\
+  MTT & Mammillothalamic tract \\
+  Pul & Pulvinar nucleus \\
+  VA & Ventral anterior nucleus \\
+  VI & Ventralis intermedius nucleus \\
+  VLa & Ventral lateral anterior nucleus \\
+  VLp & Ventral lateral posterior nucleus \\
+  VPL & Ventral posterolateral nucleus \\
+  WM & White matter \\
+  WMn & White matter nulled \\
+  CSF & Cerebrospinal fluid \\
+  CSFn & Cerebrospinal fluid nulled \\
+  MPRAGE & Magnetization-prepared rapid gradient echo \\
+\end{tabular}
 
 \section{Acknowledges}
 We would like to acknowledge funding support from the National Institutes of Health (R21 AA023582\-01) and the Arizona Alzheimer's Consortium.
+
 

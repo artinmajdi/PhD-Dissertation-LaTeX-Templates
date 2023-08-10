@@ -1,21 +1,19 @@
 \section{Introduction}
-
 Primary cilia are curvilinear non-motile sensory organelles protruding from the surface of many eukaryotic cells that are involved in many cell development and physiological processes. Recent research~\cite{miyoshi_Lithium_2009} has shown that primary cilia length in mammalian cells may change due to extracellular environment stimuli, such as renal injury~\cite{verghese_Renal_2009} or external signaling modules. It has also been reported that renal primary cilia are involved in modulation of the mechanistic target of rapamycin (mTOR) pathway. Furthermore, it has been demonstrated that lithium treatment activates the mTOR pathway in renal collecting duct cells expressing aquaporin 2 (AQP2)~\cite{gao_Rapamycin_2013}. The collecting duct cells in the kidney express primary cilia, as shown in Fig.~\ref{fig:cilia.fig.1} \(a\). There is a significant interest developing an automated classifier to accurately and rapidly distinguish between primary cilia located in the AQP2 expressed region and primary cilia located elsewhere.
 
 Manual detection and classification of primary cilia within tissues usually involves a large amount of time, especially for large-scale data processing, and is prone to multiple errors caused by background clutter, non-uniform illumination, imaging noise, and subjective bias. This serves as a motivation to develop an automatic algorithm capable of classifying the primary cilia of interest within the fluorescently labeled microscopy images. In order to classify the primary cilia, we need to first find all the cilia locations within the microscopy images. There are a number of curvilinear-structure detection methods such as the top-hat transform-based detector, ridge detector, steerable detector and the multiscale variance stabilizing transform (MS-VST) detector that are capable of detecting all the cilia locations within the microscopy image~\cite{ram_dissertation_2017, ram_Vehicle_2016, ram_Three_2018}. Nevertheless, in this paper we analyze the already detected primary cilia, and we focus on classifying them as belonging to an AQP2 expressed region or elsewhere in the microscopy images.
-%----------------------------------------------- FIGURE 1------------------------------------------------------%
-\begin{figure}[!htbp]
+
+\begin{figure}[htbp]
 	\centering
     \includegraphics[width= 0.7\textwidth]{\figurepath{fig1}}
 	\caption[Microscopy Images of Primary Cilia in Relation to AQP2-Expressing Renal Collecting Duct]{Microscopy image showing primary cilia which are in red color. (a) Cilia (red color) near AQP2-expressing renal collecting duct (white color). (b) Primary cilium within an AQP2 expressed region that we are interested in. (c) Primary cilium elsewhere in the image.}%
 	\vspace{-6mm}%
 	\label{fig:cilia.fig.1}
 \end{figure}
-%-------------------------------------------------------------------------------------------------------------------%
 
 Recently, the availability of large amounts of data and significant computational power have rapidly increased the popularity of machine learning (esp.\ deep learning) approaches. Convolutional neural networks (CNNs)~\cite{lecun_deeplearning_2015} have outperformed the state-of-the-art in many computer vision applications~\cite{krizhevsky_Imagenet_2017}. Similarly, the applicability of CNNs has also been investigated for medical image analysis~\cite{gupta_Convolutional_2017}. In particular, their capability to learn discriminative features when trained in a supervised fashion makes them useful for automated detection of structures in, e.g., microscopy images~\cite{gupta_Convolutional_2017}.
 
-\begin{figure}[!htbp]
+\begin{figure}[htbp]
 	\centering
     \includegraphics[width=\textwidth]{\figurepath{fig2n.png}}
 	\caption[Overview of the Convolutional Neural Random Forest Classifier: Integration of CNN Feature Mapping with Decision and Leaf Nodes]{An overview of the proposed convolutional neural random forest classifier. Our proposed CNN model where the feature mapping happens (shown on the left side) consists of two convolutional layers each followed by a maxpooling layer and a final ReLU activation layer, following which a dropout regularization is used to obtain the fully connected layer. The learned features are fed to our random forests classifier (shown on the right side), which have trees with decision nodes (d) (in red color) and leaf nodes (\emph{l}) (in green color). At each leaf node we compute posterior probabilities belonging to each class.}
@@ -101,7 +99,7 @@ The AUC is the average of precision $P(R)$ over the interval ($0 \leq R \leq 1$)
 \end{equation}
 The best classification algorithm among several alternatives is commonly defined as the one that maximizes either the AUC  or the $F_{\beta}$-score.
 
-\begin{table}[!t]
+\begin{table}[htbp]
 \caption[Performance of the Classification Algorithms]{Performance of the Classification Algorithms}%
 \label{tab:cilia.table.1}
 \begin{center}
@@ -129,15 +127,13 @@ Accurate detection and classification of primary cilia in microscopy images is a
 %For future we plan to incorporate an end-to-end learning framework for the convolutional neural random forests by introducing stochastic differentiable decision trees, enabling the split node parameters to be learned via back-propagation. Doing so will lead to further improvements in the classifier.
 %
 %\section*{Acknowledgment}
-%
 %The authors would like to thank Jonathan T. Gill for the numerous fruthfull discussions and insights about using TensorFlow. We would also like to thank Jianbo Shao for helping in manual segmentation of the primary cilia images used for ground truth evaluation.
-%----------------------------------------------- FIGURE 3------------------------------------------------------%
-\begin{figure}[!htbp]
+
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width= 3.5in, height=2.5in]{\figurepath{fig3}}
 	\caption[ROC Curves for Various Classification Methods]{ROC curves for various classification methods.}%
 	\label{fig:cilia.fig.3}
 	\vspace{-4mm}
 \end{figure}
-%-----------------------------------------------------------------------------------------------------------------%
 

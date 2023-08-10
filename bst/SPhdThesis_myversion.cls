@@ -228,6 +228,7 @@
 %---------------------------------------------------------------
 \RequirePackage[framemethod=TikZ]{mdframed}
 \definecolor{mygreen}{HTML}{E9ECE6}% Adding a custom color
+\definecolor{beaublue}{rgb}{0.74, 0.83, 0.9}
 
 \newenvironment{mymdframed}[1]
 {%
@@ -242,8 +243,8 @@
         innertopmargin=0.5em,
         linewidth=0.25em,
         roundcorner=0.15em,
-        linecolor=mygreen,
-        frametitlebackgroundcolor=mygreen]
+        linecolor=beaublue,
+        frametitlebackgroundcolor=beaublue]
 }
 {\end{mdframed}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -302,7 +303,7 @@
 
     % Footer contains the page number on right side.
     \fancyfoot{}
-    \fancyfoot[R]{\SgIntPageNumFormat\thepage}
+    \fancyfoot[C]{\SgIntPageNumFormat\thepage}
     \renewcommand{\footrulewidth}{0pt}
 }
 
@@ -452,10 +453,8 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % C L E V E R E F
-%
 % Must come as late as possible, especially after hyperref.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \RequirePackage[capitalize]{cleveref}
 
 % Disable the automatic abbreviations of equations and figures.
@@ -481,7 +480,6 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % D O C U M E N T   P R O P E R T I E S
-%
 % DEFINITIONS NEEDED FOR PREFACE PAGES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -492,6 +490,7 @@
 
 % Define empty variables for creating title and setting PDF properties.
 \newcommand{\SgIntTitle}{}
+\newcommand{\SgIntTitleNoBreaks}{}
 \newcommand{\SgIntAuthor}{}
 \newcommand{\SgIntAuthorDegrees}{}
 \newcommand{\SgIntYear}{}
@@ -511,6 +510,7 @@
 
 % Define commands for setting  the above variables.
 \newcommand{\SgSetTitle}[1]{\renewcommand{\SgIntTitle}{#1}\SgIntSetupPdfProps}
+\newcommand{\SgSetTitleNoBreaks}[1]{\renewcommand{\SgIntTitleNoBreaks}{#1}}
 \newcommand{\SgSetAuthor}[1]{\renewcommand{\SgIntAuthor}{#1}\SgIntSetupPdfProps}
 \newcommand{\SgSetAuthorDegrees}[1]{\renewcommand{\SgIntAuthorDegrees}{#1}}
 \newcommand{\SgSetYear}[1]{\renewcommand{\SgIntYear}{#1}}
@@ -531,7 +531,14 @@
 % T I T L E  P A G E
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% \fontfamily{Times New Roman}\selectfont
+\definecolor{BlueGray}{rgb}{0.4, 0.6, 0.8}
+\definecolor{Asparagus}{rgb}{0.53, 0.66, 0.42}
+\definecolor{AuroMetalSaurus}{rgb}{0.43, 0.5, 0.5}
+\newcommand{\titlePageColor}[1]{{\color{BlueGray}\bfseries\expandafter{#1}}}
+
 \ifthenelse{\equal{\SgIntTitleCase}{upper}}{ \newcommand{\SgIntMakeUpperCase}[1]{\MakeUppercase{#1}} }{ \newcommand{\SgIntMakeUpperCase}[1]{#1} }
+
 
 % made based on ua-thesis.cls
 \newcommand{\SgAddTitle}{%
@@ -540,34 +547,34 @@
 		\vspace*{0.5in}
 		{\Large\uppercase\expandafter{\SgIntTitle}}
 		\bigskip\smallskip\\
-		by
+		\titlePageColor{By}
 		\bigskip\smallskip\\
 		{\large{\SgIntAuthor}}
-		\vspace{1.5in}
 
-		A Dissertation Submitted to the Faculty of the\\
-		% \vspace{.25in}
+		{\color{Asparagus}\parbox{2in}{\hrulefill}} \\
+		{\color{AuroMetalSaurus}{\footnotesize Copyright~~\copyright~~{\SgIntAuthor}~~\SgIntYear}}
+
+		\vspace{.4in}
+
+		\titlePageColor{A Dissertation Submitted to the Faculty of the} \\
 		\uppercase\expandafter{\SgIntDepartment}
 
 		\vspace{.4in}
 
-		In Partial Fulfillment of the Requirements \\
-		For the Degree of \\
-		% \vspace{.25in}
+		\titlePageColor{In Partial Fulfillment of the Requirements} \\
+		\titlePageColor{For the Degree of} \\
 		DOCTOR OF PHILOSOPHY \\
 
 		\vspace{.4in}
 
-		In the Graduate College \\
-		% \vspace{.25in}
+		\titlePageColor{In the Graduate College} \\
 		\uppercase\expandafter{\SgIntUniversity}
 
 
 		\vfill
 		\SgIntDeclarationDate
 
-		\parbox{2in}{\hrulefill}\\
-		{\footnotesize Copyright~~\copyright~~{\SgIntAuthor}~~\SgIntYear}
+
 	\end{center}
 	\vspace*{0.3in}
 	\SgIntClearDoublePage
@@ -619,6 +626,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % STATEMENT BY AUTHOR
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\definecolor{Cadet}{rgb}{0.33, 0.41, 0.47}
 
 \newcommand{\SgAddStatement}[1][nosignimage]{%
 	\newpage
@@ -631,9 +639,8 @@
 	\vspace{0.5cm}
 
 	\begin{quote}
-    This dissertation \textit{\SgIntTitle} prepared by {\SgIntAuthor} has been submitted in partial fulfillment of requirements for a doctoral degree at The University of Arizona
+    This dissertation {\color{Cadet}\lowercase{\SgIntTitleNoBreaks}} prepared by {\color{Cadet}{\SgIntAuthor}} has been submitted in partial fulfillment of requirements for a doctoral degree at The University of Arizona
     and is deposited in the University Library to be made available to borrowers under the rules of the Library.
-    \bigskip\\
 
 	Brief quotations from this dissertation are allowable without special permission, provided that accurate acknowledgment of the source is made. Requests for permission for extended quotation from or
     reproduction of this manuscript in whole or in part may be granted by
@@ -646,11 +653,12 @@
 	\end{quote}
 
 	% Check if nosignimage adds 2cm of vertical space; otherwise, adds 0.5cm of vertical space.
-	\ifthenelse{\equal{#1}{nosignimage}} {\vspace{2.0cm}} {\vspace{0.5cm}}
+	% \ifthenelse{\equal{#1}{nosignimage}} {\vspace{2.0cm}} {\vspace{0.5cm}}
 
 	% Checks if nosignimage. If so, it does nothing. Otherwise, it includes the signature image from the file specified by #1, shifted down by 0.5cm.
 	\ifthenelse{\equal{#1}{nosignimage}}{}{\includegraphics{#1}\[-0.5cm]}
-		SIGNED: \rule{5cm}{0.2mm} % \SgIntAuthor  \SgIntDeclarationDate
+		SIGNED: {\color{Cadet}\underline{{\fontfamily{pzc}\selectfont\SgIntAuthor}}}
+		% {\color{Cadet}\hspace{.6in}\SgIntDeclarationDate}
 
 	\vspace*{0.5in}
 	\newpage
