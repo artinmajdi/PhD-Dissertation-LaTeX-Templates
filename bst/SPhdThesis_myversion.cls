@@ -256,17 +256,24 @@
 
 % Define a new command to include the bibliography file and
 % set the formatting options.
-\newcommand{\SgIncludeBib}[1]
+\newcommand{\SgIncludeBibTex}[1]
 {%
 	\clearpage                                 % Fix the page number in TOC.
-	\fancyhead{}					% remove the heading chapter number
+	\fancyhead{}							   % remove the heading chapter number
 	\phantomsection                            % Fix the link in PDF.
 	\addcontentsline{toc}{chapter}{References} % Add the bibliography to TOC.
-	\bibliographystyle{ieeetr}                  % Set the bibliography style.
+	\bibliographystyle{abbrvnat}               % plainnat  abbrvnat unsrtnat
 	\bibliography{#1}                          % Include the bibliography file.
 }
 
-
+\newcommand{\SgIncludeBibLatex}[1]
+{%
+	\clearpage                                 % Fix the page number in TOC.
+	\fancyhead{}							   % remove the heading chapter number
+	\phantomsection                            % Fix the link in PDF.
+	\addcontentsline{toc}{chapter}{References} % Add the bibliography to TOC.
+	\addbibresource{#1}
+}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % F A N C Y   H E A D E R
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

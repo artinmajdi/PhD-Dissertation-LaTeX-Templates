@@ -11,12 +11,7 @@
 \input{bst/syms}
 \usepackage{graphicx, url, multirow, morefloats, floatflt, cancel, tfrupee, colortbl, xcolor, pifont, wasysym}
 \usepackage[cmintegrals]{newtxmath}
-\usepackage[nocompress]{cite}
 \usepackage{tabulary}
-\makeatletter
-\let\citep\cite
-\let\citet\cite
-\makeatother
 
 \usepackage{float}
 \usepackage{lipsum}
@@ -46,6 +41,19 @@
 \usepackage{enumitem}
 \usepackage{multicol}
 \usepackage{geometry}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{pdfpages}
+\usepackage{multicol}
+% \usepackage[]{cite} % nocompress
+% \makeatletter
+% \let\citep\cite
+% \let\citet\cite
+% \makeatother
+% \usepackage[numbers,sort&compress, super]{natbib}
+\usepackage[sorting=none, maxcitenames=2, style=numeric-comp, backend=biber,citecounter=true]{biblatex}
+
+
 \geometry{margin=2.5cm}
 
 % Set default font to sans-serif

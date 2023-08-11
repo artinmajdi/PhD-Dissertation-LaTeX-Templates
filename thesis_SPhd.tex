@@ -13,7 +13,7 @@
     \SgSetDeclarationDate{2023}
     \SgSetSupervisor{Jeffrey J\@. Rodriguez}
     \SgSetSuperTitle{Professor}
-    \SgSetSuperDept{Dept\@. of Electrical and Computer Engineering}
+    \SgSetSuperDept{Department of Electrical and Computer Engineering}
     \SgSetSecondMember{Carlos J\@. Alsua}
     \SgSetThirdMember{Abhijit Mahalanobis}
     \SgSetFourthMember{Janet M\@. Roveda}
@@ -30,19 +30,18 @@
 
 
 \input{bst/preamples}
-\setcounter{secnumdepth}{3}
+\addbibresource{bst/Better_BibLaTeX_Zotero.bib}
 
-\usepackage{algorithm}
-\usepackage{algpseudocode}
-\usepackage{pdfpages}
+\setcounter{secnumdepth}{3}
 
 \begin{document}
     \preface%
     \include{Chapters/Introduction}
-    \include{Chapters/crowd/crowd_thesis}
-    \include{Chapters/taxonomy/taxonomy_thesis}
-    \include{Chapters/thalamus/thalamus_thesis}
-    \include{Chapters/drive_net/drive_net_thesis}
+    % \include{Chapters/crowd/crowd_thesis}
+    % \include{Chapters/taxonomy/taxonomy_thesis}
+    % \include{Chapters/thalamus/thalamus_thesis}
+    % \include{Chapters/drive_net/drive_net_thesis}
     \include{Chapters/cilia/cilia_thesis}
-    \SgIncludeBib{bst/Better_BibTeX_Zotero}
+    % \SgIncludeBibTex{bst/Better_BibTeX_Zotero}
+    \printbibliography
 \end{document}
