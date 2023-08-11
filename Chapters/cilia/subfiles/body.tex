@@ -92,49 +92,27 @@ The AUC is the average of precision $P(R)$ over the interval ($0 \leq R \leq 1$)
 \end{equation}
 The best classification algorithm among several alternatives is commonly defined as the one that maximizes either the AUC  or the $F_{\beta}$-score.
 
-\noindent % Ensures no indentation for this block
-\begin{minipage}{0.4\textwidth}
-    \centering
-    \captionof{table}{Performance of the Classification Algorithms}
-    \label{tab:cilia.table.1}
-    \renewcommand{\arraystretch}{1.7}
-    \begin{tabular}{>{\centering} m{1.4cm} >{\centering} m{1.7cm}  >{\centering}m{1.35cm} >{\centering} m{0.9cm} >{\centering}m{1.25cm}}%
-        \hline%
-        \rowcolor[gray] {0.8}\textbf{Methods} & \textbf{Precision ($P$)} & \textbf{Recall ($R$)} & \textbf{AUC} & \textbf{$F_{\beta}$-score} \tabularnewline%
-        \hline%
-        Our Method &  0.9143 & 0.9062 & 0.8514 & 0.9102 \tabularnewline%
-        MLP & 0.8234 & 0.8239 & 0.8102 & 0.8237 \tabularnewline%
-        \emph{k}-means & 0.7961 & 0.8112 & 0.7891 & 0.8035 \tabularnewline%
-        \hline
-    \end{tabular}
-\end{minipage}%
-\begin{minipage}{0.4\textwidth}
-    \centering
-    \includegraphics[width=0.9\linewidth]{\figurepath{fig3}}
-    \captionof{figure}{ROC curves for various classification methods.}
-    \label{fig:cilia.fig.3}
-\end{minipage}
-
 \pagebreak
-\begin{multicols}{2}
-	\begin{table}[H]
-		\caption[Performance of the Classification Algorithms]{Performance of the Classification Algorithms}%
-		\label{tab:cilia.table.1}
-		\begin{center}
-			\renewcommand{\arraystretch}{1.7}
-			\begin{tabular}{>{\centering} m{1.4cm} >{\centering} m{1.7cm}  >{\centering}m{1.35cm} >{\centering} m{0.9cm} >{\centering}m{1.25cm}}%
-			\hline%
-			\rowcolor[gray] {0.8}\textbf{Methods} & \textbf{Precision ($P$)} & \textbf{Recall ($R$)} & \textbf{AUC} & \textbf{$F_{\beta}$-score} \tabularnewline%
-			\hline%
-			Our Method &  0.9143 & 0.9062 & 0.8514 & 0.9102 \tabularnewline%
-			MLP & 0.8234 & 0.8239 & 0.8102 & 0.8237 \tabularnewline%
-			\emph{k}-means & 0.7961 & 0.8112 & 0.7891 & 0.8035 \tabularnewline%
-			\hline
-			\end{tabular}
-		\end{center}
-		\vspace{-4mm}
-	\end{table}
+\begin{table}[htbp]
+	\caption[Performance of the Classification Algorithms]{Performance of the Classification Algorithms}%
+	\label{tab:cilia.table.1}
+	\begin{center}
+		\renewcommand{\arraystretch}{1.7}
+		\begin{tabular}{>{\centering} m{1.4cm} >{\centering} m{1.7cm}  >{\centering}m{1.35cm} >{\centering} m{0.9cm} >{\centering}m{1.25cm}}%
+		\hline%
+		\rowcolor[gray] {0.8}\textbf{Methods} & \textbf{Precision ($P$)} & \textbf{Recall ($R$)} & \textbf{AUC} & \textbf{$F_{\beta}$-score} \tabularnewline%
+		\hline%
+		Our Method &  0.9143 & 0.9062 & 0.8514 & 0.9102 \tabularnewline%
+		MLP & 0.8234 & 0.8239 & 0.8102 & 0.8237 \tabularnewline%
+		\emph{k}-means & 0.7961 & 0.8112 & 0.7891 & 0.8035 \tabularnewline%
+		\hline
+		\end{tabular}
+	\end{center}
+	\vspace{-4mm}
+\end{table}
 
+\begin{multicols}{2}
+	Table\,\ref{tab:cilia.table.1} shows the average precision ($P$), recall ($R$), AUC, and $F_{\beta}$-score values for all the classification algorithms on the test data. From Table\,\ref{tab:cilia.table.1} we observe that the $F_{\beta}$-score of the proposed method is 10.67 percentage points greater than the \emph{k}-means classifier, and is 8.65 percentage points greater than the MLP classifier. Table\,\ref{tab:cilia.table.1} also shows that the proposed classifier has the largest AUC among all the evaluated methods. Fig.~\ref{fig:cilia.fig.3} shows the ROC curves for all the methods under comparison. From Fig.~\ref{fig:cilia.fig.3}, we observe that the proposed method has better classification accuracy compared to the other automated methods at all points along the curve.
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.4\textwidth]{\figurepath{fig3}}
@@ -142,7 +120,6 @@ The best classification algorithm among several alternatives is commonly defined
 		\label{fig:cilia.fig.3}
 		\vspace{-4mm}
 	\end{figure}
-	Table\,\ref{tab:cilia.table.1} shows the average precision ($P$), recall ($R$), AUC, and $F_{\beta}$-score values for all the classification algorithms on the test data. From Table\,\ref{tab:cilia.table.1} we observe that the $F_{\beta}$-score of the proposed method is 10.67 percentage points greater than the \emph{k}-means classifier, and is 8.65 percentage points greater than the MLP classifier. Table\,\ref{tab:cilia.table.1} also shows that the proposed classifier has the largest AUC among all the evaluated methods. Fig.~\ref{fig:cilia.fig.3} shows the ROC curves for all the methods under comparison. From Fig.~\ref{fig:cilia.fig.3}, we observe that the proposed method has better classification accuracy compared to the other automated methods at all points along the curve.
 \end{multicols}
 \pagebreak
 
@@ -154,5 +131,3 @@ Accurate detection and classification of primary cilia in microscopy images is a
 %
 %\section*{Acknowledgment}
 %The authors would like to thank Jonathan T. Gill for the numerous fruthfull discussions and insights about using TensorFlow. We would also like to thank Jianbo Shao for helping in manual segmentation of the primary cilia images used for ground truth evaluation.
-
-
