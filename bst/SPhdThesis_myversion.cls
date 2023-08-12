@@ -69,10 +69,12 @@
 % Finally load the report class.
 \LoadClass[a4paper, \SgIntFontSize, \SgIntOpen, \SgIntPageSide]{report}
 
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % F O N T S.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \RequirePackage[T1]{fontenc}  % Use T1 encoded cm-super fonts.
 \RequirePackage{microtype}    % Improve typesetting.
 \RequirePackage{fix-cm}       % Support for arbitrary font size for cm.
@@ -94,49 +96,60 @@
 \newcommand{\SgIntHeaderFormat}{\large\bfseries}
 \newcommand{\SgIntPageNumFormat}{\bfseries}
 
+% Set default font to sans-serif
+\renewcommand{\familydefault}{\sfdefault}
+% \fontfamily{Times New Roman}\selectfont
+
+% Change captions fonts to PT Sans Narrow.
+\newcommand{\ptsansnarrow}{\fontfamily{PTSansNarrow}\selectfont}
 
 
-% -----------------------------------------------------------------------------
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% C O L O R S
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage[usenames,dvipsnames,hyperref]{xcolor}
+\definecolor{BlueGray}{rgb}{0.4, 0.6, 0.8}
+\definecolor{Asparagus}{rgb}{0.53, 0.66, 0.42}
+\definecolor{AuroMetalSaurus}{rgb}{0.43, 0.5, 0.5}
+\definecolor{beaublue}{rgb}{0.74, 0.83, 0.9}
+\definecolor{mygreen}{HTML}{E9ECE6}
+\definecolor{webgreen}{rgb}{0,.5,0}
+\definecolor{webblue}{rgb}{0,0,1}
+\definecolor{Cadet}{rgb}{0.33, 0.41, 0.47}
+\definecolor{Charcoal}{rgb}{0.21, 0.27, 0.31}
+\definecolor{DarkElectricBlue}{rgb}{0.33, 0.41, 0.47}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % C A P T I O N S
-%
-% Nicer captions for figures and tables.
-% caption package must be included before subfig and hyperref.
-
-% Change the font of the caption to sans serif and make label bold.
-\RequirePackage[labelfont=bf]{caption}
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage[labelfont=bf,font={small,color=Charcoal}]{caption} %margin=10pt,
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  P A C K A G E S
-
-% Include important packages.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \RequirePackage{graphicx, subfig}                     % Figures.
 \RequirePackage{amsmath, amssymb, amsthm}             % Math symbols and fonts.
 \RequirePackage{float}                                % Must be done before hyperref.
-\RequirePackage[usenames,dvipsnames,hyperref]{xcolor} % For defining colors.
 \RequirePackage{ifthen}                               % For comparison.
 % \RequirePackage{etoolbox}
 
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % P A G E   L A Y O U T.
-
-% Use geometry package to set up margins.
+% Use geometry package to set up margins. \geometry{margin=2.5cm}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% A4 paper is 8.27 x 11.69 inch.
-% \RequirePackage[a4paper, left=1.25in, right=1in, top=1in, bottom=1in, includehead, \SgIntPageSide]{geometry}
 \RequirePackage[letterpaper, left=2cm, right=2cm, top=2cm, bottom=2cm, includehead,\SgIntPageSide]{geometry}
+% \RequirePackage[a4paper, left=1.25in, right=1in, top=1in, bottom=1in, includehead, \SgIntPageSide]{geometry}
 
 \ifthenelse{\equal{\SgIntOpen}{openright}}
 {
 	% For adding extra blank page, if necessary, after chapter.
 	\RequirePackage{emptypage}
 
-	% Define a command to leave a blank page. This is used in frontmatter to add an empty page between ack, abstract, toc, lof and lot.
+	% This is used in frontmatter to add an empty page between ack, abstract, toc, lof and lot.
 	\newcommand{\SgIntClearDoublePage}{\clearpage{\pagestyle{empty}\cleardoublepage}}
 }
 { \newcommand{\SgIntClearDoublePage}{\clearpage} }
@@ -152,8 +165,7 @@
 \setlength{\footnotesep}{0.5cm}   % Distance between two footnotes.
 \setlength{\skip\footins}{0.5cm}  % Distance between last line of text and first footnote.
 
-% By default Latex centers images vertically on a float page.
-% Modify Latex internal variables so that figures are placed from top.
+% By default Latex centers images vertically on a float page. Modify Latex internal variables so that figures are placed from top.
 \makeatletter
     \setlength{\@fptop}{0.25cm}
     \setlength{\@fpsep}{1.00cm}
@@ -162,8 +174,7 @@
 \setlength{\textfloatsep}{1.5cm} % Set the distance between a float and text.
 \setlength{\floatsep}{1.0cm}     % Set the distance between two floats.
 
-% Prevent latex from adding extra space between paragraphs so that
-% the last line is at the bottom margin on each page.
+% Prevent latex from adding extra space between paragraphs so that the last line is at the bottom margin on each page.
 \raggedbottom
 
 % Define horizontal spacing between subfigures.
@@ -173,9 +184,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % T A B L E
-% Set table layout and design.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \RequirePackage{booktabs, colortbl} % Tables.
 \RequirePackage{tabularx}           % Auto column sizing.
 
@@ -196,7 +205,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % A L G O R I T H M
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \RequirePackage[algo2e, algoruled, algosection, linesnumbered, noend]{algorithm2e}
 % allowdisplaybreaks
 \DontPrintSemicolon                      % Dont print semicolons at end of lines.
@@ -227,8 +235,6 @@
 % T E X T  INSIDE  F R A M E
 %---------------------------------------------------------------
 \RequirePackage[framemethod=TikZ]{mdframed}
-\definecolor{mygreen}{HTML}{E9ECE6}% Adding a custom color
-\definecolor{beaublue}{rgb}{0.74, 0.83, 0.9}
 
 \newenvironment{mymdframed}[1]
 {%
@@ -317,7 +323,6 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % T O C    L O F    L O T    L O A
-%
 % Change the appearance of toc, lof, lot, etc.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -366,7 +371,6 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % C H A P T E R   H E A D I N G
-%
 % Change the appearance of chapter headers and section titles.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -425,17 +429,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % H Y P E R E F
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage[hyphens]{url} % Embedding URL's in document.
+% Embedding URL's in document.
+\RequirePackage[hyphens]{url}
 
 % Enable hyperlinks only in the PDF.
 \RequirePackage[bookmarks=true, pdfstartview=Fit, linktoc=page, pdfpagemode=UseNone]{hyperref}
 
 % Define the colors of the hyperlink.
 \ifthenelse{\equal{\SgIntMedia}{screen}}{%
-	\definecolor{webgreen}{rgb}{0,.5,0} % previously used magenta.
-	\definecolor{webblue}{rgb}{0,0,1}   % previously used orange.
-
 	\hypersetup
 	{%
 		colorlinks = true,
@@ -489,7 +490,6 @@
 % D O C U M E N T   P R O P E R T I E S
 % DEFINITIONS NEEDED FOR PREFACE PAGES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \newlength{\signwidth}
 \setlength{\signwidth}{3.1in}
 \newlength{\datewidth}
@@ -537,11 +537,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % T I T L E  P A G E
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% \fontfamily{Times New Roman}\selectfont
-\definecolor{BlueGray}{rgb}{0.4, 0.6, 0.8}
-\definecolor{Asparagus}{rgb}{0.53, 0.66, 0.42}
-\definecolor{AuroMetalSaurus}{rgb}{0.43, 0.5, 0.5}
 \newcommand{\titlePageColor}[1]{{\color{BlueGray}\bfseries\expandafter{#1}}}
 
 \ifthenelse{\equal{\SgIntTitleCase}{upper}}{ \newcommand{\SgIntMakeUpperCase}[1]{\MakeUppercase{#1}} }{ \newcommand{\SgIntMakeUpperCase}[1]{#1} }
@@ -633,8 +628,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % STATEMENT BY AUTHOR
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\definecolor{Cadet}{rgb}{0.33, 0.41, 0.47}
-
 \newcommand{\SgAddStatement}[1][nosignimage]{%
 	\newpage
 	\thispagestyle{plain}
@@ -659,13 +652,9 @@
     % \fi
 	\end{quote}
 
-	% Check if nosignimage adds 2cm of vertical space; otherwise, adds 0.5cm of vertical space.
-	% \ifthenelse{\equal{#1}{nosignimage}} {\vspace{2.0cm}} {\vspace{0.5cm}}
-
 	% Checks if nosignimage. If so, it does nothing. Otherwise, it includes the signature image from the file specified by #1, shifted down by 0.5cm.
-	\ifthenelse{\equal{#1}{nosignimage}}{}{\includegraphics{#1}\[-0.5cm]}
-		SIGNED: {\color{Cadet}\underline{{\fontfamily{pzc}\selectfont\SgIntAuthor}}}
-		% {\color{Cadet}\hspace{.6in}\SgIntDeclarationDate}
+	\ifthenelse{\equal{#1}{nosignimage}}{}{\includegraphics[width=4cm, height=3cm]{#1}\vspace{-0.5cm}}
+	SIGNED: {\color{Cadet}\underline{{\fontfamily{pzc}\selectfont\SgIntAuthor}}}
 
 	\vspace*{0.5in}
 	\newpage
@@ -692,10 +681,6 @@
     {\end{center}
     \newpage}
 
-
-
-% % ------------------------------------------------------------------
-% % D E C L A R A T I O N  P A G E
 % \newcommand{\SgAddDeclaration}[1][nosignimage]{%
 % 	\newpage
 % 	\thispagestyle{plain}
@@ -727,10 +712,11 @@
 % 	\SgIntClearDoublePage
 % }
 
-% ------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % A B S T R A C T
-%
-% The abstract environment puts a large, bold, centered "Abstract" label at the top of the page. The abstract itself appears in a quote environment, i.e. tabbed in at both sides, and on its own page.
+% The abstract environment puts a large, bold, centered "Abstract" label at the top of the page. Abstract itself appears in a quote environment, i.e. tabbed in at both sides, and on its own page.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \renewenvironment{abstract}
 {%
     \thispagestyle{plain}
@@ -747,14 +733,12 @@
 }
 
 
-
-%-----------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % F R O N T M A T T E R
-%-----------------------------------------------------------------
-
 % The frontmatter environment set the page numbering to lowercase roman for
 % ack, abstract, toc, lof, lot, loa, etc. It also resets page numbering for the
 % remainder of thesis (arabic, starting at 1).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newenvironment{frontmatter}
 {%
 	\setcounter{page}{1}

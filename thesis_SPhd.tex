@@ -1,4 +1,5 @@
 \documentclass[]{bst/SPhdThesis_myversion}
+
 \newcommand{\preface}{
     \SgSetTitle{LEVERAGING MACHINE LEARNING \\ FOR IMPROVED DATA INTERPRETATION AND DECISION MAKING \\ UNDER UNCERTAINTY}
 
@@ -28,8 +29,8 @@
     \input{Chapters/Abstract}
 }
 
-
 \input{bst/preamples}
+
 \addbibresource{bst/Better_BibLaTeX_Zotero.bib}
 
 \setcounter{secnumdepth}{3}
@@ -37,11 +38,11 @@
 \begin{document}
     \preface%
     \include{Chapters/Introduction}
-    % \include{Chapters/crowd/crowd_thesis}
-    % \include{Chapters/taxonomy/taxonomy_thesis}
-    % \include{Chapters/thalamus/thalamus_thesis}
-    % \include{Chapters/drive_net/drive_net_thesis}
+    \include{Chapters/crowd/crowd_thesis}
+    \include{Chapters/taxonomy/taxonomy_thesis}
+    \include{Chapters/thalamus/thalamus_thesis}
+    \include{Chapters/drive_net/drive_net_thesis}
     \include{Chapters/cilia/cilia_thesis}
+    \printbibliography%
     % \SgIncludeBibTex{bst/Better_BibTeX_Zotero}
-    \printbibliography
 \end{document}

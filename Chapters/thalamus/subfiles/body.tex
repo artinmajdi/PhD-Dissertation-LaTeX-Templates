@@ -151,43 +151,42 @@ For the 40 test subjects (13 control, 15 MS, 12 ET subjects), no statistical dif
 The WMn network initialized using weights from a 3T initialization network showed a significant improvement in Dice for two nuclei (VA, and Hb) and an increase in convergence rate compared to random initialization (Figure~\ref{Thalamus.Fig.5.ConvergenceRate}). Following this, all experiments on WMn-MPRAGE data were performed using this initializing step. For the WMn network, the use of the Dice loss function showed a statistically significant improvement in Dice for the whole thalamus and 4 nuclei (VPl, LGN, CM, MGN) compared to a weighted cross entropy loss function (Table~\ref{tab:thalamus.table.2.dice_vsi}). Further, it reduced the overall number of epochs, required training time (per epoch) and convergence time by 32\%, 16\%, and 43\%, respectively. As a result, the Dice loss function was used for all further experiments.
 
 \begin{table}[htbp]
-\centering
-\caption[Effect of Loss Function on Dice and VSI\@.]{Effect of loss function on Dice and VSI\@. Average Dice and VSI shown for 11 subjects.}\label{tab:thalamus.table.2.dice_vsi}
-\begin{tabular}{lcccc}
-& \multicolumn{2}{c}{\textbf{Dice}}      & \multicolumn{2}{c}{\textbf{VSI}}       \\
-\multicolumn{1}{c}{\textbf{Nuclei}} & \textbf{Dice Loss} & \textbf{BCE Loss} & \textbf{Dice Loss} & \textbf{BCE Loss} \\
-\textbf{Thalamus}                    & 0.92† & 0.91 & 0.98† & 0.96 \\
-\textbf{Pul}                         & 0.86  & 0.85 & 0.97  & 0.96 \\
-\textbf{VLP}                         & 0.78  & 0.79 & 0.95  & 0.95 \\
-\textbf{MD-Pf}                       & 0.85  & 0.85 & 0.95  & 0.94 \\
-\textbf{VPl}                         & 0.64† & 0.61 & 0.92  & 0.89 \\
-\textbf{VA}                          & 0.70  & 0.69 & 0.92  & 0.93 \\
-\rowcolor[HTML]{FFFFFF}
-\cellcolor[HTML]{D9D9D9}\textbf{AV}  & 0.76  & 0.74 & 0.87  & 0.85 \\
-\rowcolor[HTML]{FFFFFF}
-\cellcolor[HTML]{D9D9D9}\textbf{VLa} & 0.69  & 0.67 & 0.92  & 0.89 \\
-\rowcolor[HTML]{FFFFFF}
-\cellcolor[HTML]{D9D9D9}\textbf{CM}  & 0.70† & 0.65 & 0.93† & 0.86 \\
-\rowcolor[HTML]{FFFFFF}
-\cellcolor[HTML]{D9D9D9}\textbf{LGN} & 0.70† & 0.66 & 0.90  & 0.85 \\
-\rowcolor[HTML]{FFFFFF}
-\cellcolor[HTML]{D9D9D9}\textbf{MGN} & 0.70† & 0.64 & 0.89  & 0.81 \\
-\rowcolor[HTML]{FFFFFF}
-\cellcolor[HTML]{D9D9D9}\textbf{MTT} & 0.68  & 0.63 & 0.88  & 0.81 \\
-\rowcolor[HTML]{FFFFFF}
-\cellcolor[HTML]{D9D9D9}\textbf{Hb}  & 0.77  & 0.75 & 0.89  & 0.88
-\end{tabular}
+  \centering
+  \caption[Effect of Loss Function on Dice and VSI\@.]{Effect of loss function on Dice and VSI\@. Average Dice and VSI shown for 11 subjects.}\label{tab:thalamus.table.2.dice_vsi}
+  \begin{tabular}{lcccc}
+  & \multicolumn{2}{c}{\textbf{Dice}}      & \multicolumn{2}{c}{\textbf{VSI}}       \\
+  \multicolumn{1}{c}{\textbf{Nuclei}} & \textbf{Dice Loss} & \textbf{BCE Loss} & \textbf{Dice Loss} & \textbf{BCE Loss} \\
+  \textbf{Thalamus}                    & 0.92† & 0.91 & 0.98† & 0.96 \\
+  \textbf{Pul}                         & 0.86  & 0.85 & 0.97  & 0.96 \\
+  \textbf{VLP}                         & 0.78  & 0.79 & 0.95  & 0.95 \\
+  \textbf{MD-Pf}                       & 0.85  & 0.85 & 0.95  & 0.94 \\
+  \textbf{VPl}                         & 0.64† & 0.61 & 0.92  & 0.89 \\
+  \textbf{VA}                          & 0.70  & 0.69 & 0.92  & 0.93 \\
+  \rowcolor[HTML]{FFFFFF}
+  \cellcolor[HTML]{D9D9D9}\textbf{AV}  & 0.76  & 0.74 & 0.87  & 0.85 \\
+  \rowcolor[HTML]{FFFFFF}
+  \cellcolor[HTML]{D9D9D9}\textbf{VLa} & 0.69  & 0.67 & 0.92  & 0.89 \\
+  \rowcolor[HTML]{FFFFFF}
+  \cellcolor[HTML]{D9D9D9}\textbf{CM}  & 0.70† & 0.65 & 0.93† & 0.86 \\
+  \rowcolor[HTML]{FFFFFF}
+  \cellcolor[HTML]{D9D9D9}\textbf{LGN} & 0.70† & 0.66 & 0.90  & 0.85 \\
+  \rowcolor[HTML]{FFFFFF}
+  \cellcolor[HTML]{D9D9D9}\textbf{MGN} & 0.70† & 0.64 & 0.89  & 0.81 \\
+  \rowcolor[HTML]{FFFFFF}
+  \cellcolor[HTML]{D9D9D9}\textbf{MTT} & 0.68  & 0.63 & 0.88  & 0.81 \\
+  \rowcolor[HTML]{FFFFFF}
+  \cellcolor[HTML]{D9D9D9}\textbf{Hb}  & 0.77  & 0.75 & 0.89  & 0.88
+  \end{tabular}
 \end{table}
 
 \subsubsection{Network Performance}
 Figure~\ref{Thalamus.Fig.1.Dice} shows Dice for (a) WMn-MPRAGE data segmented using the proposed method (blue) and THOMAS (red) and (b) CSFn-MPRAGE data segmented using the proposed method (blue) and FreeSurfer (red). Note that this aggregates the Dice over control, MS, and ET cases (WMn: n=40 and CSFn: n=33). Our proposed CNN-based method shows improved Dice over THOMAS and FreeSurfer for seven and ten nuclei, respectively.
 
 \begin{figure}[htbp]
-\includegraphics[width=\textwidth]{\figurepath{pdf/slide3.pdf}}
-\caption[Dice Score Comparison: Proposed Method vs. THOMAS/FreeSurfer for WMn-MPRAGE and CSFn-MPRAGE]{Comparison of average Dice for (a) WMn-MPRAGE and (b) CSFn-MPRAGE for the proposed method (blue) and THOMAS/FreeSurfer (red), aggregated over all cases. Dice values segregated by disease type is shown in Tables~\ref{tab:thalamus.table.3.comparison.thomas} and~\ref{tab:thalamus.table.4.comparison.freesurfer}.}%
-\label{Thalamus.Fig.1.Dice}
+  \includegraphics[width=\textwidth]{\figurepath{pdf/slide3.pdf}}
+  \caption[Dice Score Comparison: Proposed Method vs. THOMAS/FreeSurfer for WMn-MPRAGE and CSFn-MPRAGE]{Comparison of average Dice for (a) WMn-MPRAGE and (b) CSFn-MPRAGE for the proposed method (blue) and THOMAS/FreeSurfer (red), aggregated over all cases. Dice values segregated by disease type is shown in Tables~\ref{tab:thalamus.table.3.comparison.thomas} and~\ref{tab:thalamus.table.4.comparison.freesurfer}.}%
+  \label{Thalamus.Fig.1.Dice}
 \end{figure}
-
 
 \emph{WMn-MPRAGE Data}
 
@@ -198,98 +197,96 @@ Average Dice and VSI for the proposed method on 3T WMn-MPRAGE data from ET patie
 Figure 4 shows segmentation results from a patient with ET scanned on a 7T (top panel) and a 3T MRI scanner (bottom panel) using WMn-MPRAGE\@. Representative axial and coronal slices with automated segmentation labels overlaid for both the left and right thalamus are shown on the right. The increased SNR and $B_1$ inhomogeneity in the 7T image (white arrow) can be clearly seen at the periphery while the inter-nuclear contrast seems comparable. The Dices (and hence the segmentations) are virtually identical as shown in Table~\ref{tab:thalamus.table.3.comparison.thomas}.
 
 \begin{figure}[htbp]
-\centering \includegraphics[width=\textwidth]{\figurepath{pdf/slide4.pdf}}
-\caption[Comparison of 7T and 3T WMn-MPRAGE Images with Thalamic Nuclei Segmentations in an ET Patient]{WMn-MPRAGE images from a patient with ET acquired at 7T (top left) and 3T (bottom left). The zoomed inset images on the right show representative axial and coronal sections with and without automated segmentation overlays. Automated segmentations of the thalamic nuclei are almost identical to the manual segmentation shown for the left thalamus in outlines. Note the clear visualization of small structures such as the MTT and habenula on both sets of images. The increased B1 heterogeneity at 7T can be clearly seen (white arrow), but the cropped images are comparable.}\label{Thalamus.Fig.2.MultiPlanar.ET}
+  \centering \includegraphics[width=\textwidth]{\figurepath{pdf/slide4.pdf}}
+  \caption[Comparison of 7T and 3T WMn-MPRAGE Images with Thalamic Nuclei Segmentations in an ET Patient]{WMn-MPRAGE images from a patient with ET acquired at 7T (top left) and 3T (bottom left). The zoomed inset images on the right show representative axial and coronal sections with and without automated segmentation overlays. Automated segmentations of the thalamic nuclei are almost identical to the manual segmentation shown for the left thalamus in outlines. Note the clear visualization of small structures such as the MTT and habenula on both sets of images. The increased B1 heterogeneity at 7T can be clearly seen (white arrow), but the cropped images are comparable.}\label{Thalamus.Fig.2.MultiPlanar.ET}
 \end{figure}
 
-
-
 \begin{table}[htbp]
-\caption[Mean Dice and VSI for THOMAS vs. Proposed Method for WMn-MPRAGE Data]{Comparison of mean Dice and VSI for THOMAS versus proposed method for WMn-MPRAGE data (median volumes in mm3 are shown in parentheses and nuclei with \textless{}200 mm3 shaded, red bold indicates \textgreater{}10\% change)}\label{tab:thalamus.table.3.comparison.thomas}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lccccccccccccccc}
-\textbf{} & \multicolumn{7}{c}{\textbf{Dice}} & \textbf{} & \multicolumn{7}{c}{\textbf{VSI}} \\
-\textbf{Disease} & \multicolumn{2}{c}{\textbf{Control}} & \multicolumn{2}{c}{\textbf{MS}} & \multicolumn{2}{c}{\textbf{ET-7T}} & \textbf{ET-3T} & \textbf{} & \multicolumn{2}{c}{\textbf{Control}} & \multicolumn{2}{c}{\textbf{MS}} & \multicolumn{2}{c}{\textbf{ET-7T}} & \textbf{ET-3T} \\
-\textbf{Nuclei (Volume)} &
-  \textbf{\begin{tabular}[c]{@{}c@{}}THOMAS\\ (n=13)\end{tabular}} &
-  \textbf{\begin{tabular}[c]{@{}c@{}}CNN\\ (n=13)\end{tabular}} &
-  \textbf{\begin{tabular}[c]{@{}c@{}}THOMAS\\ (n=15)\end{tabular}} &
-  \textbf{\begin{tabular}[c]{@{}c@{}}CNN\\ (n=15)\end{tabular}} &
-  \textbf{\begin{tabular}[c]{@{}c@{}}THOMAS\\ (n=12)\end{tabular}} &
-  \textbf{\begin{tabular}[c]{@{}c@{}}CNN\\ (n=12)\end{tabular}} &
-  \textbf{\begin{tabular}[c]{@{}c@{}}CNN\\ (n=12)\end{tabular}} &
-  \textbf{} &
-  \textbf{\begin{tabular}[c]{@{}c@{}}THOMAS\\ (n=13)\end{tabular}} &
-  \textbf{\begin{tabular}[c]{@{}c@{}}CNN\\ (n=13)\end{tabular}} &
-  \textbf{\begin{tabular}[c]{@{}c@{}}THOMAS\\ (n=15)\end{tabular}} &
-  \textbf{\begin{tabular}[c]{@{}c@{}}CNN\\ (n=15)\end{tabular}} &
-  \textbf{\begin{tabular}[c]{@{}c@{}}THOMAS\\ (n=12)\end{tabular}} &
-  \textbf{\begin{tabular}[c]{@{}c@{}}CNN\\ (n=12)\end{tabular}} &
-  \textbf{\begin{tabular}[c]{@{}c@{}}CNN\\ (n=12)\end{tabular}} \\
-\textbf{Thalamus    (5515)} & 0.92 & 0.92  & 0.92 & 0.92  & 0.88 & 0.90* & 0.90 & & 0.97  & 0.97 & 0.98 & 0.98 & 0.94 & 0.95  & 0.96 \\
-\textbf{Pul         (1286)} & 0.87 & 0.87  & 0.85 & 0.86* & 0.84 & 0.85  & 0.84 & & 0.96  & 0.96 & 0.95 & 0.95 & 0.95 & 0.95  & 0.95 \\
-\textbf{VLp          (882)} & 0.79 & 0.79  & 0.79 & 0.78  & 0.75 & 0.80* & 0.79 & & 0.97* & 0.94 & 0.93 & 0.93 & 0.89 & 0.94* & 0.95 \\
-\textbf{MD-Pf        (686)} & 0.86 & 0.85  & 0.85 & 0.86  & 0.83 & 0.84  & 0.84 & & 0.94  & 0.92 & 0.95 & 0.95 & 0.93 & 0.93  & 0.94 \\
-\textbf{VPl          (346)} & 0.68 & 0.71* & 0.69 & 0.69  & 0.57 & 0.64* & 0.63 & & 0.90  & 0.92 & 0.92 & 0.91 & 0.86 & 0.92  & 0.92 \\
-\textbf{VA           (301)} & 0.71 & 0.74* & 0.69 & 0.72* & 0.58 & 0.66* & 0.63 & & 0.88  & 0.89 & 0.91 & 0.88 & 0.92 & 0.95  & 0.93 \\
-\rowcolor[HTML]{FFFFFF} \cellcolor[HTML]{D9D9D9}\textbf{AV  (146)} & 0.77 & 0.79  & 0.78 & 0.77  & 0.64 & 0.71* & 0.71 & & 0.89 & 0.93  & 0.93 & 0.88 & 0.71 & 0.84* & 0.92 \\
-\rowcolor[HTML]{FFFFFF} \cellcolor[HTML]{D9D9D9}\textbf{VLa (121)} & 0.65 & 0.71* & 0.64 & 0.66  & 0.47 & 0.64* & 0.63 & & 0.81 & 0.92* & 0.87 & 0.86 & 0.69 & 0.87* & 0.92 \\
-\rowcolor[HTML]{FFFFFF} \cellcolor[HTML]{D9D9D9}\textbf{CM  (119)} & 0.75 & 0.75  & 0.74 & 0.75  & 0.63 & 0.66  & 0.66 & & 0.91 & 0.94  & 0.89 & 0.89 & 0.92 & 0.91  & 0.92 \\
-\rowcolor[HTML]{FFFFFF} \cellcolor[HTML]{D9D9D9}\textbf{LGN (115)} & 0.75 & 0.76  & 0.71 & 0.69  & 0.55 & 0.59  & 0.59 & & 0.91 & 0.92  & 0.91 & 0.89 & 0.82 & 0.88* & 0.90 \\
-\rowcolor[HTML]{FFFFFF} \cellcolor[HTML]{D9D9D9}\textbf{MGN (76)} & 0.68 & 0.74* & 0.75 & 0.74  & 0.63 & 0.65  & 0.65 & & 0.79 & 0.90* & 0.90 & 0.87 & 0.77 & 0.83  & 0.86 \\
-\rowcolor[HTML]{FFFFFF} \cellcolor[HTML]{D9D9D9}\textbf{MTT (49)} & 0.67 & 0.71  & 0.69 & 0.71  & 0.67 & 0.66  & 0.64 & & 0.91 & 0.88  & 0.91 & 0.89 & 0.89 & 0.87  & 0.89 \\
-\rowcolor[HTML]{FFFFFF} \cellcolor[HTML]{D9D9D9}\textbf{Hb  (29)} & 0.76 & 0.80* & 0.72 & 0.76* & 0.76 & 0.74  & 0.72 & & 0.88 & 0.92  & 0.90 & 0.91 & 0.89 & 0.88  & 0.87
-\end{tabular}%
-}
+  \caption[Mean Dice and VSI for THOMAS vs. Proposed Method for WMn-MPRAGE Data]{Comparison of mean Dice and VSI for THOMAS versus proposed method for WMn-MPRAGE data (median volumes in mm3 are shown in parentheses and nuclei with \textless{}200 mm3 shaded, red bold indicates \textgreater{}10\% change)}\label{tab:thalamus.table.3.comparison.thomas}
+  \resizebox{\textwidth}{!}{%
+  \begin{tabular}{lccccccccccccccc}
+  \textbf{} & \multicolumn{7}{c}{\textbf{Dice}} & \textbf{} & \multicolumn{7}{c}{\textbf{VSI}} \\
+  \textbf{Disease} & \multicolumn{2}{c}{\textbf{Control}} & \multicolumn{2}{c}{\textbf{MS}} & \multicolumn{2}{c}{\textbf{ET-7T}} & \textbf{ET-3T} & \textbf{} & \multicolumn{2}{c}{\textbf{Control}} & \multicolumn{2}{c}{\textbf{MS}} & \multicolumn{2}{c}{\textbf{ET-7T}} & \textbf{ET-3T} \\
+  \textbf{Nuclei (Volume)} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}THOMAS\\ (n=13)\end{tabular}} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}CNN\\ (n=13)\end{tabular}} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}THOMAS\\ (n=15)\end{tabular}} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}CNN\\ (n=15)\end{tabular}} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}THOMAS\\ (n=12)\end{tabular}} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}CNN\\ (n=12)\end{tabular}} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}CNN\\ (n=12)\end{tabular}} &
+    \textbf{} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}THOMAS\\ (n=13)\end{tabular}} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}CNN\\ (n=13)\end{tabular}} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}THOMAS\\ (n=15)\end{tabular}} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}CNN\\ (n=15)\end{tabular}} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}THOMAS\\ (n=12)\end{tabular}} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}CNN\\ (n=12)\end{tabular}} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}CNN\\ (n=12)\end{tabular}} \\
+  \textbf{Thalamus    (5515)} & 0.92 & 0.92  & 0.92 & 0.92  & 0.88 & 0.90* & 0.90 & & 0.97  & 0.97 & 0.98 & 0.98 & 0.94 & 0.95  & 0.96 \\
+  \textbf{Pul         (1286)} & 0.87 & 0.87  & 0.85 & 0.86* & 0.84 & 0.85  & 0.84 & & 0.96  & 0.96 & 0.95 & 0.95 & 0.95 & 0.95  & 0.95 \\
+  \textbf{VLp          (882)} & 0.79 & 0.79  & 0.79 & 0.78  & 0.75 & 0.80* & 0.79 & & 0.97* & 0.94 & 0.93 & 0.93 & 0.89 & 0.94* & 0.95 \\
+  \textbf{MD-Pf        (686)} & 0.86 & 0.85  & 0.85 & 0.86  & 0.83 & 0.84  & 0.84 & & 0.94  & 0.92 & 0.95 & 0.95 & 0.93 & 0.93  & 0.94 \\
+  \textbf{VPl          (346)} & 0.68 & 0.71* & 0.69 & 0.69  & 0.57 & 0.64* & 0.63 & & 0.90  & 0.92 & 0.92 & 0.91 & 0.86 & 0.92  & 0.92 \\
+  \textbf{VA           (301)} & 0.71 & 0.74* & 0.69 & 0.72* & 0.58 & 0.66* & 0.63 & & 0.88  & 0.89 & 0.91 & 0.88 & 0.92 & 0.95  & 0.93 \\
+  \rowcolor[HTML]{FFFFFF} \cellcolor[HTML]{D9D9D9}\textbf{AV  (146)} & 0.77 & 0.79  & 0.78 & 0.77  & 0.64 & 0.71* & 0.71 & & 0.89 & 0.93  & 0.93 & 0.88 & 0.71 & 0.84* & 0.92 \\
+  \rowcolor[HTML]{FFFFFF} \cellcolor[HTML]{D9D9D9}\textbf{VLa (121)} & 0.65 & 0.71* & 0.64 & 0.66  & 0.47 & 0.64* & 0.63 & & 0.81 & 0.92* & 0.87 & 0.86 & 0.69 & 0.87* & 0.92 \\
+  \rowcolor[HTML]{FFFFFF} \cellcolor[HTML]{D9D9D9}\textbf{CM  (119)} & 0.75 & 0.75  & 0.74 & 0.75  & 0.63 & 0.66  & 0.66 & & 0.91 & 0.94  & 0.89 & 0.89 & 0.92 & 0.91  & 0.92 \\
+  \rowcolor[HTML]{FFFFFF} \cellcolor[HTML]{D9D9D9}\textbf{LGN (115)} & 0.75 & 0.76  & 0.71 & 0.69  & 0.55 & 0.59  & 0.59 & & 0.91 & 0.92  & 0.91 & 0.89 & 0.82 & 0.88* & 0.90 \\
+  \rowcolor[HTML]{FFFFFF} \cellcolor[HTML]{D9D9D9}\textbf{MGN (76)} & 0.68 & 0.74* & 0.75 & 0.74  & 0.63 & 0.65  & 0.65 & & 0.79 & 0.90* & 0.90 & 0.87 & 0.77 & 0.83  & 0.86 \\
+  \rowcolor[HTML]{FFFFFF} \cellcolor[HTML]{D9D9D9}\textbf{MTT (49)} & 0.67 & 0.71  & 0.69 & 0.71  & 0.67 & 0.66  & 0.64 & & 0.91 & 0.88  & 0.91 & 0.89 & 0.89 & 0.87  & 0.89 \\
+  \rowcolor[HTML]{FFFFFF} \cellcolor[HTML]{D9D9D9}\textbf{Hb  (29)} & 0.76 & 0.80* & 0.72 & 0.76* & 0.76 & 0.74  & 0.72 & & 0.88 & 0.92  & 0.90 & 0.91 & 0.89 & 0.88  & 0.87
+  \end{tabular}%
+  }
 \end{table}
 
 \begin{table}[htbp]
-\caption[Mean Dice and VSI for FreeSurfer vs. Proposed Method for CSFn-MPRAGE Data]{Comparison of mean Dice and VSI for FreeSurfer versus proposed method for CSFn-MPRAGE data (median volumes in mm3 are shown in parentheses and nuclei with  \textless{}200 mm3 shaded, red bold indicates \textgreater{}20\% change)}\label{tab:thalamus.table.4.comparison.freesurfer}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lccccccccccccc}
-\multicolumn{1}{c}{} & \multicolumn{6}{c}{\textbf{Dice}} & \textbf{} & \multicolumn{6}{c}{\textbf{VSI}} \\ \textbf{Disease} & \multicolumn{2}{c}{\textbf{Control}} & \multicolumn{2}{c}{\textbf{MS}} & \multicolumn{2}{c}{\textbf{ET}} & \textbf{} & \multicolumn{2}{c}{\textbf{Control}} & \multicolumn{2}{c}{\textbf{MS}} & \multicolumn{2}{c}{\textbf{ET}} \\
-\textbf{Nuclei (volume)} &
-  \textbf{\begin{tabular}[c]{@{}c@{}}FreeSurfer\\ (n=5)\end{tabular}} &
-  \textbf{\begin{tabular}[c]{@{}c@{}}CNN       \\ (n=6)\end{tabular}} &
-  \textbf{\begin{tabular}[c]{@{}c@{}}FreeSurfer\\ (n=14)\end{tabular}} &
-  \textbf{\begin{tabular}[c]{@{}c@{}}CNN       \\ (n=15)\end{tabular}} &
-  \textbf{\begin{tabular}[c]{@{}c@{}}FreeSurfer\\ (n=11)\end{tabular}} &
-  \textbf{\begin{tabular}[c]{@{}c@{}}CNN       \\ (n=12)\end{tabular}} &
-  \textbf{} &
-  \textbf{\begin{tabular}[c]{@{}c@{}}FreeSurfer \\ (n=5)\end{tabular}} &
-  \textbf{\begin{tabular}[c]{@{}c@{}}CNN        \\ (n=6)\end{tabular}} &
-  \textbf{\begin{tabular}[c]{@{}c@{}}FreeSurfer \\ (n=14)\end{tabular}} &
-  \textbf{\begin{tabular}[c]{@{}c@{}}CNN        \\ (n=15)\end{tabular}} &
-  \textbf{\begin{tabular}[c]{@{}c@{}}FreeSurfer \\ (n=11)\end{tabular}} &
-  \textbf{\begin{tabular}[c]{@{}c@{}}CNN        \\ (n=12)\end{tabular}} \\
-\textbf{Thalamus    (5279)} & 0.81 & 0.90* & 0.82 & 0.90* & 0.86 & 0.90* & & 0.90 & 0.96  & 0.88 & 0.97* & 0.94 & 0.96  \\
-\textbf{Pul         (1202)} & 0.69 & 0.83* & 0.67 & 0.83* & 0.70 & 0.83* & & 0.93 & 0.94  & 0.84 & 0.93* & 0.88 & 0.93  \\
-\textbf{VLp          (843)} & 0.54 & 0.79* & 0.57 & 0.78* & 0.56 & 0.79* & & 0.96 & 0.94  & 0.93 & 0.93  & 0.92 & 0.93  \\
-\textbf{MD-Pf        (670)} & 0.56 & 0.83* & 0.63 & 0.84* & 0.68 & 0.83* & & 0.85 & 0.94  & 0.79 & 0.93* & 0.92 & 0.95  \\
-\textbf{VPl          (337)} & 0.45 & 0.64* & 0.45 & 0.66* & 0.45 & 0.65* & & 0.58 & 0.87* & 0.57 & 0.88* & 0.58 & 0.94* \\
-\textbf{VA           (286)} & 0.40 & 0.71* & 0.45 & 0.71* & 0.48 & 0.67* & & 0.75 & 0.88  & 0.81 & 0.88* & 0.77 & 0.92* \\
-\rowcolor[HTML]{FFFFFF}
-\cellcolor[HTML]{D9D9D9}\textbf{AV (138)} & 0.37 & 0.77* & 0.38 & 0.71* & 0.47 & 0.70* & & 0.94 & 0.91 & 0.86 & 0.85 & 0.89 & 0.90 \\
-\cellcolor[HTML]{D9D9D9}\textbf{AV (138)} & 0.37 & 0.77* & 0.38 & 0.71* & 0.47 & 0.70* & & 0.94 & 0.91 & 0.86 & 0.85 & 0.89 & 0.90 \\
-\rowcolor[HTML]{FFFFFF}
-\cellcolor[HTML]{D9D9D9}\textbf{VLa (116)} & 0.21 & 0.64* & 0.20 & 0.61* & 0.19 & 0.65* & & 0.28 & 0.89* & 0.28 & 0.88* & 0.31 & 0.90* \\
-\cellcolor[HTML]{D9D9D9}\textbf{VLa (116)} & 0.21 & 0.64* & 0.20 & 0.61* & 0.19 & 0.65* & & 0.28 & 0.89* & 0.28 & 0.88* & 0.31 & 0.90* \\
-\rowcolor[HTML]{FFFFFF}
-\cellcolor[HTML]{D9D9D9}\textbf{CM (110)} & 0.33 & 0.67* & 0.42 & 0.69* & 0.35 & 0.65* & & 0.59 & 0.87* & 0.60 & 0.90* & 0.49 & 0.88* \\
-\cellcolor[HTML]{D9D9D9}\textbf{CM (110)} & 0.33 & 0.67* & 0.42 & 0.69* & 0.35 & 0.65* & & 0.59 & 0.87* & 0.60 & 0.90* & 0.49 & 0.88* \\
-\rowcolor[HTML]{FFFFFF}
-\cellcolor[HTML]{D9D9D9}\textbf{LGN (108)} & 0.08 & 0.64* & 0.09 & 0.59* & 0.20 & 0.53* & & 0.81 & 0.80 & 0.83 & 0.78 & 0.87 & 0.85 \\
-\cellcolor[HTML]{D9D9D9}\textbf{LGN (108)} & 0.08 & 0.64* & 0.09 & 0.59* & 0.20 & 0.53* & & 0.81 & 0.80 & 0.83 & 0.78 & 0.87 & 0.85 \\
-\rowcolor[HTML]{FFFFFF}
-\cellcolor[HTML]{D9D9D9}\textbf{MGN (70)} & 0.04 & 0.67* & 0.06 & 0.69* & 0.07 & 0.65* & & 0.77 & 0.87 & 0.77 & 0.83 & 0.87 & 0.88 \\
-\cellcolor[HTML]{D9D9D9}\textbf{MGN (70)} & 0.04 & 0.67* & 0.06 & 0.69* & 0.07 & 0.65* & & 0.77 & 0.87 & 0.77 & 0.83 & 0.87 & 0.88 \\
-\rowcolor[HTML]{FFFFFF}
-\cellcolor[HTML]{D9D9D9}\textbf{MTT (49)} & & 0.50 & & 0.58 & & 0.60 & & & 0.85 & & 0.85 & & 0.89 \\
-\cellcolor[HTML]{D9D9D9}\textbf{MTT (49)} & & 0.50 & & 0.58 & & 0.60 & & & 0.85 & & 0.85 & & 0.89 \\
-\rowcolor[HTML]{FFFFFF}
-\cellcolor[HTML]{D9D9D9}\textbf{Hb (28)} & & 0.67 & & 0.67 & & 0.69 & & & 0.87 & & 0.84 & & 0.87
-\end{tabular}
-}
+  \caption[Mean Dice and VSI for FreeSurfer vs. Proposed Method for CSFn-MPRAGE Data]{Comparison of mean Dice and VSI for FreeSurfer versus proposed method for CSFn-MPRAGE data (median volumes in mm3 are shown in parentheses and nuclei with  \textless{}200 mm3 shaded, red bold indicates \textgreater{}20\% change)}\label{tab:thalamus.table.4.comparison.freesurfer}
+  \resizebox{\textwidth}{!}{%
+  \begin{tabular}{lccccccccccccc}
+  \multicolumn{1}{c}{} & \multicolumn{6}{c}{\textbf{Dice}} & \textbf{} & \multicolumn{6}{c}{\textbf{VSI}} \\ \textbf{Disease} & \multicolumn{2}{c}{\textbf{Control}} & \multicolumn{2}{c}{\textbf{MS}} & \multicolumn{2}{c}{\textbf{ET}} & \textbf{} & \multicolumn{2}{c}{\textbf{Control}} & \multicolumn{2}{c}{\textbf{MS}} & \multicolumn{2}{c}{\textbf{ET}} \\
+  \textbf{Nuclei (volume)} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}FreeSurfer\\ (n=5)\end{tabular}} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}CNN       \\ (n=6)\end{tabular}} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}FreeSurfer\\ (n=14)\end{tabular}} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}CNN       \\ (n=15)\end{tabular}} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}FreeSurfer\\ (n=11)\end{tabular}} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}CNN       \\ (n=12)\end{tabular}} &
+    \textbf{} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}FreeSurfer \\ (n=5)\end{tabular}} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}CNN        \\ (n=6)\end{tabular}} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}FreeSurfer \\ (n=14)\end{tabular}} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}CNN        \\ (n=15)\end{tabular}} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}FreeSurfer \\ (n=11)\end{tabular}} &
+    \textbf{\begin{tabular}[c]{@{}c@{}}CNN        \\ (n=12)\end{tabular}} \\
+  \textbf{Thalamus    (5279)} & 0.81 & 0.90* & 0.82 & 0.90* & 0.86 & 0.90* & & 0.90 & 0.96  & 0.88 & 0.97* & 0.94 & 0.96  \\
+  \textbf{Pul         (1202)} & 0.69 & 0.83* & 0.67 & 0.83* & 0.70 & 0.83* & & 0.93 & 0.94  & 0.84 & 0.93* & 0.88 & 0.93  \\
+  \textbf{VLp          (843)} & 0.54 & 0.79* & 0.57 & 0.78* & 0.56 & 0.79* & & 0.96 & 0.94  & 0.93 & 0.93  & 0.92 & 0.93  \\
+  \textbf{MD-Pf        (670)} & 0.56 & 0.83* & 0.63 & 0.84* & 0.68 & 0.83* & & 0.85 & 0.94  & 0.79 & 0.93* & 0.92 & 0.95  \\
+  \textbf{VPl          (337)} & 0.45 & 0.64* & 0.45 & 0.66* & 0.45 & 0.65* & & 0.58 & 0.87* & 0.57 & 0.88* & 0.58 & 0.94* \\
+  \textbf{VA           (286)} & 0.40 & 0.71* & 0.45 & 0.71* & 0.48 & 0.67* & & 0.75 & 0.88  & 0.81 & 0.88* & 0.77 & 0.92* \\
+  \rowcolor[HTML]{FFFFFF}
+  \cellcolor[HTML]{D9D9D9}\textbf{AV (138)} & 0.37 & 0.77* & 0.38 & 0.71* & 0.47 & 0.70* & & 0.94 & 0.91 & 0.86 & 0.85 & 0.89 & 0.90 \\
+  \cellcolor[HTML]{D9D9D9}\textbf{AV (138)} & 0.37 & 0.77* & 0.38 & 0.71* & 0.47 & 0.70* & & 0.94 & 0.91 & 0.86 & 0.85 & 0.89 & 0.90 \\
+  \rowcolor[HTML]{FFFFFF}
+  \cellcolor[HTML]{D9D9D9}\textbf{VLa (116)} & 0.21 & 0.64* & 0.20 & 0.61* & 0.19 & 0.65* & & 0.28 & 0.89* & 0.28 & 0.88* & 0.31 & 0.90* \\
+  \cellcolor[HTML]{D9D9D9}\textbf{VLa (116)} & 0.21 & 0.64* & 0.20 & 0.61* & 0.19 & 0.65* & & 0.28 & 0.89* & 0.28 & 0.88* & 0.31 & 0.90* \\
+  \rowcolor[HTML]{FFFFFF}
+  \cellcolor[HTML]{D9D9D9}\textbf{CM (110)} & 0.33 & 0.67* & 0.42 & 0.69* & 0.35 & 0.65* & & 0.59 & 0.87* & 0.60 & 0.90* & 0.49 & 0.88* \\
+  \cellcolor[HTML]{D9D9D9}\textbf{CM (110)} & 0.33 & 0.67* & 0.42 & 0.69* & 0.35 & 0.65* & & 0.59 & 0.87* & 0.60 & 0.90* & 0.49 & 0.88* \\
+  \rowcolor[HTML]{FFFFFF}
+  \cellcolor[HTML]{D9D9D9}\textbf{LGN (108)} & 0.08 & 0.64* & 0.09 & 0.59* & 0.20 & 0.53* & & 0.81 & 0.80 & 0.83 & 0.78 & 0.87 & 0.85 \\
+  \cellcolor[HTML]{D9D9D9}\textbf{LGN (108)} & 0.08 & 0.64* & 0.09 & 0.59* & 0.20 & 0.53* & & 0.81 & 0.80 & 0.83 & 0.78 & 0.87 & 0.85 \\
+  \rowcolor[HTML]{FFFFFF}
+  \cellcolor[HTML]{D9D9D9}\textbf{MGN (70)} & 0.04 & 0.67* & 0.06 & 0.69* & 0.07 & 0.65* & & 0.77 & 0.87 & 0.77 & 0.83 & 0.87 & 0.88 \\
+  \cellcolor[HTML]{D9D9D9}\textbf{MGN (70)} & 0.04 & 0.67* & 0.06 & 0.69* & 0.07 & 0.65* & & 0.77 & 0.87 & 0.77 & 0.83 & 0.87 & 0.88 \\
+  \rowcolor[HTML]{FFFFFF}
+  \cellcolor[HTML]{D9D9D9}\textbf{MTT (49)} & & 0.50 & & 0.58 & & 0.60 & & & 0.85 & & 0.85 & & 0.89 \\
+  \cellcolor[HTML]{D9D9D9}\textbf{MTT (49)} & & 0.50 & & 0.58 & & 0.60 & & & 0.85 & & 0.85 & & 0.89 \\
+  \rowcolor[HTML]{FFFFFF}
+  \cellcolor[HTML]{D9D9D9}\textbf{Hb (28)} & & 0.67 & & 0.67 & & 0.69 & & & 0.87 & & 0.84 & & 0.87
+  \end{tabular}
+  }
 \end{table}
 
 \emph{CSFn-MPRAGE Data}
@@ -335,6 +332,8 @@ The proposed CNN-based method has limitations that are common to most deep learn
 We have proposed the use of a CNN-based cascaded multi-class multi-planar method for the segmentation of thalamic nuclei and evaluated it on images with different contrasts, and magnetic field strengths for both healthy and diseased populations. This method has been applied successfully to both advanced MR acquisition techniques with high intra-thalamic contrast (WMn-MPRAGE) and the more commonly used low intra-thalamic contrast sequences (CSFn-MPRAGE). Further, the effectiveness of this method in real-life applications has been investigated via a clinical analysis of volume atrophy in patients with MS\@.
 
 \section{Abbreviations}
+
+{\singlespacing%
 \begin{tabular}{@{} >{\bfseries}l @{\hspace{1em}} l}
   AV & Anteroventral nucleus \\
   CM & Centromedian nucleus \\
@@ -356,6 +355,7 @@ We have proposed the use of a CNN-based cascaded multi-class multi-planar method
   CSFn & Cerebrospinal fluid nulled \\
   MPRAGE & Magnetization-prepared rapid gradient echo \\
 \end{tabular}
+}
 
 \section{Acknowledges}
 We would like to acknowledge funding support from the National Institutes of Health (R21 AA023582\-01) and the Arizona Alzheimer's Consortium.

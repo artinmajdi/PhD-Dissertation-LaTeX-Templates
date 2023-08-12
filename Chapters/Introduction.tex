@@ -3,20 +3,25 @@
 
 \section{Introduction and Contextual Setting}
 Machine learning is a powerful technological tool that has progressively delivered cutting-edge solutions to complex problems in a variety of fields. Its application spans a wide array, from data interpretation and natural language processing to contemporary breakthroughs in domains such as computer vision, radiology, neuroimaging, and biological image analysis. This dissertation delves into distinct use cases, demonstrating the adaptability and capabilities of machine learning in solving varied challenges. Machine learning has signified a notable advancement in computational capacity, thereby enabling us to tackle issues once deemed insurmountable or too intricate. In sectors such as healthcare, machine learning algorithms help in disease diagnosis, predicting patient outcomes, and personalizing treatment plans. The automotive industry, with the emergence of self-driving vehicles, is undergoing a transformation propelled by machine learning. Likewise, in crowdsourcing, machine learning aids in aggregating information gathered from a vast populace to solve complex problems or drive  insights.
+
 \section{Underlying Motivation}
 The rapid surge in digital data across all sectors necessitates innovative strategies for data analysis and interpretation. This escalating demand has been considerably addressed by machine learning, which leverages computational prowess to discover concealed patterns, make predictions, and aid in decision-making processes. However, despite progress, numerous challenges persist. These encompass issues such as the trustworthiness of crowdsourced labeling, efficient and reliable disease diagnosis, and driver distraction detection. Additionally, practical applications of machine learning are plagued with instances where data can contain missing, incorrect, or uncertain values, which often leads to unpredictable model behavior and inconsistent performance. It is no longer sufficient to solely consider model accuracy; accounting for uncertainty in model predictions is equally crucial. Armed with a comprehensive understanding of model and data uncertainty, we can make informed decisions on whether to rely on model predictions or seek further information. This research endeavor aims to tackle these challenges, augmenting the capabilities of machine learning and deepening our understanding of its potential.
+
 \section{Problem Statement}
 The core issue this dissertation addresses lies in the inherent complexity and variability seen in real-world datasets, and the challenges these present for machine learning applications. Specifically, it explores five separate issues, each related to a distinct domain. Despite their differences, a common thread unites these issues - the requirement for advanced, resilient, and precise computational methods capable of effectively handling and analyzing large, complex datasets. Machine learning, while promising, presents its own set of challenges unique to each application. These include issues such as the varying reliability of crowd annotators, the overlap of radiographic indications of various thoracic diseases, and the similar attributes of non-cilia elements and imaging noise in biological image analysis.
+
 \section{Research Objectives}
 This dissertation seeks to introduce and assess new machine learning methodologies for each of the problem areas, each aiming to enhance the accuracy, efficiency, and robustness of data interpretation in its corresponding field. By proposing these methods and evaluating their performance, it aims to enrich the understanding and development of machine learning applications. More specifically, the research objectives include creating an improved label aggregation technique that factors in uncertainty to provide a weighted aggregation scheme; devising accurate classification methods that leverage the taxonomic structure of different classes; developing robust techniques that use less common high contrast medical images to enhance the detection accuracy of more common lower contrast images; and establishing automated processes for detecting driver distraction and classifying primary cilia within microscopy images.
+
 \section{Research Queries}
 This dissertation seeks to answer several pivotal questions:
 \begin{itemize}
-    \item Can an innovative method increase the reliability of crowdsourced labeling and ensemble learning?
+    \item How to increase the reliability of crowdsourced labeling and ensemble learning?
     \item How can machine learning tactics boost the precision of diagnosis by leveraging the taxonomic structure of medical pathologies?
-    \item Is it possible to enhance the accuracy of less frequent data modalities by utilizing more common ones?
-    \item How can transfer learning be utilized to effectively detect and classify driver distraction as well as primary cilia within microscopy images?
+    \item How to enhance the accuracy of less frequent data modalities by utilizing more common ones?
+    \item How transfer learning can be utilized to effectively detect and classify driver distraction as well as primary cilia within microscopy images?
 \end{itemize}
+
 \section{Methodology Synopsis}
 Each chapter of this dissertation proposes a unique methodology developed to tackle its respective problem, utilizing different machine learning techniques, including label aggregation, hierarchical multi-label classification, cascaded multi-planar schemes, and convolutional neural networks fused with random decision forests. The efficacy of each method is then assessed and compared with existing techniques, thereby providing a comprehensive understanding of their effectiveness.
 \section{Scope and Limitations}

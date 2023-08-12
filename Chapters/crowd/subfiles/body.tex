@@ -18,10 +18,15 @@ The remainder of this paper is organized as follows. Section~\ref{sec:crowd.rela
 
 \section{Related Work}\label{sec:crowd.relatedwork}
 Numerous label aggregation algorithms have been developed to capture the complexity of crowdsourced labeling systems, including techniques based on worker reliability~\cite{bi_Learning_2014,demartini_Zencrowd_2012}, confusion matrices~\cite{raykar_Learning_2010,zhang_Spectral_2014}, intentions~\cite{bi_Learning_2014,kurve_MultiCategory_2015}, biases~\cite{zhang_Imbalanced_2013,hernandez-gonzalez_Note_2019, welinder_Multidimensional_2010}, and correlations~\cite{ma_Gradient_2020}. However, because crowdsourced labeling is inherently dynamic and uncertain, developing a technique that can work in most situations is extremely challenging. Many techniques~\cite{liu_Variational_2012,karger_Budget_2014,raykar_Learning_2010,dalvi_Aggregating_2013,ghosh_Who_2011} utilize the Dawid and Skene (DS) generative model~\cite{dawid_Maximum_1979}. Ghosh~\cite{ghosh_Who_2011} extended the DS model by using singular value decomposition (SVD) to calculate the reliability of the worker. Similarly to Ghosh~\cite{ghosh_Who_2011}, Dalvi~\cite{dalvi_Aggregating_2013} used SVD to estimate true labels with a focus on the sparsity of the labeling matrix. In crowdsourcing, it is common for the labeling matrix to be sparse, meaning that not all workers have labeled all the data. This may be due to several factors, such as the cost of labeling all data instances or the workers' time constraints. Karger~\cite{karger_Budget_2014} described an iterative strategy for binary labeling based on a one-coin model~\cite{ghosh_Who_2011}. Karger~\cite{karger_Budget_2014} extends the one-coin model to multi-class labeling by converting the problem into $k-1 $ binary problems (solved iteratively), where $k $ is the number of classes.
+
 The MV technique assumes that all workers are equally reliable. For segmentation, Warfield~\cite{warfield_Simultaneous_2004} proposed simultaneous truth and performance level estimation (STAPLE), a label fusion method based on expectation maximization. STAPLE ``weighs'' expert opinions during label aggregation by modeling their reliability. Since then, many variants of this technique have been proposed~\cite{winzeck_ISLES_2018,commowick_Objective_2018,asman_Robust_2011,asman_Formulating_2012, eugenioiglesias_Unified_2013, jorgecardoso_STEPS_2013,asman_NonLocal_2013,akhondi-asl_Logarithmic_2014}. The problem with these label aggregation approaches is that they require the computation of a unique set of weights for each sample, necessitating the re-evaluation of the workers' weights when a new instance is added.
+
 Among the numerous existing label aggregation strategies, MV remains the most efficient and widely used approach~\cite{tao_Label_2020}. If we assume that all workers are equally reliable and that their errors are independent of one another, then, according to the theory of large numbers, the likelihood that the MV is accurate increases as the number of workers increases. However, the assumption that all workers are equally competent and independent may not always hold. Furthermore, MV does not provide any additional information on the degree of disagreement among the workers (As an example, consider the scenario where four of seven doctors think patient A needs immediate surgery, while all seven think patient B needs immediate surgery; MV will simply label ``yes'' in both cases).
+
 To address this problem, additional measures such as inter-worker agreement (IAA) have been used~\cite{artstein_InterAnnotator_2017}. IAA is a measurement of the agreement among multiple workers who label the same data instance. Typically, IAA is calculated using statistical measures, such as Cohen's kappa, Fleiss's kappa, or Krippendorff's alpha~\cite{krippendorff_Content_2018}. These measures consider both the observed agreement between the workers and the expected agreement owing to random chance. IAA can also be visualized using a confusion matrix or annotation heatmap, which illustrates the distribution of labels assigned by the workers. This can help identify instances where the workers disagree or are uncertain and can guide further analysis to improve the annotation~\cite{carletta_Assessing_1996}.
-Recently, Sheng~\cite{sheng_Majority_2019} proposed a technique that provided a confidence score along with an aggregated label. The main problem with this approach is that it assumes that all workers are equally capable when calculating the confidence score. Tao~\cite{tao_Label_2020} improved Sheng's approach by assigning different weights to workers for each instance. This weighting method combines the specific quality $s_\alpha^{(i,k)} $ for the worker $\alpha $ and instance $i $ and the overall quality $\tau_\alpha$ across all instances. Inspired by Li's technique~\cite{li_Incorporating_2018}, Tao evaluates the similarity between the worker labels for each instance. To derive the specific quality $s_{\alpha}^{(i)}$, Tao counts the number of workers who assigned the same label as the worker $\alpha $ for that instance. To calculate the overall quality $\tau_\alpha $, Tao performs a 10-fold cross-validation to train each of the 10 classifiers on a different subset of data using the labels provided by the worker $\alpha $ as true labels and then assigns the average accuracy of the classifiers across all remaining instances as $\tau_\alpha $. The final weight for worker $\alpha $ and instance $i $ is then calculated using the sigmoid function $\gamma_{i,\alpha}=\tau_\alpha\left(1+{\left(s_{\alpha}^{(i)}\right)}^{2}\right) $. However, Tao's technique~\cite{tao_Label_2020} has some drawbacks. It relies on the labels of other workers to estimate $s_{\alpha}^{(i)} $. However, different workers have varying levels of competence (reliability) when labeling the data, and therefore, relying on their labels to measure $s_{\alpha}^{(i)} $ will result in propagating the errors and biases of their labels during weight estimation. Furthermore, Tao's technique~\cite{tao_Label_2020} relies on the labels provided by each worker $\alpha $ to estimate their respective $\tau_\alpha $ by assuming that the trained classifiers can learn the inherent characteristics of the datasets even in the absence of ground truth labels. While that may be true in some cases, it typically leads to suboptimal measurement and the propagation of biases and errors, from both the worker's labels and the classifier, into weight estimation.
+Recently, Sheng~\cite{sheng_Majority_2019} proposed a technique that provided a confidence score along with an aggregated label. The main problem with this approach is that it assumes that all workers are equally capable when calculating the confidence score. Tao~\cite{tao_Label_2020} improved Sheng's approach by assigning different weights to workers for each instance. This weighting method combines the specific quality $s_\alpha^{(i,k)} $ for the worker $\alpha $ and instance $i $ and the overall quality $\tau_\alpha$ across all instances.
+
+Inspired by Li's technique~\cite{li_Incorporating_2018}, Tao evaluates the similarity between the worker labels for each instance. To derive the specific quality $s_{\alpha}^{(i)}$, Tao counts the number of workers who assigned the same label as the worker $\alpha $ for that instance. To calculate the overall quality $\tau_\alpha $, Tao performs a 10-fold cross-validation to train each of the 10 classifiers on a different subset of data using the labels provided by the worker $\alpha $ as true labels and then assigns the average accuracy of the classifiers across all remaining instances as $\tau_\alpha $. The final weight for worker $\alpha $ and instance $i $ is then calculated using the sigmoid function $\gamma_{i,\alpha}=\tau_\alpha\left(1+{\left(s_{\alpha}^{(i)}\right)}^{2}\right) $. However, Tao's technique~\cite{tao_Label_2020} has some drawbacks. It relies on the labels of other workers to estimate $s_{\alpha}^{(i)} $. However, different workers have varying levels of competence (reliability) when labeling the data, and therefore, relying on their labels to measure $s_{\alpha}^{(i)} $ will result in propagating the errors and biases of their labels during weight estimation. Furthermore, Tao's technique~\cite{tao_Label_2020} relies on the labels provided by each worker $\alpha $ to estimate their respective $\tau_\alpha $ by assuming that the trained classifiers can learn the inherent characteristics of the datasets even in the absence of ground truth labels. While that may be true in some cases, it typically leads to suboptimal measurement and the propagation of biases and errors, from both the worker's labels and the classifier, into weight estimation.
 
 \section{Methods}\label{sec:crowd.method}
 We propose a novel method called Crowd-Certain which focuses on leveraging uncertainty measurements to improve decision-making in crowdsourcing and ensemble learning scenarios. Crowd-Certain employs a weighted soft majority voting approach, where the weights are determined based on the uncertainty associated with each worker's labels. Initially, we use uncertainty measurement techniques to calculate the degree of consistency of each worker during labeling.
@@ -67,33 +72,37 @@ For convenience, the following list summarizes the major symbols used in the sub
     \item  $\nu^{(i,k)} = \frac{1}{{M}}{\sum_{\alpha}{\omega_\alpha^{(k)} \; \eta_\alpha^{(i,k)}}}$: Final aggregated label for class $k $ and instance $i $.
     }
 \end{itemize}
-%
+
 \subsection{Risk Calculation}
 Label aggregation is frequently used in various machine learning tasks, such as classification and regression, when multiple workers assign labels to the same data points. The aggregation model refers to the underlying function that maps a set of multiple labels, obtained by different workers, into one aggregated label. In the context of label aggregation, this model can be a neural network, a decision tree, or any other machine learning algorithm capable of learning to aggregate labels provided by multiple workers. The objective of this study is to develop an aggregation model capable of accurately determining true labels despite potential disagreements among workers. One common method to achieve this involves minimizing the total error (or disagreement) between the workers' assigned labels and the true labels, as follows:
 \begin{equation}
-E = \sum_{i=1}^N \sum_{a=1}^M \left( \sum_{k=1}^K \delta\left(y^{(i,k)}, z_\alpha^{(i,k)}\right) \right)
-\label{eq:crowd.Eq.1.risk.error}
+    E = \sum_{i=1}^N \sum_{a=1}^M \left( \sum_{k=1}^K \delta\left(y^{(i,k)}, z_\alpha^{(i,k)}\right) \right)
+    \label{eq:crowd.Eq.1.risk.error}
 \end{equation}
 where $\delta $ is the Kronecker delta function.
+
 Although error is a crucial aspect in determining the aggregation model's performance, it treats false positives and false negatives with equal weight. However, in many practical scenarios, it is essential to weigh false positives and false negatives differently depending on the specific context and potential consequences of each type of misclassification. The concept of risk allows us to achieve this by incorporating a loss function, which assigns different weights to different types of errors. In this way, risk serves as a weighted calculation of error, enabling us to better evaluate the performance of an aggregation model and its generalization capability.
-Let us denote loss function, $\mathcal{L}(\cdot)$, as a function that quantifies the discrepancy between the predicted labels and the true labels, accounting for the varying importance of different types of errors.
-Risk, denoted as $R(h) $, represents the expected value of a loss function over all possible data instances.  In practice, our goal is to minimize the risk to achieve optimal performance on unseen data. However, since we only have access to a limited dataset (empirical distribution), we instead work with the empirical risk. This limitation may arise because of the need to reserve a portion of our data for testing and validation or because no dataset can fully capture all possible data instances in the real world. However, minimizing risk alone could result in overfitting, in which the aggregation model learns the noise in the training data rather than the underlying patterns, resulting in poor generalization to unseen data. To improve generalizability, it is necessary to employ regularization techniques to strike a balance between the complexity of the aggregation model and its ability to fit the training data.
+
+Let us denote loss function, $\mathcal{L}(\cdot)$, as a function that quantifies the discrepancy between the predicted labels and the true labels, accounting for the varying importance of different types of errors. Risk, denoted as $R(h) $, represents the expected value of a loss function over all possible data instances.  In practice, our goal is to minimize the risk to achieve optimal performance on unseen data. However, since we only have access to a limited dataset (empirical distribution), we instead work with the empirical risk. This limitation may arise because of the need to reserve a portion of our data for testing and validation or because no dataset can fully capture all possible data instances in the real world. However, minimizing risk alone could result in overfitting, in which the aggregation model learns the noise in the training data rather than the underlying patterns, resulting in poor generalization to unseen data. To improve generalizability, it is necessary to employ regularization techniques to strike a balance between the complexity of the aggregation model and its ability to fit the training data.
+
 Risk measurement enables us to assess the aggregation model's performance in terms of accuracy (of the aggregated labels with respect to the ground truth labels), overfitting (when risk is minimized, but the model performs poorly on unseen data), and model complexity.
 Assume that the aggregation model $h (\cdot) $ is a function that takes a set of $M $ label sets $Z^{(i)} $ for each instance $i $ in the training data and calculates an aggregated label set $\widehat{Y}^{(i)} $ as an estimate of the true label set $Y^{(i)} $. Our goal is to find an aggregation model $h(\cdot) $ that minimizes risk defined as follows:
 \begin{equation}
-R(h) = \frac{1}{N} \sum_{i=1}^{N} \mathcal{L} \left( Y^{(i)}, h\left({\left\{Z_{\alpha}^{(i)}\right\}}_{\alpha=1}^{M}\right)\right)
-\label{eq:crowd.Eq.2.risk.emp}
+    R(h) = \frac{1}{N} \sum_{i=1}^{N} \mathcal{L} \left( Y^{(i)}, h\left({\left\{Z_{\alpha}^{(i)}\right\}}_{\alpha=1}^{M}\right)\right)
+    \label{eq:crowd.Eq.2.risk.emp}
 \end{equation}
+
 In this context, $\mathcal{L}(\cdot) $ represents an arbitrary loss function, which quantifies the discrepancy between predicted labels and true labels while accounting for the varying importance of different types of errors.
 Our goal is to choose an aggregation model $\widehat{h} $ that minimizes the risk, following the principle of risk minimization~\cite{vapnik_Principles_1991}:
 \begin{equation}
-\widehat{h} = \underset{h}{\text{argmin}}  R(h)
-\label{eq:crowd.Eq.3.risk.h}
+    \widehat{h} = \underset{h}{\text{argmin}}  R(h)
+    \label{eq:crowd.Eq.3.risk.h}
 \end{equation}
-%
+
 \subsection{Generating Workers' Label Sets from Ground Truth}\label{subsec:methods.generating_fictitious_labelset}
 In order to evaluate the proposed Crowd-Certain technique (with and without penalization) as well as other aggregation techniques, we create $M$ fictitious workers. To synthesize a multi-worker dataset from a dataset with existing ground truth, we use a uniform distribution in the interval from $0.4 $ to $1 $, i.e., $\pi_\alpha^{(k)} \sim U\left(0.4,1\right) $ (however other ranges can also be used) to obtain $M \times  K$ probability thresholds $\Pi $, where $K$ is the number of classes. (Note that
 an worker may be skilled at labeling dogs, but not rabbits.) Then we use these probability thresholds to generate the crowd label set $Z_{\alpha}^{(i)} $ from the ground truth labels for each instance $i $.
+
 For each worker $\alpha $, each instance $i $ and class $k $ in the dataset is assigned its true label with probability $\pi_\alpha^{(k)}$ and the opposite label with probability $ (1-\pi_\alpha^{(k)})$. To generate the labels for each worker $\alpha $, a random number $0 < \rho^{(i)} < 1 $ is generated for each instance $i $ in the dataset. Then $\forall \alpha,k \; \; \text{if} \; \; \rho^{(i)}\leq \pi_\alpha^{(k)}$. Then the true label is used for that instance and class for the worker $\alpha $; otherwise, the incorrect label is used.
 The calculated worker labels $z_{\alpha}^{(i,k)} $ for each worker $\alpha $, instance $i $ and class $k $ are as follows:
 \begin{equation}
@@ -105,12 +114,13 @@ The calculated worker labels $z_{\alpha}^{(i,k)} $ for each worker $\alpha $, in
     \label{eq:crowd.Eq.4.fictitious_label}
 \end{equation}
 To evaluate the proposed techniques over all data instances, a k-fold cross-validation is employed.
-%
+
 \subsection{Uncertainty Measurement}\label{subsec:crowd.uncertainty}
 A common approach to measure uncertainty is to increase the number of data instances $X $ in the test dataset $\mathbb{D}_\alpha^{\mathrm{test}} $ to create multiple variations of each sample data $X^{(i)} $~\cite{ayhan_TestTime_2018}. In this approach, for each instance $i $, we apply randomly generated spatial transformations and additive noise to the input data $X^{(i)} $ to obtain a transformed sample and repeat this process $G $ times to obtain a set of $G $ transformed samples.
+
 However, this approach is mostly suitable for cases where the input data comprises images or volume slices. Since the datasets used in this study consist of feature vectors instead of images or volume slices, this approach cannot be used. To address this problem, we introduced a modified uncertainty measurement approach, in which instead of augmenting the data instances $X^{(i)} $, we feed the same sample data to different classifiers.
-% \TODO convert this into algorithm
-The following steps are as follows.
+
+The steps are as follows.
 \begin{itemize}
     \item For the choice of classifier, we can either use a probability-based classifier such as random forest and train it under $G $ different random states or train various classifiers and address the problem in a manner similar to ensemble learning (using a set of $G $ different classification techniques such as random forest, SVM, CNN, Adaboost, etc.~\cite{zhou_Ensemblelearning_2009}).
 
@@ -139,14 +149,16 @@ The following steps are as follows.
 \end{itemize}
 
 In this work, we need to measure the uncertainty $u_{\alpha}^{(i,k)}$ associated with the model predictions. Some common uncertainty measurement measures are as follows.
+
 \subsubsection{Entropy}
 Entropy is a widely used measure of uncertainty in classification problems. In an ensemble of classifiers, entropy serves as a quantitative measure of the uncertainty or disorder present in the probability distribution of the predicted class labels. A higher entropy value indicates a greater degree of uncertainty in the predictions, as the predictions of the individual classifiers in the ensemble are significantly different. In contrast, a lower entropy value indicates reduced uncertainty as the ensemble assigns very similar probabilities to a particular class, indicating strong agreement among the classifiers and increased confidence in their collective prediction. The formula for calculating entropy is as follows:
 \begin{align}
-\Delta_{\alpha}^{(i,k)}
-\, & = \, \textcolor{gray}{H\left({\left\{p_{\alpha}^{(i,k),(g)}\right\}}_{g=1}^{G}\right)} \\
-\, & = \, -\sum_{g}{p_{\alpha}^{(i,k),(g)} \log\left(p_{\alpha}^{(i,k),(g)}\right)}
-\label{eq:crowd.Eq.5.uncertainty}
+    \Delta_{\alpha}^{(i,k)}
+    \, & = \, \textcolor{gray}{H\left({\left\{p_{\alpha}^{(i,k),(g)}\right\}}_{g=1}^{G}\right)} \\
+    \, & = \, -\sum_{g}{p_{\alpha}^{(i,k),(g)} \log\left(p_{\alpha}^{(i,k),(g)}\right)}
+    \label{eq:crowd.Eq.5.uncertainty}
 \end{align}
+
 \subsubsection{Standard Deviation}
 In regression problems, standard deviation is often used to quantify uncertainty. It measures the dispersion of predicted values around the mean. A greater standard deviation indicates greater uncertainty of the prediction. For a set of predicted values ${\{t_{\alpha}^{(i,k),(g)} \}}_{g=1}^G $ with mean value $\mu $, the standard deviation is defined as.
 \begin{align}
@@ -156,8 +168,8 @@ In regression problems, standard deviation is often used to quantify uncertainty
 \label{eq:crowd.Eq.6.uncertainty.sd}
 \end{align}
 where $\mu=\frac{1}{G}\sum_{g=1}^{G}{t_{\alpha}^{(i,k),(g)}}$.
-%
-\paragraph{Predictive Interval}%
+
+\subsubsection{Predictive Interval}
 A predictive interval provides a range within which a future observation is likely to fall with a certain level of confidence. For example, a 95\% predictive interval indicates that there is a 95\% likelihood that the true value falls within that range. A greater uncertainty corresponds to wider intervals. In the context of multiple classifiers, the predictive intervals can be calculated by considering the quantiles of the classifier output. For a predefined confidence level $\gamma $ (e.g., 95\%), for a specific class $k $, we need to find the quantiles $Q_{L}^{k} $ and $Q_{U}^{k} $ of the probability distribution of class $k $ predicted by the $G $ classifiers. The uncertainty can be represented by the width of the predictive interval:
 \begin{align}
     P\left(Q_L^{k} \leq p_{\alpha}^{(i,k),(g)} \leq Q_U^{k}\right) & = \gamma
@@ -165,7 +177,7 @@ A predictive interval provides a range within which a future observation is like
     \Delta_{\alpha}^{(i,k)} & = Q_L^{k} - Q_U^{k}
     \label{eq:crowd.Eq.uncertainty}
 \end{align}
-%
+
 The steps to calculate the predictive interval are as follows:
 \begin{enumerate}
     \item Collect the class $k $ probabilities predicted by all $G$ classifiers for a given instance. Then sort the values in ascending order. Let us call this set $P_{\alpha}^{(i,k)}=\mathrm{sorted}\left({\left\{p_{\alpha}^{(i,k),(g)}\right\}}_{g=1}^G\right),\quad\forall \alpha,k,i $.
@@ -173,17 +185,18 @@ The steps to calculate the predictive interval are as follows:
     \item Find the values corresponding to the lower and upper quantile indices in the sorted $P_{\alpha,k}^{(i)} $. These values are the lower and upper quantiles $Q_L^{k} $ and $Q_U^{k} $.
     \item Now we have the predictive interval $P\left(Q_L^{k}<=p_{\alpha}^{(i,k),(g)}<=Q_U^{k}\right)=\gamma $, where $Q_L^{k} $ and $Q_U^{k} $ represent the bounds of the interval containing the $\alpha$ proportion of the probability mass.
 \end{enumerate}
-%
+
 \subsubsection{Monte Carlo Dropout}
 The Monte Carlo dropout~\cite{gal_Dropout_2016a} can be used to estimate uncertainty in neural networks by applying the dropout at test time. Multiple forward passes with dropout generate a distribution of predictions from which uncertainty can be derived using any of the aforementioned techniques (standard deviation, entropy, etc.).
-%
+
 \subsubsection{Bayesian Approaches}
 Bayesian methods offer a probabilistic framework to estimate the parameters of the model and make predictions. These methods explicitly model uncertainty by considering prior beliefs about the model parameters and then updating those beliefs based on the observed data. In Bayesian modeling, the model parameters are treated as random variables and a posterior distribution is estimated using these parameters. The following are two common Bayesian approaches for measuring the uncertainty in classification problems.
 \begin{itemize}
     \item \relax \textbf{Bayesian model averaging (BMA):} BMA accounts for model uncertainty by combining the predictions of various models using their posterior probabilities as weighting factors. Instead of selecting a single ``best'' model, BMA acknowledges the possibility of multiple plausible models, each with its own strengths and weaknesses~\cite{hoeting_Bayesian_1999}. The steps to implement BMA are as follows. Select a set of candidate models that represent different hypotheses regarding the data-generating process underlying the data. These models may be of various types, such as linear regression, decision trees, neural networks, or any other model suited to the specific problem at hand. Using the available data, train each candidate model. Calculate the posterior probabilities of the models. Using the posterior probabilities of each model as weights, calculate the weighted average of each model's predictions. The weighted average is the BMA prediction for the input instance and class.
+
     \item \relax \textbf{Bayesian neural networks (BNNs):} BNNs~\cite{mullachery_Bayesian_2018} are an extension of conventional neural networks in which the weights and biases of the network are treated as random variables. The primary distinction between BNNs and conventional neural networks is that BNNs model uncertainty directly in the weights and biases. The posterior distributions of the network weights and biases (learned during training) capture the uncertainty, which can then be utilized to generate predictive distributions for each class. This enables multiple predictions to be generated by sampling these predictive distributions, which can be used to quantify the uncertainty associated with each class.
 \end{itemize}
-%
+
 \subsubsection{Committee-Based Methods}
 The committee-based method~\cite{wang_Wisdom_2020} involves training multiple models (a committee) and aggregating their predictions. The disagreement between committee members' predictions can be used as a measure of uncertainty. Examples include bagging and boosting ensemble methods and models, such as random forests.
 \begin{align}
@@ -193,23 +206,24 @@ The committee-based method~\cite{wang_Wisdom_2020} involves training multiple mo
     \label{eq:crowd.Eq.8.uncertainty.committee_based}
 \end{align}
 where $\mu= \frac{1}{G} \sum_{g=1}^G p_{\alpha}^{(i,k),(g)}$.
-%
+
 \subsubsection{Conformal Prediction}
 Conformal prediction~\cite{angelopoulos_Gentle_2021} is a method of constructing prediction regions that maintain a predefined level of confidence. These regions can be used to quantify the uncertainty associated with the prediction of a model.
 Steps  to calculate the nonconformity score:
 \begin{enumerate}
     \item For each classifier $g $ and each class $k $, calculate the nonconformity score. Here, $\mathrm{score\_function}$ measures the conformity of the prediction with the true label. In the context of this study, the true label can be replaced by $\eta_{\alpha}^{(i,k)} $. A common choice for $\mathrm{score\_function}$ is the absolute difference between the predicted probability and the true label, but other options can be used depending on the specific problem and requirements. Define the nonconformity score as $ \zeta_{k}^{g} = \mathrm{score\_function} \left(p_{\alpha}^{(i,k),(g)}, y^{(i,k)}\right) $
+
     \item Calculate the p-value for each class $k $ as the proportion of classifiers with nonconformity scores greater than or equal to a predefined threshold $\text{T}^{(k)}: \text{p-values}(k) = \frac{ \left\vert \{g: \;\zeta^{(k),(g)} \geq \text{T}^{(k)} \} \right\vert} {G} $
+
     \item The p-values calculated for each class $k $ represent the uncertainty associated with that class. A higher p-value indicates a higher level of agreement among the classifiers for a given class, whereas a lower p-value suggests greater uncertainty or disagreement.
 \end{enumerate}
 The uncertainty measures discussed above are only some of the available options. Selecting an appropriate measure depends on factors such as the problem domain, the chosen model, and the specific requirements of a given application. For this study, we use the variance technique shown in Equation~(\ref{eq:crowd.Eq.6.uncertainty.sd}) as our uncertainty measurement due to its simplicity. However, other measures could also be employed as suitable alternatives.
-%
+
 \subsection{Crowd-Certain: Uncertainty-Based Weighted Soft Majority Voting}
-%
+
 \subsubsection{Consistency Measurement}
-%
 Define $c_{\alpha}^{(i,k)} $ as the consistency score for worker $\alpha $, class $k $ and instance $i $. We calculate this consistency score using the uncertainty score $\Delta_{\alpha}^{(i,k)} $ explained in the previous section. We use two approaches to calculate $c_{\alpha}^{(i,k)} $ from $\Delta_{\alpha}^{(i,k)} $.
-%
+
 \begin{mymdframed}{Method 1: Consistency Measurement without Penalization}
     The first approach is to simply subtract the uncertainty from $1 $ as follows:
     \begin{equation}
@@ -218,7 +232,6 @@ Define $c_{\alpha}^{(i,k)} $ as the consistency score for worker $\alpha $, clas
     \end{equation}
 \end{mymdframed}
 
-%
 \begin{mymdframed}{Method 2: Consistency Measurement with Penalization}
     In a second approach (shown in Equation~(\ref{eq:crowd.eq.10.consistency-penalized})), we penalize workers for instances in which their predicted label $\eta_{\alpha}^{(i,k)} $ (explained in the Glossary of Symbols section) does not match the MV of all worker labels ${{\underset \alpha{\mathrm{MV}}}{\left(z_{\alpha,\;k}^{(i,k)}\right)}} $. As previously discussed, instead of directly working with the worker's labels $z_{\alpha}^{(i,k)} $, we use the predicted labels obtained from the ensemble of classifiers $\eta_{\alpha}^{(i,k)} $. This methodology does not require repeating the crowd-labeling process for new data samples. In particular, we are likely not to have access to the same crowd of workers employed in the training dataset.
     \begin{equation}
@@ -230,25 +243,25 @@ Define $c_{\alpha}^{(i,k)} $ as the consistency score for worker $\alpha $, clas
         \label{eq:crowd.eq.10.consistency-penalized}
     \end{equation}
 \end{mymdframed}
-%
+
 \subsubsection{Reliability Measurement}
 For each worker, for each class, and for each instance, there is a consistency score, $c_{\alpha}^{(i,k)}$. By averaging these scores across all instances, we can define a reliability score for each worker and for each class:
 \begin{equation}
     \psi_{\alpha}^{(k)}=\frac{1}{N}\sum_{i=1}^N c_{\alpha}^{(i,k)}\label{eq:crowd.reliability_measurement}
 \end{equation}
-%
+
 If desired, one may also calculate an overall reliability score for each worker by averaging across all classes:
 \begin{equation}
     \psi_{\alpha}=\frac{1}{K}\sum_{k=1}^K \psi_{\alpha}^{(k)}
 \end{equation}
-%
+
 \subsubsection{Weight Measurement}
 Furthermore, we calculate the workers' weights $\omega_\alpha^{(k)}$ for each class k by normalizing the reliability values as follows:
 \begin{equation}
     \omega_{\alpha}^{(k)}=\frac{\psi_{\alpha}^{(k)}}{\sum_{\alpha=1}^{M} \psi_{\alpha}^{(k)}}
     \label{eq:crowd.eq.11.weights}
 \end{equation}
-%
+
 \subsubsection{Aggregated Label Calculation}
 Finally, the aggregated label $\nu^{(i,k)}$ for each instance $i $ and class $k $ is the weighted average of the predicted labels $\eta_{\alpha}^{(i,k)} $ for each worker $\alpha $:
 \begin{equation}
@@ -260,10 +273,10 @@ Finally, the aggregated label $\nu^{(i,k)}$ for each instance $i $ and class $k 
     \quad \forall i, k
     \label{eq:crowd.aggregated_label}
 \end{equation}
-%
+
 \subsubsection{Confidence Score Calculation}
 In previous section we showed how to calculate the aggregated label $\nu^{(i,k)}$ (shown in Equation~(\ref{eq:crowd.aggregated_label})). Define $F^{(i,k)} $ as the confidence score for instance $i $ and class $k $. We calculate two confidence scores $F^{(i,k)} $, based on how many different workers agree on the reported label $\nu^{(i,k)}$. The confidence scores show the level of confidence we should place on the aggregated labels. To calculate this confidence score, we modify the two techniques used by Sheng~\cite{sheng_Majority_2019} and Tao~\cite{tao_Label_2020} to incorporate our calculated weight $\omega_{\alpha}^{(k)} $ shown in Equation~(\ref{eq:crowd.eq.11.weights})  for each worker $\alpha $.
-%
+
 \begin{mymdframed}{Method 1: Confidence Score Calculation using Weighted Sum}
     In a standard voting system, for every instance $i$ and class $k$, each contributor in the group—whether that be an worker in a crowd or a model in an ensemble learning context—provides a class label. The label receiving the most votes, meaning it's predicted by the majority of contributors, is selected as the final prediction. This approach is often referred to as majority voting or hard voting.
 
@@ -279,17 +292,16 @@ In previous section we showed how to calculate the aggregated label $\nu^{(i,k)}
     where $\delta $ is the Kronecker delta function.
 
 \end{mymdframed}
-%
-%
+
 \begin{mymdframed}{Method 2: Confidence Score Calculation using CDF of Beta Distribution Function}
     The binomial distribution survival function, also referred to as the complementary cumulative distribution function (CCDF), provides the probability of observing a result as extreme or more extreme than a given value. It provides the probability that a random variable drawn from the binomial distribution is greater than or equal to a given value. It can be applied in the following ways when calculating confidence scores:
     \begin{enumerate}%[label=\alph*]
         \item \textbf{Hypothesis testing:}
         Suppose you are testing a hypothesis concerning a parameter of a population, and you collect a sample of observations. Given the null hypothesis, the binomial survival function can be used to calculate the probability of observing a result as extreme or more extreme than the one observed. This probability is the p-value, and if it is very small, the null hypothesis may be rejected. In this context, the confidence score could be interpreted as (1 $-$ p-value), a measure of the certainty with which the null hypothesis can be rejected.
-        %
+
         \item \textbf{Binary classification:} Consider a binary classification problem in which an algorithm sorts objects into two groups, A and B. Given the observed results, the binomial survival function can be used to calculate the probability of misclassification. The confidence score in this instance could be interpreted as (1 $-$ probability of misclassification).
     \end{enumerate}
-    %
+
     In the following equation, the probability of obtaining k successes or more out of n trials where the probability of success on any given trial is p is calculated. In this context, ``success'' could refer to the event in question, such as the correct classification of an object or the acceptance of a hypothesis. The CDF of the Beta distribution at the decision threshold of $0.5 $ is used to calculate a confidence score $F_{\beta}^{(i,k)}$. To calculate the two shape parameters of the Beta distributions $l^{(i,k)}$ and $u^{(i,k)}$, a weighted sum of all correct and incorrect aggregated labels, is used respectively:
     \begin{equation}
         \begin{aligned}
@@ -298,7 +310,7 @@ In previous section we showed how to calculate the aggregated label $\nu^{(i,k)}
         \end{aligned}
         \label{eq:crowd.Eq.14.beta_l_u}
     \end{equation}
-    %
+
     \begin{align}
         F_{\beta}^{(i,k)}
         \, & = \, \textcolor{gray}{I_{0.5}\left(l^{(i,k)},u^{(i,k)}\right)} \\
@@ -307,31 +319,31 @@ In previous section we showed how to calculate the aggregated label $\nu^{(i,k)}
     \end{align}
     where $T = \left [ l^{(i,k)} + u^{(i,k)} \right ] $ and $\left [ \cdot \right ] $ is an integer function.
 \end{mymdframed}
-%
+
 \subsection{Metrics}
 \begin{itemize}
     \item \textbf{Accuracy:} The accuracy of the model is the proportion of true results (both true positive and true negatives) among the total number of cases examined. Mathematically, accuracy can be represented as:
     \begin{equation}
-    \text{Accuracy}= \frac{1}{N} \sum_{i=1}^{N} \sum_{k=1}^{K} \delta\left(\nu^{(i,k)}, y^{(i,k)}\right)
+        \text{Accuracy}= \frac{1}{N} \sum_{i=1}^{N} \sum_{k=1}^{K} \delta\left(\nu^{(i,k)}, y^{(i,k)}\right)
     \end{equation}
     where $\delta$ is the Kronecker delta function, $N$ is the total number of instances, and $K$ is the number of classes, $y^{(i,k)}$ and $\nu^{(i,k)}$ are the ground truth and aggregated label respectively for class $k$ and instance $i$. Although accuracy is most effective for balanced classes, its interpretation can be skewed in the presence of significant class imbalance.
-    %
+
     \item \textbf{F1 Score:} The F1 score is the harmonic mean of precision and recall and can be used for assessing the quality of aggregated labels, especially in the presence of imbalanced classes. F1 score provides a balanced measure of precision and recall, ranging from 0 to 1, where 1 represents the best possible F1 score. It's computed as:
     \begin{equation}
-    \text{F1} = 2 \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}
+        \text{F1} = 2 \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}
     \end{equation}
     where $\text{Precision} = \frac{\text{TP}}{\text{TP+FP}}$ and $\text{Recall} = \frac{\text{TP}}{\text{TP+FN}}$, and TP, FP and FN are the number of true positives, false positives and false negatives, respectively.
-    %
+
     \item \textbf{Area Under the Receiver Operating Characteristic Curve (AUC-ROC):} AUC-ROC measures the trade-off between true positive rate (sensitivity) and false positive rate (1-specificity) for every possible cut-off. Higher AUC-ROC values indicate better classification performance.
-    %
+
     \item \textbf{Brier Score:} Brier score provides a measure of the accuracy of the probabilistic or confidence score predictions. It's calculated as the mean squared difference between the estimated confidence score $F^{(i,k)}$ and the ground truth label $y^{(i,k)}$, thereby rewarding predictions that are both well-calibrated and confident. It can be calculated as follows:
     \begin{equation}
-    \text{Brier Score} = \frac{1}{N} \sum_{i=1}^{N} \sum_{k=1}^{K} {\left(F^{(i,k)} - y^{(i,k)}\right)}^2
+        \text{Brier Score} = \frac{1}{N} \sum_{i=1}^{N} \sum_{k=1}^{K} {\left(F^{(i,k)} - y^{(i,k)}\right)}^2
     \end{equation}
-    %
+
     \item \textbf{Expected Calibration Error (ECE):}  is used to quantify the calibration of  confidence scores produced by a model. It's computed as a weighted average of the absolute differences between the actual accuracies and the predicted confidences within each bin when predictions are grouped into distinct bins based on their predicted confidence. A lower ECE signifies a model whose predicted probabilities closely match the observed frequencies across all bins. ECE can be formulated as follows:
     \begin{equation}
-    \text{ECE} = \sum_{b=1}^{B} \frac{ \vert B_b \vert }{N} \left\vert {\text{Accuracy} ( B_{b} ) - \text{Confidence-Score}(B_b)} \right\vert
+        \text{ECE} = \sum_{b=1}^{B} \frac{ \vert B_b \vert }{N} \left\vert {\text{Accuracy} ( B_{b} ) - \text{Confidence-Score}(B_b)} \right\vert
     \end{equation}
     where $B$ is the number of bins, $B_b$ is the set of instances in bin $b$, $N$ is the total number of instances, $\text{Accuracy} (B_b)$ is the accuracy of bin $b$, and $\text{Confidence-Score} (B_b)$ is the average confidence of bin $b$.
 \end{itemize}
@@ -339,10 +351,10 @@ In previous section we showed how to calculate the aggregated label $\nu^{(i,k)}
 
 \section{Results}\label{sec:crowd.results}
 To evaluate our proposed technique, we conducted a series of experiments comparing the proposed technique with several existing techniques such as MV, Tao~\cite{tao_Label_2020}, and Sheng~\cite{sheng_Majority_2019}, as well as with other crowdsourcing methodologies reported in the crowd-kit package~\cite{ustalov_learning_2021} including Gold Majority Voting, MMSR~\cite{ma_Adversarial_2020}, Wawa, Zero-Based Skill, GLAD~\cite{whitehill_Whose_2009}, and Dawid Skene~\cite{dawid_Maximum_1979}.
-%
+
 \subsection{Datasets}\label{subsec:results.datasets}
 We report the performance of our proposed techniques on various datasets. These datasets cover a wide range of domains and have varying characteristics in terms of the number of features, samples, and class distributions. Table~\ref{tab:crowd.Table.1.Datasets} provides an overview of the datasets used. All datasets are obtained from the University of California, Irvine (UCI) repository~\cite{duan_UCI_2017}.
-%
+
 \begin{table}[htbp]
 \centering
 \caption[Description of the Datasets Used]{Description of the datasets used.}\label{tab:crowd.Table.1.Datasets}
@@ -362,7 +374,7 @@ We report the performance of our proposed techniques on various datasets. These 
     \bottomrule
 \end{tabulary}
 \end{table}
-%
+
 \begin{itemize}
     \item The \textbf{kr-vs-kp} dataset represents the King Rook-King Pawn on a7 in chess. The positive class indicates a victory for white (1,669 instances, or 52\%), while the negative class indicates a defeat for white (1,527 instances, 48\%).
     \item The \textbf{mushroom} dataset is based on the Audubon Society Field Guide for North American Mushrooms (1981) and includes 21 attributes related to mushroom characteristics such as cap shape, surface, odor, and ring type.
@@ -375,28 +387,28 @@ We report the performance of our proposed techniques on various datasets. These 
     \item The 1984 US Congressional \textbf{Voting} Records Dataset shows how members voted on 16 CQA-identified critical votes. Votes are divided into nine categories, simplified to yea, nay, or unknown disposition. The dataset has two classes: Democrats (267) and Republicans (168).
     \item The Johns Hopkins \textbf{Ionosphere} dataset contains data collected near Goose Bay, Labrador, using a phased array of 16 high-frequency antennas. ``Good'' radar returns show ionosphere structure, while ``bad'' returns are ionosphere-free. The dataset includes 351 instances with 34 attributes categorized as good or bad.
 \end{itemize}
-%
+
 All datasets were transformed into a two-class binary problem for comparison with existing benchmarks. For instance, only the first and second classes were used in the ``waveform'' dataset, and the first two classes were utilized in the ``Iris'' dataset.
 We generated multiple fictitious label sets for each dataset to simulate the crowdsourcing concept of collecting several crowd labels for each instance. We selected random samples in the datasets using a uniform distribution and altered their corresponding true labels to incorrect ones, while maintaining the original distribution of the ground-truth labels. The probability of each instance containing the correct true label was determined using a uniform distribution, allowing us to create synthetic label sets for each worker that preserved the underlying structure and difficulty of the original classification problem. By creating datasets with various levels of accuracy, we can evaluate the performance of the proposed method under different conditions of worker expertise and reliability. This allows us to assess the ability of our method to handle diverse real-world crowdsourcing scenarios and gain insight into its general applicability and effectiveness in improving overall classification accuracy.
-%
+
 \subsection{Benchmarks}
 Tao~\cite{tao_Label_2020} and Sheng~\cite{sheng_Majority_2019} techniques were implemented in Python to evaluate their performance. Furthermore, the crowd-kit package (A General-Purpose Crowdsourcing Computational Quality Control Toolkit for Python)~\cite{ustalov_learning_2021} was used to implement the remaining benchmark techniques, including Gold Majority Voting, MMSR~\cite{ma_Adversarial_2020}, Wawa, Zero-Based Skill, GLAD~\cite{whitehill_Whose_2009}, and Dawid Skene~\cite{dawid_Maximum_1979}.
-%
+
 \begin{itemize}
     \item \textbf{Worker Agreement with Aggregate (WAWA)~\cite{crowdkit_webpage_documentation}:} Wawa, also referred to as ``inter-rater agreement'', is a metric used in crowdsourcing jobs that do not employ test questions~\cite{appen_wawa_2023}. The WAWA algorithm consists of three steps: it calculates the majority vote label, estimates workers' skills as a fraction, and calculates the agreement between workers and the majority vote~\cite{crowdkit_webpage_documentation}.
-    %
+
     \item \textbf{Zero-Based-Skill (ZBS)~\cite{crowdkit_webpage_documentation}:} employs a weighted majority vote (WMV). After processing a collection of instances, it re-evaluates the abilities of the workers based on the accuracy of their responses. This process is repeated until the labels no longer change or the maximum number of iterations is reached.
-    %
+
     \item \textbf{Karger-Oh-Shah (KOS)~\cite{crowdkit_webpage_documentation}:} Iterative algorithm that calculates the log-likelihood of the task being positive while modeling the reliabilities of the workers. Let $A_{(i,\alpha)} $ be a matrix of answers of worker $\alpha $ on task $i $. $A_{(i,\alpha)} = 0 $ if worker $\alpha $ didn't answer the task $i $ otherwise $\vert A_{(i,\alpha)} \vert = 1 $. The algorithm operates on real-valued task messages $x_{i \rightarrow \alpha} $  and worker messages $y^{\alpha \rightarrow i} $. A task message $x_{i \rightarrow \alpha} $ represents the log-likelihood of task $i $ being a positive task, and a worker message $y_{\alpha \rightarrow i} $ represents how reliable worker $\alpha $ is. On iteration $k$ the values are updated as follows~\cite{crowdkit_webpage_documentation}:
     \begin{equation}
         x_{i \rightarrow \alpha}^{(k)} = \sum_{\alpha' \in \partial i \backslash \alpha} A_{(i, \alpha')} y_{\alpha' \rightarrow i}^{(k-1)} \\
         y_{\alpha \rightarrow i}^{(k)} = \sum_{i' \in \partial \alpha \backslash i} A_{(i',\alpha)} x_{i' \rightarrow \alpha}^{(k-1)}
     \end{equation}
-    %
+
     \item \textbf{Multi-worker Competence Estimation (MACE)~\cite{hovy_MACE_2013,crowdkit_webpage_documentation}:}
     Probabilistic model that associates each worker with a probability distribution over the labels. For each task, a worker might be in a spamming or not spamming state. If the worker is not spamming, they yield a correct label. If the worker is spamming, they answer according to their probability distribution. Let's assume that the correct label $y^{(i)}$ comes from a discrete uniform distribution. When a worker annotates the task, they are in the spamming state with probability $\operatorname{Bernoulli}(1 - \theta_{\alpha})$. So, if their state $s_{\alpha} = 0$, their response $z^{(i)}_{\alpha} = y^{(i)}$. Otherwise, their response $z^{(i,\alpha)}$ is drawn from a multi-nomial distribution with parameters $\xi_{\alpha}$.
-    %
-    \item \textbf{Matrix Mean-Subsequence-Reduced Algorithm (MMSR)~\cite{ma_Adversarial_2020,crowdkit_webpage_documentation}:} The MMSR assumes that workers have different level of expertise and associated with a vector of ``skills'' $\boldsymbol{s}$ which entries $s_{\alpha}$ show the probability of the worker $\alpha$ to answer correctly to the given task. Having that, we can show that.
+
+    \item \textbf{Matrix Mean-Subsequence-Reduced Algorithm (MMSR)~\cite{ma_Adversarial_2020,crowdkit_webpage_documentation}:} The MMSR assumes that workers have different level of expertise and associated with a vector of ``skills'' $\boldsymbol{s}$ which entries $s_{\alpha}$ show the probability of the worker $\alpha$ to answer correctly to the given task. Having that, we can show that.%
     \begin{equation}
         \mathbb{E}\left[\frac{K}{K-1}\widetilde{C}-\frac{1}{K-1}\boldsymbol{1}\boldsymbol{1}^T\right]
         = \boldsymbol{s}\boldsymbol{s}^T,
@@ -404,7 +416,7 @@ Tao~\cite{tao_Label_2020} and Sheng~\cite{sheng_Majority_2019} techniques were i
     where $K$ is the total number of classes, $\widetilde{C}$ is a covariation matrix between workers, and $\boldsymbol{1}\boldsymbol{1}^T$ is the all-ones matrix which has the same size as $\widetilde{C}$.
 
     So, the problem of recovering the skills vector $\boldsymbol{s}$ becomes equivalent to the rank-one matrix completion problem. The MMSR algorithm is an iterative algorithm for *rubust* rank-one matrix completion, so its result is an estimator of the vector $\boldsymbol{s}$. Then, the aggregation is the weighted majority vote with weights equal to $\log \frac{(K-1)s_{\alpha}}{1-s_{\alpha}}$.
-    %
+
     \item \textbf{Generative model of Labels, Abilities, and Difficulties (GLAD)~\cite{whitehill_Whose_2009,crowdkit_webpage_documentation}:} A probabilistic model that parametrizes workers' abilities and tasks' difficulties. Let's consider a case of $K$ class classification. Let $p$ be a vector of prior class probabilities, $\omega_{\alpha} \in (-\infty, +\infty)$ be a worker's ability parameter, $\beta^{(k)} \in (0, +\infty)$ be an inverse task's difficulty, $y^{(k)}$ be a latent variable representing the true task's label, and $z_{\alpha}^{(k)}$ be a worker's response that we observe. The relationships between these variables and parameters according to GLAD are represented by the following latent label model.
     The prior probability of $y^{(k)}$ being equal to $c$ is $\Pr(y^{(k)} = c) = p[c]$
     the probability distribution of the worker's responses conditioned by the true label value $c$ follows the single coin Dawid-Skene model where the true label probability is a sigmoid function of the product of worker's ability and inverse task's difficulty:
@@ -414,32 +426,32 @@ Tao~\cite{tao_Label_2020} and Sheng~\cite{sheng_Majority_2019} techniques were i
     where $f(\alpha, k) = \frac{1}{1 + e^{-\omega_{\alpha} \beta^{(k)} }}$.
 
     Parameters $p$, $\omega$, $\beta$ and latent variables $y$ are optimized through the Expectation-Minimization algorithm.
-    %
+
     \item \textbf{Dawid-Skene~\cite{dawid_Maximum_1979,crowdkit_webpage_documentation}:}
     Probabilistic model that parametrizes workers' level of expertise through confusion matrices.  Let $e^{\alpha}$ be a worker's confusion (error) matrix of size $K \times K$ in case of $K$ class classification, $p$ be a vector of prior classes probabilities, $y^{(i)}$ be a true task's label, and $z_{\alpha}^{(i)}$ be a worker's answer for the task $i$. The relationships between these parameters are represented by the following latent label model.
     Here the prior true label probability is $\Pr(y^{(i)} = c) = p[c]$ and the distribution on the worker's responses given the true label $c$ is represented by the
     corresponding column of the error matrix: $\Pr(z_{\alpha}^{(i)} = k \vert y^{(i)} = c) = e^{\alpha}[k, c]$
     Parameters $p$ and $e^{\alpha}$ and latent variables $z$ are optimized through the Expectation-Maximization algorithm.
 \end{itemize}
-%
+
 \subsection{Weight Measurement Evaluation}
 Following the generation of multi-label sets, the aggregate labels were determined using the proposed Crowd-Certain as well as various established methods. We examined two strategies for classifier selection, as detailed in Section~\ref{subsec:crowd.uncertainty}. Give there was no substantial variations in the final outcomes observed, the second strategy was adopted for its utilization of the random forest classification technique. This choice not only conserved processing time but also decreased the need for numerous Python package dependencies. For each worker $\alpha $, we trained ten distinct random forests, each comprising four trees with a maximum depth of four, under various random states, as outlined in Section~\ref{sec:crowd.method}.
 
 Figure~\ref{fig:crowd.weight_strength_relation} depicts the relationship between the randomly assigned workers' probability threshold ($\pi_\alpha^{(k)}$) and their corresponding estimated weights ($\omega_\alpha^{(k)}$). In Tao's method scenario, the figure presents the average weights over all instances. Notably, as the reliability (probability threshold) of an worker exceeds a particular threshold, the weight computed by Tao's method reaches a saturation point, while the proposed technique exhibits a considerably stronger correlation. The individual data points symbolize the actual calculated weights, and the curve illustrates the regression line.
-%
+
 \begin{figure}[htbp]
-\centering
-\includegraphics[width=\textwidth]{\figurepath{figure_weight_strength_relation/figure_weight_strength_relation.pdf}}
-\caption[Comparative Analysis of Weight Computation Techniques Across Ten Datasets]{The figure provides a comprehensive comparison of weight computation techniques across ten distinctive datasets. Each subplot within the figure corresponds to a specific dataset, visually illustrating the intricate relationship between the randomly assigned worker's probability threshold ($\pi_\alpha^{(k)}$) - represented on the horizontal axis - and the resulting computed weights ($\omega_{\alpha}^{(k)}$) - shown on the vertical axis. This relationship is analyzed for the Crowd-Certain method in two scenarios: with and without penalization, and is also compared with the Tao method~\cite{tao_Label_2020}. Individual data points represent real measured weights, while the overlaid curve delineates the corresponding regression line.}\label{fig:crowd.weight_strength_relation}
+    \centering
+    \includegraphics[width=\textwidth]{\figurepath{figure_weight_strength_relation/figure_weight_strength_relation.pdf}}
+    \caption[Comparative Analysis of Weight Computation Techniques Across Ten Datasets]{The figure provides a comprehensive comparison of weight computation techniques across ten distinctive datasets. Each subplot within the figure corresponds to a specific dataset, visually illustrating the intricate relationship between the randomly assigned worker's probability threshold ($\pi_\alpha^{(k)}$) - represented on the horizontal axis - and the resulting computed weights ($\omega_{\alpha}^{(k)}$) - shown on the vertical axis. This relationship is analyzed for the Crowd-Certain method in two scenarios: with and without penalization, and is also compared with the Tao method~\cite{tao_Label_2020}. Individual data points represent real measured weights, while the overlaid curve delineates the corresponding regression line.}\label{fig:crowd.weight_strength_relation}
 \end{figure}
-%
+
 \subsection{Label Aggregation Evaluation}
 The Figure~\ref{fig:crowd.accuracy_per_worker} portrays the accuracy comparison of our label aggregation technique, termed Crowd-Certain, against ten existing methods, evaluated over ten distinct datasets. Each dataset was labeled by three different workers, with labels generated based on a uniform distribution and specific probability thresholds $\Pi_\alpha$ as explained in Section~\ref{subsec:methods.generating_fictitious_labelset}.
 
 For a comprehensive evaluation, all experiments were repeated three times using different random seed numbers to account for randomness. The accuracy scores presented in the figure represent the average of these three runs and illustrate the degree of concordance between the aggregated label $\nu^{(i,k)}$ from each technique and the actual ground truth $y^{(i,k)}$.
 
 It is important to note that, in the execution of our proposed technique, Crowd-Certain, the aggregated labels were derived through the application of the predicted probabilities, denoted as $\eta_{\alpha}^{(i,k)}$. This approach is significant as it enables the reuse of trained classifiers on future sample data, eliminating the need for recurrent simulation processes - a substantial advantage in terms of computational efficiency. Conversely, the methodologies of existing techniques necessitated the use of actual crowd labels $z_\alpha^{(i,k)}$ to determine the aggregated labels. For example, in case of Tao~\cite{tao_Label_2020} the aggregated labels were obtained using the equation~\ref{eq:crowd.aggregated_label_benchmarks}. These methods inherently involve re-running simulations for every new dataset, which could be computationally expensive and time-consuming.
-%
+
 \begin{equation}
     \nu^{(i,k)} =
     \begin{cases}
@@ -458,11 +470,13 @@ Across all ten datasets, it is clear that the Crowd-Certain method consistently 
 \end{figure}
 
 We further extended our experiment to explore the effects of varying the number of workers, ranging from 3 up to 7. The results shown in Figure~\ref{fig:crowd.Fig.accuracy_all_datasets_workers}, are presented as a series of box plots, each illustrating the distribution of accuracy (1st column), F1 (2nd column), and AUC (3rd column) scores across the 10 datasets for a given number of workers. These plots provide a clear visual summary of our technique's robust performance across various settings, including the median, quartiles, and potential outliers in the distribution of accuracies. Notably, our proposed Crowd-Certain technique consistently shows improvements over the 10 benchmark methods across all scenarios. This enhancement is evident irrespective of the number of workers involved, further highlighting the robustness and adaptability of the Crowd-Certain approach.
+
 \begin{figure}[htbp]
-\centering
-\includegraphics[width=0.9\textwidth]{\figurepath{figure_metrics_all_datasets_workers/figure_metrics_all_datasets_workers.pdf}}%
-\caption[Comparative Study of Accuracy, F1, and AUC Metrics for Label Aggregation Techniques Across Varied Crowd Sizes]{This $3 \times 3$ structured figure provides a comprehensive comparison of Accuracy (first column), F1 (second column), and AUC scores (third column) across multiple label aggregation techniques, including the proposed Crowd-Certain method and nine pre-existing techniques. Each row illustrates the results for a different number of crowd workers: the top row for three workers, the middle row for four workers, and the bottom row for five workers. Each subfigure presents ten boxplots, where each boxplot represents an aggregation technique. The metrics for each boxplot are computed from ten average scores, each corresponding to a distinct dataset. The average scores were derived from three independent trials, each with a different random seed. The aggregation of labels used in each experiment to calculate these metrics was obtained using Eq.~(\ref{eq:crowd.aggregated_label}) for Crowd-Certain and Eq.~(\ref{eq:crowd.aggregated_label_benchmarks}) for pre-existing techniques.}\label{fig:crowd.Fig.accuracy_all_datasets_workers}
+    \centering
+    \includegraphics[width=0.9\textwidth]{\figurepath{figure_metrics_all_datasets_workers/figure_metrics_all_datasets_workers.pdf}}%
+    \caption[Comparative Study of Accuracy, F1, and AUC Metrics for Label Aggregation Techniques Across Varied Crowd Sizes]{This $3 \times 3$ structured figure provides a comprehensive comparison of Accuracy (first column), F1 (second column), and AUC scores (third column) across multiple label aggregation techniques, including the proposed Crowd-Certain method and nine pre-existing techniques. Each row illustrates the results for a different number of crowd workers: the top row for three workers, the middle row for four workers, and the bottom row for five workers. Each subfigure presents ten boxplots, where each boxplot represents an aggregation technique. The metrics for each boxplot are computed from ten average scores, each corresponding to a distinct dataset. The average scores were derived from three independent trials, each with a different random seed. The aggregation of labels used in each experiment to calculate these metrics was obtained using Eq.~(\ref{eq:crowd.aggregated_label}) for Crowd-Certain and Eq.~(\ref{eq:crowd.aggregated_label_benchmarks}) for pre-existing techniques.}\label{fig:crowd.Fig.accuracy_all_datasets_workers}
 \end{figure}
+
 \subsection{Confidence Score Evaluation}
 The table presents the evaluation of the two confidence score measurement techniques, namely Freq and Beta, using two performance metrics: \textcolor{orange}{Expected Calibration Error (ECE)} and \textcolor{blue}{Brier Score}. The evaluations were conducted across a variety of datasets and three techniques: Crowd-Certain, Tao, and Sheng, when using three workers.
 

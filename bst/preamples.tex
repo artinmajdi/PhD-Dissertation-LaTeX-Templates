@@ -45,6 +45,8 @@
 \usepackage{algpseudocode}
 \usepackage{pdfpages}
 \usepackage{multicol}
+\usepackage{afterpage}
+
 % \usepackage[]{cite} % nocompress
 % \makeatletter
 % \let\citep\cite
@@ -56,20 +58,14 @@
 
 \geometry{margin=2.5cm}
 
-% Set default font to sans-serif
-\renewcommand{\familydefault}{\sfdefault}
-
-% Change the captions fonts to PT Sans Narrow. This is important to be able to fit some of larger tables in the page.
-\newcommand{\ptsansnarrow}{\fontfamily{PTSansNarrow-TLF}\selectfont}
-
 \newcommand{\addtitle}{title}
 \newcommand{\addkeyword}{keyword}
 \newcommand{\addabstract}{abstract}
 % \newcommand{\chapterpath}[1]{#1}
 \newcommand{\figurepath}[1]{\chapterpath{figures}/#1}
 
-\definecolor{mygreen}{HTML}{E9ECE6}% Adding a custom color
-\let\origcaption\caption\renewcommand{\caption}[1]{\ptsansnarrow\origcaption{#1}}
+% \definecolor{mygreen}{HTML}{E9ECE6}% Adding a custom color
+% \let\origcaption\caption\renewcommand{\caption}[1]{\color{beaublue}\fontsize{10}\ptsansnarrow\origcaption{#1}}
 
 % \let\origalgorithm\algorithm\renewcommand{\algorithm}[1]{\SgAlgorithm}
 
