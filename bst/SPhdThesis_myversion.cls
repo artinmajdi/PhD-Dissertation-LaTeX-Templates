@@ -646,7 +646,7 @@
 	Brief quotations from this dissertation are allowable without special permission, provided that accurate acknowledgment of the source is made. Requests for permission for extended quotation from or
     reproduction of this manuscript in whole or in part may be granted by
     % \if@copyright
-	% 	the copyright holder.
+		the copyright holder.
     % \else
     %     the head of the major department or the Dean of the Graduate College when in his or her judgement the proposed use of the material is in the interests of scholarship. In all other instances,
     %     however, permission must be obtained from the author.

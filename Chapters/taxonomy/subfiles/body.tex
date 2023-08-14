@@ -119,7 +119,7 @@ where $c_j = \Lambda (c_k)$ is the index of the parent class of the $k$-th class
 When $\alpha_k=0 $, there is no influence from the parent class $c_j$ on the child class $c_k$.  By carefully selecting appropriate hyperparameter values, this transfer learning technique can be employed to effectively adjust the predicted probabilities of each class, considering the hierarchical relationship between classes, and potentially improving classification accuracy.
 
 \subsubsection{Parameter Selection and Tuning}
-The selection of appropriate hyperparameters is crucial for the effectiveness of the proposed transfer learning technique. In this study, we employ a systematic approach to tune the hyperparameter vector $\{\alpha_k \}_{k=1}^K$ , which controls the dependency between the predicted probabilities of the child and parent classes. We utilize a grid search method to determine the optimal values for these hyperparameters. The search space for the hyperparameters is defined based on preliminary experiments and domain knowledge, ensuring a balance between model complexity and predictive performance.
+The selection of appropriate hyperparameters is crucial for the effectiveness of the proposed transfer learning technique. In this study, we employ a systematic approach to tune the hyperparameter vector ${\{\alpha_k \}}_{k=1}^K$, which controls the dependency between the predicted probabilities of the child and parent classes. We utilize a grid search method to determine the optimal values for these hyperparameters. The search space for the hyperparameters is defined based on preliminary experiments and domain knowledge, ensuring a balance between model complexity and predictive performance.
 
 The steps are as follows.
 \begin{enumerate}
@@ -130,11 +130,11 @@ The steps are as follows.
         \item Create a secondary model $f_2 (\cdot)$ identical to $f_1(\cdot)$ except for the last activation layer (sigmoid). Update the weights and biases in the $f_2 (\cdot)$ using their counterparts in $f_1(\cdot)$
         \item Calculate the logit values
     \end{itemize}
-    \item Perform Hyper Parameter Tuning to find the $\{\alpha_k \}_{k=1}^K$ values. The detail shown in Algorithm~\ref{alg:taxonomy.logit.hyperparameter-optimization}
+    \item Perform Hyper Parameter Tuning to find the ${\{\alpha_k \}}_{k=1}^K$ values. The detail shown in Algorithm~\ref{alg:taxonomy.logit.hyperparameter-optimization}
     \begin{itemize}
         \item Determining the instances of $\alpha_k$ where the Area Under the Curve (AUC) calculated for the instances in train dataset is maximized.
         \item Optimization Algorithm: Tree-structured Parzen Estimator (TPE). TPE is a Sequential Model-Based Optimization (SMBO) method. It builds a hierarchical model of the hyperparameter space to suggest new hyperparameters, making it more efficient than grid and random search, in exploring large, high-dimensional spaces. TPE enhances efficiency by focusing on promising areas of the parameter space, guided by data from previous evaluations.
-        \item Use the optimal hyperparameter vector $\{\alpha_k \}_{k=1}^K$ calculated in Algorithm~\ref{alg:taxonomy.logit.hyperparameter-optimization}, logit values in $\mathbb{T}^{\text{test}}=\left\{ \mathbb{Y}^{\text{test}}, \mathbb{Q}^{\text{test}} \right\}$, and Eq.~\ref{eq:taxonomy.eq.1.pred.approach1} to calculate the new predicted probabilities for test instances.
+        \item Use the optimal hyperparameter vector ${\{\alpha_k \}}_{k=1}^K$ calculated in Algorithm~\ref{alg:taxonomy.logit.hyperparameter-optimization}, logit values in $\mathbb{T}^{\text{test}}=\left\{ \mathbb{Y}^{\text{test}}, \mathbb{Q}^{\text{test}} \right\}$, and Eq.~\ref{eq:taxonomy.eq.1.pred.approach1} to calculate the new predicted probabilities for test instances.
     \end{itemize}
 \end{enumerate}
 
@@ -247,7 +247,7 @@ The steps are as follows.
 \end{SgAlgorithm}
 
 \begin{SgAlgorithm}
-    \SetAlgoLined
+    \SetAlgoLined%
     \caption{Hyper Parameter Optimization for Logit-Base Technique}\label{alg:taxonomy.logit.hyperparameter-optimization}
     \KwIn{%
         \begin{itemize}
@@ -285,7 +285,7 @@ The steps are as follows.
         $ \alpha_k = 0 $ \;
         \If{$ \Lambda(c_k) \neq \varnothing $}
         {%
-            $ \alpha_k =$ TPE($\alpha_k$, $\mathcal{S}$, $\mathcal{O}(\dots)$, MAX\_EVALS)
+            $ \alpha_k =$ TPE ($\alpha_k$, $\mathcal{S}$, $\mathcal{O}(\dots) $, MAX\_EVALS)
         }
     }
     \BlankLine%
@@ -336,7 +336,7 @@ Another approach to incorporating the interdependence between different classes 
 
 The penalization term in Equations~(\ref{eq:taxonomy.eq.4.hierarchical_penalty1}) and~(\ref{eq:taxonomy.eq.5.hierarchical_penalty2}) encourages the model to correctly predict the corresponding parent class when predicting the child class, hence ensuring that the predicted labels  align well with the hierarchical structure. The aforementioned approach, assumes a linear relationship  between the child and parent losses. However, this may not always accurately capture the relationship between the parent-child classes, as the relationship may not necessarily be linear.
 
-The approach of multiplying losses introduces a greater adaptability in the representation of relationships between parent and child classes, as it can encapsulate both linear and potentially complex interrelations. Under the constraints of our problem -- where the absence of a parent class guarantees the absence of its child class -- both parent and child loss values would simultaneously increase or decrease (if the parent class is absent). In such a scenario, their summation or product would correspondingly escalate or diminish, thus demonstrating a linear relationship.
+The approach of multiplying losses introduces a greater adaptability in the representation of relationships between parent and child classes, as it can encapsulate both linear and potentially complex interrelations. Under the constraints of our problem --- where the absence of a parent class guarantees the absence of its child class --- both parent and child loss values would simultaneously increase or decrease (if the parent class is absent). In such a scenario, their summation or product would correspondingly escalate or diminish, thus demonstrating a linear relationship.
 
 However, the complexity arises when we consider the scenario where the parent's loss value is significantly low in comparison to the child's loss. Here, a simple additive model might undervalue the parent's loss impact, as adding a small parent loss value to a considerably larger child loss value might not significantly alter the new updated loss for that child class. On the contrary, a multiplicative model amplifies the influence of each parent loss on the total, even if the parent's loss is relatively small. By defining the new loss for child classes in such way that their updated loss values are proportional to their corresponding parent's losses, we may enhance the hierarchical relationships' portrayal. To define such a loss value measurement scheme, we can modify the loss measurements presented in Equations~(\ref{eq:taxonomy.eq.4.hierarchical_penalty1}) and~(\ref{eq:taxonomy.eq.5.hierarchical_penalty2}) to be based on the multiplication of losses rather than their addition.
 \begin{equation}
@@ -367,7 +367,7 @@ The steps are as follows.
 \begin{enumerate}
     \item Pre-process the data. Details shown in Algorithm~\ref{alg:taxonomy.dataset}
     \item Get loss values. Details shown in Algorithm~\ref{alg:taxonomy.loss.original}
-    \item Perform Hyper Parameter Tuning to find the $\{\alpha_k \}_{k=1}^K$, and $\{\beta_k \}_{k=1}^K$ hyperparameter vectors. The detail shown in Algorithm~\ref{alg:taxonomy.loss.hyperparameter-optimization}.
+    \item Perform Hyper Parameter Tuning to find the ${\{\alpha_k \}}_{k=1}^K$, and ${\{\beta_k \}}_{k=1}^K$ hyperparameter vectors. The detail shown in Algorithm~\ref{alg:taxonomy.loss.hyperparameter-optimization}.
 \end{enumerate}
 
 \begin{SgAlgorithm}
@@ -404,7 +404,7 @@ The steps are as follows.
     \SetKwProg{Fn}{Calculating Threshold Values}{:}{}
     \Fn{$\text{getThreshold}(\mathbb{P}^\text{train}, \mathbb{Y}^\text{train})$}
     {%
-        $\left\{ \theta_k \right\}_{k=1}^K \gets {\left\{ \mathbb{P}^\text{train}, \mathbb{Y}^\text{train} \right\}}$ Using some thresholding technique (eg, ROC, 0.5, AUC)
+        ${\left\{ \theta_k \right\}}_{k=1}^K \gets {\left\{ \mathbb{P}^\text{train}, \mathbb{Y}^\text{train} \right\}}$ Using some thresholding technique (eg, ROC, 0.5, AUC)
     }
     \BlankLine%
 
@@ -426,7 +426,7 @@ The steps are as follows.
 \end{SgAlgorithm}
 
 \begin{SgAlgorithm}
-    \SetAlgoLined
+    \SetAlgoLined%
     \caption{Hyper Parameter Optimization for Loss-Base Technique}\label{alg:taxonomy.loss.hyperparameter-optimization}
     \KwIn{%
         \begin{itemize}
@@ -485,7 +485,7 @@ The steps are as follows.
             $ \alpha_k = 0 \, , \beta_k = 1$ \;
             \If{$ \Lambda(c_k) \neq \varnothing $}
             {%
-                $ \alpha_k, \beta_k =$ TPE($\dots$)
+                $ \alpha_k, \beta_k =$ TPE ($\dots$)
             }
         }
     }
