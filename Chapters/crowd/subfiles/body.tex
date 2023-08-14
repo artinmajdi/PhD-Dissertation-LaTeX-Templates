@@ -100,6 +100,9 @@ Our goal is to choose an aggregation model $\widehat{h} $ that minimizes the ris
 \end{equation}
 
 \subsection{Generating Workers' Label Sets from Ground Truth}\label{subsec:methods.generating_fictitious_labelset}
+
+\includegraphics[page=1, width=\textwidth]{Chapters/crowd/crowd_presentation_slides.pdf}
+
 In order to evaluate the proposed Crowd-Certain technique (with and without penalization) as well as other aggregation techniques, we create $M$ fictitious workers. To synthesize a multi-worker dataset from a dataset with existing ground truth, we use a uniform distribution in the interval from $0.4 $ to $1 $, i.e., $\pi_\alpha^{(k)} \sim U\left(0.4,1\right) $ (however other ranges can also be used) to obtain $M \times  K$ probability thresholds $\Pi $, where $K$ is the number of classes. (Note that
 an worker may be skilled at labeling dogs, but not rabbits.) Then we use these probability thresholds to generate the crowd label set $Z_{\alpha}^{(i)} $ from the ground truth labels for each instance $i $.
 
@@ -116,6 +119,9 @@ The calculated worker labels $z_{\alpha}^{(i,k)} $ for each worker $\alpha $, in
 To evaluate the proposed techniques over all data instances, a k-fold cross-validation is employed.
 
 \subsection{Uncertainty Measurement}\label{subsec:crowd.uncertainty}
+
+\includegraphics[page=3, width=\textwidth]{Chapters/crowd/crowd_presentation_slides.pdf}
+
 A common approach to measure uncertainty is to increase the number of data instances $X $ in the test dataset $\mathbb{D}_\alpha^{\mathrm{test}} $ to create multiple variations of each sample data $X^{(i)} $~\cite{ayhan_TestTime_2018}. In this approach, for each instance $i $, we apply randomly generated spatial transformations and additive noise to the input data $X^{(i)} $ to obtain a transformed sample and repeat this process $G $ times to obtain a set of $G $ transformed samples.
 
 However, this approach is mostly suitable for cases where the input data comprises images or volume slices. Since the datasets used in this study consist of feature vectors instead of images or volume slices, this approach cannot be used. To address this problem, we introduced a modified uncertainty measurement approach, in which instead of augmenting the data instances $X^{(i)} $, we feed the same sample data to different classifiers.
@@ -221,6 +227,8 @@ The uncertainty measures discussed above are only some of the available options.
 
 \subsection{Crowd-Certain: Uncertainty-Based Weighted Soft Majority Voting}
 
+\includegraphics[page=2, width=\textwidth]{Chapters/crowd/crowd_presentation_slides.pdf}
+
 \subsubsection{Consistency Measurement}
 Define $c_{\alpha}^{(i,k)} $ as the consistency score for worker $\alpha $, class $k $ and instance $i $. We calculate this consistency score using the uncertainty score $\Delta_{\alpha}^{(i,k)} $ explained in the previous section. We use two approaches to calculate $c_{\alpha}^{(i,k)} $ from $\Delta_{\alpha}^{(i,k)} $.
 
@@ -256,6 +264,9 @@ If desired, one may also calculate an overall reliability score for each worker 
 \end{equation}
 
 \subsubsection{Weight Measurement}
+
+\includegraphics[page=4, width=\textwidth]{Chapters/crowd/crowd_presentation_slides.pdf}
+
 Furthermore, we calculate the workers' weights $\omega_\alpha^{(k)}$ for each class k by normalizing the reliability values as follows:
 \begin{equation}
     \omega_{\alpha}^{(k)}=\frac{\psi_{\alpha}^{(k)}}{\sum_{\alpha=1}^{M} \psi_{\alpha}^{(k)}}
@@ -321,6 +332,9 @@ In previous section we showed how to calculate the aggregated label $\nu^{(i,k)}
 \end{mymdframed}
 
 \subsection{Metrics}
+
+\includegraphics[page=5, width=\textwidth]{Chapters/crowd/crowd_presentation_slides.pdf}
+
 \begin{itemize}
     \item \textbf{Accuracy:} The accuracy of the model is the proportion of true results (both true positive and true negatives) among the total number of cases examined. Mathematically, accuracy can be represented as:
     \begin{equation}
@@ -465,7 +479,9 @@ It is important to note that, in the execution of our proposed technique, Crowd-
 Across all ten datasets, it is clear that the Crowd-Certain method consistently outperforms the existing methods, yielding higher average accuracy rates. For example, in the `kr-vs-kp' dataset, our proposed Crowd-Certain method achieved an average accuracy of approximately 0.923, significantly exceeding the highest-performing existing method that reached an accuracy of about 0.784. This trend holds true across other datasets as well, such as `mushroom', `spambase', and `tic-tac-toe', where the Crowd-Certain method achieves superior average accuracies of around 0.980, 0.900, and 0.741, respectively. In contrast, the competing methods struggled to exceed an average accuracy of 0.771 in these datasets.
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.9\textwidth]{\figurepath{figure_metrics_mean_over_seeds_per_dataset_per_worker_ACC/figure_metrics_mean_over_seeds_per_dataset_per_worker_ACC.pdf}}
+\includegraphics[width=0.8\textwidth]{\figurepath{figure_metrics_mean_over_seeds_per_dataset_per_worker_ACC/figure_metrics_mean_over_seeds_per_dataset_per_worker_ACC.pdf}}
+
+\captionsetup{width=0.8\textwidth}
 \caption[Comparison of mean accuracy for Crowd-Certain and other aggregation methods with three crowd workers.]{Figure depicts a comparative analysis of the mean accuracy between the proposed Crowd-Certain method and ten pre-existing label aggregation techniques, under conditions featuring three crowd workers. The depicted mean accuracy score is derived from an averaging process across three separate trials, each initiated with a distinct random seed, thus ensuring a fair and balanced comparison.}\label{fig:crowd.accuracy_per_worker}
 \end{figure}
 
@@ -474,6 +490,7 @@ We further extended our experiment to explore the effects of varying the number 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.9\textwidth]{\figurepath{figure_metrics_all_datasets_workers/figure_metrics_all_datasets_workers.pdf}}%
+    \captionsetup{width=0.9\textwidth}
     \caption[Comparative Study of Accuracy, F1, and AUC Metrics for Label Aggregation Techniques Across Varied Crowd Sizes]{This $3 \times 3$ structured figure provides a comprehensive comparison of Accuracy (first column), F1 (second column), and AUC scores (third column) across multiple label aggregation techniques, including the proposed Crowd-Certain method and nine pre-existing techniques. Each row illustrates the results for a different number of crowd workers: the top row for three workers, the middle row for four workers, and the bottom row for five workers. Each subfigure presents ten boxplots, where each boxplot represents an aggregation technique. The metrics for each boxplot are computed from ten average scores, each corresponding to a distinct dataset. The average scores were derived from three independent trials, each with a different random seed. The aggregation of labels used in each experiment to calculate these metrics was obtained using Eq.~(\ref{eq:crowd.aggregated_label}) for Crowd-Certain and Eq.~(\ref{eq:crowd.aggregated_label_benchmarks}) for pre-existing techniques.}\label{fig:crowd.Fig.accuracy_all_datasets_workers}
 \end{figure}
 
@@ -488,8 +505,9 @@ For the \textcolor{orange}{ECE} metric, and Beta strategy ($F_{\beta}$) the Crow
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.9\textwidth]{\figurepath{figure_heatmap_F_evals_all_datasets_NL3/figure_heatmap_F_evals_all_datasets_NL3.pdf}}
-    \caption[ECE and Brier Score Comparison across Techniques and Confidence Score Measurement Strategies for 3 Workers]{This figure displays a comparative heatmap of the \textcolor{red}{Expected Calibration Error (ECE)} and \textcolor{blue}{Brier Score} across two confidence score measurement strategies: Beta ($F_{\beta}$) and Freq ($F_{\Omega}$). The comparison involves three different label aggregation techniques: Crowd-Certain, Tao, and Sheng, and spans ten distinct datasets for three crowd workers (NL3). The chosen metrics provide insight into the calibration and sharpness of the predictions across different configurations}\label{fig:crowd.Fig.confidence_scores_all_datasets_3_workers}
+    \includegraphics[width=0.8\textwidth]{\figurepath{figure_heatmap_F_evals_all_datasets_NL3/figure_heatmap_F_evals_all_datasets_NL3.pdf}}
+    \captionsetup{width=0.8\textwidth}
+    \caption[ECE and Brier Score Comparison across Techniques and Confidence Score Measurement Strategies for 3 Workers]{This figure displays a comparative heatmap of the \textcolor{orange}{ECE} and \textcolor{blue}{Brier Score} across two confidence score measurement strategies: Beta ($F_{\beta}$) and Freq ($F_{\Omega}$). The comparison involves three different label aggregation techniques: Crowd-Certain, Tao, and Sheng, and spans ten distinct datasets for three crowd workers (NL3). The chosen metrics provide insight into the calibration and sharpness of the predictions across different configurations}\label{fig:crowd.Fig.confidence_scores_all_datasets_3_workers}
 \end{figure}
 
 Figure~\ref{fig:crowd.Fig.confidence_score_one_datasets_all_workers} showcases the results for two metrics, \textcolor{orange}{ECE} and Brier Score, for two confidence measurement techniques (Beta ($F_{\beta}$) and Freq ($F_{\Omega}$) strategies), applied using three different techniques: Crowd-Certain, Tao, and Sheng. These results are obtained for the \textbf{kr-vs-kp dataset} under \textbf{different numbers of workers} from 3 (denoted with NL3) up to (denoted with NL7). In general, the Brier Score decreases and \textcolor{orange}{ECE} increases as the number of workers increases, which suggests that increasing the number of workers does not necessarily improve the performance. The performance varies depending on the confidence measurement technique and the strategy used. For the Freq strategy, the Crowd-Certain technique consistently yields lower \textcolor{orange}{ECE} and higher \textcolor{blue}{Brier Score} across different numbers of workers compared to the Tao and Sheng techniques, indicating better calibration and sharper predictions when having only 3 workers. For the Beta strategy, the performance varies between techniques. For the \textcolor{blue}{Brier Score}, the Freq strategy combined with the Crowd-Certain technique tends to perform better across all numbers of workers compared to other combinations of techniques and strategies. For the \textcolor{orange}{ECE}, the Beta strategy combined with the Crowd-Certain technique yields the lowest values for three and four workers, indicating a good match between predicted confidences and observed frequencies. However, the \textcolor{orange}{ECE} tends to increase as the number of workers increases, indicating a decline in calibration.
@@ -497,8 +515,9 @@ Figure~\ref{fig:crowd.Fig.confidence_score_one_datasets_all_workers} showcases t
 Overall, these results suggest that the choice of the confidence measurement technique and the strategy has significant impacts on the calibration and sharpness of the predictions. Further investigations could be beneficial to understand the specific conditions under which certain techniques and strategies yield superior performance.
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.9\textwidth]{\figurepath{figure_heatmap_F_evals_kr-vs-kp_all_labelers/figure_heatmap_F_evals_kr-vs-kp_all_labelers.pdf}}
-    \caption[ECE and Brier Score Comparison across Techniques for Varying Number of Workers for kr-vs-kp Dataset]{This figure presents a comparative evaluation of the \textcolor{red}{Expected Calibration Error (ECE)} and the \textcolor{blue}{Brier Score} across two confidence score measurement strategies: Beta ($F_{\beta}$) and Freq ($F_{\Omega}$). The results are plotted for three distinct label aggregation techniques: Crowd-Certain, Tao, and Sheng, on the kr-vs-kp dataset with varying numbers of crowd workers from three to seven (NL3 to NL7). }\label{fig:crowd.Fig.confidence_score_one_datasets_all_workers}
+    \includegraphics[width=0.8\textwidth]{\figurepath{figure_heatmap_F_evals_kr-vs-kp_all_labelers/figure_heatmap_F_evals_kr-vs-kp_all_labelers.pdf}}
+    \captionsetup{width=0.8\textwidth}
+    \caption[ECE and Brier Score Comparison across Techniques for Varying Number of Workers for kr-vs-kp Dataset]{This figure presents a comparative evaluation of the \textcolor{orange}{ECE} and the \textcolor{blue}{Brier Score} across two confidence score measurement strategies: Beta ($F_{\beta}$) and Freq ($F_{\Omega}$). The results are plotted for three distinct label aggregation techniques: Crowd-Certain, Tao, and Sheng, on the kr-vs-kp dataset with varying numbers of crowd workers from three to seven (NL3 to NL7). }\label{fig:crowd.Fig.confidence_score_one_datasets_all_workers}
 \end{figure}
 
 \section{Discussion}\label{sec:crowd.discussion}

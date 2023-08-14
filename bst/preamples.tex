@@ -1,85 +1,88 @@
-\usepackage{bst/sleek-theorems}
+% Encoding and Font Settings
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[cmintegrals]{newtxmath}
+\usepackage{paratype, fix-cm}
 
-\usepackage{subfiles}
-\usepackage{standalone}
-\usepackage{verbatim, amssymb, amsmath, amsthm, graphicx, psfrag, afterpage, hyperref}
+
+% Math and Symbols
+\usepackage{amsmath, amssymb, amsthm, amsfonts, amsbsy}
 \usepackage[mathscr]{eucal}
-\usepackage{makeidx}
-\numberwithin{equation}{section}
+\usepackage{mathrsfs}
+\usepackage{textcomp}
+\usepackage{siunitx}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+
+% Graphics and Tables
+\usepackage{graphicx, psfrag, colortbl, xcolor, pifont, tabulary, tabularx, booktabs, multirow}
+\usepackage{float, floatflt, morefloats}
+\usepackage{sidecap}
+% \setlength\sidecapsep{1em}
+
+% Layout and Design
+\usepackage{geometry}
+\usepackage[Lenny]{fncychap}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{afterpage}
+\geometry{margin=2.5cm}
+
+
+% Utilities
+\usepackage{subfiles, standalone, verbatim, url, cancel, tfrupee, pdfpages}
+\usepackage{listings, algorithm, algpseudocode, algorithmicx}
+\usepackage[title]{appendix}
+\usepackage[sorting=none, maxcitenames=2, style=numeric-comp, backend=biber,citecounter=true]{biblatex}
+% \let\origalgorithm\algorithm\renewcommand{\algorithm}[1]{\SgAlgorithm}
+
+
+% Additional Inputs and Custom Settings
 \input{bst/isomath}
 \input{bst/mathenv}
 \input{bst/syms}
-\usepackage{graphicx, url, multirow, morefloats, floatflt, cancel, tfrupee, colortbl, xcolor, pifont, wasysym}
-\usepackage[cmintegrals]{newtxmath}
-\usepackage{tabulary}
+\usepackage{bst/sleek-theorems}
+\numberwithin{equation}{section}
+\usepackage{setspace}        % Used to modify line spacing in the document. Some common options are: \singlespacing , \onehalfspacing , \doublespacing
+\setlength{\parskip}{1.1em}  % Adding space after each paragraph
+\setlength{\parindent}{0pt}  % Removing the indentation in the beginning of each paragraph
+\linespread{1.5}             % Increase the line spacing to 1.5
+\fancyhead{}
+\fancyfoot{}
+\fancyfoot[C]{\SgIntPageNumFormat\thepage}
+\fancyfoot[R]{\ifnum\theHchapter>0 Chapter~\SgIntHeaderFormat\theHchapter~\fi}
+\setlength{\headheight}{-20pt}
 
-\usepackage{float}
-\usepackage{lipsum}
-\usepackage[Lenny]{fncychap}
-\usepackage{amsfonts,amsmath,amssymb}
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
-\usepackage{url,multirow,morefloats,floatflt,cancel,tfrupee}
-\usepackage{textcomp}
-\usepackage{mathrsfs}
-\usepackage[title]{appendix}
-\usepackage{manyfoot}
-\usepackage{algorithmicx}
-\usepackage{algpseudocode}
-\usepackage{listings}
-\usepackage{setspace}
-\usepackage{fancyhdr,amsbsy,latexsym}
-\usepackage{siunitx}
-\usepackage{tabularx, booktabs}
-\usepackage{colortbl}
-\usepackage{xcolor}
-\usepackage{pifont}
-\usepackage{paratype}
-\usepackage{pdfpages}
-\usepackage{algorithm}
-\usepackage{fix-cm}
-\usepackage{enumitem}
-\usepackage{multicol}
-\usepackage{geometry}
-\usepackage{algorithm}
-\usepackage{algpseudocode}
-\usepackage{pdfpages}
-\usepackage{multicol}
-\usepackage{afterpage}
 
-% \usepackage[]{cite} % nocompress
-% \makeatletter
-% \let\citep\cite
-% \let\citet\cite
-% \makeatother
+% User-defined Commands
+\newcommand{\addtitle}{title}
+\newcommand{\addkeyword}{keyword}
+\newcommand{\addabstract}{abstract}
+\newcommand{\figurepath}[1]{\chapterpath{figures}/#1}
+
+
+% Hyperlink settings
+\usepackage{hyperref}
+
+
 % \usepackage[numbers,sort&compress, super]{natbib}
 \usepackage[sorting=none, maxcitenames=2, style=numeric-comp, backend=biber,citecounter=true]{biblatex}
 
 
-\geometry{margin=2.5cm}
 
-\newcommand{\addtitle}{title}
-\newcommand{\addkeyword}{keyword}
-\newcommand{\addabstract}{abstract}
-% \newcommand{\chapterpath}[1]{#1}
-\newcommand{\figurepath}[1]{\chapterpath{figures}/#1}
 
-% \definecolor{mygreen}{HTML}{E9ECE6}% Adding a custom color
-% \let\origcaption\caption\renewcommand{\caption}[1]{\color{beaublue}\fontsize{10}\ptsansnarrow\origcaption{#1}}
 
-% \let\origalgorithm\algorithm\renewcommand{\algorithm}[1]{\SgAlgorithm}
+% Used to create indexes and generate .idx files. Useful when you need an index for terms, notations, etc.
+%\usepackage{makeidx}
 
-\setlength{\parskip}{1.1em}% Adding space after each paragraph
-\setlength{\parindent}{0pt}% Removing the indentation in the beginning of each paragraph
-\linespread{1.5}% Increase the line spacing to 1.5
+% Provides extra symbols like tick marks, faces, pointing hands, etc. Useful for embellishing documents with nice symbols.
+%\usepackage{wasysym}
 
-\fancyhead{}
-% \fancyhead[R]{\ifnum\theHchapter>0 Chapter~\SgIntHeaderFormat\theHchapter~\fi}
-\setlength{\headheight}{-20pt}
-% \addtolength{\topmargin}{-35pt}
-%
-\fancyfoot{}
-\fancyfoot[C]{\SgIntPageNumFormat\thepage}
-\fancyfoot[R]{\ifnum\theHchapter>0 Chapter~\SgIntHeaderFormat\theHchapter~\fi}
+% Allows multiple footnotes on the same page. Regular LaTeX only allows one footnote. This relaxes that limitation.
+%\usepackage{manyfoot}
 
-\DeclareMathOperator*{\argmax}{arg\,max} % thin space, limits underneath in displays
+% Provides extra LaTeX math symbols not in the default setup. Extends amsmath with more math commands.
+%\usepackage{latexsym}
+
+

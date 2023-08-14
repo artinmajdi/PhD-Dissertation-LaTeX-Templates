@@ -20,6 +20,9 @@ In many cases, the diagnosis or observation of a particular condition on a CXR (
 Hierarchical multi-label classification methods have been successfully implemented in a variety of domains, including text processing~\cite{aly_Hierarchical_2019}, visual recognition~\cite{bi_Mandatory_2014}, and genomic analysis~\cite{bi_BayesOptimal_2015}. A common technique~\cite{chen_Deep_2019} for exploiting such a hierarchy is to train a classifier on conditional data while ignoring all samples with negative parent-level labels and then reintroducing these samples to fine-tune the network across the entire dataset~\cite{chen_Deep_2019}. These approaches help the classifier focus on the relevant data during initial training, thus improving the prediction accuracy.  However, these techniques are computationally expensive, as they require training a classifier on conditional data and then fine-tuning it on a full dataset. This makes them difficult to apply to real-world problems, where the amount of data is often very large.   Another common strategy is a cascading architecture where different classifiers are trained at each level of the hierarchy. Although these techniques enable more granular data analysis (each classifier can focus on a specific level of the hierarchy), they require a substantial amount of computational resources. Other existing deep learning-based approaches often use complex combinations of CNNs and recurrent neural networks (RNNs)~\cite{guo_CNNRNN_2018,kowsari_HDLTex_2017}.
 
 \section{Methods}\label{sec:taxonomy.methods}
+
+\includegraphics[page=1, width=\textwidth]{Chapters/taxonomy/taxonomy_presentation_slides.pdf}
+
 In this study, we introduce a unique method that improves the accuracy and interpretability of multi-label classification, with potential applications in areas such as chest radiography. We propose two distinct strategies. The first strategy termed as ``loss-based'', requiring the availability of ground truth labels, incorporates the hierarchical relationships among different classes directly into the loss function. In contrast, the second strategy termed as ``logit-based'' utilizes these hierarchical relationships to modify the logit values before calculating the predicted probabilities for each class. These two strategies, which utilize a transfer learning approach, foster the use and fine-tuning of pre-existing models, thereby expanding their adaptability to new tasks. By improving the accuracy of classifying different pathologies, these techniques could potentially enhance disease diagnosis and treatment.
 The proposed technique is adaptable to the available computational resources. When ample computational resources are available, the ``loss-based'' strategy can be utilized. Alternatively, in scenarios with limited computational resources, to avoid the need for optimization of the network from scratch, the ``logit-based'' strategy can be utilized.
 One notable advantage of our proposed techniques lies in enhancing interpretability. By categorizing classes into a hierarchical structure and capitalizing on their relationships, the model not only improves classification performance but also provides insights into the relationships among predicted classes.
@@ -83,6 +86,9 @@ Each of these predicted probabilities, derived from the sigmoid activation funct
 Let us denote the loss value as $l_k = \mathcal{L} \left(p_k^{(i)},y_k^{(i)}\right),\hspace{0.33em}k \in \{1,2,\dots,K\} $ where $\mathcal{L}(\cdot) $ is an appropriate single-class loss function for the task (e.g., binary cross-entropy, Dice, etc.) that is used to calculate the difference between the predicted probability $p_k^{(i)} $ and the true class label $y_k^{(i)} $ for instance $i$ and class $k $.
 
 \subsection{Label Taxonomy Structure}\label{subsec:label-taxonomy-and-hierarchy}
+
+\includegraphics[page=3, width=\textwidth]{Chapters/taxonomy/taxonomy_presentation_slides.pdf}
+
 To exploit the hierarchical relationships between thoracic abnormalities, the first step is to define a disease taxonomy that demonstrates different abnormalities' interrelationships. In this taxonomy, diseases are structured hierarchically in a graph, with higher levels representing broader disease categories and lower levels representing more nuanced distinctions between related diseases. The taxonomy is structured such that if a disease is present then its parent disease is also present. Furthermore, in the presence of multiple parent classes for a given child class, the taxonomy structure only utilizes the more dominant parent (e.g., if class $c_1$ has two parent classes $c_3$ and $c_5$, while the $c_5$ is also the parent of $c_3$ class (it's both the parent and grandparent of $c_1$ class), in this scenario, we assume $c_5$ as the parent class of both $c_1$ and $c_3$).
 
 For example, pleural effusion and pneumothorax can be classified as subcategories of pleural abnormalities, whereas atelectasis and consolidation can be classified under pulmonary opacity~\cite{irvin_CheXpert_2019}. This hierarchical structure enables the model to take advantage of the relationships between diseases to improve its classification performance.
@@ -92,6 +98,9 @@ To create the label taxonomy shown in Figure~\ref{fig:taxonomy.fig.1.taxonomy_st
 In order to maintain uniformity, we adopted the renaming scheme introduced by Cohen~\cite{cohen_TorchXRayVision_2022} for the pathology names. Subsequently, the key pathologies were identified and extracted to build the hierarchical taxonomy structure illustrated in Figure~\ref{fig:taxonomy.fig.1.taxonomy_structure}.
 
 \subsection{Approach 1: Conditional Predicted Probability}\label{subsec:taxonomy.method.approach1}
+
+\includegraphics[page=4, width=\textwidth]{Chapters/taxonomy/taxonomy_presentation_slides.pdf}
+
 When computational resources are limited, this technique can be applied to test samples without the need to fine-tune the pre-trained, multi-label classification model. This adaptability ensures that the benefits of considering hierarchical relationships between labels can be realized in a wide range of practical scenarios, without imposing excessive computational requirements.
 Directly updating the predicted probabilities presents potential benefits, including the following:
 \begin{itemize}
@@ -658,7 +667,12 @@ In order to make this work on new test instances, we can substitute the $y_{k}^{
 
 \subsection{Experimental Setup}
 
+\includegraphics[page=5, width=\textwidth]{Chapters/taxonomy/taxonomy_presentation_slides.pdf}
+
 \subsubsection{Datasets}
+
+\includegraphics[page=2, width=\textwidth]{Chapters/taxonomy/taxonomy_presentation_slides.pdf}
+
 Three diverse and publicly available datasets are used to evaluate the proposed hierarchical multi-label classification techniques: CheXpert~\cite{irvin_CheXpert_2019}, PADCHEST~\cite{bustos_Padchest_2020}, and NIH~\cite{wang_ChestXRay8_2017}. These datasets contain a diverse range of chest radiographic images covering various thoracic diseases, providing a comprehensive evaluation of the effectiveness of our method. The description of the three datasets are as follows.
 \begin{itemize}
     \item  \textbf{CheXpert}~\cite{irvin_CheXpert_2019} is a large-scale dataset containing 224,316 chest radiographs of 65,240 patients, labeled with 14 radiographic findings.
@@ -713,7 +727,7 @@ The prevalence of different pathology labels across three distinct medical imagi
     \centering
     \caption[Representation of Pathologies Across Datasets]{Representation of pathologies across datasets}%
     \label{tab:taxonomy.table.1.datasets.pathologies}
-    \resizebox{\textwidth}{!}{\begin{tabular}{lcccrlccc}
+    \resizebox{0.9\textwidth}{!}{\begin{tabular}{lcccrlccc}
     \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} \textbf{Pathologies}} & \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} \textbf{NIH}} & \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} \textbf{PADCHEST}} & \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} \textbf{CheX}} & \textbf{} & \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} \textbf{Pathologies}} & \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} \textbf{NIH}} & \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} \textbf{PADCHEST}} & \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} \textbf{CheX}} \\
     {Air Trapping} &  & X &  &  & {Hemidiaphragm Elevation} &  & X &  \\
     {Aortic   Atheromatosis} &  & X &  &  & \textbf{Hernia} & X & X &  \\
@@ -741,71 +755,76 @@ The distribution of samples per pathology in each dataset is presented in Table~
 
 \begin{table}[htbp]
     \centering
+    \captionsetup{width=0.6\textwidth}
     \caption[Sample Distribution Per Pathology in Evaluated Datasets (CheX, NIH, and PC)]{Sample distribution per pathology in evaluated datasets (CheX, NIH, and PC)}%
     \label{tab:taxonomy.table.2.datasets.ninstances}
-    \begin{tabular}{lcccccc}
-    \rowcolor[HTML]{79A8A4}
-    \multicolumn{1}{c}{\cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} }} & \multicolumn{2}{c}{\cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} \textbf{CheXpert}}} & \multicolumn{2}{c}{\cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} \textbf{NIH}}} & \multicolumn{2}{c}{\cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} \textbf{PADCHEST}}} \\
-    \rowcolor[HTML]{79A8A4}
-    \multicolumn{1}{c}{\multirow{-2}{*}{\cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} \textbf{Pathologies\textbackslash{}Dataset}}}} & {\color[HTML]{FFFFFF} PA} & {\color[HTML]{FFFFFF} AP} & {\color[HTML]{FFFFFF} PA} & {\color[HTML]{FFFFFF} AP} & {\color[HTML]{FFFFFF} PA} & {\color[HTML]{FFFFFF} AP} \\
-    \textbf{Atelectasis} & 2460 & 11643 & 1557 & 1016 & 2419 & 232 \\
-    \textbf{Consolidation} & 1125 & 4956 & 384 & 253 & 475 & 77 \\
-    \textbf{Infiltration} & 0 & 0 & 3273 & 1131 & 4309 & 587 \\
-    \textbf{Pneumothorax} & 1060 & 4239 & 243 & 253 & 97 & 15 \\
-    \textbf{Edema} & 1330 & 15117 & 39 & 237 & 108 & 130 \\
-    \textbf{Emphysema} & 0 & 0 & 264 & 193 & 546 & 30 \\
-    \textbf{Fibrosis} & 0 & 0 & 556 & 61 & 341 & 8 \\
-    \textbf{Effusion} & 5206 & 19349 & 1269 & 654 & 1625 & 311 \\
-    \textbf{Pneumonia} & 992 & 2064 & 175 & 89 & 1910 & 211 \\
-    \textbf{Pleural\_Thickening} & 0 & 0 & 745 & 145 & 2075 & 34 \\
-    \textbf{Cardiomegaly} & 2117 & 8284 & 729 & 203 & 5387 & 261 \\
-    \textbf{Nodule} & 0 & 0 & 1609 & 460 & 2190 & 95 \\
-    \textbf{Mass} & 0 & 0 & 1213 & 493 & 506 & 17 \\
-    \textbf{Hernia} & 0 & 0 & 81 & 13 & 988 & 38 \\
-    \textbf{Lung Lesion} & 1655 & 3110 & 0 & 0 & 0 & 0 \\
-    \textbf{Fracture} & 1115 & 3463 & 0 & 0 & 1662 & 69 \\
-    \textbf{Lung Opacity} & 7006 & 28183 & \cellcolor[HTML]{E9ECE6}4917 & \cellcolor[HTML]{E9ECE6}2216 & \cellcolor[HTML]{E9ECE6}6947 & \cellcolor[HTML]{E9ECE6}861 \\
-    \textbf{Enlarged Cardiomediastinum} & 1100 & 4577 & \cellcolor[HTML]{E9ECE6}729 & \cellcolor[HTML]{E9ECE6}203 & \cellcolor[HTML]{E9ECE6}5387 & \cellcolor[HTML]{E9ECE6}261 \\
-    \rowcolor[HTML]{79A8A4}
-    {\color[HTML]{FFFFFF} Total} & {\color[HTML]{FFFFFF} 20543} & {\color[HTML]{FFFFFF} 53359} & {\color[HTML]{FFFFFF} 28868} & {\color[HTML]{FFFFFF} 9060} & {\color[HTML]{FFFFFF} 61692} & {\color[HTML]{FFFFFF} 2445}
-    \end{tabular}
+    \resizebox{0.6\textwidth}{!}{
+        \begin{tabular}{lcccccc}
+            \rowcolor[HTML]{79A8A4}
+            \multicolumn{1}{c}{\cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} }} & \multicolumn{2}{c}{\cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} \textbf{CheXpert}}} & \multicolumn{2}{c}{\cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} \textbf{NIH}}} & \multicolumn{2}{c}{\cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} \textbf{PADCHEST}}} \\
+            \rowcolor[HTML]{79A8A4}
+            \multicolumn{1}{c}{\multirow{-2}{*}{\cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} \textbf{Pathologies\textbackslash{}Dataset}}}} & {\color[HTML]{FFFFFF} PA} & {\color[HTML]{FFFFFF} AP} & {\color[HTML]{FFFFFF} PA} & {\color[HTML]{FFFFFF} AP} & {\color[HTML]{FFFFFF} PA} & {\color[HTML]{FFFFFF} AP} \\
+            \textbf{Atelectasis} & 2460 & 11643 & 1557 & 1016 & 2419 & 232 \\
+            \textbf{Consolidation} & 1125 & 4956 & 384 & 253 & 475 & 77 \\
+            \textbf{Infiltration} & 0 & 0 & 3273 & 1131 & 4309 & 587 \\
+            \textbf{Pneumothorax} & 1060 & 4239 & 243 & 253 & 97 & 15 \\
+            \textbf{Edema} & 1330 & 15117 & 39 & 237 & 108 & 130 \\
+            \textbf{Emphysema} & 0 & 0 & 264 & 193 & 546 & 30 \\
+            \textbf{Fibrosis} & 0 & 0 & 556 & 61 & 341 & 8 \\
+            \textbf{Effusion} & 5206 & 19349 & 1269 & 654 & 1625 & 311 \\
+            \textbf{Pneumonia} & 992 & 2064 & 175 & 89 & 1910 & 211 \\
+            \textbf{Pleural\_Thickening} & 0 & 0 & 745 & 145 & 2075 & 34 \\
+            \textbf{Cardiomegaly} & 2117 & 8284 & 729 & 203 & 5387 & 261 \\
+            \textbf{Nodule} & 0 & 0 & 1609 & 460 & 2190 & 95 \\
+            \textbf{Mass} & 0 & 0 & 1213 & 493 & 506 & 17 \\
+            \textbf{Hernia} & 0 & 0 & 81 & 13 & 988 & 38 \\
+            \textbf{Lung Lesion} & 1655 & 3110 & 0 & 0 & 0 & 0 \\
+            \textbf{Fracture} & 1115 & 3463 & 0 & 0 & 1662 & 69 \\
+            \textbf{Lung Opacity} & 7006 & 28183 & \cellcolor[HTML]{E9ECE6}4917 & \cellcolor[HTML]{E9ECE6}2216 & \cellcolor[HTML]{E9ECE6}6947 & \cellcolor[HTML]{E9ECE6}861 \\
+            \textbf{Enlarged Cardiomediastinum} & 1100 & 4577 & \cellcolor[HTML]{E9ECE6}729 & \cellcolor[HTML]{E9ECE6}203 & \cellcolor[HTML]{E9ECE6}5387 & \cellcolor[HTML]{E9ECE6}261 \\
+            \rowcolor[HTML]{79A8A4}
+            {\color[HTML]{FFFFFF} Total} & {\color[HTML]{FFFFFF} 20543} & {\color[HTML]{FFFFFF} 53359} & {\color[HTML]{FFFFFF} 28868} & {\color[HTML]{FFFFFF} 9060} & {\color[HTML]{FFFFFF} 61692} & {\color[HTML]{FFFFFF} 2445}
+        \end{tabular}
+    }
 \end{table}
 %
 
 \subsection{Techniques Evaluation}
 The performance comparison of our proposed methods, namely ``logit'' and ``loss'', with the ``baseline'' technique is illustrated in Figure~\ref{fig:taxonomy.fig.3.roc_curve_all_datasets}. This comparative analysis centers on nine distinct medical conditions associated with pulmonary and cardiovascular diseases within three datasets. These nine pathologies encompass two parent classes (\textbf{Lung Opacity}, and \textbf{Enlarged Cardiomediastinum}) and their respective child classes, as illustrated in Figure~\ref{fig:taxonomy.fig.1.taxonomy_structure}. Each subplot exhibits the receiver operating characteristic (ROC) curves for each methodology superimposed on one another, accompanied by their respective AUC (Area Under Curve) scores annotated. AUC (Area Under the Curve) scores are computed for each pathology class across all test samples in all studies datasets. We can see a notable improvement in AUC scores for all pathologies possessing parent classes. The aforementioned findings serve as compelling evidence for the effectiveness of the proposed methodologies, as they showcase their ability to improve the accuracy of classification in scenarios involving hierarchical class structures. AUC scores for two parent classes, ``Lung Opacity'' and ``Enlarged Cardiomediastinum'', remain unchanged as expected. The techniques proposed in this study are designed to exploit the hierarchical structure of classes, and therefore only bring about improvements where a class possesses a parent class.
 
-\begin{table}[htbp]
-    \centering
-    \caption[Statistical Performance Comparison of ``Logit'', ``Loss'', and ``Baseline'' Techniques Across Various Pathologies]{Statistical performance comparison between the proposed techniques ``logit'' and ``loss'' and the ``baseline'' technique across various pathologies. The upper table displays the findings of the ``logit'' technique, while the lower table displays the findings of the ``loss'' technique. The reported metrics for each pathology are the Kappa statistic, p-value, t-statistic, statistical power, Cohen's d, and Bayes Factor (BF10). A kappa value of 1 indicates perfect agreement between techniques, whereas a larger Bayes factor indicates greater support for the ``logit'' or ``loss'' technique over the baseline.}%
-    \label{tab:taxonomy.table.3.metrics}
-    \resizebox{\textwidth}{!}{%
-    %! suppress = EscapeAmpersand
-    \begin{tabular}{clrrrrrr}
-        & \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} } & \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} kappa} & \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} p\_value} & \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} t\_stat} & \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} power} & \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} cohen-d} & \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} BF10} \\
-        & Atelectasis & 0.495 & 0 & 20.2 & 1 & 0.346 & 10+ \\
-        & Consolidation & 0.508 & 0 & 8.8 & 1 & 0.150 & 10+ \\
-        & Infiltration & 0.620 & 0 & 11.1 & 1 & 0.190 & 10+ \\
-        & Edema & 0.614 & 0 & 15.3 & 1 & 0.263 & 10+ \\
-        & Pneumonia & 0.573 & 0 & 8.2 & 1 & 0.140 & 10+ \\
-        & Cardiomegaly & 0.615 & 0 & 18.1 & 1 & 0.310 & 10+ \\
-        & Lung Lesion & 0.580 & 0 & 9.9 & 1 & 0.169 & 10+ \\
-        & Lung Opacity & 1 & 1 & 0 & 0.05 & 0 & 0.019 \\
-    \multirow{-10}{*}{\begin{tabular}[c]{@{}c@{}}\\ L\\  \\ O\\ \\ G\\ \\ I\\ \\ T\end{tabular}} & Enlarged Cardiomediastinum & 1 & 1 & 0 & 0.05 & 0 & 0.019 \\
-    \multicolumn{8}{l}{{\color[HTML]{FFFFFF} }} \\
-        & \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} } & \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} kappa} & \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} p\_value} & \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} t\_stat} & \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} power} & \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} cohen-d} & \cellcolor[HTML]{79A8A4}{\color[HTML]{FFFFFF} BF10} \\
-        & Atelectasis & 0.222 & 0 & 29.3 & 1 & 0.502 & 10+ \\
-        & Consolidation & 0.310 & 0 & 23.1 & 1 & 0.396 & 10+ \\
-        & Infiltration & 0.836 & 0.053 & 1.9 & 0.49 & 0.033 & 0.125 \\
-        & Edema & 0.343 & 0 & 29.9 & 1 & 0.512 & 10+ \\
-        & Pneumonia & 0.394 & 0.207 & 1.3 & 0.24 & 0.022 & 0.043 \\
-        & Cardiomegaly & 0.501 & 0 & 21.6 & 1 & 0.370 & 10+ \\
-        & Lung Lesion & 0.059 & 0 & 31.3 & 1 & 0.537 & 10+ \\
-        & Lung Opacity & 1 & 1 & 0 & 0.05 & 0 & 0.019 \\
-    \multirow{-10}{*}{\begin{tabular}[c]{@{}c@{}}\\ L\\ \\ O\\ \\ S\\ \\ S\end{tabular}} & Enlarged Cardiomediastinum & 1 & 1 & 0 & 0.05 & 0 & 0.019
-    \end{tabular}%
-    }
+\begin{table}
+\centering
+\caption[Statistical Performance Comparison of ``Logit'', ``Loss'', and ``Baseline'' Techniques Across Various Pathologies]{Statistical performance comparison between the proposed techniques ``logit'' and ``loss'' and the ``baseline'' technique across various pathologies. The upper table displays the findings of the ``logit'' technique, while the lower table displays the findings of the ``loss'' technique. The reported metrics for each pathology are the Kappa statistic, p-value, t-statistic, statistical power, Cohen's d, and Bayes Factor (BF10). A kappa value of 1 indicates perfect agreement between techniques, whereas a larger Bayes factor indicates greater support for the ``logit'' or ``loss'' technique over the baseline.}\label{tab:taxonomy.table.3.metrics}
+
+\resizebox{\textwidth}{!}{%
+    \begin{tabular}{lrrrrrr|lrrrrrr}
+        \multicolumn{1}{c}{} & \multicolumn{6}{c}{\color{Asparagus}{LOGIT}} & \multicolumn{6}{c}{\color{beaublue}{LOSS}} \\
+        &
+        \cellcolor{Asparagus}{kappa} &
+        \cellcolor{Asparagus}{p\_value} &
+        \cellcolor{Asparagus}{t\_stat} &
+        \cellcolor{Asparagus}{power} &
+        \cellcolor{Asparagus}{cohen-d} &
+        \cellcolor{Asparagus}{BF10} &
+        \cellcolor{beaublue}{kappa} &
+        \cellcolor{beaublue}{p\_value} &
+        \cellcolor{beaublue}{t\_stat} &
+        \cellcolor{beaublue}{power} &
+        \cellcolor{beaublue}{cohen-d} &
+        \cellcolor{beaublue}{BF10} \\
+        Atelectasis & 0.495 & 0 & 20.2 & 1 & 0.346 & 10+ & 0.222 & 0 & 29.3 & 1 & 0.502 & 10+ \\
+        Consolidation & 0.508 & 0 & 8.8 & 1 & 0.150 & 10+ & 0.310 & 0 & 23.1 & 1 & 0.396 & 10+ \\
+        Infiltration & 0.620 & 0 & 11.1 & 1 & 0.190 & 10+ & 0.836 & 0.053 & 1.9 & 0.49 & 0.033 & 0.125 \\
+        Edema & 0.614 & 0 & 15.3 & 1 & 0.263 & 10+ & 0.343 & 0 & 29.9 & 1 & 0.512 & 10+ \\
+        Pneumonia & 0.573 & 0 & 8.2 & 1 & 0.140 & 10+ & 0.394 & 0.207 & 1.3 & 0.24 & 0.022 & 0.043 \\
+        Cardiomegaly & 0.615 & 0 & 18.1 & 1 & 0.310 & 10+ & 0.501 & 0 & 21.6 & 1 & 0.370 & 10+ \\
+        Lung Lesion & 0.580 & 0 & 9.9 & 1 & 0.169 & 10+ & 0.059 & 0 & 31.3 & 1 & 0.537 & 10+ \\
+        Lung Opacity & 1 & 1 & 0 & 0.05 & 0 & 0.019 & 1 & 1 & 0 & 0.05 & 0 & 0.019 \\
+        Enlarged Cardiomediastinum & 1 & 1 & 0 & 0.05 & 0 & 0.019 & 1 & 1 & 0 & 0.05 & 0 & 0.019 \\
+    \end{tabular}
+}
 \end{table}
+
 The comparative analysis presented in Figure~\ref{fig:taxonomy.fig.2.metrics} examines the performance of the proposed ``loss'' and ``logit'' methods in comparison to the ``baseline'' method across three important metrics: Accuracy (ACC), Area Under the Receiver Operating Characteristic Curve (AUC), and F1 score for different pathologies.
 
 The ``loss'' and ``logit'' methods exhibit a distinct advantage over the ``baseline'' method in terms of accuracy. In the case of Atelectasis, the ``loss'' method demonstrates a notably higher accuracy of 0.922 compared to the ``baseline'' method's accuracy of 0.686. Additionally, the ``logit'' method achieves an accuracy of 0.874. As predicted, there is no noticeable disparity in accuracy between the methods for the parent classes, Lung Opacity and Enlarged Cardiomediastinum, as indicated by scores of 0.663 and 0.696, respectively.
@@ -818,13 +837,15 @@ The obtained results provides further support for our previous findings, which i
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\textwidth]{\figurepath{auc_acc_f1_all_datasets/ROC/metrics_AUC_ACC_F1}}
+    \includegraphics[width=0.8\textwidth]{\figurepath{auc_acc_f1_all_datasets/ROC/metrics_AUC_ACC_F1}}
+    \captionsetup{width=0.8\textwidth}
     \caption[Heatmap Visualization of Model Performance Metrics (ACC, AUC, F1) for Different Techniques across Pathologies]{Heatmap visualization of model performance metrics across all three datasets. The subplots from left to right correspond to the Accuracy (ACC), Area Under the ROC Curve (AUC), and F1 Score for the baseline, ``loss'', and ``logit'' techniques respectively. The pathologies are shared on the y-axis. Darker colors signify higher values, indicating better model performance. Each cell represents the value of the corresponding metric for the given technique on a specific pathology}\label{fig:taxonomy.fig.2.metrics}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\textwidth]{\figurepath{roc_curve_all_datasets/ROC/roc_curve_all_datasets}}
+    \includegraphics[width=0.8\textwidth]{\figurepath{roc_curve_all_datasets/ROC/roc_curve_all_datasets}}
+    \captionsetup{width=0.8\textwidth}
     \caption[Comparative Analysis of ROC Curves for Nine Thoracic Pathologies: ``logit'', ``loss'', and ``baseline'' Techniques]{Comparative analysis of the ROC curves for nine thoracic pathologies using the ``logit'' and ``loss'' techniques as well as the baseline. The subplots highlighted with a darker background, represent parent class diseases.}\label{fig:taxonomy.fig.3.roc_curve_all_datasets}
 \end{figure}
 
