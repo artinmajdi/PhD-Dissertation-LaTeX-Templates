@@ -20,12 +20,13 @@
     \SgSetFourthMember{Janet M\@. Roveda}
     \SgAddTitle%
     \includepdf[pages={1}]{Chapters/Approval_page.pdf}% \SgAddApproval%
-    \SgAddStatement%
+    % \SgAddStatement%
     \SgAddAcknowledgement{bst/acknowledgments}
     \SgAddToc%  Table of contents.
     \SgAddLof%  List of figures.
     \SgAddLot%  List of tables.
     \SgAddLoa%  List of algorithms.
+    \addcontentsline{toc}{chapter}{Abstract}
     \input{Chapters/Abstract}
 }
 
@@ -43,6 +44,7 @@
     \include{Chapters/thalamus/thalamus_thesis.tex}
     \include{Chapters/drive_net/drive_net_thesis.tex}
     \include{Chapters/cilia/cilia_thesis.tex}
+    \addcontentsline{toc}{chapter}{Bibliography}
     \printbibliography%
     % \SgIncludeBibTex{bst/Better_BibTeX_Zotero}
 \end{document}

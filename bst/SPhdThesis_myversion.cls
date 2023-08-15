@@ -330,8 +330,12 @@
 % Using tocloft, the toc can be formatted easily.
 \RequirePackage[titles, subfigure]{tocloft}
 
+% Adding the word Chapter to the chapter naems in TOC
+\renewcommand{\cftchappresnum}{Chapter }
+\setlength{\cftchapnumwidth}{2cm}
+
 % Remove dots.
-\renewcommand{\cftdotsep}{\cftnodots}
+% \renewcommand{\cftdotsep}{\cftnodots}
 
 % Remove dots from list of algorithms.
 % This is necessary because we use algorithm2e which mananges its own list of algorithms.
@@ -347,6 +351,7 @@
 \setlength{\cfttabindent}{0in}
 
 \newcommand{\SgAddToc}{\tableofcontents\SgIntClearDoublePage}
+
 \newcommand{\SgAddLof}{%
 	\newpage
 	\phantomsection % Requires hyperref; this is to fix the link.
@@ -538,7 +543,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % T I T L E  P A G E
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\titlePageColor}[1]{{\color{BlueGray}\bfseries\expandafter{#1}}}
+\newcommand{\titlePageColor}[1]{{\color{Charcoal}\bfseries\expandafter{#1}}}
 
 \ifthenelse{\equal{\SgIntTitleCase}{upper}}{ \newcommand{\SgIntMakeUpperCase}[1]{\MakeUppercase{#1}} }{ \newcommand{\SgIntMakeUpperCase}[1]{#1} }
 
@@ -554,8 +559,8 @@
 		\bigskip\smallskip\\
 		{\large{\SgIntAuthor}}
 
-		{\color{Asparagus}\parbox{2in}{\hrulefill}} \\
-		{\color{AuroMetalSaurus}{\footnotesize Copyright~~\copyright~~{\SgIntAuthor}~~\SgIntYear}}
+		{\color{gray}\parbox{2in}{\hrulefill}} \\
+		{\color{gray}{\footnotesize Copyright~~\copyright~~{\SgIntAuthor}~~\SgIntYear}}
 
 		\vspace{.4in}
 
