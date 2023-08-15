@@ -82,7 +82,7 @@ All networks were implemented in Python and Keras~\cite{keras_2023} with a Tenso
 \subsection{Pre- and Post-Processing}
 All input images were pre-processed by performing N4 bias-field correction and zero mean unit standard deviation normalization. They were then reformatted to a standard imaging plane and resolution (axial with 0.7 $\times$ 0.5 $\times$ 0.7 $mm^3$. To ensure enough variability, the training data were augmented using random in-plane rotations of up to $\pm7^\circ $ in three different planes, creating six new images in each orientation and a net increase in the number of training data by a factor of 18. To reduce the memory and computation power requirements, a cropping step was added to the pre-processing as an extra option. To automate this cropping step, we employed a WMn-MPRAGE template created from mutual registration and averaging of 20 prior WMn-MPRAGE datasets as described in Su~\cite{su_Thalamus_2019}. A bounding box covering both thalami was manually drawn once, on this template and warped into the input image space by affine registering the template with the input image. The pre-processing steps are shown in Figure~\ref{Thalamus.Fig.1.Architecture}  (bottom panel). Typical input sizes for the original, pre-processed (input to the first whole thalamus network), and cropped images (input to the second nuclei segmentation network) were 256$\times$373$\times$256, 97$\times$94$\times$63, and 52$\times$84$\times$48, respectively.
 
-\subsection{Loss Functions:}
+\subsection{Loss Functions}
 
 Dice loss function is defined as follows:
 
