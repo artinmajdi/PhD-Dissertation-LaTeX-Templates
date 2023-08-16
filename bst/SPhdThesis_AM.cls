@@ -543,7 +543,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % T I T L E  P A G E
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\titlePageColor}[1]{{\color{Charcoal}\bfseries\expandafter{#1}}}
+\newcommand{\titlePageColor}[1]{{\color{Cadet}\bfseries\expandafter{#1}}}
 
 \ifthenelse{\equal{\SgIntTitleCase}{upper}}{ \newcommand{\SgIntMakeUpperCase}[1]{\MakeUppercase{#1}} }{ \newcommand{\SgIntMakeUpperCase}[1]{#1} }
 
@@ -559,7 +559,7 @@
 		\bigskip\smallskip\\
 		{\large{\SgIntAuthor}}
 
-		{\color{gray}\parbox{2in}{\hrulefill}} \\
+		{\color{Asparagus}\parbox{2in}{\hrulefill}} \\
 		{\color{gray}{\footnotesize Copyright~~\copyright~~{\SgIntAuthor}~~\SgIntYear}}
 
 		\vspace{.4in}

@@ -1,4 +1,4 @@
-\documentclass[]{bst/SPhdThesis_myversion}
+\documentclass[]{bst/SPhdThesis_AM}
 
 \newcommand{\preface}{
     \SgSetTitle{LEVERAGING MACHINE LEARNING \\ FOR IMPROVED DATA INTERPRETATION AND DECISION MAKING \\ UNDER UNCERTAINTY}
@@ -18,26 +18,42 @@
     \SgSetSecondMember{Carlos J\@. Alsua}
     \SgSetThirdMember{Abhijit Mahalanobis}
     \SgSetFourthMember{Janet M\@. Roveda}
+
+    % Title Page
     \SgAddTitle%
-    \includepdf[pages={1}]{Chapters/Approval_page.pdf}% \SgAddApproval%
-    % \SgAddStatement%
-    \SgAddAcknowledgement{bst/acknowledgments}
-    \SgAddToc%  Table of contents.
-    \SgAddLof%  List of figures.
-    \SgAddLot%  List of tables.
-    \SgAddLoa%  List of algorithms.
+
+    % Approval Page
+    \includepdf[pages={1}]{Chapters/Approval_page.pdf}
+
+    % Acknowledgement Page
+    \SgAddAcknowledgement{Chapters/Acknowledgement}
+
+    % Table of contents
+    \SgAddToc
+
+    % List of figures.
+    \SgAddLof
+
+    % List of tables.
+    \SgAddLot
+
+    % List of algorithms.
+    \SgAddLoa
+
+    % Abstract
     \addcontentsline{toc}{chapter}{Abstract}
     \input{Chapters/Abstract}
 }
 
+% Preamples
 \input{bst/preamples}
 
+% Adding Bibliography
 \addbibresource{bst/Better_BibLaTeX_Zotero.bib}
-
 \setcounter{secnumdepth}{3}
 
 \begin{document}
-    \preface%
+    \preface
     \include{Chapters/Introduction.tex}
     \include{Chapters/crowd/crowd_thesis.tex}
     \include{Chapters/taxonomy/taxonomy_thesis.tex}
@@ -45,6 +61,5 @@
     \include{Chapters/drive_net/drive_net_thesis.tex}
     \include{Chapters/cilia/cilia_thesis.tex}
     \addcontentsline{toc}{chapter}{Bibliography}
-    \printbibliography%
-    % \SgIncludeBibTex{bst/Better_BibTeX_Zotero}
+    \printbibliography
 \end{document}
