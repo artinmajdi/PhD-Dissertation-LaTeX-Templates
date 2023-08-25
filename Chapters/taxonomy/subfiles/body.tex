@@ -21,7 +21,7 @@ Hierarchical multi-label classification methods have been successfully implement
 
 \section{Methods}\label{sec:taxonomy.methods}
 
-\includegraphics[page=1, width=\textwidth]{Chapters/taxonomy/taxonomy_presentation_slides.pdf}
+% \includegraphics[page=1, width=\textwidth]{Chapters/taxonomy/taxonomy_presentation_slides.pdf}
 
 In this study, we introduce a unique method that improves the accuracy and interpretability of multi-label classification, with potential applications in areas such as chest radiography. We propose two distinct strategies. The first strategy termed as ``loss-based'', requiring the availability of ground truth labels, incorporates the hierarchical relationships among different classes directly into the loss function. In contrast, the second strategy termed as ``logit-based'' utilizes these hierarchical relationships to modify the logit values before calculating the predicted probabilities for each class. These two strategies, which utilize a transfer learning approach, foster the use and fine-tuning of pre-existing models, thereby expanding their adaptability to new tasks. By improving the accuracy of classifying different pathologies, these techniques could potentially enhance disease diagnosis and treatment.
 The proposed technique is adaptable to the available computational resources. When ample computational resources are available, the ``loss-based'' strategy can be utilized. Alternatively, in scenarios with limited computational resources, to avoid the need for optimization of the network from scratch, the ``logit-based'' strategy can be utilized.
@@ -87,7 +87,7 @@ Let us denote the loss value as $l_k = \mathcal{L} \left(p_k^{(i)},y_k^{(i)}\rig
 
 \subsection{Label Taxonomy Structure}\label{subsec:label-taxonomy-and-hierarchy}
 
-\includegraphics[page=3, width=\textwidth]{Chapters/taxonomy/taxonomy_presentation_slides.pdf}
+% \includegraphics[page=3, width=\textwidth]{Chapters/taxonomy/taxonomy_presentation_slides.pdf}
 
 To exploit the hierarchical relationships between thoracic abnormalities, the first step is to define a disease taxonomy that demonstrates different abnormalities' interrelationships. In this taxonomy, diseases are structured hierarchically in a graph, with higher levels representing broader disease categories and lower levels representing more nuanced distinctions between related diseases. The taxonomy is structured such that if a disease is present then its parent disease is also present. Furthermore, in the presence of multiple parent classes for a given child class, the taxonomy structure only utilizes the more dominant parent (e.g., if class $c_1$ has two parent classes $c_3$ and $c_5$, while the $c_5$ is also the parent of $c_3$ class (it's both the parent and grandparent of $c_1$ class), in this scenario, we assume $c_5$ as the parent class of both $c_1$ and $c_3$).
 
@@ -99,7 +99,7 @@ In order to maintain uniformity, we adopted the renaming scheme introduced by Co
 
 \subsection{Approach 1: Conditional Predicted Probability}\label{subsec:taxonomy.method.approach1}
 
-\includegraphics[page=4, width=\textwidth]{Chapters/taxonomy/taxonomy_presentation_slides.pdf}
+% \includegraphics[page=4, width=\textwidth]{Chapters/taxonomy/taxonomy_presentation_slides.pdf}
 
 When computational resources are limited, this technique can be applied to test samples without the need to fine-tune the pre-trained, multi-label classification model. This adaptability ensures that the benefits of considering hierarchical relationships between labels can be realized in a wide range of practical scenarios, without imposing excessive computational requirements.
 Directly updating the predicted probabilities presents potential benefits, including the following:
@@ -667,11 +667,11 @@ In order to make this work on new test instances, we can substitute the $y_{k}^{
 
 \subsection{Experimental Setup}
 
-\includegraphics[page=5, width=\textwidth]{Chapters/taxonomy/taxonomy_presentation_slides.pdf}
+% \includegraphics[page=5, width=\textwidth]{Chapters/taxonomy/taxonomy_presentation_slides.pdf}
 
 \subsubsection{Datasets}
 
-\includegraphics[page=2, width=\textwidth]{Chapters/taxonomy/taxonomy_presentation_slides.pdf}
+% \includegraphics[page=2, width=\textwidth]{Chapters/taxonomy/taxonomy_presentation_slides.pdf}
 
 Three diverse and publicly available datasets are used to evaluate the proposed hierarchical multi-label classification techniques: CheXpert~\cite{irvin_CheXpert_2019}, PADCHEST~\cite{bustos_Padchest_2020}, and NIH~\cite{wang_ChestXRay8_2017}. These datasets contain a diverse range of chest radiographic images covering various thoracic diseases, providing a comprehensive evaluation of the effectiveness of our method. The description of the three datasets are as follows.
 \begin{itemize}
@@ -755,7 +755,7 @@ The distribution of samples per pathology in each dataset is presented in Table~
 
 \begin{table}[htbp]
     \centering
-    \captionsetup{width=0.6\textwidth}
+    % \captionsetup{width=0.6\textwidth}
     \caption[Sample Distribution Per Pathology in Evaluated Datasets (CheX, NIH, and PC)]{Sample distribution per pathology in evaluated datasets (CheX, NIH, and PC)}%
     \label{tab:taxonomy.table.2.datasets.ninstances}
     \resizebox{0.6\textwidth}{!}{
@@ -838,14 +838,14 @@ The obtained results provides further support for our previous findings, which i
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.8\textwidth]{\figurepath{auc_acc_f1_all_datasets/ROC/metrics_AUC_ACC_F1}}
-    \captionsetup{width=0.8\textwidth}
+    % \captionsetup{width=0.8\textwidth}
     \caption[Heatmap Visualization of Model Performance Metrics (ACC, AUC, F1) for Different Techniques across Pathologies]{Heatmap visualization of model performance metrics across all three datasets. The subplots from left to right correspond to the Accuracy (ACC), Area Under the ROC Curve (AUC), and F1 Score for the baseline, ``loss'', and ``logit'' techniques respectively. The pathologies are shared on the y-axis. Darker colors signify higher values, indicating better model performance. Each cell represents the value of the corresponding metric for the given technique on a specific pathology}\label{fig:taxonomy.fig.2.metrics}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.8\textwidth]{\figurepath{roc_curve_all_datasets/ROC/roc_curve_all_datasets}}
-    \captionsetup{width=0.8\textwidth}
+    % \captionsetup{width=0.8\textwidth}
     \caption[Comparative Analysis of ROC Curves for Nine Thoracic Pathologies: ``logit'', ``loss'', and ``baseline'' Techniques]{Comparative analysis of the ROC curves for nine thoracic pathologies using the ``logit'' and ``loss'' techniques as well as the baseline. The subplots highlighted with a darker background, represent parent class diseases.}\label{fig:taxonomy.fig.3.roc_curve_all_datasets}
 \end{figure}
 
