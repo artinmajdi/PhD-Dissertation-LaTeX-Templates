@@ -14,6 +14,7 @@
 .DS_Store
 .vscode/
 .idea/
+Backup/
 
 ## Intermediate documents:
 *.dvi
