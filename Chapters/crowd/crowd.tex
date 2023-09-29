@@ -1,7 +1,7 @@
 % Basic Springer Nature Reference Style/Chemistry
 % \documentclass[pdflatex,bst/sn-basic]{bst/sn-jnl}
 % Style for submissions to Nature Portfolio journals
-% \documentclass[sn-nature]{bst/sn-jnl}
+\documentclass[sn-nature]{bst/sn-jnl}
 % Basic Springer Nature Reference Style/Chemistry
 % \documentclass[bst/sn-basic]{bst/sn-jnl}
 % Math and Physical Sciences Reference Style
@@ -15,23 +15,23 @@
 % Chicago-based Humanities Reference Style
 % \documentclass[bst/sn-chicago]{bst/sn-jnl}
 % Default with double column layout
-\documentclass[default]{bst/sn-jnl}
+% \documentclass[default]{bst/sn-jnl}
 % \documentclass[default]{bst/sn-jnl_mine}% Default
 \jyear{2023}
-\usepackage{graphicx}
-\usepackage{multirow}
+%\usepackage{graphicx}
+%\usepackage{multirow}
 \usepackage{amsmath,amssymb,amsfonts}
-\usepackage{amsthm}
-\usepackage{mathrsfs}
-\usepackage[title]{appendix}
-\usepackage{xcolor}
-\usepackage{textcomp}
-\usepackage{manyfoot}
-\usepackage{algorithm}
-\usepackage{algorithmicx}
-\usepackage{algpseudocode}
-\usepackage{listings}
-\usepackage{setspace}
+%\usepackage{amsthm}
+%\usepackage{mathrsfs}
+%\usepackage[title]{appendix}
+%\usepackage{xcolor}
+%\usepackage{textcomp}
+%\usepackage{manyfoot}
+%\usepackage{algorithm}
+%\usepackage{algorithmicx}
+%\usepackage{algpseudocode}
+%\usepackage{listings}
+%\usepackage{setspace}
 \usepackage{tabulary,fancyhdr,amsbsy,latexsym}
 \usepackage{url,morefloats,floatflt,cancel,tfrupee}
 \usepackage{colortbl}
@@ -54,16 +54,15 @@
 % \setlength{\parskip}{1.1em}% Adding space after each paragraph
 \setlength{\parindent}{0pt}% Removing the indentation
 \linespread{1.5}% Increase the line spacing to 1.5
-\newcommand{\preface}{
-    \title[Article Title]{Crowd-Certain: Label Aggregation in Crowdsourced and Ensemble Learning Classification}
-    \author[]{\fnm{Mohammad S.} \sur{Majdi}}
-    \author[]{\fnm{Jeffrey J.} \sur{Rodriguez}}
-    \affil[]{\orgdiv{Dept of Electrical and Computer Engineering}, \orgname{The University of Arizona}, \orgaddress{\city{Tucson}, \state{AZ}, \country{USA}}}
-}
+
 \begin{document}
-\preface
+
+\title[Article Title]{Crowd-Certain: Label Aggregation in Crowdsourced and Ensemble Learning Classification}
+\author[]{\fnm{Mohammad S.} \sur{Majdi}}
+\author[]{\fnm{Jeffrey J.} \sur{Rodriguez}}
+\affil[]{\orgdiv{Dept of Electrical and Computer Engineering}, \orgname{The University of Arizona}, \orgaddress{\city{Tucson}, \state{AZ}, \country{USA}}}
+
 \abstract{
-        % \input{subfiles/abstract}
         Crowdsourcing systems have been used to accumulate massive amounts of labeled data for applications such as computer vision and natural language processing.
         However, because crowdsourced labeling is inherently dynamic and uncertain, developing a technique that can work in most situations is extremely challenging.
         In this paper, we introduce Crowd-Certain, a novel approach for label aggregation in crowdsourced and ensemble learning classification tasks that offers improved performance and computational efficiency for different numbers of annotators and a variety of datasets.
@@ -78,29 +77,44 @@
     % \input{subfiles/keywords}
     Supervised learning, crowdsourcing, confidence score, soft weighted majority voting, label aggregation, annotator quality, error rate estimation, multi-class classification, ensemble learning, uncertainty measurement
     }
+
 \maketitle
 % \input{subfiles/body}
-\section{Introduction}
+\section{Introduction}\label{sec:crowd.Introduction}
 Supervised learning techniques require a large amount of labeled data to train models to classify new data~\cite{jiang_Wrapper_2019,jiang_Class_2019}. Traditionally, data labeling has been assigned to experts in the domain or well-trained workers~\cite{tian_MaxMargin_2019}. Although this method produces high-quality labels, it is inefficient and costly~\cite{li_Noise_2016,li_Noise_2019}.  Social networking provides an innovative solution to the labeling problem by allowing data to be labeled by online crowd workers (annotators). This has become feasible, as crowdsourcing services such as Amazon Mechanical Turk (formerly CrowdFlower) have grown in popularity. Crowdsourcing systems have been used to accumulate large amounts of labeled data for applications such as computer vision~\cite{deng_ImageNet_2009,liu_Variational_2012} and natural language processing~\cite{karger_Budget_2014}. However, because of individual differences in preferences and cognitive abilities, the quality of labels acquired by a single crowd worker is typically low, thus jeopardizing applications that rely on these data. This is because crowd workers are not necessarily domain experts and may lack the necessary training or expertise to produce high-quality labels.
+
 Aggregation after repeated labeling is one method for handling workers with various abilities. Label aggregation is a process used to infer an aggregated label for a data instance from a multi-label set~\cite{sheshadri_SQUARE_2013}. Several studies have demonstrated the efficacy of repeated labeling~\cite{tu_MultiLabel_2018,zhang_multilabelinferencecrowdsourcing_2018}. Repeat labeling is a technique in which the same data are labeled by multiple workers, and the results are combined to estimate an aggregated label using majority voting (MV) or other techniques. In the case of MV, an aggregated label is the label that receives the most votes from the workers for a given data instance. This can help reduce the impact of biases or inconsistencies made by workers. Several factors, such as problem-specific characteristics, the quality of the labels created by the workers, and the amount of data available, can influence the effectiveness of the aggregation methodologies. Consequently, it is difficult to identify a clear winner among the different techniques. For example, in binary labeling, one study~\cite{sheshadri_SQUARE_2013} discovered that Raykar's~\cite{raykar_Learning_2010} technique outperformed other aggregation techniques. However, according to another study~\cite{zheng_Truth_2017}, the traditional Dawid-Skene (DS) model~\cite{dawid_Maximum_1979} was more reliable in multi-class settings (where data instances can be labeled as belonging to multiple classes).
+
 Furthermore, regardless of the aggregation technique used, the performance of many aggregation techniques in real-world datasets remains unsatisfactory~\cite{liu_Exploiting_2021}. This can be attributed to the complexity of these datasets, which often do not align with the assumptions and limitations of different methods. For example, real-world datasets may present issues such as labeling inaccuracies, class imbalances, or overwhelming sizes that challenge efficient processing with available resources. These factors can adversely affect the effectiveness of label aggregation techniques, potentially yielding less than optimal results for real-world datasets.
 Prior information may be used to enhance the label aggregation procedure.
+
 This can include domain knowledge, the use of quality control measures, and techniques that account for the unique characteristics of workers and data. Knowing the reliability of certain workers, it is possible to draw more accurate conclusions about labels~\cite{li_Crowdsourced_2017}. For instance, in the label aggregation process, labels produced by more reliable workers (such as domain experts) may be given greater weight. The results of the label aggregation process can also be validated using expert input~\cite{liu_Improving_2017}. During the labeling process, domain experts can provide valuable guidance and oversight to ensure that the labels produced are accurate and consistent.
 The agnostic requirement for general-purpose label aggregation is that label aggregation cannot use information outside the labels themselves. This requirement is not satisfied in most label aggregation techniques~\cite{zhang_Crowdsourced_2019}. The agnostic requirement ensures that the label aggregation technique is as general as possible and applicable to a wide range of domains with minimal or no additional context.
+
 The uncertainty of workers during labeling can provide valuable prior knowledge to determine the appropriate amount of confidence to grant each worker while still adhering to the requirement of a general-purpose label aggregation technique. We developed a method for estimating the reliability of different workers based on the worker's own consistency during labeling. We take this concept a step further by calculating a weight for each worker based not only on their reliability but also on their agreements with other workers involved. This consideration of inter-reliability ensures a more comprehensive and dynamic weighting process, adjusting to the overall performance of the entire group of workers. Thus, the generated weights become a measure of both individual and collective reliability, which significantly improves the accuracy of our labeling aggregation method.
+
 We introduce a novel method, named Crowd-Certain, which offers a significant improvement in label aggregation for crowdsourced and ensemble learning classification tasks, yielding improved performance across various scenarios. This technique leverages the consistency of workers versus a trained classifier to ascertain their reliability, resulting in more accurate and efficient label aggregation.
+
 Our extensive experimental evaluation, conducted across ten diverse datasets, demonstrates that Crowd-Certain outperforms established techniques (Gold Majority Vote, MV, MMSR, Wawa, Zero-Based Skill, GLAD, and Dawid Skene) in terms of aggregated label accuracy compared to ground truth labels. Importantly, Crowd-Certain generates weights that closely follow pre-set ground truth accuracy for each worker (referred to as a probability threshold in this study). Moreover, during inference time, Crowd-Certain employs predicted probabilities (obtained from a classifier trained on the worker's label set) rather than worker's labels, which facilitates the reuse of trained classifiers for future data samples, removing the need for repeating the training process when new data samples are introduced.
 The remainder of this paper is organized as follows. Section~\ref{sec:crowd.relatedwork} examines related work involving label aggregation algorithms. In Section~\ref{sec:crowd.method}, we provide an in-depth explanation of Crowd-Certain. Section~\ref{sec:crowd.results} presents the experiments and findings, and Section~\ref{sec:crowd.discussion} encapsulates the results, highlighting key insights. Lastly, Section~\ref{sec:crowd.conclusion} concludes the paper and highlights the potential directions for future research.
+
 \section{Related Work}\label{sec:crowd.relatedwork}
 Numerous label aggregation algorithms have been developed to capture the complexity of crowdsourced labeling systems, including techniques based on worker reliability~\cite{bi_Learning_2014,demartini_Zencrowd_2012}, confusion matrices~\cite{raykar_Learning_2010,zhang_Spectral_2014}, intentions~\cite{bi_Learning_2014,kurve_MultiCategory_2015}, biases~\cite{zhang_Imbalanced_2013,hernandez-gonzalez_Note_2019, welinder_Multidimensional_2010}, and correlations~\cite{ma_Gradient_2020}. However, because crowdsourced labeling is inherently dynamic and uncertain, developing a technique that can work in most situations is extremely challenging. Many techniques~\cite{liu_Variational_2012,karger_Budget_2014,raykar_Learning_2010,dalvi_Aggregating_2013,ghosh_Who_2011} utilize the Dawid and Skene (DS) generative model~\cite{dawid_Maximum_1979}. Ghosh~\cite{ghosh_Who_2011} extended the DS model by using singular value decomposition (SVD) to calculate the reliability of the worker. Similarly, to Ghosh~\cite{ghosh_Who_2011}, Dalvi~\cite{dalvi_Aggregating_2013} used SVD to estimate true labels with a focus on the sparsity of the labeling matrix. In crowdsourcing, it is common for the labeling matrix to be sparse, meaning that not all workers have labeled all the data. This may be due to several factors, such as the cost of labeling all data instances or the workers' time constraints. Karger~\cite{karger_Budget_2014} described an iterative strategy for binary labeling based on a one-coin model~\cite{ghosh_Who_2011}. Karger~\cite{karger_Budget_2014} extends the one-coin model to multi-class labeling by converting the problem into $k-1 $ binary problems (solved iteratively), where $k $ is the number of classes.
+
 The MV technique assumes that all workers are equally reliable. For segmentation, Warfield~\cite{warfield_Simultaneous_2004} proposed simultaneous truth and performance level estimation (STAPLE), a label fusion method based on expectation maximization. STAPLE ``weighs'' expert opinions during label aggregation by modeling their reliability. Since then, many variants of this technique have been proposed~\cite{winzeck_ISLES_2018,commowick_Objective_2018,asman_Robust_2011,asman_Formulating_2012, eugenioiglesias_Unified_2013, jorgecardoso_STEPS_2013,asman_NonLocal_2013,akhondi-asl_Logarithmic_2014}. The problem with these label aggregation approaches is that they require the computation of a unique set of weights for each sample, necessitating the re-evaluation of the workers' weights when a new instance is added.
+
 Among the numerous existing label aggregation strategies, MV remains the most efficient and widely used approach~\cite{tao_Label_2020}. If we assume that all workers are equally reliable and that their errors are independent of one another, then, according to the theory of large numbers, the likelihood that the MV is accurate increases as the number of workers increases. However, the assumption that all workers are equally competent and independent may not always hold. Furthermore, MV does not provide any additional information on the degree of disagreement among the workers (As an example, consider the scenario where four of seven doctors think patient A needs immediate surgery, while all seven think patient B needs immediate surgery; MV will simply label ``yes'' in both cases).
 To address this problem, additional measures such as inter-worker agreements (IAA) have been used~\cite{artstein_InterAnnotator_2017}. IAA is a measurement of the agreement among multiple workers who label the same data instance. Typically, IAA is calculated using statistical measures, such as Cohen's kappa, Fleiss's kappa, or Krippendorff's alpha~\cite{krippendorff_Content_2018}. These measures consider both the observed agreement between the workers and the expected agreement owing to random chance. IAA can also be visualized using a confusion matrix or annotation heatmap, which illustrates the distribution of labels assigned by the workers. This can help identify instances where the workers disagree or are uncertain and can guide further analysis to improve the annotation~\cite{carletta_Assessing_1996}.
+
 Recently, Sheng~\cite{sheng_Majority_2019} proposed a technique that provided a confidence score along with an aggregated label. The main problem with this approach is that it assumes that all workers are equally capable when calculating the confidence score. Tao~\cite{tao_Label_2020} improved Sheng's approach by assigning different weights to workers for each instance. This weighting method combines the specific quality $s_\alpha^{(i,k)} $ for the worker $\alpha $ and instance $i $ and the overall quality $\tau_\alpha$ across all instances.
+
 Inspired by Li's technique~\cite{li_Incorporating_2018}, Tao evaluates the similarity between the worker labels for each instance. To derive the specific quality $s_{\alpha}^{(i)}$, Tao counts the number of workers who assigned the same label as the worker $\alpha $ for that instance. To calculate the overall quality $\tau_\alpha $, Tao performs a 10-fold cross-validation to train each of the 10 classifiers on a different subset of data using the labels provided by the worker $\alpha $ as true labels and then assigns the average accuracy of the classifiers across all remaining instances as $\tau_\alpha $. The final weight for worker $\alpha $ and instance $i $ is then calculated using the sigmoid function $\gamma_{i,\alpha}=\tau_\alpha\left(1+{\left(s_{\alpha}^{(i)}\right)}^{2}\right) $. However, Tao's technique~\cite{tao_Label_2020} has some drawbacks. It relies on the labels of other workers to estimate $s_{\alpha}^{(i)} $. However, different workers have varying levels of competence (reliability) when labeling the data, and therefore, relying on their labels to measure $s_{\alpha}^{(i)} $ will result in propagating the errors and biases of their labels during weight estimation. Furthermore, Tao's technique~\cite{tao_Label_2020} relies on the labels provided by each worker $\alpha $ to estimate their respective $\tau_\alpha $ by assuming that the trained classifiers can learn the inherent characteristics of the datasets even in the absence of ground truth labels. While that may be true in some cases, it typically leads to suboptimal measurement and the propagation of biases and errors, from both the worker's labels and the classifier, into weight estimation.
+
 \section{Methods}\label{sec:crowd.method}
 We propose a novel method called Crowd-Certain which focuses on leveraging uncertainty measurements to improve decision-making in crowdsourcing and ensemble learning scenarios. Crowd-Certain employs a weighted soft majority voting approach, where the weights are determined based on the uncertainty associated with each worker's labels. Initially, we use uncertainty measurement techniques to calculate the degree of consistency of each worker during labeling.
-Furthermore, to ensure that the proposed technique does not calculate a high weight for workers who are consistently wrong (for example, when a specific worker always mislabels a specific class, and hence demonstrates a high consistency even if they label instances incorrectly), we extend the proposed technique by penalizing the workers for instances in which they disagree with the aggregated label obtained using MV\@. To mitigate the reliance on training a classifier on an worker's labels, which may be inaccurate, we train an ensemble of classifiers for each worker. In addition, we report two confidence scores along with the aggregated label to provide additional context for each calculated aggregate label. We report a single weight for all instances in the dataset. As will be demonstrated in Section~\ref{sec:crowd.results}, the proposed Crowd-Certain method is not only comparable to other techniques in terms of accuracy of the aggregated labels with respect to the ground truth labels for scenarios with a large number of workers, but also provides a significant improvement in accuracy for scenarios where the number of workers may be limited. Furthermore, by assigning a single weight to each worker for all instances in the dataset, the model can assign labels to new test instances without recalculating the worker weights. This is especially advantageous in situations where workers are scarce as it enables the model to make accurate predictions with minimal dependence on worker input. This characteristic of the Crowd-Certain method can significantly reduce the time and resources required for labeling in practical applications. When deploying the model in real-world scenarios such as medical diagnosis, fraud detection, or sentiment analysis, it could be advantageous to be able to assign labels to new instances without constantly recalculating worker weights.
+
+Furthermore, to ensure that the proposed technique does not calculate a high weight for workers who are consistently wrong (for example, when a specific worker always mislabels a specific class, and hence demonstrates a high consistency even if they label instances incorrectly), we extend the proposed technique by penalizing the workers for instances in which they disagree with the aggregated label obtained using MV. To mitigate the reliance on training a classifier on an worker's labels, which may be inaccurate, we train an ensemble of classifiers for each worker. In addition, we report two confidence scores along with the aggregated label to provide additional context for each calculated aggregate label. We report a single weight for all instances in the dataset. As will be demonstrated in Section~\ref{sec:crowd.results}, the proposed Crowd-Certain method is not only comparable to other techniques in terms of accuracy of the aggregated labels with respect to the ground truth labels for scenarios with a large number of workers, but also provides a significant improvement in accuracy for scenarios where the number of workers may be limited. Furthermore, by assigning a single weight to each worker for all instances in the dataset, the model can assign labels to new test instances without recalculating the worker weights. This is especially advantageous in situations where workers are scarce as it enables the model to make accurate predictions with minimal dependence on worker input. This characteristic of the Crowd-Certain method can significantly reduce the time and resources required for labeling in practical applications. When deploying the model in real-world scenarios such as medical diagnosis, fraud detection, or sentiment analysis, it could be advantageous to be able to assign labels to new instances without constantly recalculating worker weights.
+
 \subsection{Glossary of Symbols}
 For convenience, the following list summarizes the major symbols used in the subsequent discussion:
 \begin{itemize}{
@@ -146,10 +160,12 @@ Label aggregation is frequently used in various machine learning tasks, such as 
     \label{eq:crowd.Eq.1.risk.error}
 \end{equation}
 where $\delta $ is the Kronecker delta function.
+
 Although error is a crucial aspect in determining the aggregation model's performance, it treats false positives and false negatives with equal weight. However, in many practical scenarios, it is essential to weigh false positives and false negatives differently depending on the specific context and potential consequences of each type of misclassification. The concept of risk allows us to achieve this by incorporating a loss function, which assigns different weights to different types of errors. In this way, risk serves as a weighted calculation of error, enabling us to better evaluate the performance of an aggregation model and its generalization capability.
+
 Let us denote loss function, $\mathcal{L}(\cdot)$, as a function that quantifies the discrepancy between the predicted labels and the true labels, accounting for the varying importance of different types of errors. Risk, denoted as $R(h) $, represents the expected value of a loss function over all possible data instances.  In practice, our goal is to minimize the risk to achieve optimal performance on unseen data. However, since we only have access to a limited dataset (empirical distribution), we instead work with the empirical risk. This limitation may arise because of the need to reserve a portion of our data for testing and validation or because no dataset can fully capture all possible data instances in the real world. However, minimizing risk alone could result in overfitting, in which the aggregation model learns the noise in the training data rather than the underlying patterns, resulting in poor generalization to unseen data. To improve generalizability, it is necessary to employ regularization techniques to strike a balance between the complexity of the aggregation model and its ability to fit the training data.
-Risk measurement enables us to assess the aggregation model's performance in terms of accuracy (of the aggregated labels with respect to the ground truth labels), overfitting (when risk is minimized, but the model performs poorly on unseen data), and model complexity.
-Assume that the aggregation model $h (\cdot) $ is a function that takes a set of $M $ label sets $Z^{(i)} $ for each instance $i $ in the training data and calculates an aggregated label set $\widehat{Y}^{(i)} $ as an estimate of the true label set $Y^{(i)} $. Our goal is to find an aggregation model $h(\cdot) $ that minimizes risk defined as follows:
+
+Risk measurement enables us to assess the aggregation model's performance in terms of accuracy (of the aggregated labels with respect to the ground truth labels), overfitting (when risk is minimized, but the model performs poorly on unseen data), and model complexity. Assume that the aggregation model $h (\cdot) $ is a function that takes a set of $M $ label sets $Z^{(i)} $ for each instance $i $ in the training data and calculates an aggregated label set $\widehat{Y}^{(i)} $ as an estimate of the true label set $Y^{(i)} $. Our goal is to find an aggregation model $h(\cdot) $ that minimizes risk defined as follows:
 \begin{equation}
     R(h) = \frac{1}{N} \sum_{i=1}^{N} \mathcal{L} \left( Y^{(i)}, h\left({\left\{Z_{\alpha}^{(i)}\right\}}_{\alpha=1}^{M}\right)\right)
     \label{eq:crowd.Eq.2.risk.emp}
@@ -161,8 +177,8 @@ Our goal is to choose an aggregation model $\widehat{h} $ that minimizes the ris
     \label{eq:crowd.Eq.3.risk.h}
 \end{equation}
 \subsection{Generating Workers' Label Sets from Ground Truth}\label{subsec:methods.generating_fictitious_labelset}
-In order to evaluate the proposed Crowd-Certain technique (with and without penalization) as well as other aggregation techniques, we create $M$ fictitious workers. To synthesize a multi-worker dataset from a dataset with existing ground truth, we use a uniform distribution in the interval from $0.4 $ to $1 $, i.e., $\pi_\alpha^{(k)} \sim U\left(0.4,1\right) $ (however other ranges can also be used) to obtain $M \times  K$ probability thresholds $\Pi $, where $K$ is the number of classes. (Note that
-an worker may be skilled at labeling dogs, but not rabbits.) Then we use these probability thresholds to generate the crowd label set $Z_{\alpha}^{(i)} $ from the ground truth labels for each instance $i $.
+In order to evaluate the proposed Crowd-Certain technique (with and without penalization) as well as other aggregation techniques, we create $M$ fictitious workers. To synthesize a multi-worker dataset from a dataset with existing ground truth, we use a uniform distribution in the interval from $0.4 $ to $1 $, i.e., $\pi_\alpha^{(k)} \sim U\left(0.4,1\right) $ (however other ranges can also be used) to obtain $M \times  K$ probability thresholds $\Pi $, where $K$ is the number of classes. Note that a worker may be skilled at labeling dogs, but not rabbits. Then we use these probability thresholds to generate the crowd label set $Z_{\alpha}^{(i)} $ from the ground truth labels for each instance $i $.
+
 For each worker $\alpha $, each instance $i $ and class $k $ in the dataset is assigned its true label with probability $\pi_\alpha^{(k)}$ and the opposite label with probability $ (1-\pi_\alpha^{(k)})$. To generate the labels for each worker $\alpha $, a random number $0 < \rho^{(i)} < 1 $ is generated for each instance $i $ in the dataset. Then $\forall \alpha,k \; \; \text{if} \; \; \rho^{(i)}\leq \pi_\alpha^{(k)}$. Then the true label is used for that instance and class for the worker $\alpha $; otherwise, the incorrect label is used.
 The calculated worker labels $z_{\alpha}^{(i,k)} $ for each worker $\alpha $, instance $i $ and class $k $ are as follows:
 \begin{equation}
@@ -176,6 +192,7 @@ The calculated worker labels $z_{\alpha}^{(i,k)} $ for each worker $\alpha $, in
 To evaluate the proposed techniques over all data instances, a k-fold cross-validation is employed.
 \subsection{Uncertainty Measurement}\label{subsec:crowd.uncertainty}
 A common approach to measure uncertainty is to increase the number of data instances $X $ in the test dataset $\mathbb{D}_\alpha^{\mathrm{test}} $ to create multiple variations of each sample data $X^{(i)} $~\cite{ayhan_TestTime_2018}. In this approach, for each instance $i $, we apply randomly generated spatial transformations and additive noise to the input data $X^{(i)} $ to obtain a transformed sample and repeat this process $G $ times to obtain a set of $G $ transformed samples.
+
 However, this approach is mostly suitable for cases where the input data comprises images or volume slices. Since the datasets used in this study consist of feature vectors instead of images or volume slices, this approach cannot be used. To address this problem, we introduced a modified uncertainty measurement approach, in which instead of augmenting the data instances $X^{(i)} $, we feed the same sample data to different classifiers.
 The steps are as follows.
 \begin{itemize}
@@ -213,6 +230,7 @@ In regression problems, standard deviation is often used to quantify uncertainty
 \label{eq:crowd.Eq.6.uncertainty.sd}
 \end{align}
 where $\mu=\frac{1}{G}\sum_{g=1}^{G}{t_{\alpha}^{(i,k),(g)}}$.
+
 \subsubsection{Predictive Interval}
 A predictive interval provides a range within which a future observation is likely to fall with a certain level of confidence. For example, a 95\% predictive interval indicates that there is a 95\% likelihood that the true value falls within that range. A greater uncertainty corresponds to wider intervals. In the context of multiple classifiers, the predictive intervals can be calculated by considering the quantiles of the classifier output. For a predefined confidence level $\gamma $ (e.g., 95\%), for a specific class $k $, we need to find the quantiles $Q_{L}^{k} $ and $Q_{U}^{k} $ of the probability distribution of class $k $ predicted by the $G $ classifiers. The uncertainty can be represented by the width of the predictive interval:
 \begin{align}
@@ -247,6 +265,7 @@ The committee-based method~\cite{wang_Wisdom_2020} involves training multiple mo
 where $\mu= \frac{1}{G} \sum_{g=1}^G p_{\alpha}^{(i,k),(g)}$.
 \subsubsection{Conformal Prediction}
 Conformal prediction~\cite{angelopoulos_Gentle_2021} is a method of constructing prediction regions that maintain a predefined level of confidence. These regions can be used to quantify the uncertainty associated with the prediction of a model.
+
 Steps  to calculate the nonconformity score:
 \begin{enumerate}
     \item For each classifier $g $ and each class $k $, calculate the nonconformity score. Here, $\mathrm{score\_function}$ measures the conformity of the prediction with the true label. In the context of this study, the true label can be replaced by $\eta_{\alpha}^{(i,k)} $. A common choice for $\mathrm{score\_function}$ is the absolute difference between the predicted probability and the true label, but other options can be used depending on the specific problem and requirements. Define the nonconformity score as $ \zeta_{k}^{g} = \mathrm{score\_function} \left(p_{\alpha}^{(i,k),(g)}, y^{(i,k)}\right) $
@@ -302,6 +321,7 @@ Finally, the aggregated label $\nu^{(i,k)}$ for each instance $i $ and class $k 
     \quad \forall i, k
     \label{eq:crowd.aggregated_label}
 \end{equation}
+
 \subsubsection{Confidence Score Calculation}
 In the previous section, we showed how to calculate the aggregated label $\nu^{(i,k)}$ (shown in Equation~(\ref{eq:crowd.aggregated_label})). In this section, we use the aggregated label $\nu^{(i,k)}$ to calculate a confidence score (in the range 0 to 1) for each instance $i $ and class $k $. We calculate two confidence scores ($F_{\Omega}^{(i,k)} $ and $F_{\beta}^{(i,k)} $), based on how many different workers agree on the reported label $\nu^{(i,k)}$. The confidence scores show the level of confidence we should place on the aggregated labels. To calculate this confidence score, we modify the two techniques used by Sheng~\cite{sheng_Majority_2019} and Tao~\cite{tao_Label_2020} to incorporate our calculated weight $\omega_{\alpha}^{(k)} $ shown in Equation~(\ref{eq:crowd.eq.11.weights})  for each worker $\alpha $.
 
@@ -323,8 +343,7 @@ The binomial distribution survival function, also referred to as the complementa
     Suppose we want to test a hypothesis concerning a parameter of a population, using a set of observed samples. Given the null hypothesis, the binomial survival function can be used to calculate the probability of observing a result as extreme or more extreme than the one observed. This probability is the p-value, and if it is very small, the null hypothesis may be rejected. In this context, the confidence score could be interpreted as (1 $-$ p-value), a measure of the certainty with which the null hypothesis can be rejected.
     \item \textbf{Binary classification:} Consider a binary classification problem in which an algorithm sorts objects into two groups. Given the observed results, the binomial survival function can be used to calculate the probability of misclassification. The confidence score in this instance could be interpreted as (1 $-$ probability of misclassification).
 \end{enumerate}
-The confidence score serves as a quantitative measure of the reliability of the classification of instance `i' into class `k'.
-The CDF of the beta distribution function can be defined as follows~\cite{BetaDistributionWikipedia}:
+The confidence score serves as a quantitative measure of the reliability of the classification of instance `i' into class `k'. The CDF of the beta distribution function can be defined as follows~\cite{BetaDistribution2023a}:
 \begin{equation}
     f(x; l, u) = \frac{B(x; l, u)}{B(l, u)} = I_{x} (l, u)
     \label{eq:crowd.Eq.beta_distribution_function}
@@ -413,7 +432,7 @@ We report the performance of our proposed techniques on various datasets. These 
 All datasets were transformed into a two-class binary problem for comparison with existing benchmarks. For instance, only the first and second classes were used in the ``waveform'' dataset, and the first two classes were utilized in the ``Iris'' dataset.
 We generated multiple fictitious label sets for each dataset to simulate the crowdsourcing concept of collecting several crowd labels for each instance. We selected random samples in the datasets using a uniform distribution and altered their corresponding true labels to incorrect ones, while maintaining the original distribution of the ground-truth labels. The probability of each instance containing the correct true label was determined using a uniform distribution, allowing us to create synthetic label sets for each worker that preserved the underlying structure and difficulty of the original classification problem. By creating datasets with various levels of accuracy, we can evaluate the performance of the proposed method under different conditions of worker expertise and reliability. This allows us to assess the ability of our method to handle diverse real-world crowdsourcing scenarios and gain insight into its general applicability and effectiveness in improving overall classification accuracy.
 \subsection{Benchmarks}
-Tao~\cite{tao_Label_2020} and Sheng~\cite{sheng_Majority_2019} techniques were implemented in Python to evaluate their performance. Furthermore, the crowd-kit package (A General-Purpose Crowdsourcing Computational Quality Control Toolkit for Python)~\cite{ustalov_learning_2021} was used to implement the remaining benchmark techniques, including Gold Majority Voting, MMSR~\cite{ma_Adversarial_2020}, Wawa, Zero-Based Skill, GLAD~\cite{whitehill_Whose_2009}, and Dawid Skene~\cite{dawid_Maximum_1979}.
+Tao~\cite{tao_Label_2020} and Sheng~\cite{sheng_Majority_2019} techniques were implemented in Python to evaluate their performance. Furthermore, the crowd-kit package (A General-Purpose Crowdsourcing Computational Quality Control Toolkit for Python)~\cite{ustalov_learning_2021} was used to implement the remaining benchmark techniques, including Gold Majority Voting, MMSR~\cite{ma_Adversarial_2020}, WAWA~\cite{crowdkit_webpage_documentation}, Zero-Based Skill, GLAD~\cite{whitehill_Whose_2009}, and Dawid Skene~\cite{dawid_Maximum_1979}.
 \begin{itemize}
     \item \textbf{Worker Agreement with Aggregate (WAWA)~\cite{crowdkit_webpage_documentation}:} Wawa, also referred to as `inter-rater agreement', is a metric used in crowdsourcing jobs that do not employ test questions~\cite{appen_wawa_2023}. The WAWA algorithm consists of three steps: it calculates the majority vote label, estimates workers' skills as a fraction, and calculates the agreement between workers and the majority vote~\cite{crowdkit_webpage_documentation}.
     \item \textbf{Zero-Based-Skill (ZBS)~\cite{crowdkit_webpage_documentation}:} employs a weighted majority vote (WMV). After processing a collection of instances, it re-evaluates the abilities of the workers based on the accuracy of their responses. This process is repeated until the labels no longer change or the maximum number of iterations is reached.
@@ -516,8 +535,8 @@ The source code can be found at \href{https://github.com/artinmajdi/crowdcertain
 \section*{Competing Interests}
 The authors declare that they have no competing interests.
 % \section*{Acknowledgements}
-% \bibliographystyle{bst/sn-aps}
-\bibliographystyle{apalike}
-\bibliography{subfiles/Better_BibTeX_Zotero}
+\bibliographystyle{bst/sn-aps}
+% \bibliographystyle{apalike}
+\bibliography{subfiles/Better_BibTeX_Zotero.bib}
 \end{document}
 
