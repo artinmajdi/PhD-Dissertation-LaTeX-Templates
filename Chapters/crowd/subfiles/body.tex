@@ -313,7 +313,10 @@ In previous section we showed how to calculate the aggregated label $\nu^{(i,k)}
         \item \textbf{Binary classification:} Consider a binary classification problem in which an algorithm sorts objects into two groups, A and B. Given the observed results, the binomial survival function can be used to calculate the probability of misclassification. The confidence score in this instance could be interpreted as (1 $-$ probability of misclassification).
     \end{enumerate}
 
+
     In the following equation, the probability of obtaining k successes or more out of n trials where the probability of success on any given trial is p is calculated. In this context, ``success'' could refer to the event in question, such as the correct classification of an object or the acceptance of a hypothesis. The CDF of the Beta distribution at the decision threshold of $0.5 $ is used to calculate a confidence score $F_{\beta}^{(i,k)}$. To calculate the two shape parameters of the Beta distributions $l^{(i,k)}$ and $u^{(i,k)}$, a weighted sum of all correct and incorrect aggregated labels, is used respectively:
+    \paragraph*{\textbf{Shape Parameters:}}
+    The shape parameters of the Beta distributions, $l^{(i,k)}$ and $u^{(i,k)}$ are determined by:
     \begin{equation}
         \begin{aligned}
             l^{(i,k)} \, & = \, 1 + \sum_{\alpha=1}^{M} \omega_{\alpha}^{(k)} \; \delta\left(\eta_{\alpha}^{(i,k)}, \nu_{k}^{(i,k)}\right) \\
