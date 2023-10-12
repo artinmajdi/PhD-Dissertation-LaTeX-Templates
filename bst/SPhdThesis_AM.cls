@@ -120,7 +120,8 @@
 \definecolor{Charcoal}{rgb}{0.21, 0.27, 0.31}
 \definecolor{DarkElectricBlue}{rgb}{0.33, 0.41, 0.47}
 \definecolor{Burgundy}{rgb}{0.5, 0.0, 0.13}
-
+\definecolor{table_title}{HTML}{79A8A4}
+\definecolor{table_row_highlight}{HTML}{E9ECE6}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % C A P T I O N S
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
