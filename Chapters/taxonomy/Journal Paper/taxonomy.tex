@@ -797,7 +797,7 @@ While accuracy is a useful metric for evaluating overall performance, it may not
 In this study, we devised a detailed taxonomy, depicted in Figure~\ref{fig:taxonomy.fig.1.taxonomy_structure}, to classify various lung pathologies observable in chest radiographs. This classification system, inspired by the works of Irvin~\cite{irvin_CheXpert_2019}, Chen~\cite{chen_Deep_2020}, and Gohagan~\cite{gohagan_Prostate_2000}, integrates prevalent disease manifestations evident in widely used datasets like CheXpert~\cite{irvin_CheXpert_2019}, PADCHEST~\cite{bustos_Padchest_2020}, and NIH~\cite{wang_ChestXRay8_2017}. The taxonomy provides a structured approach to categorize these disease manifestations and offers a framework to facilitate the comprehension and analysis of abnormalities in chest radiographs.
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\textwidth]{figures/taxonomy_structure/taxonomy_structure}
+    \includegraphics[width=\textwidth]{figures/taxonomy_structure/taxonomy_structure.pdf}
     \caption[Taxonomy Structure of Lung Pathologies in Chest Radiographs]{Taxonomy structure of lung pathologies in chest radiographs.}\label{fig:taxonomy.fig.1.taxonomy_structure}
 \end{figure}
 
@@ -983,14 +983,14 @@ The obtained results provides further support for our previous findings, which i
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\textwidth]{figures/auc_acc_f1_all_datasets/ROC/metrics_AUC_ACC_F1}
+    \includegraphics[width=\textwidth]{figures/auc_acc_f1_all_datasets/ROC/metrics_AUC_ACC_F1.pdf}
     % \captionsetup{width=0.8\textwidth}
     \caption[Heatmap Visualization of Model Performance Metrics (ACC, AUC, F1) for Different Techniques across Pathologies]{Heatmap visualization of model performance metrics across all three datasets. The subplots from left to right correspond to the Accuracy (ACC), Area Under the ROC Curve (AUC), and F1 Score for the baseline, ``loss'', and ``logit'' techniques respectively. The pathologies are shared on the y-axis. Darker colors signify higher values, indicating better model performance. Each cell represents the value of the corresponding metric for the given technique on a specific pathology}\label{fig:taxonomy.fig.2.metrics}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\textwidth]{figures/roc_curve_all_datasets/ROC/roc_curve_all_datasets}
+    \includegraphics[width=\textwidth]{figures/roc_curve_all_datasets/ROC/roc_curve_all_datasets.pdf}
     % \captionsetup{width=0.8\textwidth}
     \caption[Comparative Analysis of ROC Curves for Nine Thoracic Pathologies: ``logit'', ``loss'', and ``baseline'' Techniques]{Comparative analysis of the ROC curves for nine thoracic pathologies using the ``logit'' and ``loss'' techniques as well as the baseline. The subplots highlighted with a darker background, represent parent class diseases.}\label{fig:taxonomy.fig.3.roc_curve_all_datasets}
 \end{figure}
@@ -1013,8 +1013,8 @@ However, further research is needed to explore their potential benefits in a cli
 \section*{Code Availability}
 The code can be found in \href{https://github.com/artinmajdi/taxonomyClassifier}{GitHub: @artinmajdi/taxonomyClassifier}
 
-\bibliographystyle{apalike}
-% \bibliographystyle{bst/elsarticle-num}%elsarticle-num
+% \bibliographystyle{apalike}
+\bibliographystyle{bst/elsarticle-num}%elsarticle-num
 \bibliography{Better_BibTeX_Zotero}
 
 \end{document}
