@@ -2,6 +2,7 @@
 %% Journal of Neurocomputing
 %% Use the options 1p,twocolumn; 3p; 3p,twocolumn; 5p; or 5p,twocolumn for a journal layout:
 %% Use the option review to obtain double line spacing
+
 % \documentclass[authoryear,preprint,review,12pt]{elsarticle}
 \documentclass[review,1p,times,numbers]{elsarticle}
 % \documentclass[final,1p,times,twocolumn,authoryear]{elsarticle}
@@ -10,6 +11,7 @@
 % \documentclass[final,5p,times,authoryear]{elsarticle}
 % \documentclass[final,5p,times,twocolumn,authoryear]{elsarticle}
 % \documentclass[preprint,12pt,authoryear]{elsarticle}
+
 \usepackage{tabulary}
 \usepackage{amsfonts,amsmath,amssymb}
 \usepackage[T1]{fontenc}
@@ -35,6 +37,8 @@
 \setlength{\parskip}{1.1em}  % Adding space after each paragraph
 % \setlength{\parindent}{0pt}  % Removing the indentation in the beginning of each paragraph
 \linespread{1.5}             % Increase the line spacing to 1.5
+
+
 \newenvironment{SgAlgorithm}[1][t]
 {%
 	\begin{algorithm2e}[#1]
@@ -42,48 +46,73 @@
     \selectfont
 }
 {\end{algorithm2e}}
+
 \newcommand{\figurepath}[1]{figures/#1}
 \definecolor{mygreen}{HTML}{E9ECE6}
 \setlength{\parindent}{0pt}% Removing the indentation
 \linespread{1.5}% Increase the line spacing to 1.5
-\usepackage{amsmath}
-\DeclareMathOperator*{\argmin}{arg\,min} % Notice the use of \DeclareMathOperator*
-
 
 \begin{document}
+
 \begin{frontmatter}
+    %% Title, authors and addresses
+    %% use the tnoteref command within \title for footnotes;
+    %% use the tnotetext command for the associated footnote;
+    %% use the fnref command within \author or \affiliation for footnotes;
+    %% use the fntext command for the associated footnote;
+    %% use the corref command within \author for corresponding author footnotes;
+    %% use the cortext command for the associated footnote;
+    %% use the ead command for the email address,
+    %% and the form \ead[url] for the home page:
+    %% \title{Title\tnoteref{label1}}
+    %% \tnotetext[label1]{}
+    %% \author{Name\corref{cor1}\fnref{label2}}
+    %% \ead{email address}
+    %% \ead[url]{home page}
+    %% \fntext[label2]{}
+    %% \cortext[cor1]{}
+
     \title{Taxlifier: Leveraging Disease Taxonomy for Enhanced Multi-Label Classification in Chest Radiography}
     \author[]{Mohammad S\@. Majdi}
     \author[]{Jeffrey J\@. Rodriguez\corref{co1}}
     \affiliation[]{organization={Dept\@. of Electrical and Computer Engineering, The University of Arizona}, city={Tucson}, postcode={85721}, state={AZ}, country={USA}}
+
     \begin{abstract}
-Accurate and efficient classification of thoracic diseases in chest X-ray (CXR) images is crucial for timely diagnosis and treatment. However, the presence of multiple pathologies with overlapping visual characteristics poses significant challenges for automated classification systems. In this study, we propose two novel hierarchical multi-label classification techniques, namely the loss-based and logit-based methods, to address these challenges by leveraging the hierarchical relationships among different thoracic pathologies. The loss-based technique integrates hierarchical information directly into the optimization process, while the logit-based method adjusts the predicted probabilities of each class based on its parent class in the disease taxonomy. We evaluate the performance of both techniques using three large-scale CXR datasets: CheXpert (224,316 CXRs), PADCHEST (160,000 CXRs), and NIH (112,120 CXRs). The experimental results demonstrate significant improvements in accuracy, AUC, and F1 scores compared to the baseline method across various pathologies. The logit-based and loss-based methods improve accuracy by 12\% and 11\%, AUC by 13\% and 10\%, and F1 scores by 24\% and 12\%, respectively compared to the baseline. These results represent a substantial improvement over the baseline method. Furthermore, we conduct a comprehensive statistical analysis to validate the robustness and reliability of the proposed techniques. The integration of domain-specific hierarchical knowledge not only enhances the classification performance but also provides a more interpretable output for clinical decision support. Our findings highlight the potential of hierarchical multi-label classification in advancing computer-aided diagnosis systems for chest radiography.
+        This study introduces groundbreaking multi-label classification methods, revolutionizing the diagnosis of lung diseases from chest X-rays, a domain where differentiating similar-looking diseases is notoriously challenging. Leveraging a hierarchical taxonomy of labels, our methods—the `logit' and `loss' techniques—not only refine diagnostic accuracy but also enhance the interpretability of results for radiologists. The `logit' technique adjusts neural network logit outputs, while the `loss' method integrates hierarchical relationships into the loss function. Rigorous evaluation on three public datasets demonstrates remarkable improvements: accuracy jumps by 12\% and 11\%, AUC by 13\% and 10\%, and F1 scores by 24\% and 12\% for the logit and loss methods, respectively. Further statistical analysis, including Cohen's d, kappa, t-statistics, p-value, and Bayes factor, robustly validates our methods' superiority. These advancements promise not only higher diagnostic accuracy but also a significant step towards more intuitive and reliable medical imaging diagnostics.
     \end{abstract}
     \begin{keyword}
-        Chest X-ray, multi-label classification, hierarchical classification, computer-aided diagnosis, deep learning, medical image analysis, disease taxonomy, conditional loss function
+        Chest radiography, hierarchical classification, disease taxonomy, multilabel classification, conditional loss function, diagnostic errors, machine learning, medical imaging
     \end{keyword}
+
+    %Graphical abstract
+    % \begin{graphicalabstract} \includegraphics{grabs}\end{graphicalabstract}
+
+    %%Research highlights
+    % \begin{highlights}
+    % \item Research highlight 1
+    % \item Research highlight 2
+    % \end{highlights}
+
 \end{frontmatter}
+
 \section{Introduction}\label{sec:taxonomy.introduction}
 Chest X-ray (CXR) is a prevalent radiological examination for diagnosing lung and heart disorders, constituting a significant share of ordered imaging studies. Fast and accurate detection of different thoracic diseases, such as pneumothorax, is crucial for optimal patient care~\cite{bellaviti_Increased_2016}. However, interpreting CXRs can be challenging due to similarities between different thoracic diseases, which may result in misinterpretation even by experienced radiologists~\cite{delrue_Difficulties_2011}. Consequently, devising an accurate system to identify and localize common thoracic diseases can aid radiologists in minimizing diagnostic errors~\cite{crisp_Global_2014,silverstein_Most_2016}.
 
 Progress in natural language processing (NLP) has enabled the collection of extensive annotated datasets such as ChestX-ray8~\cite{wang_ChestXRay8_2017}, PADCHEST~\cite{bustos_Padchest_2020}, and CheXpert~\cite{irvin_CheXpert_2019}, allowing researchers to develop more efficient and robust supervised learning algorithms. Convolutional neural networks (CNNs) exhibit potential for learning intricate relationships between image objects. However, their training necessitates vast amounts of labeled data, which can be both expensive and time-consuming to acquire. Despite these challenges, deep learning techniques have become increasingly popular in medical imaging, especially in radiology, due to their ability to perform complex tasks with minimal human intervention~\cite{jaderberg_Spatial_2015}.
 
-The timely diagnosis and effective treatment of diseases depend on the fast and accurate detection of anomalies in medical images. Deep learning techniques have made substantial progress in the medical imaging domain, exhibiting impressive success across various applications~\cite{litjens_Survey_2017a,eshghali_Machine_2023}.  Although recent advances in deep learning have facilitated the creation of CAD systems capable of classifying and localizing prevalent thoracic diseases using CXR images, most of these techniques have concentrated on specific diseases~\cite{jaiswal_Identifying_2019,lakhani_Deep_2017,pasa_Efficient_2019,ausawalaithong_Automatic_2018}, leaving ample opportunities to investigate a unified deep learning framework that can efficiently detect a broad spectrum of common thoracic diseases.
-Furthermore, conventional multi-label classification methods are primarily designed for single-label predictions and struggle with capturing intricate label relationships [15]. Many existing approaches, such as the One-vs-All (OVA) method, treat each label independently, ignoring potential dependencies between labels. This can lead to suboptimal performance, especially when dealing with hierarchical label structures common in medical taxonomies. Moreover, labels at the lower levels of the hierarchy, particularly leaf nodes, often have very few positive examples, making flat classification models susceptible to negative class bias.
-To address these challenges, we propose a hierarchical multi-label classification framework that incorporates the relationships between different classes to provide more accurate and interpretable predictions. Our framework makes two key methodological contributions:
-\begin{enumerate}
-    \item A loss-based approach for scenarios where ground truth is available, which integrates hierarchical label relationships directly into the loss function (e.g., a classification or segmentation network such as DenseNet121~\cite{huang_Densely_2017} or U-Net~\cite{ronneberger_UNet_2015}). This is achieved by introducing a novel hierarchical regularization term that penalizes misalignment with the label taxonomy during training.
-    \item A logit-based approach for scenarios where ground truth is unavailable, which adjusts the logit outputs of a pre-trained neural network based on class relationships in a computationally efficient post-processing step. This enables leveraging taxonomical knowledge without requiring extensive modifications to the model architecture or expensive retraining.
-\end{enumerate}
-Both techniques allow incorporating label hierarchy information into existing multi-label classification frameworks with minimal modifications, making them easily adaptable to a wide range of models and applications.
-In summary, the main contributions of this work are:
+The timely diagnosis and effective treatment of diseases depend on the fast and accurate detection of anomalies in medical images. Deep learning techniques have made substantial progress in the medical imaging domain, exhibiting impressive success across various applications~\cite{litjens_Survey_2017a,eshghali_Machine_2023}.  Although recent advances in deep learning have facilitated the creation of CAD systems capable of classifying and localizing prevalent thoracic diseases using CXR images, most of these techniques have concentrated on specific diseases~\cite{jaiswal_Identifying_2019,lakhani_Deep_2017,pasa_Efficient_2019,ausawalaithong_Automatic_2018}, leaving ample opportunities to investigate a unified deep learning framework that can efficiently detect a broad spectrum of common thoracic diseases. Further, conventional classification methods are primarily designed for single-label predictions and struggle with multi-label classification, which requires predicting multiple labels for each input sample. In multi-label classification, common methods like the One-vs-All (OVA) approach exhibit limitations, including high computational complexity and an inability to capture intricate label relationships~\cite{tsoumakas_MultiLabel_2007}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+In this study, we tackle the intricacies of multi-label classification in chest X-ray (CXR) analysis through a pioneering hierarchical approach. This methodology is specifically designed to discern the complex disease patterns in CXRs, which often overlap or bear resemblances. We introduce two innovative techniques: the ``logit-based'' method for scenarios lacking explicit ground truth, and the ``loss-based'' approach, exploiting hierarchical relationships during training. These advancements significantly improve both the accuracy and interpretability of CXR analysis, heralding a new era in medical imaging diagnostics.
+
+Key contributions of this paper are:
 \begin{itemize}
-    \item A loss-based technique that directly incorporates label hierarchy into the model training process via a novel regularization term
-    \item A logit-based technique that adjusts neural network outputs to account for label relationships in a computationally efficient post-processing step
-    \item Extensive evaluation on three public chest X-ray datasets demonstrating consistent improvements in classification performance metrics
-    \item Enabling multi-label classification models to leverage taxonomical knowledge for improved accuracy and reduced negative class bias
+    \item \textbf{Loss-based Technique}: Integrates hierarchical relationships into the neural network's loss function (e.g., a classification or segmentation network such as DenseNet121~\cite{huang_Densely_2017} or U-Net~\cite{ronneberger_UNet_2015}), boosting accuracy where ground truth is available.
+    \item \textbf{Logit-based Technique}: This technique, employing a transfer learning approach, applies a hierarchical framework to the logit outputs of pre-trained networks. It significantly improves classification accuracy while requiring minimal computational resources, making it a cost-effective solution for enhancing CXR analysis.
+    \item \textbf{Hierarchical Framework Integration}: A novel aspect of our methodology that bolsters both precision and clarity in disease classification.
+    \item \textbf{Statistical Robustness}: Demonstrates substantial improvements in key performance metrics like accuracy, AUC, and F1 scores, as validated by extensive statistical measures.
 \end{itemize}
-The remainder of this paper is structured as follows: Section~\ref{sec:taxonomy.relatedwork} delves into related work on multi-label classification and hierarchical loss functions; Section~\ref{sec:taxonomy.methods} describes the proposed techniques for integrating label hierarchy into multi-label classification; Section~\ref{sec:taxonomy.results} presents experimental results using chest radiograph datasets; and Section~\ref{sec:taxonomy.discussion} concludes the paper and discusses future research directions.
+The remainder of this paper is organized as follows: Section~\ref{sec:taxonomy.relatedwork} delves into related work on multi-label classification and hierarchical loss functions; Section~\ref{sec:taxonomy.methods} describes our proposed techniques for integrating label hierarchy into multi-label classification; Section~\ref{sec:taxonomy.results} presents experimental results using chest radiograph datasets; and Section~\ref{sec:taxonomy.discussion} concludes the paper and discusses future research directions.
 
 \section{Related Work}\label{sec:taxonomy.relatedwork}
 The introduction of the ChestX-ray8 dataset and its associated model~\cite{wang_ChestXRay8_2017} marked a significant advancement in large-scale CXR classification, leading to numerous improvements in both modeling and dataset collection. These enhancements include the integration of ensemble methods~\cite{islam_Abnormality_2017}, attention mechanisms~\cite{guan_Diagnose_2018,liu_SDFN_2019}, and localization techniques~\cite{cai_Iterative_2018,guendel_MultiTask_2019,li_Thoracic_2018,yan_Weakly_2018}. Most early approaches use ``binary relevance'' (BR) learning, which reduces the multi-label classification problem to binary classification by training a binary classifier for each class~\cite{zhang_Review_2014}. However, BR-based techniques do not account for label dependence---either conditional (instance-specific label dependence) where in a given instance the presence or absence of one label may impact another, or marginal (dataset-specific label dependence) where certain labels may co-occur more frequently~\cite{dembczynski_Label_2012}.
@@ -96,16 +125,16 @@ In many cases, the diagnosis or observation of a particular condition on a CXR (
 Hierarchical multi-label classification methods have been successfully implemented in a variety of domains, including text processing~\cite{aly_Hierarchical_2019}, visual recognition~\cite{bi_Mandatory_2014}, and genomic analysis~\cite{bi_BayesOptimal_2015}. A common technique~\cite{chen_Deep_2019} for exploiting such a hierarchy is to train a classifier on conditional data while ignoring all samples with negative parent-level labels and then reintroducing these samples to fine-tune the network across the entire dataset~\cite{chen_Deep_2019}. These approaches help the classifier focus on the relevant data during initial training, thus improving the prediction accuracy.  However, these techniques are computationally expensive, as they require training a classifier on conditional data and then fine-tuning it on a full dataset. This makes them difficult to apply to real-world problems, where the amount of data is often very large.   Another common strategy is a cascading architecture where different classifiers are trained at each level of the hierarchy. Although these techniques enable more granular data analysis (each classifier can focus on a specific level of the hierarchy), they require a substantial amount of computational resources. Other existing deep learning-based approaches often use complex combinations of CNNs and recurrent neural networks (RNNs)~\cite{guo_CNNRNN_2018,kowsari_HDLTex_2017}.
 
 \section{Methods}\label{sec:taxonomy.methods}
-We introduce two novel approaches to improve the accuracy and interpretability of multi-label classification, with potential applications in areas such as chest radiography.
-Our framework makes two key novel methodological contributions:
-1.	A loss-based approach that integrates hierarchical label relationships directly into the loss function during training by introducing a novel hierarchical regularization term. This term penalizes misalignment with the label taxonomy in a new way.
-2.	A logit-based approach that adjusts logit outputs based on class relationships in a computationally efficient post-processing step, enabling the incorporation of taxonomical knowledge without requiring extensive model modifications or retraining, unlike most previous approaches.
-One notable advantage of our proposed techniques lies in enhancing interpretability. By categorizing classes into a hierarchical structure and capitalizing on their relationships, the model not only improves classification performance but also provides insights into the relationships among predicted classes.  This additional layer of interpretability can help radiologists in understanding the reasoning behind the model's predictions, fostering trust in the model's output and facilitate its integration into clinical workflows. Furthermore, the hierarchical nature of the taxonomy allows radiologists to explore predictions at various levels of granularity, depending on the level of detail required for a specific case. Furthermore, the proposed technique is adaptable to the available computational resources. When ample computational resources are available, the ``loss-based'' strategy can be utilized. Alternatively, in scenarios with limited computational resources, to avoid the need for optimization of the network from scratch, the ``logit-based'' strategy can be utilized.
+
+In this study, we introduce a unique method that improves the accuracy and interpretability of multi-label classification, with potential applications in areas such as chest radiography. We propose two distinct strategies. The first strategy termed as ``loss-based'', requiring the availability of ground truth labels, incorporates the hierarchical relationships among different classes directly into the loss function. In contrast, the second strategy termed as ``logit-based'' utilizes these hierarchical relationships to modify the logit values before calculating the predicted probabilities for each class. These two strategies, which utilize a transfer learning approach, foster the use and fine-tuning of pre-existing models, thereby expanding their adaptability to new tasks. By improving the accuracy of classifying different pathologies, these techniques could potentially enhance disease diagnosis and treatment.
+The proposed technique is adaptable to the available computational resources. When ample computational resources are available, the ``loss-based'' strategy can be utilized. Alternatively, in scenarios with limited computational resources, to avoid the need for optimization of the network from scratch, the ``logit-based'' strategy can be utilized.
+One notable advantage of our proposed techniques lies in enhancing interpretability. By categorizing classes into a hierarchical structure and capitalizing on their relationships, the model not only improves classification performance but also provides insights into the relationships among predicted classes.
+This additional layer of interpretability can help radiologists in understanding the reasoning behind the model's predictions, fostering trust in the model's output and facilitate its integration into clinical workflows. Furthermore, the hierarchical nature of the taxonomy allows radiologists to explore predictions at various levels of granularity, depending on the level of detail required for a specific case.
 
 \subsection{Problem Formulation}\label{subsec:taxonomy.problem_formulation}
 
 \subsubsection{Mathematical Formulation of Sigmoid Function}
-In the context of neural networks, a logit refers to the raw, unscaled output of a neuron. This output is obtained at the last layer of a neural network model prior to the application of the sigmoid layer~\cite{furnieles_Sigmoid_2022}. Logit values can range from negative to positive infinity. The term logit-based originally comes from logistic regression, and it is the inverse of the logistic sigmoid function. In machine learning, it's often desirable for our model to produce real numbers ranging from 0 to 1. Applying the sigmoid function to the logit ensures this, as the sigmoid function maps any real number to the interval \([0,1]\).
+In the context of neural networks, a logit refers to the raw, unscaled output of a neuron. This output is obtained at the last layer of a neural network model prior to the application of the sigmoid layer~\cite{furnieles_Sigmoid_2022}. Logit values can range from negative to positive infinity. The term ``logit'' originally comes from logistic regression, and it is the inverse of the logistic sigmoid function. In machine learning, it's often desirable for our model to produce real numbers ranging from 0 to 1. Applying the sigmoid function to the logit ensures this, as the sigmoid function maps any real number to the interval \([0,1]\).
 The equation representing the sigmoid function is:
 \begin{equation}
     p = \text{{sigmoid}}(q) = \frac{1}{1 + e^{-q}}
@@ -127,7 +156,7 @@ Let us define the following parameters:
     \item  $c_j=\Lambda (c_k) \in \mathcal{C}$: parent class of class $c_k $ in graph $\mathcal{G} $.
     \item  $\mathcal{J}(c_j) \subset \mathcal{C}$: set of child classes of class $c_j$ in graph $\mathcal{G} $
     \item  $y_k^{(i)} \in \{0,1\} $: true label for the $k $-th class of instance $i $.
-    \item  $q_k^{(i)} \in \left( -\infty,\infty \right) $: logits obtained in the last layer of the neural network model before the sigmoid layer.
+    \item  $q_k^{(i)} \in \left( -\infty,0 \right) $: logits obtained in the last layer of the neural network model before the sigmoid layer.
     \item  $p_k^{(i)} = \text{sigmoid}\left(q_k^{(i)}\right) = \frac{1}{1+\exp{\left(-q_k^{(i)}\right)}} $: predicted probability for the $k $-th class ($c_k) $ of instance $i $ with a value between 0 and 1. $p_k^{(i)} $ represents the likelihood that class $k $ is present in instance $i $ and is obtained by passing logits $q_k^{(i)} $ through a sigmoid function.
     \item  $\theta_k $: Binarization threshold for class $k $.  To obtain this, we can utilize any existing thresholding technique (for example, in one technique, we analyze the ROC curve and find the corresponding threshold where the difference between the true positive rate (sensitivity) and false positive rate (1-specificity) is maximum; alternatively, we could simply use $0.5 $).
     \item  $t_k^{(i)}=\left\{\begin{array}{ll}1&\text{if}\;p_k^{(i)} \geq \theta_k\\0&\text{otherwise.}\end{array}\right. $: predicted label obtained by binarizing the $p_k^{(i)} $
@@ -144,20 +173,20 @@ Let us define the following parameters:
     \item $\mathbb{D}=\left\{\mathbb{X},\mathbb{Y}\right\} $: Dataset containing all instances and all true labels.
     \item $l_k^{(i)} = \mathcal{L} \left(y_k^{(i)},p_k^{(i)}\right) $:  $\mathcal{L}( \cdot) $ is an arbitrary loss function (e.g., binary cross entropy) that takes the true label $y_k^{(i)}$ and predicted probability $p_k^{(i)}$ for class $k$ and instance $i$ and outputs the loss value $l_k^{(i)} $. We refer to this as the ``base loss function'' throughout this paper.
     \item $\text{Loss}(\theta) $: Measured loss for all classes and instances. This value is obtained using a modified version of the base loss function $\mathcal{L}(\cdot) $ (e.g., with added regularization, etc.).
-    \item $\omega_k^{(i)} $: Estimated weight for $k$-th class $c_k $ of instance $i $ with respect to its parent class $c_j=\Lambda (c_k) $.
+    \item $\omega_k^{(i)} $: Estimated weight for $k$-th class $c_k $ of instance $i $ with respect to its parent class $\Gamma_k $.
     \item ${\widehat l}_k^{(i)} = \omega_k^{(i)} \; l_k^{(i)} $: updated loss for class $k $ and instance $i $.
 \end{itemize}
 %
 Let us define the multi-label classification problem as follows. Let $\mathbb{X} = {\left\{X^{(i)}\right\}}_{i=1}^{N} $ be a set of $N $ chest radiograph images and $\mathbb{Y} = {\left\{Y^{(i)}\right\}}_{i=1}^{N} $ be their corresponding ground truth labels. The ground-truth labels for the dataset were provided by experienced radiologists who annotated each image with the corresponding abnormalities.
 
-Given the set of disease classes $\mathcal{C} = \{c_1,c_2,\dots,c_K\} $, let us define a  graph $\mathcal{G}=\left\{\mathcal{C},\mathcal{E}\right\} $ representing the taxonomy of thoracic diseases, where $\mathcal{E}$ is the set of edges representing parent-child relationships between these classes. For each node $c_k \in \mathcal{C} $, let $\Lambda (c_k)$ be the parent node of class $c_k $ and let $\mathcal{J}(c_k) \subset \mathcal{C} $ be the set of child classes of class $c_k $ in graph $\mathcal{G}$.
+Given the set of disease classes $\mathcal{C} = \{c_1,c_2,\dots,c_K\} $, let us define a  graph $\mathcal{G}=\left\{\mathcal{C},\mathcal{E}\right\} $ representing the taxonomy of thoracic diseases, where $\mathcal{E}$ is the set of edges representing parent-child relationships between these classes. For each node $c_k \in \mathcal{C} $, let $\Lambda (c_k)$ be the parent node of class $c_k $ and let $\mathcal{J}_k\subset \mathcal{C} $ be the set of child classes of class $c_k $ in graph $\mathcal{G}$.
 
 In the context of multi-label classification problems, each sample may have multiple labels assigned to it simultaneously. To this end, we use a deep neural network, with multiple hidden layers and the sigmoid activation function in the final layer. Let's denote the input to this neural network by $x^{(i)}$, which represents data for instance $i$ (data type can be a 1D feature vector, 2D image, or 3D volume). This network is trained to predict the probabilities for each class being present in a given sample. Hence, the output of the final layer of the neural network for instance $i$ is passed through a sigmoid function to generate a set of values, each ranging from 0 to 1, corresponding to the label set $\mathcal{C} $.
 The outcome of this operation is a set of $K $ predicted probabilities $P^{(i)}={\left\{p_k^{(i)}\right\}}_{k=1}^{K} $. Each of these predicted probabilities, derived from the sigmoid activation function, can be interpreted as the likelihood that the input sample belongs to each class.
 
 Furthermore, let $\omega_k^{(i)} $ be a scalar weight assigned to the class $c_k $ of instance $i $ with respect to its parent class $\Lambda (c_k)$.
 Each of these predicted probabilities, derived from the sigmoid activation function, can be interpreted as the likelihood that the input sample belongs to each class. A loss function is utilized to quantify the similarity between predicted probabilities and true labels. This function guides the learning process of the neural network by providing a measure of the prediction error, which is minimized during the training phase.
-Let us denote the loss value as $l_k = \mathcal{L} \left(y_k^{(i)}, p_k^{(i)}\right),\hspace{0.33em}k \in \{1,2,\dots,K\} $ where $\mathcal{L}(\cdot) $ is an appropriate single-class loss function for the task (e.g., binary cross-entropy, Dice, etc.) that is used to calculate the difference between the predicted probability $p_k^{(i)} $ and the true class label $y_k^{(i)} $ for instance $i$ and class $k $.
+Let us denote the loss value as $l_k = \mathcal{L} \left(p_k^{(i)},y_k^{(i)}\right),\hspace{0.33em}k \in \{1,2,\dots,K\} $ where $\mathcal{L}(\cdot) $ is an appropriate single-class loss function for the task (e.g., binary cross-entropy, Dice, etc.) that is used to calculate the difference between the predicted probability $p_k^{(i)} $ and the true class label $y_k^{(i)} $ for instance $i$ and class $k $.
 
 \subsection{Label Taxonomy Structure}\label{subsec:label-taxonomy-and-hierarchy}
 To exploit the hierarchical relationships between thoracic abnormalities, the first step is to define a disease taxonomy that demonstrates different abnormalities' interrelationships. In this taxonomy, diseases are structured hierarchically in a graph, with higher levels representing broader disease categories and lower levels representing more nuanced distinctions between related diseases. The taxonomy is structured such that if a disease is present then its parent disease is also present. Furthermore, in the presence of multiple parent classes for a given child class, the taxonomy structure only utilizes the more dominant parent (e.g., if class $c_1$ has two parent classes $c_3$ and $c_5$, while the $c_5$ is also the parent of $c_3$ class (it's both the parent and grandparent of $c_1$ class), in this scenario, we assume $c_5$ as the parent class of both $c_1$ and $c_3$).
@@ -169,14 +198,14 @@ To create the label taxonomy shown in Figure~\ref{fig:taxonomy.fig.1.taxonomy_st
 In order to maintain uniformity, we adopted the renaming scheme introduced by Cohen~\cite{cohen_TorchXRayVision_2022} for the pathology names. Subsequently, the key pathologies were identified and extracted to build the hierarchical taxonomy structure illustrated in Figure~\ref{fig:taxonomy.fig.1.taxonomy_structure}.
 
 \subsection{Approach 1: Conditional Predicted Probability}\label{subsec:taxonomy.method.approach1}
-The logit-based approach presents a novel way to incorporate taxonomical knowledge into existing multi-label classification models without requiring extensive modifications or retraining. This is a key advantage over prior hierarchical classification methods, which often rely on complex custom architectures. When computational resources are limited, this technique can be applied to test samples without the need to fine-tune the pre-trained, multi-label classification model. This adaptability ensures that the benefits of considering hierarchical relationships between labels can be realized in a wide range of practical scenarios, without imposing excessive computational requirements.
-
-The proposed logit-based approach offers several potential benefits over existing methods:
+When computational resources are limited, this technique can be applied to test samples without the need to fine-tune the pre-trained, multi-label classification model. This adaptability ensures that the benefits of considering hierarchical relationships between labels can be realized in a wide range of practical scenarios, without imposing excessive computational requirements.
+Directly updating the predicted probabilities presents potential benefits, including the following:
 \begin{itemize}
-\item  \textbf{Simplicity and ease of implementation:} The direct modification of predicted probabilities eliminates the need for substantial changes to the loss function, making the logit-based approach easier to implement compared to methods that require complex modifications to the model architecture or training process.
-\item  \textbf{Improved performance in specific scenarios:} Depending on the problem and dataset, the proposed logit-based approach may provide superior performance in certain circumstances, especially when incorporating class relationships into the loss function is challenging or computationally expensive.
-\item  \textbf{Easier calibration of model outputs:} The direct modification of predicted probabilities facilitates the calibration of model outputs to more closely match the true label distribution, which is a novel advantage over existing hierarchical classification methods that may require additional calibration steps.
+    \item  \textbf{Simplicity:} Direct modification of predicted probabilities eliminates the need for substantial changes to the loss function, thus facilitating implementation.
+    \item  \textbf{Improved performance in specific scenarios:} Depending on the problem and dataset, direct updates may provide superior performance in certain circumstances, especially when incorporating class relationships into the loss function is challenging.
+    \item  \textbf{Easier calibration:} Direct modification of predicted probabilities can facilitate calibration of the model output to more closely match the true label distribution.
 \end{itemize}
+
 The proposed technique provides an easy way to improve the performance of existing pre-trained models during inference time by updating the value of the predicted logit for each class that was obtained at the last layer of the neural network based on the predicted logit of its corresponding parent class. The aim is to calculate the conditional predicted probability for each class $k $ and instance $i $, taking into account the predicted probability of the parent class. We can formalize this by defining a new predicted probability for the $k$-th class $(c_k) $ and instance $i $ as follows.
 \begin{equation}
     \widehat{p}_k^{(i)} = \frac{1}{ 1 + \exp \left(-\left(q_k^{(i)} + \alpha_k q_j^{(i)} \right)\right) }
@@ -187,63 +216,187 @@ where $c_j = \Lambda (c_k)$ is the index of the parent class of the $k$-th class
 When $\alpha_k=0 $, there is no influence from the parent class $c_j$ on the child class $c_k$.  By carefully selecting appropriate hyperparameter values, this transfer learning technique can be employed to effectively adjust the predicted probabilities of each class, considering the hierarchical relationship between classes, and potentially improving classification accuracy.
 
 \subsubsection{Parameter Selection and Tuning}
-The selection of appropriate hyperparameters is crucial for the effectiveness of the proposed transfer learning technique. In this study, we employ a systematic approach to tune the hyperparameter vector ${\{\alpha_k \}}_{k=1}^K$, which controls the dependency between the predicted probabilities of the child and parent classes. We utilize a grid search method to determine the optimal values for these hyperparameters. The search space for the hyperparameters is defined based on preliminary experiments and domain knowledge, ensuring a balance between model complexity and predictive performance. The proposed logit-based technique for optimizing the hyperparameters $\{\alpha_k\}_{k=1}^K$ is described in Algorithm~\ref{alg:logit_based_technique}.
+The selection of appropriate hyperparameters is crucial for the effectiveness of the proposed transfer learning technique. In this study, we employ a systematic approach to tune the hyperparameter vector ${\{\alpha_k \}}_{k=1}^K$, which controls the dependency between the predicted probabilities of the child and parent classes. We utilize a grid search method to determine the optimal values for these hyperparameters. The search space for the hyperparameters is defined based on preliminary experiments and domain knowledge, ensuring a balance between model complexity and predictive performance.
+
+The steps are as follows.
 \begin{enumerate}
-    \item The algorithm takes as input the training, validation, and test datasets ($\mathbb{D}^{\text{train}}, \mathbb{D}^{\text{valid}}, \mathbb{D}^{\text{test}}$) obtained from the data preprocessing and dataset creation step (Algorithm~\ref{alg:taxonomy.dataset}), as well as the baseline model architecture $f(\cdot)$.
-    \item The first step involves training the baseline model $f(\cdot)$ on the combined training and validation datasets ($\mathbb{D}^{\text{train}}$ and $\mathbb{D}^{\text{valid}}$). After training, the last sigmoid activation layer is dropped from the model, allowing access to the raw logit values.
-    \item For each sample $(\mathbf{x}, \mathbf{y})$ in the training and test datasets, the logit vector $\mathbf{q}$ is computed by passing the input image $\mathbf{x}$ through the modified model $f(\cdot)$. The corresponding label vector $\mathbf{y}$ and logit vector $\mathbf{q}$ are then stored in the respective training or test set ($\mathbb{T}^{\text{train}}$ or $\mathbb{T}^{\text{test}}$).
-    \item The algorithm then iterates over each pathology $c_k$ for $k \in \{1, \dots, K\}$. If the set of ancestor nodes $\Lambda(c_k)$ is not empty, an objective function $\mathcal{O}(\alpha_k)$ is defined as $1 - \text{AUC}(\{\hat{p}_k^{(i)}\}_{i=1}^N, \{y_k^{(i)}\}_{i=1}^N)$, where $\hat{p}_k^{(i)}$ and $y_k^{(i)}$ are the predicted probability and ground truth label for the $i$-th sample, respectively. The AUC (Area Under the ROC Curve) is used as the evaluation metric to assess the performance of the model for each pathology. The AUC metric was chosen for its robustness in assessing the quality of model predictions, irrespective of class imbalance, which is a common issue in medical image analysis.
-    \item The optimal value of $\alpha_k$ is determined by minimizing the objective function $\mathcal{O}(\alpha_k)$ over the range $[-1, 1]$ using the Tree-structured Parzen Estimator (TPE) optimization algorithm. TPE is a Bayesian optimization technique that efficiently searches the hyperparameter space by constructing a surrogate model of the objective function and iteratively refining it based on the evaluated points.
-    \item Finally, the algorithm returns the set of optimal hyperparameters $\{\alpha_k\}_{k=1}^K$ for each pathology. These hyperparameters are used to adjust the logit values and improve the model's performance on the hierarchical classification task.
+    \item Pre-process the data. Details shown in Algorithm~\ref{alg:taxonomy.dataset}
+    \item Get logit values. Details shown in Algorithm~\ref{alg:taxonomy.logits}
+    \begin{itemize}
+        \item Fine Tune $f_1(\cdot)$, using $\mathbb{D}^{\text{train}}$ and $\mathbb{D}^{\text{valid}}$.
+        \item Create a secondary model $f_2 (\cdot)$ identical to $f_1(\cdot)$ except for the last activation layer (sigmoid). Update the weights and biases in the $f_2 (\cdot)$ using their counterparts in $f_1(\cdot)$
+        \item Calculate the logit values
+    \end{itemize}
+    \item Perform Hyper Parameter Tuning to find the ${\{\alpha_k \}}_{k=1}^K$ values. The detail shown in Algorithm~\ref{alg:taxonomy.logit.hyperparameter-optimization}
+    \begin{itemize}
+        \item Determining the instances of $\alpha_k$ where the Area Under the Curve (AUC) calculated for the instances in train dataset is maximized.
+        \item Optimization Algorithm: Tree-structured Parzen Estimator (TPE). TPE is a Sequential Model-Based Optimization (SMBO) method. It builds a hierarchical model of the hyperparameter space to suggest new hyperparameters, making it more efficient than grid and random search, in exploring large, high-dimensional spaces. TPE enhances efficiency by focusing on promising areas of the parameter space, guided by data from previous evaluations.
+        \item Use the optimal hyperparameter vector ${\{\alpha_k \}}_{k=1}^K$ calculated in Algorithm~\ref{alg:taxonomy.logit.hyperparameter-optimization}, logit values in $\mathbb{T}^{\text{test}}=\left\{ \mathbb{Y}^{\text{test}}, \mathbb{Q}^{\text{test}} \right\}$, and Eq.~\ref{eq:taxonomy.eq.1.pred.approach1} to calculate the new predicted probabilities for test instances.
+    \end{itemize}
 \end{enumerate}
 
-The logit-based technique provides a systematic approach to optimize the hyperparameters by leveraging the information contained in the logit values and the hierarchical structure of the pathologies. By minimizing the objective function based on the AUC metric, the algorithm aims to find the best values of $\alpha_k$ that enhance the model's ability to accurately predict the presence or absence of each pathology in the hierarchy.
-
 \begin{SgAlgorithm}
-    \caption{Data Preprocessing and Dataset Creation}\label{alg:taxonomy.dataset}
-    \KwIn{$\mathbb{D}_{\text{NIH}}, \mathbb{D}_{\text{CheXpert}}, \mathbb{D}_{\text{PADCHEST}}$}
-    \KwOut{$\mathbb{D}^{\text{train}}, \mathbb{D}^{\text{valid}}, \mathbb{D}^{\text{test}}$}
-    $\mathbb{D} \gets \emptyset$\;
-    \ForEach{$\mathbb{D}_i \in \{\mathbb{D}_{\text{NIH}}, \mathbb{D}_{\text{CheXpert}}, \mathbb{D}_{\text{PADCHEST}}\}$}{
-        \ForEach{$(\mathbf{x}, \mathbf{y}) \in \mathbb{D}_i$}{
-            Resize image $\mathbf{x}$ to $224 \times 224$ pixels\;
-            Normalize pixel intensities of $\mathbf{x}$ to $[0, 1]$\;
-            Standardize labels $\mathbf{y}$ to a common schema\;
-            Extract 18 common pathologies from $\mathbf{y}$\;
-            $\mathbb{D} \gets \mathbb{D} \cup \{(\mathbf{x}, \mathbf{y})\}$\;
-        }
+    \caption{Combining and Preprocessing Chest X-ray Datasets}\label{alg:taxonomy.dataset}
+    \KwIn{
+        \begin{itemize}
+            \item $\mathbb{D}_{\text{NIH}} \gets \text{NIH dataset}$
+            \item $\mathbb{D}_{\text{Chexpert}} \gets \text{CheXpert dataset}$
+            \item $\mathbb{D}_{\text{PADCHEST}} \gets \text{PADCHEST dataset}$
+        \end{itemize}
     }
-    Randomly split $\mathbb{D}$ into $\mathbb{D}^{\text{train}}, \mathbb{D}^{\text{valid}}, \mathbb{D}^{\text{test}}$ with ratios 60\%, 10\%, 30\%\;
-    \KwRet{$\mathbb{D}^{\text{train}}, \mathbb{D}^{\text{valid}}, \mathbb{D}^{\text{test}}$}
+    \BlankLine%
+
+    \SetKwProg{Fn}{Data Preprocessing}{:}{end}
+    \Fn{}
+    {%
+        \For{$\mathbb{X} \in \{ \mathbb{X}_\text{NIH}, \mathbb{X}_\text{Chexpert}, \mathbb{X}_\text{PADCHEST} \}$}
+        {%
+            Resize all images $x^{(i)} \in \mathbb{X}$ the resolution of $224 \times 224$ pixels. \;
+            \BlankLine%
+
+            Normalize the pixel intensities to the range of 0 and 1
+        }
+        \KwRet{$ \{ \mathbb{X}_\text{NIH}^{*}, \mathbb{X}_\text{Chexpert}^{*}, \mathbb{X}_\text{PADCHEST}^{*} \} $}
+    }
+    \BlankLine%
+
+    \SetKwProg{Fn}{Updating Labels}{:}{end}
+    \Fn{}
+    {%
+        \For{$\mathbb{Y} \in \{ \mathbb{Y}_\text{NIH}, \mathbb{Y}_\text{Chexpert}, \mathbb{Y}_\text{PADCHEST} \}$}
+        {%
+            Standardize labels (pathology names) to common schema \;
+            \BlankLine%
+
+            Extract 18 common pathologies:
+            \begin{itemize}
+                \item Atelectasis, Consolidation, Infiltration, Pneumothorax, Edema, Emphysema, Fibrosis, Effusion, Pneumonia, Pleural Thickening, Cardiomegaly, Nodule, Mass, Hernia, Lung Lesion, Fracture, Lung Opacity, Enlarged Cardiomediastinum
+            \end{itemize}
+        }
+        \KwRet{$ \{ \mathbb{Y}_\text{NIH}^{*}, \mathbb{Y}_\text{Chexpert}^{*}, \mathbb{Y}_\text{PADCHEST}^{*} \} $}
+    }
+    \BlankLine%
+
+    \SetKwProg{Fn}{Getting the Dataset}{:}{end}
+    \Fn{}
+    {%
+        Combine datasets: $\mathbb{D} = \{ \mathbb{X}_{\text{NIH}}^{*}, \mathbb{Y}_{\text{NIH}}^{*} \}
+        \cup
+        \{ \mathbb{X}_{\text{Chexpert}}^{*}, \mathbb{Y}_{\text{Chexpert}}^{*} \}
+        \cup
+        \{ \mathbb{X}_{\text{PADCHEST}}^{*}, \mathbb{Y}_{\text{PADCHEST}}^{*} \}$
+        \BlankLine%
+
+        Split $\mathbb{D}$ into 3 subsets: $\mathbb{D}^\text{train}, \mathbb{D}^\text{valid}, \mathbb{D}^\text{test}$, representing 60\%, 10\%, and 30\% of data respectively
+    }
+    \BlankLine%
+    \KwRet{$\mathbb{D}^\text{train}, \mathbb{D}^\text{valid}, \mathbb{D}^\text{test}$}
 \end{SgAlgorithm}
 
 \begin{SgAlgorithm}
-    \caption{Logit-based Technique}\label{alg:logit_based_technique}
-    \KwIn{$\mathbb{D}^{\text{train}}, \mathbb{D}^{\text{valid}}, \mathbb{D}^{\text{test}}$, Baseline model architecture $f(\cdot)$}
-    \KwOut{Optimal hyperparameters ${\alpha_k}_{k=1}^K$}
-    Train $f(\cdot)$ on $\mathbb{D}^{\text{train}}$ and $\mathbb{D}^{\text{valid}}$\;
-    Drop the last sigmoid activation layer\;
-    \ForEach{$(\mathbf{x}, \mathbf{y}) \in \mathbb{D}^{\text{train}} \cup \mathbb{D}^{\text{test}}$}{
-        Compute logit vector $\mathbf{q} = f(\mathbf{x})$\;
-        Store $(\mathbf{y}, \mathbf{q})$ in $\mathbb{T}^{\text{train}}$ or $\mathbb{T}^{\text{test}}$ accordingly\;
+    \caption{Computing Original Logit Values}\label{alg:taxonomy.logits}
+    \KwIn{
+        \begin{itemize}
+            \item $\mathbb{D}^{\text{train}}, \mathbb{D}^{\text{valid}}, \mathbb{D}^{\text{test}}$ from Algorithm~\ref{alg:taxonomy.dataset}
+            \item Baseline model architecture: DenseNet121, $f_1(\cdot)$
+        \end{itemize}
     }
-    \For{$k \in \{1, \dots, K\}$}{
-        Initialize $\alpha_k = 0$\;
-        \If{$\Lambda(c_k) \neq \varnothing$}{
-            Define objective function $\mathcal{O}(\alpha_k) = 1 - \text{AUC}(\{\hat{p}_k^{(i)}\}_{i=1}^N, \{y_k^{(i)}\}_{i=1}^N)$\;
-            $\alpha_k = \argmin_{\alpha_k \in [-1, 1]} \mathcal{O}(\alpha_k)$ using TPE\;
+    \BlankLine%
+
+    \SetKwProg{Fn}{Predictor Model}{:}{end}
+    \Fn{$f_2(\cdot)$}
+    {%
+        Optimize model $f_1(\cdot)$ on $\mathbb{D}^{\text{train}}$ and $\mathbb{D}^{\text{valid}}$ \;
+
+        Clone architecture of $f_1(\cdot)$ into $f_2(\cdot)$, without the last sigmoid activation. \;
+
+        Update weights of $f_2(\cdot)$ from $f_1(\cdot)$
+    }
+    \BlankLine%
+
+    \SetKwProg{Fn}{Calculating Logits}{:}{end}
+    \Fn{$\text{getLogit}(\cdot)$}
+    {%
+        \KwIn{$\mathbb{D} = \left\{ \mathbb{X}, \mathbb{Y} \right\}, f_2(\cdot)$}
+        \ForEach{$x^{(i)} \in \mathbb{X}$}
+        {
+            Compute logit vector ${\left\{ q_k^{(i)} \right\}}_{k=1}^K = f_2 \left(x^{(i)}\right)$
+        }
+        \BlankLine%
+        ${\mathbb{Q}} = {\left\{ {\left\{ q_k^{(i)} \right\}}_{k=1}^K \right\}}_{i=1}^N$
+
+        \KwRet{
+            $\mathbb{T} = \left\{ \mathbb{Y}, \mathbb{Q} \right\}$
         }
     }
-    \KwRet{$\{\alpha_k\}_{k=1}^K$}
+    \BlankLine%
+
+    \textbf{Create New Dataset} \;
+    ${\mathbb{T}}^\text{train} = \text{getLogit}(\mathbb{D}^\text{train})$ \;
+
+    $\mathbb{T}^\text{test} = \text{getLogit}(\mathbb{D}^\text{test})$ \;
+    \BlankLine%
+
+    \KwRet{
+        $\mathbb{T}^\text{train} , \mathbb{T}^\text{test}$
+        }
+
+\end{SgAlgorithm}
+
+\begin{SgAlgorithm}
+    \SetAlgoLined%
+    \caption{Hyper Parameter Optimization for Logit-Base Technique}\label{alg:taxonomy.logit.hyperparameter-optimization}
+    \KwIn{%
+        \begin{itemize}
+            \item \textbf{Data} $\mathbb{T}^\text{train} = \left\{ \mathbb{Y}^\text{train} , \mathbb{Q}^\text{train} \right\} $
+            \item \textbf{Number of iterations:} MAX\_EVALS
+            \item \textbf{Search Space:} $ \mathcal{S} = \text{Uniform}(-1, 1) $
+            \item \textbf{Predictor model $f_1(\cdot)$} that is trained on $\mathbb{D}^\text{train} = \left\{ \mathbb{X}^\text{train} , \mathbb{Y}^\text{train} \right\} $.
+        \end{itemize}
+    }
+    \BlankLine%
+    \SetKwProg{Fn}{ObjectiveFunction}{:}{end}
+    \Fn{$\mathcal{O}$}
+    {%
+        \KwIn{$k, \alpha_k, \mathbb{Q}^\text{train}, \mathbb{Y}^\text{train}$}
+        $ j \gets (c_j = \Lambda(c_k)) $ \;
+        \ForEach{ $i, k$ }
+        {
+            $ \widehat{p}_k^{(i)} = \frac{1}{ 1 + \exp \left(-\left(q_k^{(i)} + \alpha_k q_j^{(i)} \right)\right) } $ (Eq.~\ref{eq:taxonomy.eq.1.pred.approach1})
+        }
+        \KwRet{ $ 1 - \text{AUC} \left( {\left\{ \widehat{p}_k^{(i)} \right\}}_{i=1}^N, {\left\{ y_k^{(i)} \right\}}_{i=1}^N \right) $ }
+    }
+    \BlankLine%
+    \SetKwProg{Fn}{EstimatorFunction}{:}{end}
+    \Fn{TPE}
+    {%
+        \KwIn{$\alpha_k^0, \mathcal{S}, \text{MAX\_EVALS}, k, \mathbb{Q}^\text{train}, \mathbb{Y}^\text{train}, \mathcal{O}(\cdot) $}
+        \dots Tree-structured Parzen Estimator (TPE) \dots \;
+        \KwRet{ $ \alpha_k^* $ }
+    }
+    \BlankLine%
+
+    \textit{Optimization:} \;
+    \For{ $k=1$ \KwTo~$K$}
+    {%
+        $ \alpha_k = 0 $ \;
+        \If{$ \Lambda(c_k) \neq \varnothing $}
+        {%
+            $ \alpha_k =$ TPE ($\alpha_k$, $\mathcal{S}$, $\mathcal{O}(\dots) $, MAX\_EVALS)
+        }
+    }
+    \BlankLine%
+
+    \KwRet{Optimal hyperparameters $ {\{ \alpha_{k} \}}_{k=1}^K $ }
 \end{SgAlgorithm}
 
 \subsection{Approach 2: Conditional Loss}\label{subsec:taxonomy.method.approach2}
-In a second approach, we propose a similar concept to the approach discussed in Section~\ref{subsec:taxonomy.method.approach1}; however, rather than directly updating the predicted probability of each class, we instead update the loss value of each class based on the loss values of its parent classes. The novel hierarchical regularization term introduced in the loss-based approach directly incorporates label relationships into the model training process. This regularization term is designed to penalize misalignment between predictions and the label taxonomy, providing a new way to leverage hierarchical information during training. The utilization of the loss function approach can prove advantageous in certain scenarios, particularly in the context of multi-label classification tasks that involve hierarchical relationships, as it offers numerous benefits over existing methods:
+In a second approach, we propose a similar concept to the approach discussed in Section~\ref{subsec:taxonomy.method.approach1}; however, rather than directly updating the predicted probability of each class, we instead update the loss value of each class based on the loss values of its parent classes. The utilization of the loss function approach can prove advantageous in certain scenarios, particularly in the context of multi-label classification tasks that involve hierarchical relationships, as it offers numerous benefits:
 \begin{itemize}
-\item \textbf{Novel error minimization strategy:} The proposed approach introduces a new way to quantify and minimize the divergence between model predictions and ground truth labels by integrating parent class loss values into child class loss calculations. This novel hierarchical regularization term aims to improve prediction accuracy for both parent and child classes by penalizing misalignments throughout the hierarchy.
-\item \textbf{Improved gradient propagation:} The loss-based approach incorporates parent class loss values into the calculation of child class losses, which can enhance gradient propagation between parent and child classes during backpropagation. This novel approach may lead to more effective learning of hierarchical associations and faster convergence compared to traditional methods.
-\item \textbf{Increased robustness to label noise:} The proposed technique introduces a new way to handle inconsistencies or noise in ground truth labels by leveraging parent class loss values to compute child class losses. This approach enhances the consistency of the hierarchy by penalizing deviations from expected parent-child associations, potentially improving the model's resilience to label inaccuracies in the dataset.
-\item \textbf{Improved interpretability:} By using loss values instead of predicted probabilities, the proposed approach enables a more straightforward understanding of the model's ability to capture hierarchical relationships among classes. The novel hierarchical regularization term ensures that high parent class loss values influence their corresponding child class losses, emphasizing the importance of improving the underlying model architecture and parameters to better represent these hierarchical associations.
+    \item \textbf{Emphasis on error minimization:} The loss values quantify the divergence between the predictions made by the model and the actual labels provided as ground truth. Integrating parent class loss values into child class loss calculations aims to minimize errors throughout the hierarchy, with the goal of improving prediction accuracy for both parent and child classes.
+    \item \textbf{Enhanced gradient propagation:} During the training process of deep learning models, the model parameters are updated by backpropagating gradients through layers. Incorporating the loss values of the parent class through the calculation of the loss for the child classes can improve the gradient propagation between the parent and child classes. This may lead to more effective learning of hierarchical associations and speed up the training convergence.
+    \item \textbf{Robustness to label noise:} Real-world datasets may exhibit inconsistencies or noise in their ground truth labels. The inclusion of loss values from parent classes in the computation of loss values for child classes can enhance the consistency of the hierarchy by penalizing deviations from expected parent-child associations. This approach can result in improvement in the model's resilience to potential label inaccuracies in the dataset.
+    \item \textbf{Improved interpretability:} The use of loss values rather than predicted probabilities enables a more straightforward understanding of the model's ability to capture hierarchical relationships among classes. When parent classes have high loss values, these losses influence their corresponding child classes' losses, underscoring the importance of improving the underlying model architecture and parameters to better present these hierarchical associations.
 \end{itemize}
 
 \subsubsection{Formulation of the Proposed Technique}
@@ -307,80 +460,134 @@ The parameter $\alpha _k$ directly scales the parent's loss $l_j^{(i)}$. If $\al
 \subsubsection{Parameter Selection and Tuning}
 The selection of appropriate hyperparameters is crucial for the effectiveness of the proposed transfer learning technique. In this study, we employ a systematic approach to tune the two hyperparameter vectors $\alpha_k $, and $\beta_k$, which controls the dependency between the predicted probabilities of the child and parent classes. We utilize a grid search method to determine the optimal values for these hyperparameters. The search space for the hyperparameters is defined based on preliminary experiments and domain knowledge, ensuring a balance between model complexity and predictive performance.
 
-The loss-based technique for optimizing the hyperparameters $\{\alpha_k\}_{k=1}^K$ and $\{\beta_k\}_{k=1}^K$ is described in Algorithm~\ref{alg:loss_based_technique}. The algorithm takes as input the training, validation, and test datasets ($\mathbb{D}^{\text{train}}, \mathbb{D}^{\text{valid}}, \mathbb{D}^{\text{test}}$) obtained from the data preprocessing and dataset creation step (Algorithm~\ref{alg:taxonomy.dataset}), the baseline model architecture $f(\cdot)$, and the baseline loss function $\mathcal{L}(\cdot)$.
+The steps are as follows.
 \begin{enumerate}
-    \item Similar to the logit-based technique, the loss-based technique begins by training the baseline model $f(\cdot)$ on the combined training and validation datasets ($\mathbb{D}^{\text{train}}$ and $\mathbb{D}^{\text{valid}}$), and then dropping the last sigmoid activation layer.
-    \item For each sample $(\mathbf{x}, \mathbf{y})$ in the training and test datasets, the predicted probability vector $\mathbf{p}$ is computed by passing the input image $\mathbf{x}$ through the modified model $f(\cdot)$. The corresponding loss vector $\mathbf{l}$ is then calculated using the baseline loss function $\mathcal{L}(\mathbf{y}, \mathbf{p})$. The label vector $\mathbf{y}$ and loss vector $\mathbf{l}$ are stored in the respective training or test set ($\mathbb{T}^{\text{train}}$ or $\mathbb{T}^{\text{test}}$).
-    \item The algorithm iterates over each pathology $c_k$ for $k \in \{1, \dots, K\}$. If the set of ancestor nodes $\Lambda(c_k)$ is not empty, an objective function $\mathcal{O}(\alpha_k, \beta_k)$ is defined as $1 - \text{AUC}(\{\hat{p}_k^{(i)}\}_{i=1}^N, \{y_k^{(i)}\}_{i=1}^N)$, where $\hat{p}_k^{(i)}$ and $y_k^{(i)}$ are the predicted probability and ground truth label for the $i$-th sample, respectively. The AUC metric is used to evaluate the performance of the model for each pathology.
-    \item The optimal values of $\alpha_k$ and $\beta_k$ are determined by minimizing the objective function $\mathcal{O}(\alpha_k, \beta_k)$ over the range $[-1, 1] \times [-4, 4]$ using the Tree-structured Parzen Estimator (TPE) optimization algorithm. TPE efficiently searches the hyperparameter space to find the best combination of $\alpha_k$ and $\beta_k$ that minimizes the objective function.
-    \item The algorithm returns the optimal hyperparameters $\{\alpha_k\}_{k=1}^K$ and $\{\beta_k\}_{k=1}^K$ for each pathology. These hyperparameters are used in the subsequent step of updating the predicted probabilities.
+    \item Pre-process the data. Details shown in Algorithm~\ref{alg:taxonomy.dataset}
+    \item Get loss values. Details shown in Algorithm~\ref{alg:taxonomy.loss.original}
+    \item Perform Hyper Parameter Tuning to find the ${\{\alpha_k \}}_{k=1}^K$, and ${\{\beta_k \}}_{k=1}^K$ hyperparameter vectors. The detail shown in Algorithm~\ref{alg:taxonomy.loss.hyperparameter-optimization}.
 \end{enumerate}
-
-Algorithm~\ref{alg:updating_probabilities} describes the process of updating the predicted probabilities using the optimal hyperparameters.
-\begin{enumerate}
-    \item For each sample $(\mathbf{x}, \mathbf{y})$ in the test set $\mathbb{D}^{\text{test}}$, the predicted probability vector $\mathbf{p}$ and the corresponding loss vector $\mathbf{l}$ are computed.
-    \item For each pathology $c_k$, the ancestor node $c_j$ is determined using the function $\Lambda(c_k)$. The modified loss $\hat{l}_k$ is calculated as $l_k (\alpha_k l_j + \beta_k)$, where $l_k$ and $l_j$ are the losses for pathologies $c_k$ and $c_j$, respectively.
-    \item The predicted probability $\hat{p}_k$ is updated based on a condition: if both $p_k$ and $p_j$ exceed their respective thresholds $\theta_k$ and $\theta_j$, then $\hat{p}_k$ is set to $\exp(-\hat{l}_k)$; otherwise, $\hat{p}_k$ is set to $1 - \exp(-\hat{l}_k)$. This condition ensures that the predicted probabilities are adjusted based on the presence or absence of the pathology and its ancestor node.
-    \item Finally, the algorithm returns the updated predicted probabilities $\{\hat{p}_k^{(i)}\}_{k=1,i=1}^{K,N}$ for all pathologies and samples in the test set.
-\end{enumerate}
-
-The loss-based technique leverages the hierarchical structure of the pathologies and the loss values to optimize the hyperparameters and update the predicted probabilities. By minimizing the objective function based on the AUC metric and incorporating the modified loss, the algorithm aims to improve the model's performance on the hierarchical classification task.
 
 \begin{SgAlgorithm}
-    \caption{Loss-based Technique}\label{alg:loss_based_technique}
+    \caption{Computing Original Loss Values}\label{alg:taxonomy.loss.original}
     \KwIn{
-        $\mathbb{D}^{\text{train}}, \mathbb{D}^{\text{valid}}, \mathbb{D}^{\text{test}}$ from Algorithm~\ref{alg:taxonomy.dataset}, Baseline model architecture $f(\cdot)$, Baseline loss function $\mathcal{L}(\cdot)$
-        }
-    \KwOut{
-        Optimal hyperparameters ${\alpha_k}_{k=1}^K, {\beta_k}_{k=1}^K$
-        }
-    Train $f(\cdot)$ on $\mathbb{D}^{\text{train}}$ and $\mathbb{D}^{\text{valid}}$\;
-    Drop the last sigmoid activation layer\;
-    \ForEach{
-        $(\mathbf{x}, \mathbf{y}) \in \mathbb{D}^{\text{train}} \cup \mathbb{D}^{\text{test}}$
-    }{
-        Compute $\mathbf{p} = f(\mathbf{x})$\;
-        Compute loss $\mathbf{l} = \mathcal{L}(\mathbf{y}, \mathbf{p})$\;
-        Store $(\mathbf{y}, \mathbf{l})$ in $\mathbb{T}^{\text{train}}$ or $\mathbb{T}^{\text{test}}$ accordingly\;
+        \begin{itemize}
+            \item $\mathbb{D}^{\text{train}}, \mathbb{D}^{\text{valid}}, \mathbb{D}^{\text{test}}$ from Algorithm~\ref{alg:taxonomy.dataset}
+            \item Baseline model architecture: DenseNet121, $f_1(\cdot)$
+            \item Baseline Loss Function: $\mathcal{L}(\cdot)$
+        \end{itemize}
     }
-    \For{$k \in \{1, \dots, K\}$}{
-        Initialize $\alpha_k = 0, \beta_k = 1$\;
-        \If{
-            $\Lambda(c_k) \neq \varnothing$
-        }{
-            Define objective function $\mathcal{O}(\alpha_k, \beta_k) = 1 - \text{AUC}(\{\hat{p}_k^{(i)}\}_{i=1}^N, \{y_k^{(i)}\}_{i=1}^N)$\;
-            Find $\alpha_k, \beta_k$ that minimize $\mathcal{O}(\alpha_k, \beta_k)$ over $[-1, 1] \times [-4, 4]$ using TPE\;
-        }
+    \BlankLine%
+
+    \SetKwProg{Fn}{Predictor Model}{:}{}
+    \Fn{$f_2(\cdot)$}
+    {%
+        Optimize model $f_1(\cdot)$ on $\mathbb{D}^{\text{train}}$ and $\mathbb{D}^{\text{valid}}$ \;
+
+        Clone $f_1(\cdot)$ into $f_2(\cdot)$.
     }
-    \KwRet{
-        $\{\alpha_k\}_{k=1}^K, \{\beta_k\}_{k=1}^K$
+    \BlankLine%
+
+    \SetKwProg{Fn}{Calculating Pred Values}{:}{}
+    \Fn{$\text{getPred}(\mathbb{X})$}
+    {%
+        \ForEach{$x^{(i)} \in \mathbb{X}$}
+        {
+            ${\left\{ p_k^{(i)} \right\}}_{k=1}^K = f_2 \left(x^{(i)}\right)$
         }
+        \KwRet{$\mathbb{P} = {\left\{ {\left\{ p_k^{(i)} \right\}}_{k=1}^K \right\}}_{i=1}^N $}
+    }
+    \BlankLine%
+
+    \SetKwProg{Fn}{Calculating Threshold Values}{:}{}
+    \Fn{$\text{getThreshold}(\mathbb{P}^\text{train}, \mathbb{Y}^\text{train})$}
+    {%
+        ${\left\{ \theta_k \right\}}_{k=1}^K \gets {\left\{ \mathbb{P}^\text{train}, \mathbb{Y}^\text{train} \right\}}$ Using some thresholding technique (eg, ROC, 0.5, AUC)
+    }
+    \BlankLine%
+
+    \SetKwProg{Fn}{Calculating Loss Values}{:}{}
+    \Fn{$\text{getLoss}(\mathbb{P}, \mathbb{Y})$}
+    {%
+        \ForEach{$i, k$}
+        {
+            $l_k^{(i)} = \mathcal{L}\left(y_k^{(i)}, p_k^{(i)} > \theta_k\right)$
+        }
+        \KwRet{
+            ${\mathbb{Q}} = {\left\{ {\left\{ l_k^{(i)} \right\}}_{k=1}^K \right\}}_{i=1}^N$
+            }
+    }
+    \BlankLine%
+
+    \KwRet{$\mathbb{Q}^\text{test} = \text{getLoss}(\mathbb{P}^\text{test}, \mathbb{Y}^\text{test})$}
+
 \end{SgAlgorithm}
 
 \begin{SgAlgorithm}
-\caption{Updating Predicted Probabilities}\label{alg:updating_probabilities}
-\KwIn{
-    Test set $\mathbb{D}^{\text{test}}$, Trained model $f(\cdot)$, Optimal hyperparameters ${\alpha_k}_{k=1}^K, {\beta_k}_{k=1}^K$
+    \SetAlgoLined%
+    \caption{Hyper Parameter Optimization for Loss-Base Technique}\label{alg:taxonomy.loss.hyperparameter-optimization}
+    \KwIn{%
+        \begin{itemize}
+            \item \textbf{Number of iterations:} MAX\_EVALS
+            \item \textbf{Search Space:} $ \mathcal{S}_\alpha = \text{Uniform}(-1, 1)  ,  \mathcal{S}_\beta = \text{Uniform}(-4, 4) $
+            \item \textbf{Original Values for $\mathbb{D}^\text{train}$:} $\mathbb{Q}^\text{train}, \mathbb{P}^\text{train} ,\Theta^\text{train} \leftarrow \text{Algorithm~\ref{alg:taxonomy.loss.original}} (\mathbb{D}_\text{train})$
+            \item \textbf{Original Values for $\mathbb{D}^\text{test}$:} $\mathbb{Q}^\text{test}, \mathbb{P}^\text{test} , \_  \qquad \leftarrow \text{Algorithm~\ref{alg:taxonomy.loss.original}} (\mathbb{D}_\text{test})$
+            \item \textbf{stage:} Optimization, or Inference
+        \end{itemize}
     }
-\KwOut{
-    Updated predicted probabilities $\{\hat{p}_k^{(i)}\}_{k=1,i=1}^{K,N}$
+    % \BlankLine%
+
+    \SetKwProg{Fn}{getCondition}{:}{}
+    \Fn{}
+    {%
+        \eIf{stage \textbf{is} Optimization}
+        {
+            <condition> $ = \left(\frac{\partial \mathcal{L}(\widehat{p}_k^{(i)}, y_k^{(i)})}{\partial {\widehat{p}_k^{(i)}}} \geq 0 \right)$
+        }
+        {
+            <condition> $ = (p_k^{(i)} > \theta_k) \; \& \; (p_j^{(i)} > \theta_j)$
+        }
     }
-\ForEach{
-    $(\mathbf{x}, \mathbf{y}) \in \mathbb{D}^{\text{test}}$
-}{
-    Compute $\mathbf{p} = f(\mathbf{x})$\;
-    Compute loss $\mathbf{l} = \mathcal{L}(\mathbf{y}, \mathbf{p})$\;
-    \ForEach{
-        $k \in \{1, \dots, K\}$
-    }{
-        Determine $j = \Lambda(c_k)$\;
-        Calculate modified loss $\hat{l}_k = l_k (\alpha_k l_j + \beta_k)$\;
-        Update $\hat{p}_k$ based on condition: if $p_k > \theta_k \; \text{and} \; p_j > \theta_j$ then $\hat{p}_k = \exp(-\hat{l}_k)$ else $\hat{p}_k = 1 - \exp(-\hat{l}_k)$\;
+
+    \SetKwProg{Fn}{ObjectiveFunction}{:}{}
+    \Fn{$\mathcal{O}(k, \alpha_k, \mathbb{Q}^\text{train}, \mathbb{Y}^\text{train})$}
+    {%
+        $ j \gets (c_j = \Lambda(c_k)) $ \;
+
+        \ForEach{ $i, k$ }
+        {
+            $\widehat{l}_k^{(i)} = l_k^{(i)} \left( \alpha_k l_j^{(i)} + \beta_k \right)$ (Eq.~\ref{eq:taxonomy.eq.7.newloss} and Eq.~\ref{eq:taxonomy.eq.8.hierarchical_penalty.loss})
+
+            $\widehat{p}_k^{(i)} =
+                \begin{cases}
+                    \, \exp(-\widehat{l}_k^{(i)})  & \textbf{if} \, <condition>
+                    \\
+                    \, 1 - \exp(-\widehat{l}_k^{(i)}) & \text{otherwise}
+                \end{cases}$
+        }
+        \KwRet{ $ 1 - \text{AUC} \left( {\left\{ \widehat{p}_k^{(i)} \right\}}_{i=1}^N, {\left\{ y_k^{(i)} \right\}}_{i=1}^N \right) $ }
     }
-}
-\KwRet{
-    $\{\hat{p}_k^{(i)}\}_{k=1,i=1}^{K,N}$
+    \BlankLine%
+    \SetKwProg{Fn}{EstimatorFunction}{:}{}
+    \Fn{$\text{TPE} (\alpha_k^0, \beta_k^0, \mathcal{S}_\alpha, \mathcal{S}_\beta, k, \mathbb{L}^\text{train}, \mathbb{Y}^\text{train}, \mathcal{O}(\cdot),\text{MAX\_EVALS})$}
+    {%
+        \dots Tree-structured Parzen Estimator (TPE) \dots \;
+        \KwRet{ $ \alpha_k^* , \beta_k^* $ }
     }
+    % \BlankLine%
+    \SetKwProg{Fn}{Optimization}{:}{}
+    \Fn{}
+    {
+        \ForEach{ $k$}
+        {%
+            $ \alpha_k = 0 \, , \beta_k = 1$ \;
+            \If{$ \Lambda(c_k) \neq \varnothing $}
+            {%
+                $ \alpha_k, \beta_k =$ TPE ($\dots$)
+            }
+        }
+    }
+    \BlankLine%
+    \KwOut{$ {\{ \alpha_k \}}_{k=1}^K , {\{ \beta_k \}}_{k=1}^K $ }
 \end{SgAlgorithm}
 
 \subsection{Updating Loss Values and Predicted Probabilities}\label{subsec:updating-loss-values-and-predicted-probabilities}
@@ -424,7 +631,7 @@ Hence, we can conclude that
     \begin{array}{@{}l}
     \hat{p}_{k}^{(i)} = \left\{
         \begin{array}{ll}
-           1-\, \frac{\partial \mathcal{L}\left(p_k^{(i)},\;y_k^{(i)}\right)}{\partial \widehat{p}_k^{(i)} }\;{ \frac{\partial{\text{sigmoid}}}{\partial{\widehat{q}_k^{(i)}}}}
+            1-\, \frac{\partial \mathcal{L}\left(p_k^{(i)},\;y_k^{(i)}\right)}{\partial \widehat{p}_k^{(i)} }\;{ \frac{\partial{\text{sigmoid}}}{\partial{\widehat{q}_k^{(i)}}}}
             &
             y_k^{(i)}=1
             \\
@@ -565,9 +772,8 @@ Three diverse and publicly available datasets are used to evaluate the proposed 
 \end{itemize}
 
 \textit{Preprocessing: }
-The primary algorithm for data preprocessing and dataset creation (Algorithm~\ref{alg:taxonomy.dataset}) was designed to integrate and standardize heterogeneous chest radiograph datasets, namely $\mathbb{D}{\text{NIH}}$, $\mathbb{D}{\text{CheXpert}}$, and $\mathbb{D}_{\text{PADCHEST}}$. The images were resized to a resolution of $224 \times 224$ pixels, with the pixel intensities normalized to a range of 0 and 1. Data augmentation techniques, such as rotation, translation, and horizontal flipping, were applied to increase the dataset's size and diversity, consequently enhancing the model's generalization capability. The choice of resizing images to $224 \times 224$ pixels ensures compatibility with prevalent deep learning models, balancing computational efficiency with the retention of critical diagnostic features. The normalization of pixel intensities to the range $[0, 1]$ is a standard practice to facilitate model convergence by providing a consistent scale for input data. Label standardization to a common schema and the extraction of 18 common pathologies were paramount for ensuring consistency across datasets, thereby enabling the comparative analysis of model performance.
+The chest radiographs were pre-processed to ensure consistency across the datasets. The images were resized to a resolution of $224 \times 224$ pixels, with the pixel intensities normalized to a range of 0 and 1. Data augmentation techniques, such as rotation, translation, and horizontal flipping, were applied to increase the dataset's size and diversity, consequently enhancing the model's generalization capability.
 
-The random split of the combined dataset into training, validation, and testing subsets with ratios of 60%, 10%, and 30%, respectively, adheres to the conventional wisdom in machine learning for balancing model training capabilities with adequate validation and generalization assessment through the testing set.
 \subsubsection{Model Optimization}
 The DenseNet121~\cite{huang_Densely_2017} architecture and the pre-trained weights provided by Cohen~\cite{cohen_TorchXRayVision_2022} was used as the baseline model. The model was fine-tuned on a subset of CheXpert~\cite{irvin_CheXpert_2019}, NIH~\cite{wang_ChestXRay8_2017}, PADCHEST~\cite{bustos_Padchest_2020} for 18 thoracic diseases. A series of transformations were applied to all train images, including rotation of up to 45 degrees, translation of up to 15\%, and scaling up to 10\%. Binary cross entropy losses and Adam optimizer were used.
 
@@ -730,11 +936,11 @@ The distribution of samples per pathology in each dataset is presented in Table~
 %
 
 \subsection{Techniques Evaluation}
-The performance comparison of our proposed methods, namely logit-based and loss-based, with the ``baseline'' technique is illustrated in Figure~\ref{fig:taxonomy.fig.3.roc_curve_all_datasets}. This comparative analysis centers on nine distinct medical conditions associated with pulmonary and cardiovascular diseases within three datasets. These nine pathologies encompass two parent classes (\textbf{Lung Opacity}, and \textbf{Enlarged Cardiomediastinum}) and their respective child classes, as illustrated in Figure~\ref{fig:taxonomy.fig.1.taxonomy_structure}. Each subplot exhibits the receiver operating characteristic (ROC) curves for each methodology superimposed on one another, accompanied by their respective AUC (Area Under Curve) scores annotated. AUC (Area Under the Curve) scores are computed for each pathology class across all test samples in all studies datasets. We can see a notable improvement in AUC scores for all pathologies possessing parent classes. The aforementioned findings serve as compelling evidence for the effectiveness of the proposed methodologies, as they showcase their ability to improve the accuracy of classification in scenarios involving hierarchical class structures. AUC scores for two parent classes, ``Lung Opacity'' and ``Enlarged Cardiomediastinum'', remain unchanged as expected. The techniques proposed in this study are designed to exploit the hierarchical structure of classes, and therefore only bring about improvements where a class possesses a parent class.
+The performance comparison of our proposed methods, namely ``logit'' and ``loss'', with the ``baseline'' technique is illustrated in Figure~\ref{fig:taxonomy.fig.3.roc_curve_all_datasets}. This comparative analysis centers on nine distinct medical conditions associated with pulmonary and cardiovascular diseases within three datasets. These nine pathologies encompass two parent classes (\textbf{Lung Opacity}, and \textbf{Enlarged Cardiomediastinum}) and their respective child classes, as illustrated in Figure~\ref{fig:taxonomy.fig.1.taxonomy_structure}. Each subplot exhibits the receiver operating characteristic (ROC) curves for each methodology superimposed on one another, accompanied by their respective AUC (Area Under Curve) scores annotated. AUC (Area Under the Curve) scores are computed for each pathology class across all test samples in all studies datasets. We can see a notable improvement in AUC scores for all pathologies possessing parent classes. The aforementioned findings serve as compelling evidence for the effectiveness of the proposed methodologies, as they showcase their ability to improve the accuracy of classification in scenarios involving hierarchical class structures. AUC scores for two parent classes, ``Lung Opacity'' and ``Enlarged Cardiomediastinum'', remain unchanged as expected. The techniques proposed in this study are designed to exploit the hierarchical structure of classes, and therefore only bring about improvements where a class possesses a parent class.
 
 \begin{table}[htbp]
 \centering
-\caption[Statistical Performance Comparison of logit-based, loss-based, and ``Baseline'' Techniques Across Various Pathologies]{Statistical performance comparison between the proposed techniques logit-based and loss-based and the ``baseline'' technique across various pathologies. The upper table displays the findings of the logit-based technique, while the lower table displays the findings of the loss-based technique. The reported metrics for each pathology are the Kappa statistic, p-value, t-statistic, statistical power, Cohen's d, and Bayes Factor (BF10). A kappa value of 1 indicates perfect agreement between techniques, whereas a larger Bayes factor indicates greater support for the logit-based or loss-based technique over the baseline.}\label{tab:taxonomy.table.3.metrics}
+\caption[Statistical Performance Comparison of ``Logit'', ``Loss'', and ``Baseline'' Techniques Across Various Pathologies]{Statistical performance comparison between the proposed techniques ``logit'' and ``loss'' and the ``baseline'' technique across various pathologies. The upper table displays the findings of the ``logit'' technique, while the lower table displays the findings of the ``loss'' technique. The reported metrics for each pathology are the Kappa statistic, p-value, t-statistic, statistical power, Cohen's d, and Bayes Factor (BF10). A kappa value of 1 indicates perfect agreement between techniques, whereas a larger Bayes factor indicates greater support for the ``logit'' or ``loss'' technique over the baseline.}\label{tab:taxonomy.table.3.metrics}
 \begin{tabular}{clrrrrrr}
     &
     & \cellcolor{table_title}{kappa}
@@ -774,42 +980,42 @@ The performance comparison of our proposed methods, namely logit-based and loss-
 \end{tabular}%
 \end{table}
 
-The comparative analysis presented in Figure~\ref{fig:taxonomy.fig.2.metrics} examines the performance of the proposed loss-based and logit-based methods in comparison to the ``baseline'' method across three important metrics: Accuracy (ACC), Area Under the Receiver Operating Characteristic Curve (AUC), and F1 score for different pathologies.
+The comparative analysis presented in Figure~\ref{fig:taxonomy.fig.2.metrics} examines the performance of the proposed ``loss'' and ``logit'' methods in comparison to the ``baseline'' method across three important metrics: Accuracy (ACC), Area Under the Receiver Operating Characteristic Curve (AUC), and F1 score for different pathologies.
 
-The loss-based and logit-based methods exhibit a distinct advantage over the ``baseline'' method in terms of accuracy. In the case of Atelectasis, the loss-based method demonstrates a notably higher accuracy of 0.922 compared to the ``baseline'' method's accuracy of 0.686. Additionally, the logit-based method achieves an accuracy of 0.874. As predicted, there is no noticeable disparity in accuracy between the methods for the parent classes, Lung Opacity and Enlarged Cardiomediastinum, as indicated by scores of 0.663 and 0.696, respectively.
+The ``loss'' and ``logit'' methods exhibit a distinct advantage over the ``baseline'' method in terms of accuracy. In the case of Atelectasis, the ``loss'' method demonstrates a notably higher accuracy of 0.922 compared to the ``baseline'' method's accuracy of 0.686. Additionally, the ``logit'' method achieves an accuracy of 0.874. As predicted, there is no noticeable disparity in accuracy between the methods for the parent classes, Lung Opacity and Enlarged Cardiomediastinum, as indicated by scores of 0.663 and 0.696, respectively.
 
-The AUC, a performance measure that takes into account both sensitivity and specificity, provides further evidence of the superior performance of the loss-based and logit-based techniques. In the case of Cardiomegaly, the area under the curve (AUC) demonstrates improvements of 21\% and 11\% when employing the loss and logit techniques, respectively. The AUC values for the parent classes, Lung Opacity and Enlarged Cardiomediastinum, are consistent across all three methods.
+The AUC, a performance measure that takes into account both sensitivity and specificity, provides further evidence of the superior performance of the ``loss'' and ``logit'' techniques. In the case of Cardiomegaly, the area under the curve (AUC) demonstrates improvements of 21\% and 11\% when employing the loss and logit techniques, respectively. The AUC values for the parent classes, Lung Opacity and Enlarged Cardiomediastinum, are consistent across all three methods.
 
-The F1 score, which is calculated as the harmonic means of precision and recall, serves to emphasize the improved performance of our proposed methods. Significantly, in the case of Lung Lesion, the F1 score exhibits a notable increase from 0.094 in the ``baseline'' approach to 0.982 in the loss-based approach, and 0.263 in the logit-based approach.
+The F1 score, which is calculated as the harmonic means of precision and recall, serves to emphasize the improved performance of our proposed methods. Significantly, in the case of Lung Lesion, the F1 score exhibits a notable increase from 0.094 in the ``baseline'' approach to 0.982 in the ``loss'' approach, and 0.263 in the ``logit'' approach.
 
-The obtained results provides further support for our previous findings, which indicate that the utilization of the logit-based and loss-based methods leads to substantial improvements in performance compared to the ``baseline'' method across most child classes. In all measured aspects and scenarios, the loss-based method exhibits slightly superior performance compared to the logit-based method.
+The obtained results provides further support for our previous findings, which indicate that the utilization of the ``logit'' and ``loss'' methods leads to substantial improvements in performance compared to the ``baseline'' method across most child classes. In all measured aspects and scenarios, the ``loss'' method exhibits slightly superior performance compared to the ``logit'' method.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{figures/auc_acc_f1_all_datasets/ROC/metrics_AUC_ACC_F1.pdf}
     % \captionsetup{width=0.8\textwidth}
-    \caption[Heatmap Visualization of Model Performance Metrics (ACC, AUC, F1) for Different Techniques across Pathologies]{Heatmap visualization of model performance metrics across all three datasets. The subplots from left to right correspond to the Accuracy (ACC), Area Under the ROC Curve (AUC), and F1 Score for the baseline, loss-based, and logit-based techniques respectively. The pathologies are shared on the y-axis. Darker colors signify higher values, indicating better model performance. Each cell represents the value of the corresponding metric for the given technique on a specific pathology}\label{fig:taxonomy.fig.2.metrics}
+    \caption[Heatmap Visualization of Model Performance Metrics (ACC, AUC, F1) for Different Techniques across Pathologies]{Heatmap visualization of model performance metrics across all three datasets. The subplots from left to right correspond to the Accuracy (ACC), Area Under the ROC Curve (AUC), and F1 Score for the baseline, ``loss'', and ``logit'' techniques respectively. The pathologies are shared on the y-axis. Darker colors signify higher values, indicating better model performance. Each cell represents the value of the corresponding metric for the given technique on a specific pathology}\label{fig:taxonomy.fig.2.metrics}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{figures/roc_curve_all_datasets/ROC/roc_curve_all_datasets.pdf}
     % \captionsetup{width=0.8\textwidth}
-    \caption[Comparative Analysis of ROC Curves for Nine Thoracic Pathologies: logit-based, loss-based, and ``baseline'' Techniques]{Comparative analysis of the ROC curves for nine thoracic pathologies using the logit-based and loss-based techniques as well as the baseline. The subplots highlighted with a darker background, represent parent class diseases.}\label{fig:taxonomy.fig.3.roc_curve_all_datasets}
+    \caption[Comparative Analysis of ROC Curves for Nine Thoracic Pathologies: ``logit'', ``loss'', and ``baseline'' Techniques]{Comparative analysis of the ROC curves for nine thoracic pathologies using the ``logit'' and ``loss'' techniques as well as the baseline. The subplots highlighted with a darker background, represent parent class diseases.}\label{fig:taxonomy.fig.3.roc_curve_all_datasets}
 \end{figure}
 
-Table~\ref{tab:taxonomy.table.3.metrics} provides a comparative analysis of the performance of our proposed logit-based and loss-based techniques with the ``baseline'' method, using various statistical metrics. The logit-based technique, as indicated in the upper table, suggest a significant performance enhancement compared to the ``baseline'' across all evaluation tests, with kappa values ranging between 0.495 and 1. The kappa statistic is used to measure the level of agreement between two techniques, where a value of 1 signifies perfect alignment. The p-value for all child classes is below 0.05, ranging from 2.1E-89 to 2.9E-16, thereby implying a statistically significant improvement of the logit-based method over the ``baseline''. High t-statistics and power values of 1 further underscore the robustness of our technique. The Bayes factor results for the logit-based technique are exceptionally strong across all classes, suggesting substantial evidence favoring the logit-based method for these scenarios.
+Table~\ref{tab:taxonomy.table.3.metrics} provides a comparative analysis of the performance of our proposed ``logit'' and ``loss'' techniques with the ``baseline'' method, using various statistical metrics. The ``logit'' technique, as indicated in the upper table, suggest a significant performance enhancement compared to the ``baseline'' across all evaluation tests, with kappa values ranging between 0.495 and 1. The kappa statistic is used to measure the level of agreement between two techniques, where a value of 1 signifies perfect alignment. The p-value for all child classes is below 0.05, ranging from 2.1E-89 to 2.9E-16, thereby implying a statistically significant improvement of the ``logit'' method over the ``baseline''. High t-statistics and power values of 1 further underscore the robustness of our technique. The Bayes factor results for the ``logit'' technique are exceptionally strong across all classes, suggesting substantial evidence favoring the ``logit'' method for these scenarios.
 
-The proposed loss-based technique demonstrates encouraging results when benchmarked against the ``baseline'', albeit with more variability. Kappa values spanned from a minimum of 0.059 for Lung Lesion to a maximum of 0.836 for Infiltration. While the p-values indicate statistically significant improvement for most conditions, Infiltration and Pneumonia had p-values exceeding 0.05 (0.053 and 0.207, respectively), hinting that the performance improvement over the ``baseline'' for these conditions may not be statistically significant. High t-statistics and power values of 1 were observed for all conditions except Infiltration and Pneumonia. The cohen-d values for the loss-based technique were generally larger than those for the logit-based technique, signifying a larger effect size. The Bayes factor results for the loss-based technique were exceedingly strong for conditions such as Atelectasis and Edema, but considerably lower for conditions like Infiltration and Pneumonia, indicating less evidence supporting the loss-based technique for these conditions.
+The proposed ``loss'' technique demonstrates encouraging results when benchmarked against the ``baseline'', albeit with more variability. Kappa values spanned from a minimum of 0.059 for Lung Lesion to a maximum of 0.836 for Infiltration. While the p-values indicate statistically significant improvement for most conditions, Infiltration and Pneumonia had p-values exceeding 0.05 (0.053 and 0.207, respectively), hinting that the performance improvement over the ``baseline'' for these conditions may not be statistically significant. High t-statistics and power values of 1 were observed for all conditions except Infiltration and Pneumonia. The cohen-d values for the ``loss'' technique were generally larger than those for the ``logit'' technique, signifying a larger effect size. The Bayes factor results for the ``loss'' technique were exceedingly strong for conditions such as Atelectasis and Edema, but considerably lower for conditions like Infiltration and Pneumonia, indicating less evidence supporting the ``loss'' technique for these conditions.
 
-Both the logit-based and loss-based techniques shows considerable improvements over the ``baseline'' technique, though the degree of improvement varied. The logit-based technique exhibited a more consistent level of improvement across all conditions, whereas the loss-based technique showed potential for even larger improvements in certain conditions, albeit with less consistency across the conditions studied.
+Both the ``logit'' and ``loss'' techniques shows considerable improvements over the ``baseline'' technique, though the degree of improvement varied. The ``logit'' technique exhibited a more consistent level of improvement across all conditions, whereas the ``loss'' technique showed potential for even larger improvements in certain conditions, albeit with less consistency across the conditions studied.
 
 \section{Discussion and Conclusion}\label{sec:taxonomy.discussion}
-In this research, we introduce two innovative hierarchical multi-label classification techniques designed to increase both the accuracy and understandability of results in applications where a hierarchical structure exists among classes. The techniques are intended to improve classification accuracy, resistance to labeling inaccuracies and enhance alignment with hierarchical class structures. The proposed loss-based technique is devised to be integrated into any loss function (e.g., binary cross entropy loss) that is used for optimizing the model parameters, enabling a more refined adjustment of the hierarchical influence through introducing a regularization term in the loss function of the model. The proposed logit-based technique offers a straightforward yet potent method to integrate label hierarchy into a model without necessitating considerable changes to the existing structure.
+In this research, we introduce two innovative hierarchical multi-label classification techniques designed to increase both the accuracy and understandability of results in applications where a hierarchical structure exists among classes. The techniques are intended to improve classification accuracy, resistance to labeling inaccuracies and enhance alignment with hierarchical class structures. The proposed ``loss'' technique is devised to be integrated into any loss function (e.g., binary cross entropy loss) that is used for optimizing the model parameters, enabling a more refined adjustment of the hierarchical influence through introducing a regularization term in the loss function of the model. The proposed ``logit'' technique offers a straightforward yet potent method to integrate label hierarchy into a model without necessitating considerable changes to the existing structure.
 
 Our results affirm the effectiveness of the introduced hierarchical multi-label classification techniques in increasing the classification accuracy of thoracic diseases. Several performance indicators, including accuracy, AUC, and F1 scores, along with Cohen's d, Cohen's kappa, t-statistics, p-value, and Bayes factor, attest to the substantial performance improvements of these methods over the baseline across three major public datasets (CheXpert, PADCHEST, and NIH). These findings suggest that the proposed techniques can be more reliable tools for improving classification accuracy as well as a higher level of interpretability in the findings.
 
-The loss-based and logit-based techniques harness the disease taxonomy to enhance classification performance, underscoring the value of using label relationships in classification tasks. These hierarchical techniques could potentially aid healthcare professionals by enhancing the comprehensibility of the model's predictions. Providing predictions with varying detail levels based on taxonomy could enable personalized diagnoses that better meet individual clinical needs. Moreover, the techniques could be integrated into computer-aided diagnosis systems to deliver more precise and efficient diagnoses, possibly reducing clinicians' workload and improving patient outcomes.
+The ``loss'' and ``logit'' techniques harness the disease taxonomy to enhance classification performance, underscoring the value of using label relationships in classification tasks. These hierarchical techniques could potentially aid healthcare professionals by enhancing the comprehensibility of the model's predictions. Providing predictions with varying detail levels based on taxonomy could enable personalized diagnoses that better meet individual clinical needs. Moreover, the techniques could be integrated into computer-aided diagnosis systems to deliver more precise and efficient diagnoses, possibly reducing clinicians' workload and improving patient outcomes.
 
 However, further research is needed to explore their potential benefits in a clinical setting. There are also some limitations to these methods. For example, applying these techniques to other applications would necessitate the creation of a taxonomical structure for the dataset labels, which could be challenging for complex applications and usually requires consensus among several domain experts. Also, the effectiveness of the introduced techniques could be influenced by the quality and consistency of dataset labeling, which may vary across different sources. Future research should aim to evaluate these techniques across a broader array of datasets and investigate the impact of labeling quality on performance.
 
